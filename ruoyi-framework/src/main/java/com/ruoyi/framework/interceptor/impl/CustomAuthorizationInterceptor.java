@@ -26,9 +26,6 @@ public class CustomAuthorizationInterceptor implements AuthorizationInterceptor 
     @Autowired
     private TokenService tokenService;
 
-    @Autowired
-    private ISysUserService userService;
-
 
     /**
      * 配置是否需要登录

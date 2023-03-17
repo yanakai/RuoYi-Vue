@@ -18,6 +18,7 @@ var MAGIC_EDITOR_CONFIG = {
             }
             // 如果是基于Cookie验证的，此处可以不配。
             config.headers.token =token ; // 此处自行获取Token
+            config.headers.Authorization = "Bearer "+token ; // 设置请求头的Authorization的值 模拟前端请求默认植入token的值
             console.log("请求参数config",config);
             return config;
         }
