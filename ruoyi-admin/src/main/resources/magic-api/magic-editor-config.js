@@ -8,14 +8,11 @@ var MAGIC_EDITOR_CONFIG = {
     },
     request: {
         beforeSend: function(config){
-            var tokenTemp = "Admin-Token";
-            var token ="";// 此处自行获取token
-            // header cookie拿token
-            var strCookie = document.cookie;
-            var arrCookie = strCookie.split("=");
-            if(arrCookie[0] == tokenTemp){
-                token =  arrCookie[1];
-            }
+            //从header的cookie拿token
+            const strCookie = document.cookie; // 前端存放cookie的值格式为 Admin-Token = XXXXX
+            const arrCookie = strCookie.split("="); // 通过"="截断cookie的值
+            // arrCookie[0] = "Admin-Token";
+            const token = arrCookie[1];// 此处自行获取token
             // 如果是基于Cookie验证的，此处可以不配。
             config.headers.token =token ; // 此处自行获取Token
             config.headers.Authorization = "Bearer "+token ; // 设置请求头的Authorization的值 模拟前端请求默认植入token的值
@@ -24,14 +21,11 @@ var MAGIC_EDITOR_CONFIG = {
         }
     },
     getMagicTokenValue: function(){
-        var tokenTemp = "Admin-Token";
-        var token ="";// 此处自行获取token
-        // header cookie拿token
-        var strCookie = document.cookie;
-        var arrCookie = strCookie.split("=");
-        if(arrCookie[0] == tokenTemp){
-            token =  arrCookie[1];
-        }
+        //从header的cookie拿token
+        const strCookie = document.cookie; // 前端存放cookie的值格式为 Admin-Token = XXXXX
+        const arrCookie = strCookie.split("="); // 通过"="截断cookie的值
+        // arrCookie[0] = "Admin-Token";
+        const token = arrCookie[1];// 此处自行获取token
         return token;
     }
 
