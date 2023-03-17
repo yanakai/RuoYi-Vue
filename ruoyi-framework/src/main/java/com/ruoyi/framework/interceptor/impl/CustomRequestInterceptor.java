@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  * @UpdateRemark: 修改内容
  * @Version: 1.0
  */
-//@Component
+@Component
 public class CustomRequestInterceptor implements RequestInterceptor {
 
     private static final Logger logger = LoggerFactory.getLogger(CustomRequestInterceptor.class);
