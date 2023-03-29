@@ -81,7 +81,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
  	
  	<insert id="insertJob" parameterType="SysJob" useGeneratedKeys="true" keyProperty="jobId">
- 		insert into sys_job(
+		<selectKey keyProperty="jobId" order="BEFORE" resultType="Long">
+			select ZKYT_XTPT_sequence_10000.nextval as jobId from DUAL
+		</selectKey>
+		insert into sys_job(
  			<if test="jobId != null and jobId != 0">job_id,</if>
  			<if test="jobName != null and jobName != ''">job_name,</if>
  			<if test="jobGroup != null and jobGroup != ''">job_group,</if>

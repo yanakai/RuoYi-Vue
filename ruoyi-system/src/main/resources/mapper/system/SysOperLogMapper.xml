@@ -30,6 +30,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
     
 	<insert id="insertOperlog" parameterType="SysOperLog">
+		<selectKey keyProperty="operId" order="BEFORE" resultType="Long">
+			select ZKYT_XTPT_sequence_250000.nextval as operId from DUAL
+		</selectKey>
 		insert into sys_oper_log(title, business_type, method, request_method, operator_type, oper_name, dept_name, oper_url, oper_ip, oper_location, oper_param, json_result, status, error_msg, cost_time, oper_time)
         values (#{title}, #{businessType}, #{method}, #{requestMethod}, #{operatorType}, #{operName}, #{deptName}, #{operUrl}, #{operIp}, #{operLocation}, #{operParam}, #{jsonResult}, #{status}, #{errorMsg}, #{costTime}, sysdate())
 	</insert>
@@ -38,7 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="selectOperLogVo"/>
 		<where>
 			<if test="title != null and title != ''">
-				AND title like concat('%', #{title}, '%')
+				AND title like concat(concat('%', #{title}), '%')
 			</if>
 			<if test="businessType != null">
 				AND business_type = #{businessType}
@@ -53,7 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				AND status = #{status}
 			</if>
 			<if test="operName != null and operName != ''">
-				AND oper_name like concat('%', #{operName}, '%')
+				AND oper_name like concat(concat('%', #{operName}), '%')
 			</if>
 			<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
 				AND oper_time &gt;= #{params.beginTime}

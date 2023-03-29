@@ -46,6 +46,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
     
     <insert id="insertGenTableColumn" parameterType="GenTableColumn" useGeneratedKeys="true" keyProperty="columnId">
+        <selectKey keyProperty="columnId" order="BEFORE" resultType="Long">
+            select ZKYT_XTPT_sequence_10000.nextval as columnId from DUAL
+        </selectKey>
         insert into gen_table_column (
 			<if test="tableId != null and tableId != ''">table_id,</if>
 			<if test="columnName != null and columnName != ''">column_name,</if>

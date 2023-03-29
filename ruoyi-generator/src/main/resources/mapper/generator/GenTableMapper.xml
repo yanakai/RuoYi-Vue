@@ -135,6 +135,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="insertGenTable" parameterType="GenTable" useGeneratedKeys="true" keyProperty="tableId">
+		<selectKey keyProperty="tableId" order="BEFORE" resultType="Long">
+			select ZKYT_XTPT_sequence_10000.nextval as tableId from DUAL
+		</selectKey>
         insert into gen_table (
 			<if test="tableName != null">table_name,</if>
 			<if test="tableComment != null and tableComment != ''">table_comment,</if>

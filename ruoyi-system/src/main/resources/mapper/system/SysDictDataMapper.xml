@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				AND dict_type = #{dictType}
 			</if>
 			<if test="dictLabel != null and dictLabel != ''">
-				AND dict_label like concat('%', #{dictLabel}, '%')
+				AND dict_label like concat(concat('%', #{dictLabel}), '%')
 			</if>
 			<if test="status != null and status != ''">
 				AND status = #{status}
@@ -94,6 +94,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
  	
  	<insert id="insertDictData" parameterType="SysDictData">
+		<selectKey keyProperty="dictCode" order="BEFORE" resultType="Long">
+			select ZKYT_XTPT_sequence_10000.nextval as dictCode from DUAL
+		</selectKey>
  		insert into sys_dict_data(
  			<if test="dictSort != null">dict_sort,</if>
  			<if test="dictLabel != null and dictLabel != ''">dict_label,</if>
