@@ -88,4 +88,10 @@ public class SysNoticeController extends BaseController
     {
         return toAjax(noticeService.deleteNoticeByIds(noticeIds));
     }
+
+
+    public static void main(String[] args) {
+        /* 打印 hello word */
+
+    }
 }
