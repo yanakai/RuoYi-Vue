@@ -7,6 +7,12 @@ package com.ruoyi.common.constant;
  */
 public class UserConstants
 {
+
+    /**
+     * 对接接口跳过登录验证码标识
+     **/
+    public static final String FREE_CAPTCHA = "FREE_CAPTCHA";
+
     /**
      * 平台内系统用户的唯一标志
      */
