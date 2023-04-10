@@ -23,10 +23,10 @@ public class TokenCustomFunction implements MagicFunction {
 
     @Function
     @Comment("获取大气新产品的token值")
-    public Object getProductToken(){
+    public Object getProductToken(String userName,String password){
         Map<String, Object> params = new LinkedHashMap<>();
-        params.put("username", "hefei");
-        params.put("password", "e18484866adbff0e96b6b82942b2650e");
+        params.put("username", userName);
+        params.put("password", password);
         params.put("grant_type", "password");
         params.put("tenantId", "000000");
         String data = HttpRequest.post("http://air.mapuni.cn/datacenter/api/blade-auth/oauth/token")

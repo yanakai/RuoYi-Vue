@@ -27,9 +27,9 @@ public class DataCustomFunction implements MagicFunction {
 
     @Function
     @Comment("查询空气数据公共函数")
-    public Object getAirDataFunction(String url, Map<String, Object> params){
+    public Object getAirDataFunction(String url, Map<String, Object> params,String userName,String password){
         String data = HttpRequest.post(url)
-                .header("blade-auth", "bearer "+tokenCustomFunction.getProductToken())
+                .header("blade-auth", "bearer "+tokenCustomFunction.getProductToken(userName,password))
                 .header("Authorization", "Basic c2FiZXI6c2FiZXJfc2VjcmV0")
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .form(params)
