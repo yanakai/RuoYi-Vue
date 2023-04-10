@@ -10,8 +10,8 @@ var MAGIC_EDITOR_CONFIG = {
         beforeSend: function(config){
             //从header的cookie拿token
             const strCookie = document.cookie; // 前端存放cookie的值格式为 Admin-Token = XXXXX
-            const arrCookie = strCookie.split("="); // 通过"="截断cookie的值
-            // arrCookie[0] = "Admin-Token";
+            const arrCookie = strCookie.split("Admin-Token="); // 通过"="截断cookie的值
+            // arrCookie[0] = "****Admin-Token";
             const token = arrCookie[1];// 此处自行获取token
             // 如果是基于Cookie验证的，此处可以不配。
             config.headers.token =token ; // 此处自行获取Token
@@ -23,8 +23,8 @@ var MAGIC_EDITOR_CONFIG = {
     getMagicTokenValue: function(){
         //从header的cookie拿token
         const strCookie = document.cookie; // 前端存放cookie的值格式为 Admin-Token = XXXXX
-        const arrCookie = strCookie.split("="); // 通过"="截断cookie的值
-        // arrCookie[0] = "Admin-Token";
+        const arrCookie = strCookie.split("Admin-Token="); // 通过"="截断cookie的值
+        // arrCookie[0] = "*******Admin-Token";
         const token = arrCookie[1];// 此处自行获取token
         return token;
     }
