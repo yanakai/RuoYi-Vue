@@ -36,7 +36,7 @@ public class DataCustomFunction implements MagicFunction {
                 .timeout(2000)
                 .execute()
                 .body();
-        return JSONObject.parseObject(data);
+        return JSONObject.parseObject(data).get("data");
     }
 
     public static void main(String[] args) {
