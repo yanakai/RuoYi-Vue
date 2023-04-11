@@ -2,6 +2,7 @@ package com.ruoyi.framework.interceptor.impl;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.uuid.IdUtils;
 import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.system.service.ISysUserService;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Component;
 import org.ssssssss.magicapi.core.context.MagicUser;
 import org.ssssssss.magicapi.core.exception.MagicLoginException;
 import org.ssssssss.magicapi.core.interceptor.AuthorizationInterceptor;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Description:
@@ -53,7 +56,7 @@ public class CustomAuthorizationInterceptor implements AuthorizationInterceptor 
         // 根据实际情况进行修改，如查询数据库。。
         if("admin".equals(username) && "admin".equals(password)){
             // 登录成功后 构造MagicUser对象。
-            return new MagicUser("1","admin","tokenvalue......");
+            return new MagicUser("1","admin",SecurityUtils.getLoginUser().getToken());
         }
         throw new MagicLoginException("用户名或密码不正确");
     }
