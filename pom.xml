@@ -135,10 +135,17 @@
                 <version>${kaptcha.version}</version>
             </dependency>
 
-            <!-- 主线业务-->
+            <!-- 大气决策平台业务模块-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-business</artifactId>
+                <artifactId>ruoyi-air</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
+            <!-- 协同平台业务模块-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-coordination</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
 
@@ -188,6 +195,8 @@
         <module>ruoyi-quartz</module>
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
+        <module>ruoyi-air</module>
+        <module>ruoyi-coordination</module>
     </modules>
     <packaging>pom</packaging>
 
