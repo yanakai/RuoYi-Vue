@@ -1,7 +1,10 @@
 package com.ruoyi.framework.magicApi;
 
 import cn.hutool.http.HttpRequest;
+import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import com.ruoyi.framework.utils.DeAndEn;
 import org.springframework.stereotype.Component;
 import org.ssssssss.magicapi.core.config.MagicFunction;
 import org.ssssssss.script.annotation.Comment;
@@ -37,6 +40,23 @@ public class DataCustomFunction implements MagicFunction {
                 .execute()
                 .body();
         return JSONObject.parseObject(data).get("data");
+    }
+
+    @Function
+    @Comment("查询空气质量现状")
+    public Object getNowAirDataFunction(String url, Map<String, Object> params,String userName,String password){
+        String token = (String) tokenCustomFunction.getProductToken(userName, password);
+        Map<String,Object> encrypt = (Map<String, Object>) DeAndEn.encrypt(params, token);
+
+        String data = HttpRequest.post(url)
+                .header("blade-auth", "bearer "+token)
+                .header("Authorization", "Basic c2FiZXI6c2FiZXJfc2VjcmV0")
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .form(encrypt)
+                .timeout(2000)
+                .execute()
+                .body();
+        return DeAndEn.decrypt(data,token);
     }
 
     public static void main(String[] args) {
