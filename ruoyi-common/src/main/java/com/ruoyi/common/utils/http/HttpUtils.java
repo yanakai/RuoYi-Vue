@@ -11,12 +11,18 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
+import cn.hutool.http.HttpRequest;
+import com.alibaba.fastjson2.JSONObject;
+import com.ruoyi.common.core.domain.AjaxResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ruoyi.common.constant.Constants;
@@ -188,6 +194,40 @@ public class HttpUtils
         }
         return result.toString();
     }
+
+    public static AjaxResult sendProductPost(String url, Map<String, Object> params,String userName,String password){
+        String data = HttpRequest.post(url)
+                .header("blade-auth", "bearer "+getProductToken(userName,password))
+                .header("Authorization", "Basic c2FiZXI6c2FiZXJfc2VjcmV0")
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .form(params)
+                .timeout(2000)
+                .execute()
+                .body();
+        Map<String, Object> params1 = new LinkedHashMap<>();
+        return AjaxResult.success(data);
+    }
+
+
+    public static String getProductToken(String userName,String password){
+        Map<String, Object> params = new LinkedHashMap<>();
+        params.put("username", userName);
+        params.put("password", password);
+        params.put("grant_type", "password");
+        params.put("tenantId", "000000");
+        String data = HttpRequest.post("http://air.mapuni.cn/datacenter/api/blade-auth/oauth/token")
+                .header("Authorization", "Basic c2FiZXI6c2FiZXJfc2VjcmV0")
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .form(params)
+                .timeout(2000)
+                .execute()
+                .body();
+        return JSONObject.parseObject(data).get("access_token").toString();
+    }
+
+
+
+
 
     public static String sendSSLPost(String url, String param)
     {

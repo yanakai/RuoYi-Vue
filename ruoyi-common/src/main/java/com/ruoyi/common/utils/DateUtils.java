@@ -8,7 +8,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 /**
@@ -187,5 +191,42 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         LocalDateTime localDateTime = LocalDateTime.of(temporalAccessor, LocalTime.of(0, 0, 0));
         ZonedDateTime zdt = localDateTime.atZone(ZoneId.systemDefault());
         return Date.from(zdt.toInstant());
+    }
+
+    /**
+     * 根据类型计算  剩余天数  小时数
+     * @param date 格式yyyy-MM-dd
+     * @param type    month     year    hour
+     * */
+    public static Map monthEndNum(String date , String type){
+        Map map =new HashMap();
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+        if (type.equals("hour")){
+            format=new SimpleDateFormat("yyyy-MM-dd HH");
+        }
+        Date dateTime = null;
+        int today=0;
+        int last=0;
+        try {
+            dateTime = format.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(dateTime);
+        if (type.equals("month")){
+            today = c.get(Calendar.DAY_OF_MONTH);
+            last = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+        }else if (type.equals("year")){
+            today = c.get(Calendar.DAY_OF_YEAR);
+            last = c.getActualMaximum(Calendar.DAY_OF_YEAR);
+        }else if (type.equals("hour")){
+            today = c.get(Calendar.HOUR_OF_DAY);
+            last = c.getActualMaximum(Calendar.HOUR_OF_DAY);
+        }
+        map.put("today",today);
+        map.put("last",last);
+        map.put("cz",last - today);
+        return map;
     }
 }

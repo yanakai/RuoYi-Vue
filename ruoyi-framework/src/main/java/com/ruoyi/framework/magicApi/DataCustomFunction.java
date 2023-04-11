@@ -56,7 +56,7 @@ public class DataCustomFunction implements MagicFunction {
                 .timeout(2000)
                 .execute()
                 .body();
-        return DeAndEn.decrypt(data,token);
+        return DeAndEn.decrypt(data,token).get("data");
     }
 
     public static void main(String[] args) {
