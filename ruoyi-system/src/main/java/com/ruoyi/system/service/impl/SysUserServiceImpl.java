@@ -419,15 +419,23 @@ public class SysUserServiceImpl implements ISysUserService
         if (StringUtils.isNotEmpty(roleIds))
         {
             // 新增用户与角色管理
-            List<SysUserRole> list = new ArrayList<SysUserRole>(roleIds.length);
-            for (Long roleId : roleIds)
-            {
+           /* TODO 暂时没有找到Vertica批量插入语句，只能在代码for循环插入如
+           List<SysUserRole> list = new ArrayList<SysUserRole>(roleIds.length);
+            for (Long roleId : roleIds){
                 SysUserRole ur = new SysUserRole();
                 ur.setUserId(userId);
                 ur.setRoleId(roleId);
                 list.add(ur);
             }
             userRoleMapper.batchUserRole(list);
+            */
+            List<SysUserRole> list = new ArrayList<SysUserRole>(roleIds.length);
+            for (Long roleId : roleIds){
+                SysUserRole ur = new SysUserRole();
+                ur.setUserId(userId);
+                ur.setRoleId(roleId);
+                userRoleMapper.insertUserAndRole(ur);
+            }
         }
     }
 

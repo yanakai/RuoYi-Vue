@@ -408,17 +408,25 @@ public class SysRoleServiceImpl implements ISysRoleService
      * @return 结果
      */
     @Override
-    public int insertAuthUsers(Long roleId, Long[] userIds)
-    {
+    public int insertAuthUsers(Long roleId, Long[] userIds) {
         // 新增用户与角色管理
         List<SysUserRole> list = new ArrayList<SysUserRole>();
-        for (Long userId : userIds)
-        {
+
+       for (Long userId : userIds){
             SysUserRole ur = new SysUserRole();
             ur.setUserId(userId);
             ur.setRoleId(roleId);
             list.add(ur);
         }
         return userRoleMapper.batchUserRole(list);
+        //TODO 暂时没有找到Vertica批量插入语句，只能在代码for循环插入
+        /*int state = 0;
+        for (Long userId : userIds) {
+            SysUserRole ur = new SysUserRole();
+            ur.setUserId(userId);
+            ur.setRoleId(roleId);
+            state = userRoleMapper.insertUserAndRole(ur);
+        }
+        return state;*/
     }
 }
