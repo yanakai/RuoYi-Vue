@@ -27,13 +27,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="batchUserRole" parameterType="java.util.List">
 		<!--insert into sys_user_role(user_role_id,user_id, role_id)
-		SELECT ZKYT_XTPT_sequence_10000.nextval,sur.* FROM
+		SELECT ZKYT_XTPT_sequence_10000.nextval user_role_id,sur.* FROM
 		<foreach collection="list" item="item" index="index" open="(" close=") AS sur" separator=" UNION ALL ">
-			SELECT #{item.userId}, #{item.roleId} FROM dual
+			SELECT #{item.userId} user_id, #{item.roleId} role_id FROM dual
 		</foreach>-->
 		insert into sys_user_role(user_id, role_id)
 		<foreach collection="list" item="item" index="index"  separator=" UNION ALL ">
-			SELECT #{item.userId}, #{item.roleId} FROM dual
+			SELECT  #{item.userId}, #{item.roleId} FROM dual
 		</foreach>
 
 	</insert>
