@@ -58,6 +58,17 @@
            <!-- <version>10.0.1-0</version>-->
         </dependency>
 
+        <!--大气决策模块-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-air</artifactId>
+        </dependency>
+
+        <!--协同平台模块-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-coordination</artifactId>
+        </dependency>
 
         <!-- 核心模块-->
         <dependency>

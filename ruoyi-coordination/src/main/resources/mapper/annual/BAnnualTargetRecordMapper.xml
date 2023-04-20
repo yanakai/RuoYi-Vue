@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.coordination.annual.mapper.BAnnualTargetRecordMapper">
+
+    <resultMap type="BAnnualTargetRecord" id="BAnnualTargetRecordResult">
+        <result property="recordId"    column="record_id"    />
+        <result property="receiveId"    column="receive_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="recordContent"    column="record_content"    />
+        <result property="answerTime"    column="answer_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="isDelay"    column="is_delay"    />
+        <result property="createDeptId"    column="create_dept_id"    />
+        <result property="createDeptName"    column="create_dept_name"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBAnnualTargetRecordVo">
+        select record_id, receive_id, task_id, record_content, answer_time, create_time, is_delay, create_dept_id, create_dept_name, create_user_id, create_user_name, remark from b_annual_target_record
+    </sql>
+
+    <select id="selectBAnnualTargetRecordList" parameterType="BAnnualTargetRecord" resultMap="BAnnualTargetRecordResult">
+        <include refid="selectBAnnualTargetRecordVo"/>
+        <where>
+            <if test="receiveId != null "> and receive_id = #{receiveId}</if>
+            <if test="taskId != null "> and task_id = #{taskId}</if>
+            <if test="recordContent != null  and recordContent != ''"> and record_content = #{recordContent}</if>
+            <if test="answerTime != null "> and answer_time = #{answerTime}</if>
+            <if test="isDelay != null  and isDelay != ''"> and is_delay = #{isDelay}</if>
+            <if test="createDeptId != null "> and create_dept_id = #{createDeptId}</if>
+            <if test="createDeptName != null  and createDeptName != ''"> and create_dept_name like concat('%', #{createDeptName}, '%')</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectBAnnualTargetRecordByRecordId" parameterType="Long" resultMap="BAnnualTargetRecordResult">
+        <include refid="selectBAnnualTargetRecordVo"/>
+        where record_id = #{recordId}
+    </select>
+
+    <insert id="insertBAnnualTargetRecord" parameterType="BAnnualTargetRecord" useGeneratedKeys="true" keyProperty="recordId">
+        insert into b_annual_target_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="receiveId != null">receive_id,</if>
+            <if test="taskId != null">task_id,</if>
+            <if test="recordContent != null">record_content,</if>
+            <if test="answerTime != null">answer_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="isDelay != null">is_delay,</if>
+            <if test="createDeptId != null">create_dept_id,</if>
+            <if test="createDeptName != null">create_dept_name,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="receiveId != null">#{receiveId},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="recordContent != null">#{recordContent},</if>
+            <if test="answerTime != null">#{answerTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="isDelay != null">#{isDelay},</if>
+            <if test="createDeptId != null">#{createDeptId},</if>
+            <if test="createDeptName != null">#{createDeptName},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBAnnualTargetRecord" parameterType="BAnnualTargetRecord">
+        update b_annual_target_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="receiveId != null">receive_id = #{receiveId},</if>
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="recordContent != null">record_content = #{recordContent},</if>
+            <if test="answerTime != null">answer_time = #{answerTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="isDelay != null">is_delay = #{isDelay},</if>
+            <if test="createDeptId != null">create_dept_id = #{createDeptId},</if>
+            <if test="createDeptName != null">create_dept_name = #{createDeptName},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where record_id = #{recordId}
+    </update>
+
+    <delete id="deleteBAnnualTargetRecordByRecordId" parameterType="Long">
+        delete from b_annual_target_record where record_id = #{recordId}
+    </delete>
+
+    <delete id="deleteBAnnualTargetRecordByRecordIds" parameterType="String">
+        delete from b_annual_target_record where record_id in
+        <foreach item="recordId" collection="array" open="(" separator="," close=")">
+            #{recordId}
+        </foreach>
+    </delete>
+</mapper>

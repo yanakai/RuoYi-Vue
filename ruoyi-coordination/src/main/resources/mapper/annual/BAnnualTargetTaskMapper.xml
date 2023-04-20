@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.coordination.annual.mapper.BAnnualTargetTaskMapper">
+
+    <resultMap type="BAnnualTargetTask" id="BAnnualTargetTaskResult">
+        <result property="taskId"    column="task_id"    />
+        <result property="taskName"    column="task_name"    />
+        <result property="taskType"    column="task_type"    />
+        <result property="reportingCycle"    column="reporting_cycle"    />
+        <result property="taskAsk"    column="task_ask"    />
+        <result property="taskState"    column="task_state"    />
+        <result property="taskSource"    column="task_source"    />
+        <result property="taskLevel"    column="task_level"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="createDeptId"    column="create_dept_id"    />
+        <result property="createDeptName"    column="create_dept_name"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBAnnualTargetTaskVo">
+        select task_id, task_name, task_type, reporting_cycle, task_ask, task_state, task_source, task_level, start_time, end_time, create_dept_id, create_dept_name, create_user_id, create_user_name, create_time, remark from b_annual_target_task
+    </sql>
+
+    <select id="selectBAnnualTargetTaskList" parameterType="BAnnualTargetTask" resultMap="BAnnualTargetTaskResult">
+        <include refid="selectBAnnualTargetTaskVo"/>
+        <where>
+            <if test="taskName != null  and taskName != ''"> and task_name like concat('%', #{taskName}, '%')</if>
+            <if test="taskType != null  and taskType != ''"> and task_type = #{taskType}</if>
+            <if test="reportingCycle != null  and reportingCycle != ''"> and reporting_cycle = #{reportingCycle}</if>
+            <if test="taskAsk != null  and taskAsk != ''"> and task_ask = #{taskAsk}</if>
+            <if test="taskState != null  and taskState != ''"> and task_state = #{taskState}</if>
+            <if test="taskSource != null  and taskSource != ''"> and task_source = #{taskSource}</if>
+            <if test="taskLevel != null  and taskLevel != ''"> and task_level = #{taskLevel}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="createDeptId != null "> and create_dept_id = #{createDeptId}</if>
+            <if test="createDeptName != null  and createDeptName != ''"> and create_dept_name like concat('%', #{createDeptName}, '%')</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectBAnnualTargetTaskByTaskId" parameterType="Long" resultMap="BAnnualTargetTaskResult">
+        <include refid="selectBAnnualTargetTaskVo"/>
+        where task_id = #{taskId}
+    </select>
+
+    <insert id="insertBAnnualTargetTask" parameterType="BAnnualTargetTask" useGeneratedKeys="true" keyProperty="taskId">
+        insert into b_annual_target_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskName != null">task_name,</if>
+            <if test="taskType != null">task_type,</if>
+            <if test="reportingCycle != null">reporting_cycle,</if>
+            <if test="taskAsk != null">task_ask,</if>
+            <if test="taskState != null">task_state,</if>
+            <if test="taskSource != null">task_source,</if>
+            <if test="taskLevel != null">task_level,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="createDeptId != null">create_dept_id,</if>
+            <if test="createDeptName != null">create_dept_name,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskName != null">#{taskName},</if>
+            <if test="taskType != null">#{taskType},</if>
+            <if test="reportingCycle != null">#{reportingCycle},</if>
+            <if test="taskAsk != null">#{taskAsk},</if>
+            <if test="taskState != null">#{taskState},</if>
+            <if test="taskSource != null">#{taskSource},</if>
+            <if test="taskLevel != null">#{taskLevel},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="createDeptId != null">#{createDeptId},</if>
+            <if test="createDeptName != null">#{createDeptName},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBAnnualTargetTask" parameterType="BAnnualTargetTask">
+        update b_annual_target_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskName != null">task_name = #{taskName},</if>
+            <if test="taskType != null">task_type = #{taskType},</if>
+            <if test="reportingCycle != null">reporting_cycle = #{reportingCycle},</if>
+            <if test="taskAsk != null">task_ask = #{taskAsk},</if>
+            <if test="taskState != null">task_state = #{taskState},</if>
+            <if test="taskSource != null">task_source = #{taskSource},</if>
+            <if test="taskLevel != null">task_level = #{taskLevel},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="createDeptId != null">create_dept_id = #{createDeptId},</if>
+            <if test="createDeptName != null">create_dept_name = #{createDeptName},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where task_id = #{taskId}
+    </update>
+
+    <delete id="deleteBAnnualTargetTaskByTaskId" parameterType="Long">
+        delete from b_annual_target_task where task_id = #{taskId}
+    </delete>
+
+    <delete id="deleteBAnnualTargetTaskByTaskIds" parameterType="String">
+        delete from b_annual_target_task where task_id in
+        <foreach item="taskId" collection="array" open="(" separator="," close=")">
+            #{taskId}
+        </foreach>
+    </delete>
+</mapper>

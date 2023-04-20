@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.coordination.annual.mapper.BAnnualTargetReceiveMapper">
+
+    <resultMap type="BAnnualTargetReceive" id="BAnnualTargetReceiveResult">
+        <result property="receiveId"    column="receive_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="answerTaskNum"    column="answer_task_num"    />
+        <result property="realityTaskNum"    column="reality_task_num"    />
+        <result property="receiveState"    column="receive_state"    />
+        <result property="receiveDeptId"    column="receive_dept_id"    />
+        <result property="receiveDeptName"    column="receive_dept_name"    />
+        <result property="receiveTime"    column="receive_time"    />
+        <result property="completeTime"    column="complete_time"    />
+        <result property="createDeptId"    column="create_dept_id"    />
+        <result property="createDeptName"    column="create_dept_name"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBAnnualTargetReceiveVo">
+        select receive_id, task_id, answer_task_num, reality_task_num, receive_state, receive_dept_id, receive_dept_name, receive_time, complete_time, create_dept_id, create_dept_name, create_user_id, create_user_name, create_time, remark from b_annual_target_receive
+    </sql>
+
+    <select id="selectBAnnualTargetReceiveList" parameterType="BAnnualTargetReceive" resultMap="BAnnualTargetReceiveResult">
+        <include refid="selectBAnnualTargetReceiveVo"/>
+        <where>
+            <if test="taskId != null "> and task_id = #{taskId}</if>
+            <if test="answerTaskNum != null "> and answer_task_num = #{answerTaskNum}</if>
+            <if test="realityTaskNum != null "> and reality_task_num = #{realityTaskNum}</if>
+            <if test="receiveState != null  and receiveState != ''"> and receive_state = #{receiveState}</if>
+            <if test="receiveDeptId != null "> and receive_dept_id = #{receiveDeptId}</if>
+            <if test="receiveDeptName != null  and receiveDeptName != ''"> and receive_dept_name like concat('%', #{receiveDeptName}, '%')</if>
+            <if test="receiveTime != null "> and receive_time = #{receiveTime}</if>
+            <if test="completeTime != null "> and complete_time = #{completeTime}</if>
+            <if test="createDeptId != null "> and create_dept_id = #{createDeptId}</if>
+            <if test="createDeptName != null  and createDeptName != ''"> and create_dept_name like concat('%', #{createDeptName}, '%')</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectBAnnualTargetReceiveByReceiveId" parameterType="Long" resultMap="BAnnualTargetReceiveResult">
+        <include refid="selectBAnnualTargetReceiveVo"/>
+        where receive_id = #{receiveId}
+    </select>
+
+    <insert id="insertBAnnualTargetReceive" parameterType="BAnnualTargetReceive" useGeneratedKeys="true" keyProperty="receiveId">
+        insert into b_annual_target_receive
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">task_id,</if>
+            <if test="answerTaskNum != null">answer_task_num,</if>
+            <if test="realityTaskNum != null">reality_task_num,</if>
+            <if test="receiveState != null">receive_state,</if>
+            <if test="receiveDeptId != null">receive_dept_id,</if>
+            <if test="receiveDeptName != null">receive_dept_name,</if>
+            <if test="receiveTime != null">receive_time,</if>
+            <if test="completeTime != null">complete_time,</if>
+            <if test="createDeptId != null">create_dept_id,</if>
+            <if test="createDeptName != null">create_dept_name,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">#{taskId},</if>
+            <if test="answerTaskNum != null">#{answerTaskNum},</if>
+            <if test="realityTaskNum != null">#{realityTaskNum},</if>
+            <if test="receiveState != null">#{receiveState},</if>
+            <if test="receiveDeptId != null">#{receiveDeptId},</if>
+            <if test="receiveDeptName != null">#{receiveDeptName},</if>
+            <if test="receiveTime != null">#{receiveTime},</if>
+            <if test="completeTime != null">#{completeTime},</if>
+            <if test="createDeptId != null">#{createDeptId},</if>
+            <if test="createDeptName != null">#{createDeptName},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBAnnualTargetReceive" parameterType="BAnnualTargetReceive">
+        update b_annual_target_receive
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="answerTaskNum != null">answer_task_num = #{answerTaskNum},</if>
+            <if test="realityTaskNum != null">reality_task_num = #{realityTaskNum},</if>
+            <if test="receiveState != null">receive_state = #{receiveState},</if>
+            <if test="receiveDeptId != null">receive_dept_id = #{receiveDeptId},</if>
+            <if test="receiveDeptName != null">receive_dept_name = #{receiveDeptName},</if>
+            <if test="receiveTime != null">receive_time = #{receiveTime},</if>
+            <if test="completeTime != null">complete_time = #{completeTime},</if>
+            <if test="createDeptId != null">create_dept_id = #{createDeptId},</if>
+            <if test="createDeptName != null">create_dept_name = #{createDeptName},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where receive_id = #{receiveId}
+    </update>
+
+    <delete id="deleteBAnnualTargetReceiveByReceiveId" parameterType="Long">
+        delete from b_annual_target_receive where receive_id = #{receiveId}
+    </delete>
+
+    <delete id="deleteBAnnualTargetReceiveByReceiveIds" parameterType="String">
+        delete from b_annual_target_receive where receive_id in
+        <foreach item="receiveId" collection="array" open="(" separator="," close=")">
+            #{receiveId}
+        </foreach>
+    </delete>
+</mapper>
