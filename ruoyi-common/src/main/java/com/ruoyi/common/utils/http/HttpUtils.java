@@ -23,6 +23,7 @@ import javax.net.ssl.X509TrustManager;
 import cn.hutool.http.HttpRequest;
 import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.utils.DeAndEn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ruoyi.common.constant.Constants;
@@ -206,6 +207,18 @@ public class HttpUtils
                 .body();
         Map<String, Object> params1 = new LinkedHashMap<>();
         return AjaxResult.success(data);
+    }
+    public static Object sendProductPost(String url, Map params,String token){
+        Map<String,Object> encrypt = (Map<String, Object>) DeAndEn.encrypt(params, token);
+        String data = HttpRequest.post(url)
+                .header("blade-auth", "bearer "+token)
+                .header("Authorization", "Basic c2FiZXI6c2FiZXJfc2VjcmV0")
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .form(encrypt)
+                .timeout(2000)
+                .execute()
+                .body();
+        return DeAndEn.decrypt(data,token).get("data");
     }
 
 
