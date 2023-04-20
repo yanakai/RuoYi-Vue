@@ -54,7 +54,7 @@ spring:
     # 国际化资源文件路径
     basename: i18n/messages
   profiles: 
-    active: vertica
+    active: mysql
   # 文件上传
   servlet:
      multipart:
@@ -109,8 +109,11 @@ mybatis:
     configLocation: classpath:mybatis/mybatis-config.xml
 
 # PageHelper分页插件
-pagehelper: 
-  helperDialect: hsqldb
+pagehelper:
+  #连接vertica数据库配置
+  # helperDialect: hsqldb
+  # 连接mysql数据库配置
+  helperDialect:  mysql
   supportMethodsArguments: true
   params: count=countSql 
 

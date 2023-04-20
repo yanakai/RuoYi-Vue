@@ -5,25 +5,16 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 用户和角色关联 sys_user_role
- * 
+ *
  * @author ruoyi
  */
 public class SysUserRole
 {
-    private Long userRoleId;
     /** 用户ID */
     private Long userId;
-    
+
     /** 角色ID */
     private Long roleId;
-
-    public Long getUserRoleId() {
-        return userRoleId;
-    }
-
-    public void setUserRoleId(Long userRoleId) {
-        this.userRoleId = userRoleId;
-    }
 
     public Long getUserId()
     {
@@ -48,9 +39,8 @@ public class SysUserRole
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-                .append("userRoleId", getUserRoleId())
                 .append("userId", getUserId())
-            .append("roleId", getRoleId())
-            .toString();
+                .append("roleId", getRoleId())
+                .toString();
     }
 }
