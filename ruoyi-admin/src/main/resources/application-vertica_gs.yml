@@ -6,9 +6,9 @@ spring:
             # 主库数据源
             master:
                 driverClassName: com.vertica.jdbc.Driver
-                url: jdbc:vertica://10.34.1.24:5433/H3C_Database?searchPath=ZKYT_XTPT
+                url: jdbc:vertica://192.168.120.58:5433/dbadmin?searchPath=ZKYT_XTPT
                 username: dbadmin
-                password: admin@h3c
+                password: dbadmin
             # 从库数据源
             slave:
                 driverClassName: com.mysql.cj.jdbc.Driver

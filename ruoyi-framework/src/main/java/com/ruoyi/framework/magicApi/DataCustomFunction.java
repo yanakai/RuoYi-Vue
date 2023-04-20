@@ -3,6 +3,7 @@ package com.ruoyi.framework.magicApi;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.framework.utils.DeAndEn;
 import org.springframework.stereotype.Component;
@@ -39,7 +40,7 @@ public class DataCustomFunction implements MagicFunction {
                 .timeout(2000)
                 .execute()
                 .body();
-        return JSONObject.parseObject(data).get("data");
+        return JSONArray.parseArray(JSONObject.parseObject(data).get("data").toString(),Object.class);
     }
 
     @Function
@@ -78,8 +79,8 @@ public class DataCustomFunction implements MagicFunction {
 
     public static String getProductToken(){
         Map<String, Object> params = new LinkedHashMap<>();
-        params.put("username", "hefei");
-        params.put("password", "e18484866adbff0e96b6b82942b2650e");
+        params.put("username", "tempo");
+        params.put("password", "33bbbb74145b1ad17281a7267cc4999e");
         params.put("grant_type", "password");
         params.put("tenantId", "000000");
         String data = HttpRequest.post("http://air.mapuni.cn/datacenter/api/blade-auth/oauth/token")
