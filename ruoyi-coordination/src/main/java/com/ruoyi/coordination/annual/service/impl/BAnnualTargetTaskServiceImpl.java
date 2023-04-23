@@ -1,12 +1,21 @@
 package com.ruoyi.coordination.annual.service.impl;
 
+import java.time.*;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.coordination.annual.domain.BAnnualTargetReceive;
+import com.ruoyi.coordination.annual.domain.BAnnualTargetTaskFile;
+import com.ruoyi.coordination.annual.mapper.BAnnualTargetTaskFileMapper;
+import com.ruoyi.coordination.annual.service.IBAnnualTargetReceiveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.coordination.annual.mapper.BAnnualTargetTaskMapper;
 import com.ruoyi.coordination.annual.domain.BAnnualTargetTask;
 import com.ruoyi.coordination.annual.service.IBAnnualTargetTaskService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @description: 协同平台--年度目标任务--任务主Service业务层处理
@@ -20,6 +29,11 @@ public class BAnnualTargetTaskServiceImpl implements IBAnnualTargetTaskService
 {
     @Autowired
     private BAnnualTargetTaskMapper bAnnualTargetTaskMapper;
+    @Autowired
+    private BAnnualTargetTaskFileMapper taskFileMapper;
+
+    @Autowired
+    private IBAnnualTargetReceiveService ibAnnualTargetReceiveService;
 
     /**
      * 查询协同平台--年度目标任务--任务主
@@ -58,6 +72,8 @@ public class BAnnualTargetTaskServiceImpl implements IBAnnualTargetTaskService
         return bAnnualTargetTaskMapper.insertBAnnualTargetTask(bAnnualTargetTask);
     }
 
+
+
     /**
      * 修改协同平台--年度目标任务--任务主
      *
@@ -93,4 +109,57 @@ public class BAnnualTargetTaskServiceImpl implements IBAnnualTargetTaskService
     {
         return bAnnualTargetTaskMapper.deleteBAnnualTargetTaskByTaskId(taskId);
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int insertBAnnualTargetTaskAndRec(BAnnualTargetTask bAnnualTargetTask, String deptIds, BAnnualTargetTaskFile file) {
+        int taskId = bAnnualTargetTaskMapper.insertBAnnualTargetTask(bAnnualTargetTask);
+        file.setTaskId(Long.parseLong(String.valueOf(taskId)));
+        int i = taskFileMapper.insertBAnnualTargetTaskFile(file);
+
+        List<BAnnualTargetReceive> targetReceiveList = null;
+        if (StringUtils.isNotEmpty(deptIds)){
+            //应完成任务数
+            ZonedDateTime startTime = bAnnualTargetTask.getStartTime().toInstant().atZone(ZoneId.systemDefault());
+            ZonedDateTime endTime = bAnnualTargetTask.getEndTime().toInstant().atZone(ZoneId.systemDefault());
+            long time = 0;
+            switch (bAnnualTargetTask.getReportingCycle()){
+                case "日":
+                    time = startTime.until(endTime,ChronoUnit.DAYS);
+                    break;
+                case "周":
+                    time = startTime.until(endTime, ChronoUnit.WEEKS);
+                    break;
+                case "月":
+                    time = startTime.until(endTime,ChronoUnit.MONTHS);
+                    break;
+//                case "季度":
+//                    time = startTime.until(endTime,ChronoUnit.WEEKS);
+//                    break;
+                case "年":
+                    time = startTime.until(endTime,ChronoUnit.YEARS);
+                    break;
+            }
+
+            String[] split = deptIds.split(",");
+
+            targetReceiveList = new ArrayList<>();
+            for (String s : split) {
+                BAnnualTargetReceive bAnnualTargetReceive = new BAnnualTargetReceive();
+                bAnnualTargetReceive.setTaskId(Long.parseLong(String.valueOf(taskId)));
+                bAnnualTargetReceive.setCreateDeptId(bAnnualTargetTask.getCreateDeptId());
+                bAnnualTargetReceive.setCreateDeptName(bAnnualTargetTask.getCreateDeptName());
+                bAnnualTargetReceive.setCreateUserId(bAnnualTargetTask.getCreateUserId());
+                bAnnualTargetReceive.setCreateUserName(bAnnualTargetTask.getCreateUserName());
+                bAnnualTargetReceive.setAnswerTaskNum(time);
+                bAnnualTargetReceive.setReceiveDeptId(Long.parseLong(s));
+                //TODO 查询接收单位相关信息并对属性赋值
+                bAnnualTargetReceive.setReceiveState("1");
+                bAnnualTargetReceive.setReceiveTime(DateUtils.getNowDate());
+                targetReceiveList.add(bAnnualTargetReceive);
+            }
+        }
+        return ibAnnualTargetReceiveService.insertBatchTargetReceive(targetReceiveList);
+    }
+
 }

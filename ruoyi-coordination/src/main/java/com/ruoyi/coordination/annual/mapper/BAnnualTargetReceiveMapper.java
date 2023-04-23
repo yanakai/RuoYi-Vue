@@ -58,4 +58,6 @@ public interface BAnnualTargetReceiveMapper
      * @return 结果
      */
     public int deleteBAnnualTargetReceiveByReceiveIds(Long[] receiveIds);
+
+    int insertBatchTargetReceive(List<BAnnualTargetReceive> bAnnualTargetReceive);
 }

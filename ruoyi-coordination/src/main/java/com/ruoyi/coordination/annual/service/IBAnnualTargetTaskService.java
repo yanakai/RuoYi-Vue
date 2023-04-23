@@ -1,7 +1,9 @@
 package com.ruoyi.coordination.annual.service;
 
 import java.util.List;
+
 import com.ruoyi.coordination.annual.domain.BAnnualTargetTask;
+import com.ruoyi.coordination.annual.domain.BAnnualTargetTaskFile;
 
 /**
  * @BelongsProject: RuoYi-Vue
@@ -59,4 +61,6 @@ public interface IBAnnualTargetTaskService {
      * @return 结果
      */
     public int deleteBAnnualTargetTaskByTaskId(Long taskId);
+
+    int insertBAnnualTargetTaskAndRec(BAnnualTargetTask bAnnualTargetTask, String deptIds, BAnnualTargetTaskFile file);
 }

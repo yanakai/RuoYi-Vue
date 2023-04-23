@@ -2,6 +2,7 @@ package com.ruoyi.coordination.annual.service;
 
 import java.util.List;
 import com.ruoyi.coordination.annual.domain.BAnnualTargetRecord;
+import com.ruoyi.coordination.annual.domain.BAnnualTargetRecordFile;
 
 /**
  * 协同平台---年度任务目标--任务接收单位上报记录Service接口
@@ -58,4 +59,6 @@ public interface IBAnnualTargetRecordService
      * @return 结果
      */
     public int deleteBAnnualTargetRecordByRecordId(Long recordId);
+
+    int insertBAnnualTargetRecordAndFile(BAnnualTargetRecord bAnnualTargetRecord, BAnnualTargetRecordFile file);
 }

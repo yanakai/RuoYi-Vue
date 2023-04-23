@@ -57,6 +57,12 @@ public class BAnnualTargetReceiveServiceImpl implements IBAnnualTargetReceiveSer
         return bAnnualTargetReceiveMapper.insertBAnnualTargetReceive(bAnnualTargetReceive);
     }
 
+    @Override
+    public int insertBatchTargetReceive(List<BAnnualTargetReceive> bAnnualTargetReceive) {
+
+        return bAnnualTargetReceiveMapper.insertBatchTargetReceive(bAnnualTargetReceive);
+    }
+
     /**
      * 修改协同平台---年度任务目标--任务接收单位
      *

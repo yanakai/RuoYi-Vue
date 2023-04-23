@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.annual;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.coordination.annual.domain.BAnnualTargetRecordFile;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +39,17 @@ public class BAnnualTargetRecordController extends BaseController
     /**
      * 查询协同平台---年度任务目标--任务接收单位上报记录列表
      */
+    /*@PreAuthorize("@ss.hasPermi('annual:record:list')")
+    @GetMapping("/list")
+    public TableDataInfo list(BAnnualTargetRecord bAnnualTargetRecord)
+    {
+        startPage();
+        List<BAnnualTargetRecord> list = bAnnualTargetRecordService.selectBAnnualTargetRecordList(bAnnualTargetRecord);
+        return getDataTable(list);
+    }*/
+    /**
+     * 查询协同平台---年度任务目标--任务接收单位上报记录列表
+     */
     @PreAuthorize("@ss.hasPermi('annual:record:list')")
     @GetMapping("/list")
     public TableDataInfo list(BAnnualTargetRecord bAnnualTargetRecord)
@@ -45,6 +58,7 @@ public class BAnnualTargetRecordController extends BaseController
         List<BAnnualTargetRecord> list = bAnnualTargetRecordService.selectBAnnualTargetRecordList(bAnnualTargetRecord);
         return getDataTable(list);
     }
+
 
     /**
      * 导出协同平台---年度任务目标--任务接收单位上报记录列表
@@ -72,12 +86,21 @@ public class BAnnualTargetRecordController extends BaseController
     /**
      * 新增协同平台---年度任务目标--任务接收单位上报记录
      */
-    @PreAuthorize("@ss.hasPermi('annual:record:add')")
+    /*@PreAuthorize("@ss.hasPermi('annual:record:add')")
     @Log(title = "协同平台---年度任务目标--任务接收单位上报记录", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody BAnnualTargetRecord bAnnualTargetRecord)
     {
         return toAjax(bAnnualTargetRecordService.insertBAnnualTargetRecord(bAnnualTargetRecord));
+    }*/
+
+    //新增任务上报记录
+    @PreAuthorize("@ss.hasPermi('annual:record:add')")
+    @Log(title = "协同平台---年度任务目标--任务接收单位上报记录", businessType = BusinessType.INSERT)
+    @PostMapping
+    public AjaxResult addRecord(@RequestBody BAnnualTargetRecord bAnnualTargetRecord, @RequestBody BAnnualTargetRecordFile file)
+    {
+        return toAjax(bAnnualTargetRecordService.insertBAnnualTargetRecordAndFile(bAnnualTargetRecord,file));
     }
 
     /**

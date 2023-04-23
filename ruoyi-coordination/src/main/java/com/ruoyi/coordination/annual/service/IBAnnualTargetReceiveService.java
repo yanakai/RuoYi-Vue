@@ -35,6 +35,8 @@ public interface IBAnnualTargetReceiveService
      */
     public int insertBAnnualTargetReceive(BAnnualTargetReceive bAnnualTargetReceive);
 
+    public int insertBatchTargetReceive(List<BAnnualTargetReceive> bAnnualTargetReceive);
+
     /**
      * 修改协同平台---年度任务目标--任务接收单位
      *

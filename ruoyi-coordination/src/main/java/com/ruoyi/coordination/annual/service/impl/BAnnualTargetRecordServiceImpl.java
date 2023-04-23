@@ -2,11 +2,16 @@ package com.ruoyi.coordination.annual.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.coordination.annual.domain.BAnnualTargetReceive;
+import com.ruoyi.coordination.annual.domain.BAnnualTargetRecordFile;
+import com.ruoyi.coordination.annual.mapper.BAnnualTargetRecordFileMapper;
+import com.ruoyi.coordination.annual.service.IBAnnualTargetReceiveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.coordination.annual.mapper.BAnnualTargetRecordMapper;
 import com.ruoyi.coordination.annual.domain.BAnnualTargetRecord;
 import com.ruoyi.coordination.annual.service.IBAnnualTargetRecordService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 协同平台---年度任务目标--任务接收单位上报记录Service业务层处理
@@ -19,6 +24,11 @@ public class BAnnualTargetRecordServiceImpl implements IBAnnualTargetRecordServi
 {
     @Autowired
     private BAnnualTargetRecordMapper bAnnualTargetRecordMapper;
+
+    @Autowired
+    private IBAnnualTargetReceiveService receiveService;
+    @Autowired
+    private BAnnualTargetRecordFileMapper fileMapper;
 
     /**
      * 查询协同平台---年度任务目标--任务接收单位上报记录
@@ -91,5 +101,18 @@ public class BAnnualTargetRecordServiceImpl implements IBAnnualTargetRecordServi
     public int deleteBAnnualTargetRecordByRecordId(Long recordId)
     {
         return bAnnualTargetRecordMapper.deleteBAnnualTargetRecordByRecordId(recordId);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int insertBAnnualTargetRecordAndFile(BAnnualTargetRecord bAnnualTargetRecord, BAnnualTargetRecordFile file) {
+        int recordId = bAnnualTargetRecordMapper.insertBAnnualTargetRecord(bAnnualTargetRecord);
+        file.setTaskId(Long.parseLong(String.valueOf(recordId)));
+        fileMapper.insertBAnnualTargetRecordFile(file);
+        BAnnualTargetRecord targetRecord = bAnnualTargetRecordMapper.selectBAnnualTargetRecordByRecordId(Long.parseLong(String.valueOf(recordId)));
+        BAnnualTargetReceive receive = receiveService.selectBAnnualTargetReceiveByReceiveId(targetRecord.getReceiveId());
+        receive.setRealityTaskNum(receive.getRealityTaskNum()+1);
+
+        return receiveService.updateBAnnualTargetReceive(receive);
     }
 }

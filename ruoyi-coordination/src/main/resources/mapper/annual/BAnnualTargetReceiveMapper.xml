@@ -12,7 +12,7 @@
         <result property="receiveState"    column="receive_state"    />
         <result property="receiveDeptId"    column="receive_dept_id"    />
         <result property="receiveDeptName"    column="receive_dept_name"    />
-        <result property="receiveTime"    column="receive_time"    />
+        <result property="receiveTime"  column="receive_time" />
         <result property="completeTime"    column="complete_time"    />
         <result property="createDeptId"    column="create_dept_id"    />
         <result property="createDeptName"    column="create_dept_name"    />
@@ -116,4 +116,40 @@
             #{receiveId}
         </foreach>
     </delete>
+
+    <insert id="insertBatchTargetReceive" parameterType="com.ruoyi.coordination.annual.domain.BAnnualTargetReceive">
+        insert into b_annual_target_receive (
+            task_id,
+            answer_task_num,
+            reality_task_num,
+            receive_state,
+            receive_dept_id,
+            receive_dept_name,
+            receive_time,
+            complete_time,
+            create_dept_id,
+            create_dept_name,
+            create_user_id,
+            create_user_name,
+            create_time,
+            remark)
+             values
+        <foreach collection="list" item="t" index="index" separator=",">
+                (#{t.taskId},
+                #{t.answerTaskNum},
+                #{t.realityTaskNum},
+                #{t.receiveState},
+                #{t.receiveDeptId},
+                #{t.receiveDeptName},
+                #{t.receiveTime,jdbcType=TIMESTAMP},
+                #{t.completeTime,jdbcType=TIMESTAMP},
+                #{t.createDeptId},
+                #{t.createDeptName},
+                #{t.createUserId},
+                #{t.createUserName},
+                #{t.createTime,jdbcType=TIMESTAMP},
+                #{t.remark})
+        </foreach>
+    </insert>
+
 </mapper>
