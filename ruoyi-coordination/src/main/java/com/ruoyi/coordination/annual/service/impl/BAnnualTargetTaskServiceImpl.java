@@ -3,13 +3,21 @@ package com.ruoyi.coordination.annual.service.impl;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.coordination.annual.domain.BAnnualTargetReceive;
 import com.ruoyi.coordination.annual.domain.BAnnualTargetTaskFile;
+import com.ruoyi.coordination.annual.domain.dto.TaskAndFile;
 import com.ruoyi.coordination.annual.mapper.BAnnualTargetTaskFileMapper;
 import com.ruoyi.coordination.annual.service.IBAnnualTargetReceiveService;
+import com.ruoyi.system.service.ISysDeptService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.coordination.annual.mapper.BAnnualTargetTaskMapper;
@@ -31,6 +39,8 @@ public class BAnnualTargetTaskServiceImpl implements IBAnnualTargetTaskService
     private BAnnualTargetTaskMapper bAnnualTargetTaskMapper;
     @Autowired
     private BAnnualTargetTaskFileMapper taskFileMapper;
+    @Autowired
+    private ISysDeptService deptService;
 
     @Autowired
     private IBAnnualTargetReceiveService ibAnnualTargetReceiveService;
@@ -47,6 +57,10 @@ public class BAnnualTargetTaskServiceImpl implements IBAnnualTargetTaskService
         return bAnnualTargetTaskMapper.selectBAnnualTargetTaskByTaskId(taskId);
     }
 
+
+
+
+
     /**
      * 查询协同平台--年度目标任务--任务主列表
      *
@@ -57,6 +71,16 @@ public class BAnnualTargetTaskServiceImpl implements IBAnnualTargetTaskService
     public List<BAnnualTargetTask> selectBAnnualTargetTaskList(BAnnualTargetTask bAnnualTargetTask)
     {
         return bAnnualTargetTaskMapper.selectBAnnualTargetTaskList(bAnnualTargetTask);
+    }
+    /**
+     * 查询协同平台--年度目标任务--任务主列表及附件
+     *
+     * @param bAnnualTargetTask 协同平台--年度目标任务--任务主
+     * @return 协同平台--年度目标任务--任务主
+     */
+    @Override
+    public List<TaskAndFile> selectBAnnualTargetTaskListAndFile(BAnnualTargetTask bAnnualTargetTask){
+        return bAnnualTargetTaskMapper.selectBAnnualTargetTaskListAndFile(bAnnualTargetTask);
     }
 
     /**
@@ -112,54 +136,75 @@ public class BAnnualTargetTaskServiceImpl implements IBAnnualTargetTaskService
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int insertBAnnualTargetTaskAndRec(BAnnualTargetTask bAnnualTargetTask, String deptIds, BAnnualTargetTaskFile file) {
-        int taskId = bAnnualTargetTaskMapper.insertBAnnualTargetTask(bAnnualTargetTask);
-        file.setTaskId(Long.parseLong(String.valueOf(taskId)));
-        int i = taskFileMapper.insertBAnnualTargetTaskFile(file);
+    public int insertBAnnualTargetTaskAndRec(TaskAndFile bAnnualTargetTask) {
+        BAnnualTargetTask task = new BAnnualTargetTask();
+        BeanUtils.copyProperties(bAnnualTargetTask,task);
+        Long[] deptIds = bAnnualTargetTask.getDeptIds();
+        if (deptIds.length > 0){
+            task.setTaskState("1");
+        }
+        Long deptId = SecurityUtils.getDeptId();
+        task.setCreateDeptId(deptId);
+        task.setCreateDeptName(deptService.selectDeptById(deptId).getDeptName());
+        task.setCreateUserId(SecurityUtils.getUserId());
+        task.setCreateUserName(SecurityUtils.getUsername());
+        task.setCreateTime(DateUtils.getNowDate());
+        bAnnualTargetTaskMapper.insertBAnnualTargetTask(task);
 
+        Long taskId = task.getTaskId();
+        List<BAnnualTargetTaskFile> fileList = bAnnualTargetTask.getFileList();
+        if (fileList.size() > 0){
+            fileList.forEach(f -> f.setTaskId(taskId));
+            int i = taskFileMapper.insertListBAnnualTargetTaskFiles(fileList);
+        }
         List<BAnnualTargetReceive> targetReceiveList = null;
-        if (StringUtils.isNotEmpty(deptIds)){
+        if (StringUtils.isNotEmpty(bAnnualTargetTask.getDeptIds())){
             //应完成任务数
-            ZonedDateTime startTime = bAnnualTargetTask.getStartTime().toInstant().atZone(ZoneId.systemDefault());
-            ZonedDateTime endTime = bAnnualTargetTask.getEndTime().toInstant().atZone(ZoneId.systemDefault());
+            ZonedDateTime startTime = task.getStartTime().toInstant().atZone(ZoneId.systemDefault());
+            ZonedDateTime endTime = task.getEndTime().toInstant().atZone(ZoneId.systemDefault());
             long time = 0;
-            switch (bAnnualTargetTask.getReportingCycle()){
-                case "日":
+            switch (task.getReportingCycle()){
+                case "1":
                     time = startTime.until(endTime,ChronoUnit.DAYS);
                     break;
-                case "周":
+                case "2":
                     time = startTime.until(endTime, ChronoUnit.WEEKS);
                     break;
-                case "月":
+                case "3":
                     time = startTime.until(endTime,ChronoUnit.MONTHS);
                     break;
-//                case "季度":
-//                    time = startTime.until(endTime,ChronoUnit.WEEKS);
-//                    break;
-                case "年":
+                case "4":
+                    time = startTime.until(endTime,ChronoUnit.MONTHS)/3;
+                    break;
+                case "5":
                     time = startTime.until(endTime,ChronoUnit.YEARS);
                     break;
             }
 
-            String[] split = deptIds.split(",");
-
             targetReceiveList = new ArrayList<>();
-            for (String s : split) {
+            for (Long s : bAnnualTargetTask.getDeptIds()) {
                 BAnnualTargetReceive bAnnualTargetReceive = new BAnnualTargetReceive();
                 bAnnualTargetReceive.setTaskId(Long.parseLong(String.valueOf(taskId)));
-                bAnnualTargetReceive.setCreateDeptId(bAnnualTargetTask.getCreateDeptId());
-                bAnnualTargetReceive.setCreateDeptName(bAnnualTargetTask.getCreateDeptName());
-                bAnnualTargetReceive.setCreateUserId(bAnnualTargetTask.getCreateUserId());
-                bAnnualTargetReceive.setCreateUserName(bAnnualTargetTask.getCreateUserName());
+                bAnnualTargetReceive.setCreateDeptId(task.getCreateDeptId());
+                bAnnualTargetReceive.setCreateDeptName(task.getCreateDeptName());
+                bAnnualTargetReceive.setCreateUserId(task.getCreateUserId());
+                bAnnualTargetReceive.setCreateUserName(task.getCreateUserName());
                 bAnnualTargetReceive.setAnswerTaskNum(time);
-                bAnnualTargetReceive.setReceiveDeptId(Long.parseLong(s));
-                //TODO 查询接收单位相关信息并对属性赋值
+                bAnnualTargetReceive.setReceiveDeptId(s);
+                SysDept sysDept = deptService.selectDeptById(s);
+                bAnnualTargetReceive.setReceiveDeptName(sysDept.getDeptName());
                 bAnnualTargetReceive.setReceiveState("1");
                 bAnnualTargetReceive.setReceiveTime(DateUtils.getNowDate());
                 targetReceiveList.add(bAnnualTargetReceive);
             }
         }
         return ibAnnualTargetReceiveService.insertBatchTargetReceive(targetReceiveList);
+    }
+
+    @Override
+    public List<TaskAndFile> selectBAnnualTargetTaskByDeptId(BAnnualTargetTask bAnnualTargetTask, Long deptId) {
+
+        return bAnnualTargetTaskMapper.selectBAnnualTargetTaskListAndFileByDept(bAnnualTargetTask,deptId);
     }
 
 }

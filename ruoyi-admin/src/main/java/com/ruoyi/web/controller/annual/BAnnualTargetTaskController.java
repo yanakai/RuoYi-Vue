@@ -3,15 +3,14 @@ package com.ruoyi.web.controller.annual;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.coordination.annual.domain.BAnnualTargetTaskFile;
+import com.ruoyi.coordination.annual.domain.dto.TaskAndFile;
+import io.swagger.annotations.Api;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -30,10 +29,24 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @Description: 协同平台--年度目标任务--任务主Controller
  * @Version: 1.0
  */
+@Api("主任务")
+@RestController
+@RequestMapping("/annual/task")
 public class BAnnualTargetTaskController extends BaseController {
     @Autowired
     private IBAnnualTargetTaskService bAnnualTargetTaskService;
 
+    /**
+     * 查询协同平台--年度目标任务--任务主列表
+     */
+    /*@PreAuthorize("@ss.hasPermi('annual:task:list')")
+    @GetMapping("/list")
+    public TableDataInfo list(BAnnualTargetTask bAnnualTargetTask)
+    {
+        startPage();
+        List<BAnnualTargetTask> list = bAnnualTargetTaskService.selectBAnnualTargetTaskList(bAnnualTargetTask);
+        return getDataTable(list);
+    }*/
     /**
      * 查询协同平台--年度目标任务--任务主列表
      */
@@ -42,14 +55,24 @@ public class BAnnualTargetTaskController extends BaseController {
     public TableDataInfo list(BAnnualTargetTask bAnnualTargetTask)
     {
         startPage();
-        List<BAnnualTargetTask> list = bAnnualTargetTaskService.selectBAnnualTargetTaskList(bAnnualTargetTask);
+        List<TaskAndFile> list = bAnnualTargetTaskService.selectBAnnualTargetTaskListAndFile(bAnnualTargetTask);
         return getDataTable(list);
+    }
+
+    @GetMapping("/listByDeptId")
+    public TableDataInfo listByDeptId(BAnnualTargetTask bAnnualTargetTask){
+
+        startPage();
+        Long deptId = getDeptId();
+        List<TaskAndFile> list = bAnnualTargetTaskService.selectBAnnualTargetTaskByDeptId(bAnnualTargetTask,deptId);
+        return getDataTable(list);
+
     }
 
     /**
      * 导出协同平台--年度目标任务--任务主列表
      */
-    @PreAuthorize("@ss.hasPermi('annual:task:export')")
+//    @PreAuthorize("@ss.hasPermi('annual:task:export')")
     @Log(title = "协同平台--年度目标任务--任务主", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, BAnnualTargetTask bAnnualTargetTask)
@@ -84,9 +107,10 @@ public class BAnnualTargetTaskController extends BaseController {
     @PreAuthorize("@ss.hasPermi('annual:task:add')")
     @Log(title = "协同平台--年度目标任务--任务主", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult addTask(@RequestBody BAnnualTargetTask bAnnualTargetTask, String deptIds, @RequestBody BAnnualTargetTaskFile file)
+    public AjaxResult addTask(@RequestBody TaskAndFile bAnnualTargetTask)
     {
-        return toAjax(bAnnualTargetTaskService.insertBAnnualTargetTaskAndRec(bAnnualTargetTask,deptIds,file));
+
+        return toAjax(bAnnualTargetTaskService.insertBAnnualTargetTaskAndRec(bAnnualTargetTask));
     }
 
     /**

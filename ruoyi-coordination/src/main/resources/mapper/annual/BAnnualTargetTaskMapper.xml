@@ -23,6 +23,45 @@
         <result property="remark"    column="remark"    />
     </resultMap>
 
+    <resultMap type="TaskAndFile" id="BAnnualTargetTaskResultAndFile">
+        <result property="taskId"    column="task_id"    />
+        <result property="receiveId" column="receive_id" />
+        <result property="taskName"    column="task_name"    />
+        <result property="taskType"    column="task_type"    />
+        <result property="reportingCycle"    column="reporting_cycle"    />
+        <result property="taskAsk"    column="task_ask"    />
+        <result property="taskState"    column="task_state"    />
+        <result property="taskSource"    column="task_source"    />
+        <result property="taskLevel"    column="task_level"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="createDeptId"    column="create_dept_id"    />
+        <result property="createDeptName"    column="create_dept_name"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="answerTaskNum"    column="answer_task_num"    />
+        <result property="realityTaskNum"    column="realityt_ask_num"    />
+        <result property="receiveDeptName"    column="receive_dept_name"    />
+        <collection property="fileList"  javaType="java.util.List" ofType="com.ruoyi.coordination.annual.domain.BAnnualTargetTaskFile"
+        column="task_id" select="getFile">
+            <id column="file_id" property="fileId" jdbcType="BIGINT"/>
+            <id column="file_name" property="fileName" jdbcType="VARCHAR"/>
+            <id column="file_path" property="filePath" jdbcType="VARCHAR"/>
+            <id column="file_type" property="fileType" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+    <resultMap type="BAnnualTargetTaskFile" id="BAnnualTargetTaskFileResult">
+        <result property="fileId"    column="file_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="fileType"    column="file_type"    />
+    </resultMap>
+    <resultMap id="BAnnualTargetReceive" type="BAnnualTargetReceive" extends="com.ruoyi.coordination.annual.mapper.BAnnualTargetReceiveMapper.BAnnualTargetReceiveResult"/>
+
     <sql id="selectBAnnualTargetTaskVo">
         select task_id, task_name, task_type, reporting_cycle, task_ask, task_state, task_source, task_level, start_time, end_time, create_dept_id, create_dept_name, create_user_id, create_user_name, create_time, remark from b_annual_target_task
     </sql>
@@ -46,9 +85,67 @@
         </where>
     </select>
 
+    <select id="selectBAnnualTargetTaskListAndFile" parameterType="BAnnualTargetTask" resultMap="BAnnualTargetTaskResultAndFile">
+        select batt.task_id, task_name, task_type, reporting_cycle, task_ask, task_state, task_source, task_level, start_time, end_time, create_dept_id, create_dept_name, create_user_id, create_user_name, create_time, remark from
+         b_annual_target_task batt
+        <where>
+            <if test="taskName != null  and taskName != ''"> and task_name like concat('%', #{taskName}, '%')</if>
+            <if test="taskType != null  and taskType != ''"> and task_type = #{taskType}</if>
+            <if test="reportingCycle != null  and reportingCycle != ''"> and reporting_cycle = #{reportingCycle}</if>
+            <if test="taskAsk != null  and taskAsk != ''"> and task_ask = #{taskAsk}</if>
+            <if test="taskState != null  and taskState != ''"> and task_state = #{taskState}</if>
+            <if test="taskSource != null  and taskSource != ''"> and task_source = #{taskSource}</if>
+            <if test="taskLevel != null  and taskLevel != ''"> and task_level = #{taskLevel}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="createDeptId != null "> and create_dept_id = #{createDeptId}</if>
+            <if test="createDeptName != null  and createDeptName != ''"> and create_dept_name like concat('%', #{createDeptName}, '%')</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+        </where>
+    </select>
+    <select id="getFile" resultMap="BAnnualTargetTaskFileResult">
+        select * from b_annual_target_task_file where b_annual_target_task_file.task_id = #{task_id}
+    </select>
+
     <select id="selectBAnnualTargetTaskByTaskId" parameterType="Long" resultMap="BAnnualTargetTaskResult">
-        <include refid="selectBAnnualTargetTaskVo"/>
+        <include refid="selectBAnnualTargetTaskVo"/> left join b_annual_
         where task_id = #{taskId}
+    </select>
+
+    <select id="selectBAnnualTargetTaskListAndFileByDept"
+            resultMap="BAnnualTargetTaskResultAndFile">
+        SELECT
+        batt.task_id,
+        batt.task_name,
+        batt.reporting_cycle,
+        batt.create_user_name,
+        batt.create_time,
+        batt.start_time,
+        batt.task_ask,
+        batt.create_time,
+        batt.end_time,
+        batr.receive_id,
+        batr.receive_dept_name,
+        batr.answer_task_num,
+        batr.reality_task_num
+        FROM
+        b_annual_target_task batt
+        INNER JOIN ( SELECT * FROM b_annual_target_receive WHERE receive_dept_id = #{deptId} ) AS batr ON batt.task_id = batr.task_id
+        <where>
+            <if test="bat.taskName != null  and bat.taskName != ''"> and batt.task_name like concat('%', #{bat.taskName}, '%')</if>
+            <if test="bat.taskType != null  and bat.taskType != ''"> and batt.task_type = #{bat.taskType}</if>
+            <if test="bat.reportingCycle != null  and bat.reportingCycle != ''"> and batt.reporting_cycle = #{bat.reportingCycle}</if>
+            <if test="bat.taskAsk != null  and bat.taskAsk != ''"> and batt.task_ask = #{bat.taskAsk}</if>
+            <if test="bat.taskSource != null  and bat.taskSource != ''"> and task_source = #{bat.taskSource}</if>
+            <if test="bat.taskLevel != null  and bat.taskLevel != ''"> and task_level = #{bat.taskLevel}</if>
+            <if test="bat.startTime != null "> and start_time = #{bat.startTime}</if>
+            <if test="bat.endTime != null "> and end_time = #{bat.endTime}</if>
+            <if test="bat.createDeptId != null "> and create_dept_id = #{bat.createDeptId}</if>
+            <if test="bat.createDeptName != null  and bat.createDeptName != ''"> and create_dept_name like concat('%', #{bat.createDeptName}, '%')</if>
+            <if test="bat.createUserId != null "> and create_user_id = #{bat.createUserId}</if>
+            <if test="bat.createUserName != null  and bat.createUserName != ''"> and create_user_name like concat('%', #{bat.createUserName}, '%')</if>
+        </where>
     </select>
 
     <insert id="insertBAnnualTargetTask" parameterType="BAnnualTargetTask" useGeneratedKeys="true" keyProperty="taskId">

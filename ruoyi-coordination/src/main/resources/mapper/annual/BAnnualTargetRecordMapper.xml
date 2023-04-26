@@ -18,9 +18,24 @@
         <result property="createUserName"    column="create_user_name"    />
         <result property="remark"    column="remark"    />
     </resultMap>
+    <resultMap id="RecordAndFileResult" type="RecordAndFile" extends="BAnnualTargetRecordResult">
+        <collection property="fileList" javaType="java.util.List" ofType="com.ruoyi.coordination.annual.domain.BAnnualTargetRecordFile">
+            <result property="fileId"    column="file_id"    />
+            <result property="fileName"    column="file_name"    />
+            <result property="filePath"    column="file_path"    />
+            <result property="fileType"    column="file_type"    />
+        </collection>
+    </resultMap>
+    <resultMap id="BAnnualTargetRecordFileResult" type="BAnnualTargetRecordFile">
+        <result property="fileId"    column="file_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="fileType"    column="file_type"    />
+    </resultMap>
 
     <sql id="selectBAnnualTargetRecordVo">
-        select record_id, receive_id, task_id, record_content, answer_time, create_time, is_delay, create_dept_id, create_dept_name, create_user_id, create_user_name, remark from b_annual_target_record
+        select record_id, receive_id, b_annual_target_record.task_id, record_content, answer_time, create_time, is_delay, create_dept_id, create_dept_name, create_user_id, create_user_name, remark from b_annual_target_record
     </sql>
 
     <select id="selectBAnnualTargetRecordList" parameterType="BAnnualTargetRecord" resultMap="BAnnualTargetRecordResult">
@@ -38,9 +53,34 @@
         </where>
     </select>
 
-    <select id="selectBAnnualTargetRecordByRecordId" parameterType="Long" resultMap="BAnnualTargetRecordResult">
-        <include refid="selectBAnnualTargetRecordVo"/>
+    <select id="selectBAnnualTargetRecordByRecordId" parameterType="Long" resultMap="RecordAndFileResult">
+        SELECT
+            record_id,
+            receive_id,
+            b_annual_target_record.task_id,
+            record_content,
+            answer_time,
+            create_time,
+            is_delay,
+            create_dept_id,
+            create_dept_name,
+            create_user_id,
+            create_user_name,
+            remark ,
+            batrf.file_id,
+            batrf.file_name,
+            batrf.file_path,
+            batrf.file_type
+        FROM
+            b_annual_target_record
+        left join b_annual_target_record_file batrf
+            on b_annual_target_record.record_id = batrf.task_id
         where record_id = #{recordId}
+    </select>
+    <select id="selectBAnnualTargetRecordFileByRecordId"
+            resultMap="BAnnualTargetRecordFileResult">
+        select file_id,task_id,file_name,file_path,file_type from b_annual_target_record_file
+            where task_id=#{record_id}
     </select>
 
     <insert id="insertBAnnualTargetRecord" parameterType="BAnnualTargetRecord" useGeneratedKeys="true" keyProperty="recordId">

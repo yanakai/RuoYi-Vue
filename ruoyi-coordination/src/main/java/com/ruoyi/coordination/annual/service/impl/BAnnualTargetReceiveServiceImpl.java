@@ -2,6 +2,7 @@ package com.ruoyi.coordination.annual.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.coordination.annual.domain.dto.ReceiveAndTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.coordination.annual.mapper.BAnnualTargetReceiveMapper;
@@ -97,5 +98,18 @@ public class BAnnualTargetReceiveServiceImpl implements IBAnnualTargetReceiveSer
     public int deleteBAnnualTargetReceiveByReceiveId(Long receiveId)
     {
         return bAnnualTargetReceiveMapper.deleteBAnnualTargetReceiveByReceiveId(receiveId);
+    }
+
+
+    @Override
+    public List<BAnnualTargetReceive> selectBAnnualTargetReceiveAndRecord(Long receiveId) {
+
+        return bAnnualTargetReceiveMapper.selectBAnnualTargetReceiveAndRecord(receiveId);
+    }
+
+    @Override
+    public List<String> getReceiveDept(BAnnualTargetReceive bAnnualTargetReceive) {
+
+        return bAnnualTargetReceiveMapper.selectBAnnualTargetDept(bAnnualTargetReceive);
     }
 }

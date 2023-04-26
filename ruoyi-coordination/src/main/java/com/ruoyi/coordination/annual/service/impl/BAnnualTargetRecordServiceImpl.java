@@ -2,10 +2,13 @@ package com.ruoyi.coordination.annual.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.coordination.annual.domain.BAnnualTargetReceive;
 import com.ruoyi.coordination.annual.domain.BAnnualTargetRecordFile;
+import com.ruoyi.coordination.annual.domain.dto.RecordAndFile;
 import com.ruoyi.coordination.annual.mapper.BAnnualTargetRecordFileMapper;
 import com.ruoyi.coordination.annual.service.IBAnnualTargetReceiveService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.coordination.annual.mapper.BAnnualTargetRecordMapper;
@@ -37,7 +40,7 @@ public class BAnnualTargetRecordServiceImpl implements IBAnnualTargetRecordServi
      * @return 协同平台---年度任务目标--任务接收单位上报记录
      */
     @Override
-    public BAnnualTargetRecord selectBAnnualTargetRecordByRecordId(Long recordId)
+    public RecordAndFile selectBAnnualTargetRecordByRecordId(Long recordId)
     {
         return bAnnualTargetRecordMapper.selectBAnnualTargetRecordByRecordId(recordId);
     }
@@ -105,14 +108,35 @@ public class BAnnualTargetRecordServiceImpl implements IBAnnualTargetRecordServi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int insertBAnnualTargetRecordAndFile(BAnnualTargetRecord bAnnualTargetRecord, BAnnualTargetRecordFile file) {
-        int recordId = bAnnualTargetRecordMapper.insertBAnnualTargetRecord(bAnnualTargetRecord);
-        file.setTaskId(Long.parseLong(String.valueOf(recordId)));
-        fileMapper.insertBAnnualTargetRecordFile(file);
-        BAnnualTargetRecord targetRecord = bAnnualTargetRecordMapper.selectBAnnualTargetRecordByRecordId(Long.parseLong(String.valueOf(recordId)));
-        BAnnualTargetReceive receive = receiveService.selectBAnnualTargetReceiveByReceiveId(targetRecord.getReceiveId());
-        receive.setRealityTaskNum(receive.getRealityTaskNum()+1);
+    public int insertBAnnualTargetRecordAndFile(RecordAndFile bAnnualTargetRecord) {
+        BAnnualTargetReceive receive = receiveService.selectBAnnualTargetReceiveByReceiveId(bAnnualTargetRecord.getReceiveId());
+        Long realityTaskNum = receive.getRealityTaskNum();
+        if (realityTaskNum == null || realityTaskNum == 0){
+            realityTaskNum = 1L;
+        }else {
+            realityTaskNum += 1L;
+        }
+        receive.setRealityTaskNum(realityTaskNum);
+        receiveService.updateBAnnualTargetReceive(receive);
+        BAnnualTargetRecord record = new BAnnualTargetRecord();
+        BeanUtils.copyProperties(bAnnualTargetRecord,record);
+        record.setCreateUserId(SecurityUtils.getUserId());
+        record.setCreateUserName(SecurityUtils.getUsername());
+        record.setCreateTime(DateUtils.getNowDate());
+        record.setCreateDeptId(receive.getCreateDeptId());
+        record.setCreateDeptName(receive.getCreateDeptName());
+        int num = bAnnualTargetRecordMapper.insertBAnnualTargetRecord(record);
+        List<BAnnualTargetRecordFile> fileList = bAnnualTargetRecord.getFileList();
+        if (fileList.size() > 0){
+            fileList.forEach(f -> f.setTaskId(record.getRecordId()));
+            int i = fileMapper.insertListBAnnualTargetRecordFiles(fileList);
+        }
+        return num;
+    }
 
-        return receiveService.updateBAnnualTargetReceive(receive);
+    @Override
+    public List<BAnnualTargetRecordFile> selectBAnnualTargetRecordFileByRecordId(Long recordId) {
+
+        return bAnnualTargetRecordMapper.selectBAnnualTargetRecordFileByRecordId(recordId);
     }
 }

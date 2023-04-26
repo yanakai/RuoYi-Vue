@@ -2,6 +2,7 @@ package com.ruoyi.coordination.annual.service;
 
 import java.util.List;
 import com.ruoyi.coordination.annual.domain.BAnnualTargetReceive;
+import com.ruoyi.coordination.annual.domain.dto.ReceiveAndTask;
 
 /**
  * 协同平台---年度任务目标--任务接收单位Service接口
@@ -60,4 +61,8 @@ public interface IBAnnualTargetReceiveService
      * @return 结果
      */
     public int deleteBAnnualTargetReceiveByReceiveId(Long receiveId);
+
+    List<BAnnualTargetReceive> selectBAnnualTargetReceiveAndRecord(Long taskId);
+
+    List<String> getReceiveDept(BAnnualTargetReceive bAnnualTargetReceive);
 }

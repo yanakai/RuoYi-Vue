@@ -4,6 +4,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.coordination.annual.domain.BAnnualTargetRecordFile;
+import com.ruoyi.coordination.annual.domain.dto.RecordAndFile;
+import io.swagger.annotations.Api;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @author yanakai@126.com
  * @date 2023-04-20
  */
+@Api("上报任务记录")
 @RestController
 @RequestMapping("/annual/record")
 public class BAnnualTargetRecordController extends BaseController
@@ -39,7 +42,7 @@ public class BAnnualTargetRecordController extends BaseController
     /**
      * 查询协同平台---年度任务目标--任务接收单位上报记录列表
      */
-    /*@PreAuthorize("@ss.hasPermi('annual:record:list')")
+    /*// @PreAuthorize("@ss.hasPermi('annual:record:list')")
     @GetMapping("/list")
     public TableDataInfo list(BAnnualTargetRecord bAnnualTargetRecord)
     {
@@ -50,7 +53,7 @@ public class BAnnualTargetRecordController extends BaseController
     /**
      * 查询协同平台---年度任务目标--任务接收单位上报记录列表
      */
-    @PreAuthorize("@ss.hasPermi('annual:record:list')")
+    // @PreAuthorize("@ss.hasPermi('annual:record:list')")
     @GetMapping("/list")
     public TableDataInfo list(BAnnualTargetRecord bAnnualTargetRecord)
     {
@@ -63,7 +66,7 @@ public class BAnnualTargetRecordController extends BaseController
     /**
      * 导出协同平台---年度任务目标--任务接收单位上报记录列表
      */
-    @PreAuthorize("@ss.hasPermi('annual:record:export')")
+    // @PreAuthorize("@ss.hasPermi('annual:record:export')")
     @Log(title = "协同平台---年度任务目标--任务接收单位上报记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, BAnnualTargetRecord bAnnualTargetRecord)
@@ -76,17 +79,24 @@ public class BAnnualTargetRecordController extends BaseController
     /**
      * 获取协同平台---年度任务目标--任务接收单位上报记录详细信息
      */
-    @PreAuthorize("@ss.hasPermi('annual:record:query')")
+    // @PreAuthorize("@ss.hasPermi('annual:record:query')")
     @GetMapping(value = "/{recordId}")
     public AjaxResult getInfo(@PathVariable("recordId") Long recordId)
     {
         return success(bAnnualTargetRecordService.selectBAnnualTargetRecordByRecordId(recordId));
     }
 
+    @GetMapping(value = "/recordFile/{recordId}")
+    public AjaxResult getRecordFile(@PathVariable("recordId") Long recordId)
+    {
+        List<BAnnualTargetRecordFile> files = bAnnualTargetRecordService.selectBAnnualTargetRecordFileByRecordId(recordId);
+        return success(files);
+    }
+
     /**
      * 新增协同平台---年度任务目标--任务接收单位上报记录
      */
-    /*@PreAuthorize("@ss.hasPermi('annual:record:add')")
+    /*// @PreAuthorize("@ss.hasPermi('annual:record:add')")
     @Log(title = "协同平台---年度任务目标--任务接收单位上报记录", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody BAnnualTargetRecord bAnnualTargetRecord)
@@ -95,18 +105,18 @@ public class BAnnualTargetRecordController extends BaseController
     }*/
 
     //新增任务上报记录
-    @PreAuthorize("@ss.hasPermi('annual:record:add')")
+//    // @PreAuthorize("@ss.hasPermi('annual:record:add')")
     @Log(title = "协同平台---年度任务目标--任务接收单位上报记录", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult addRecord(@RequestBody BAnnualTargetRecord bAnnualTargetRecord, @RequestBody BAnnualTargetRecordFile file)
+    public AjaxResult addRecord(@RequestBody RecordAndFile bAnnualTargetRecord)
     {
-        return toAjax(bAnnualTargetRecordService.insertBAnnualTargetRecordAndFile(bAnnualTargetRecord,file));
+        return toAjax(bAnnualTargetRecordService.insertBAnnualTargetRecordAndFile(bAnnualTargetRecord));
     }
 
     /**
      * 修改协同平台---年度任务目标--任务接收单位上报记录
      */
-    @PreAuthorize("@ss.hasPermi('annual:record:edit')")
+    // @PreAuthorize("@ss.hasPermi('annual:record:edit')")
     @Log(title = "协同平台---年度任务目标--任务接收单位上报记录", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody BAnnualTargetRecord bAnnualTargetRecord)
@@ -117,7 +127,7 @@ public class BAnnualTargetRecordController extends BaseController
     /**
      * 删除协同平台---年度任务目标--任务接收单位上报记录
      */
-    @PreAuthorize("@ss.hasPermi('annual:record:remove')")
+    // @PreAuthorize("@ss.hasPermi('annual:record:remove')")
     @Log(title = "协同平台---年度任务目标--任务接收单位上报记录", businessType = BusinessType.DELETE)
     @DeleteMapping("/{recordIds}")
     public AjaxResult remove(@PathVariable Long[] recordIds)

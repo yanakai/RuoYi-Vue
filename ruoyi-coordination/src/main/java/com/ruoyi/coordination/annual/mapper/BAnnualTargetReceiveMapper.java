@@ -60,4 +60,10 @@ public interface BAnnualTargetReceiveMapper
     public int deleteBAnnualTargetReceiveByReceiveIds(Long[] receiveIds);
 
     int insertBatchTargetReceive(List<BAnnualTargetReceive> bAnnualTargetReceive);
+
+    List<BAnnualTargetReceive> selectBAnnualTargetReceiveByTaskId(Long taskId);
+
+    List<BAnnualTargetReceive> selectBAnnualTargetReceiveAndRecord(Long receiveId);
+
+    List<String> selectBAnnualTargetDept(BAnnualTargetReceive bAnnualTargetReceive);
 }

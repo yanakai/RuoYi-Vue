@@ -2,6 +2,9 @@ package com.ruoyi.coordination.annual.mapper;
 
 import java.util.List;
 import com.ruoyi.coordination.annual.domain.BAnnualTargetTask;
+import com.ruoyi.coordination.annual.domain.dto.TaskAndFile;
+import org.apache.ibatis.annotations.Param;
+
 /**
  * @description:  协同平台--年度目标任务--任务主Mapper接口
  * @author: yanakai@126.com 
@@ -23,6 +26,9 @@ public interface BAnnualTargetTaskMapper {
      * @return 协同平台--年度目标任务--任务主集合
      */
     public List<BAnnualTargetTask> selectBAnnualTargetTaskList(BAnnualTargetTask bAnnualTargetTask);
+
+    public List<TaskAndFile> selectBAnnualTargetTaskListAndFile(BAnnualTargetTask bAnnualTargetTask);
+
 
     /**
      * 新增协同平台--年度目标任务--任务主
@@ -55,4 +61,6 @@ public interface BAnnualTargetTaskMapper {
      * @return 结果
      */
     public int deleteBAnnualTargetTaskByTaskIds(Long[] taskIds);
+
+    List<TaskAndFile> selectBAnnualTargetTaskListAndFileByDept(@Param("bat") BAnnualTargetTask bAnnualTargetTask,@Param("deptId") Long deptId);
 }

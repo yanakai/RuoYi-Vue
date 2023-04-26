@@ -55,4 +55,6 @@ public interface BAnnualTargetTaskFileMapper {
      * @return 结果
      */
     public int deleteBAnnualTargetTaskFileByFileIds(Long[] fileIds);
+
+    public int insertListBAnnualTargetTaskFiles(List<BAnnualTargetTaskFile> files);
 }

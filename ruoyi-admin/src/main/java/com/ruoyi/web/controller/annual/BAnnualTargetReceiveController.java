@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.annual;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import io.swagger.annotations.Api;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +29,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @author yanakai@126.com
  * @date 2023-04-20
  */
+@Api("任务接收")
 @RestController
 @RequestMapping("/annual/receive")
 public class BAnnualTargetReceiveController extends BaseController
@@ -37,13 +40,20 @@ public class BAnnualTargetReceiveController extends BaseController
     /**
      * 查询协同平台---年度任务目标--任务接收单位列表
      */
-    @PreAuthorize("@ss.hasPermi('annual:receive:list')")
+//    @PreAuthorize("@ss.hasPermi('annual:receive:list')")
     @GetMapping("/list")
     public TableDataInfo list(BAnnualTargetReceive bAnnualTargetReceive)
     {
         startPage();
         List<BAnnualTargetReceive> list = bAnnualTargetReceiveService.selectBAnnualTargetReceiveList(bAnnualTargetReceive);
         return getDataTable(list);
+    }
+
+    @GetMapping("/getReceiveDept")
+    public AjaxResult getReceiveDept(BAnnualTargetReceive bAnnualTargetReceive)
+    {
+        List<String> list = bAnnualTargetReceiveService.getReceiveDept(bAnnualTargetReceive);
+        return success(list.get(0));
     }
 
     /**
@@ -62,11 +72,16 @@ public class BAnnualTargetReceiveController extends BaseController
     /**
      * 获取协同平台---年度任务目标--任务接收单位详细信息
      */
-    @PreAuthorize("@ss.hasPermi('annual:receive:query')")
+//    @PreAuthorize("@ss.hasPermi('annual:receive:query')")
     @GetMapping(value = "/{receiveId}")
     public AjaxResult getInfo(@PathVariable("receiveId") Long receiveId)
     {
         return success(bAnnualTargetReceiveService.selectBAnnualTargetReceiveByReceiveId(receiveId));
+    }
+
+    @GetMapping(value = "/andRecord/{receiveId}")
+    public AjaxResult getReceiveInfo(@PathVariable("receiveId") Long receiveId){
+        return success(bAnnualTargetReceiveService.selectBAnnualTargetReceiveAndRecord(receiveId));
     }
 
     /**

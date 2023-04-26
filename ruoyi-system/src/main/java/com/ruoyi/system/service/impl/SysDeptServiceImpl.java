@@ -45,7 +45,9 @@ public class SysDeptServiceImpl implements ISysDeptService
     @DataScope(deptAlias = "d")
     public List<SysDept> selectDeptList(SysDept dept)
     {
-        return deptMapper.selectDeptList(dept);
+        Long deptId = SecurityUtils.getDeptId();
+        SysDept sysDept = deptMapper.selectDeptById(deptId);
+        return deptMapper.selectDeptList(sysDept);
     }
 
     /**
@@ -291,6 +293,12 @@ public class SysDeptServiceImpl implements ISysDeptService
     public int deleteDeptById(Long deptId)
     {
         return deptMapper.deleteDeptById(deptId);
+    }
+
+    @Override
+    public List<SysDept> selectChildDept() {
+        Long deptId = SecurityUtils.getDeptId();
+        return deptMapper.selectChildrenDeptById(deptId);
     }
 
     /**

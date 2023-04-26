@@ -248,4 +248,15 @@ public class SysUserController extends BaseController
     {
         return success(deptService.selectDeptTreeList(dept));
     }
+
+    /**
+     * 获取部门树列表
+     */
+    @PreAuthorize("@ss.hasPermi('system:user:list')")
+    @GetMapping("/childDept")
+    public AjaxResult childDept()
+    {
+        return success(deptService.selectChildDept());
+    }
+
 }

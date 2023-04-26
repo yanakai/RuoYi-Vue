@@ -58,4 +58,6 @@ public interface BAnnualTargetRecordFileMapper
      * @return 结果
      */
     public int deleteBAnnualTargetRecordFileByFileIds(Long[] fileIds);
+
+    int insertListBAnnualTargetRecordFiles(List<BAnnualTargetRecordFile> files);
 }

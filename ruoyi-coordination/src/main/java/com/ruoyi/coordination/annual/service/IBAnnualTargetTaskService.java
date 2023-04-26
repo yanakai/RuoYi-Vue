@@ -2,8 +2,10 @@ package com.ruoyi.coordination.annual.service;
 
 import java.util.List;
 
+import com.ruoyi.coordination.annual.domain.BAnnualTargetReceive;
 import com.ruoyi.coordination.annual.domain.BAnnualTargetTask;
 import com.ruoyi.coordination.annual.domain.BAnnualTargetTaskFile;
+import com.ruoyi.coordination.annual.domain.dto.TaskAndFile;
 
 /**
  * @BelongsProject: RuoYi-Vue
@@ -29,6 +31,14 @@ public interface IBAnnualTargetTaskService {
      * @return 协同平台--年度目标任务--任务主集合
      */
     public List<BAnnualTargetTask> selectBAnnualTargetTaskList(BAnnualTargetTask bAnnualTargetTask);
+
+    /**
+     * 查询协同平台--年度目标任务--任务主列表及附件
+     *
+     * @param bAnnualTargetTask 协同平台--年度目标任务--任务主
+     * @return 协同平台--年度目标任务--任务主
+     */
+    public List<TaskAndFile> selectBAnnualTargetTaskListAndFile(BAnnualTargetTask bAnnualTargetTask);
 
     /**
      * 新增协同平台--年度目标任务--任务主
@@ -62,5 +72,8 @@ public interface IBAnnualTargetTaskService {
      */
     public int deleteBAnnualTargetTaskByTaskId(Long taskId);
 
-    int insertBAnnualTargetTaskAndRec(BAnnualTargetTask bAnnualTargetTask, String deptIds, BAnnualTargetTaskFile file);
+    int insertBAnnualTargetTaskAndRec(TaskAndFile bAnnualTargetTask);
+
+    List<TaskAndFile> selectBAnnualTargetTaskByDeptId(BAnnualTargetTask bAnnualTargetTask, Long deptId);
+
 }

@@ -46,6 +46,17 @@
             <if test="fileType != null">#{fileType},</if>
         </trim>
     </insert>
+    <insert id="insertListBAnnualTargetTaskFiles" parameterType="com.ruoyi.coordination.annual.domain.BAnnualTargetTaskFile">
+        insert into b_annual_target_task_file (task_id, file_name, file_path, file_type)
+            values
+        <foreach collection="list" item="t" index="index" separator=",">
+        (#{t.taskId},
+        #{t.fileName},
+        #{t.filePath},
+        #{t.fileType})
+        </foreach>
+    </insert>
+
 
     <update id="updateBAnnualTargetTaskFile" parameterType="BAnnualTargetTaskFile">
         update b_annual_target_task_file

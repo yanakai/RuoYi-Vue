@@ -48,6 +48,32 @@
         <include refid="selectBAnnualTargetReceiveVo"/>
         where receive_id = #{receiveId}
     </select>
+    <select id="selectBAnnualTargetReceiveByTaskId"
+            resultType="com.ruoyi.coordination.annual.domain.BAnnualTargetReceive">
+        <include refid="selectBAnnualTargetReceiveVo"/>
+        where task_id = #{taskId}
+    </select>
+    <select id="selectBAnnualTargetReceiveAndRecord"
+            resultType="com.ruoyi.coordination.annual.domain.BAnnualTargetReceive">
+        SELECT
+            batr.receive_id,
+            batr.task_id,
+            answer_task_num,
+            reality_task_num,
+            answer_time,
+            batr.receive_dept_name,
+            record_content,
+            batrr.create_time,
+            batrr.create_user_name
+        FROM
+            b_annual_target_receive batr
+                LEFT JOIN b_annual_target_record batrr ON batr.receive_id = batrr.receive_id
+        WHERE
+            batr.receive_id = #{receiveId}
+    </select>
+    <select id="selectBAnnualTargetDept" resultType="java.lang.String" parameterType="BAnnualTargetReceive">
+        SELECT GROUP_CONCAT(receive_dept_name) from b_annual_target_receive batr WHERE batr.task_id = #{taskId}
+    </select>
 
     <insert id="insertBAnnualTargetReceive" parameterType="BAnnualTargetReceive" useGeneratedKeys="true" keyProperty="receiveId">
         insert into b_annual_target_receive
