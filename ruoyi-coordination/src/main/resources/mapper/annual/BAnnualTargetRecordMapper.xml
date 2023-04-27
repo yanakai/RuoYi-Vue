@@ -28,7 +28,7 @@
     </resultMap>
     <resultMap id="BAnnualTargetRecordFileResult" type="BAnnualTargetRecordFile">
         <result property="fileId"    column="file_id"    />
-        <result property="taskId"    column="task_id"    />
+        <result property="recordId"    column="record_id"    />
         <result property="fileName"    column="file_name"    />
         <result property="filePath"    column="file_path"    />
         <result property="fileType"    column="file_type"    />
@@ -74,13 +74,13 @@
         FROM
             b_annual_target_record
         left join b_annual_target_record_file batrf
-            on b_annual_target_record.record_id = batrf.task_id
-        where record_id = #{recordId}
+            on b_annual_target_record.record_id = batrf.record_id
+        where b_annual_target_record.record_id = #{recordId}
     </select>
     <select id="selectBAnnualTargetRecordFileByRecordId"
             resultMap="BAnnualTargetRecordFileResult">
-        select file_id,task_id,file_name,file_path,file_type from b_annual_target_record_file
-            where task_id=#{record_id}
+        select file_id,record_id,file_name,file_path,file_type from b_annual_target_record_file
+            where record_id=#{record_id}
     </select>
 
     <insert id="insertBAnnualTargetRecord" parameterType="BAnnualTargetRecord" useGeneratedKeys="true" keyProperty="recordId">

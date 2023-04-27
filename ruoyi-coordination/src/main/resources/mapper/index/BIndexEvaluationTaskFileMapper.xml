@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.coordination.index.mapper.BIndexEvaluationTaskFileMapper">
+    
+    <resultMap type="BIndexEvaluationTaskFile" id="BIndexEvaluationTaskFileResult">
+        <result property="fileId"    column="file_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="fileType"    column="file_type"    />
+    </resultMap>
+
+    <sql id="selectBIndexEvaluationTaskFileVo">
+        select file_id, task_id, file_name, file_path, file_type from b_index_evaluation_task_file
+    </sql>
+
+    <select id="selectBIndexEvaluationTaskFileList" parameterType="BIndexEvaluationTaskFile" resultMap="BIndexEvaluationTaskFileResult">
+        <include refid="selectBIndexEvaluationTaskFileVo"/>
+        <where>  
+            <if test="taskId != null "> and task_id = #{taskId}</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="filePath != null  and filePath != ''"> and file_path = #{filePath}</if>
+            <if test="fileType != null  and fileType != ''"> and file_type = #{fileType}</if>
+        </where>
+    </select>
+    
+    <select id="selectBIndexEvaluationTaskFileByFileId" parameterType="Long" resultMap="BIndexEvaluationTaskFileResult">
+        <include refid="selectBIndexEvaluationTaskFileVo"/>
+        where file_id = #{fileId}
+    </select>
+        
+    <insert id="insertBIndexEvaluationTaskFile" parameterType="BIndexEvaluationTaskFile" useGeneratedKeys="true" keyProperty="fileId">
+        insert into b_index_evaluation_task_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">task_id,</if>
+            <if test="fileName != null">file_name,</if>
+            <if test="filePath != null">file_path,</if>
+            <if test="fileType != null">file_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">#{taskId},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="filePath != null">#{filePath},</if>
+            <if test="fileType != null">#{fileType},</if>
+         </trim>
+    </insert>
+    <insert id="insertBatchBIndexEvaluationTaskFile" parameterType="BIndexEvaluationTaskFile">
+        insert into b_index_evaluation_task_file (task_id,file_name,file_path,file_type)
+        values 
+        <foreach collection="list" item="t" index="index" separator=",">
+            (#{t.taskId},
+            #{t.fileName},
+            #{t.filePath},
+            #{t.fileType})
+        </foreach>
+    </insert>
+
+    <update id="updateBIndexEvaluationTaskFile" parameterType="BIndexEvaluationTaskFile">
+        update b_index_evaluation_task_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="filePath != null">file_path = #{filePath},</if>
+            <if test="fileType != null">file_type = #{fileType},</if>
+        </trim>
+        where file_id = #{fileId}
+    </update>
+
+    <delete id="deleteBIndexEvaluationTaskFileByFileId" parameterType="Long">
+        delete from b_index_evaluation_task_file where file_id = #{fileId}
+    </delete>
+
+    <delete id="deleteBIndexEvaluationTaskFileByFileIds" parameterType="String">
+        delete from b_index_evaluation_task_file where file_id in 
+        <foreach item="fileId" collection="array" open="(" separator="," close=")">
+            #{fileId}
+        </foreach>
+    </delete>
+</mapper>

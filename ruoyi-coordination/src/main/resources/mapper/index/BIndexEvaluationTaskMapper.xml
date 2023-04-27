@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.coordination.index.mapper.BIndexEvaluationTaskMapper">
+    
+    <resultMap type="BIndexEvaluationTask" id="BIndexEvaluationTaskResult">
+        <result property="taskId"    column="task_id"    />
+        <result property="taskName"    column="task_name"    />
+        <result property="taskLevel"    column="task_level"    />
+        <result property="taskType"    column="task_type"    />
+        <result property="taskSource"    column="task_source"    />
+        <result property="taskTarget"    column="task_target"    />
+        <result property="taskContent"    column="task_content"    />
+        <result property="taskAsk"    column="task_ask"    />
+        <result property="taskState"    column="task_state"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="createDeptId"    column="create_dept_id"    />
+        <result property="createDeptName"    column="create_dept_name"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <resultMap id="EvaTaskAndReceiveResult" type="EvaTaskAndReceive" extends="BIndexEvaluationTaskResult">
+        <result property="receiveId" column="receive_id"/>
+        <result property="receiveState" column="receive_state"/>
+        <result property="urgingState" column="urging_state"/>
+        <result property="receiveDeptId" column="receive_deptId"/>
+        <result property="receiveDeptName" column="receive_deptName"/>
+        <result property="receiveTime" column="receive_time"/>
+    </resultMap>
+    <resultMap id="EvaIndexTaskAndFileRes" type="EvaTaskAndFile" extends="BIndexEvaluationTaskResult">
+        <collection property="fileList" javaType="java.util.List" ofType="BIndexEvaluationTaskFile">
+            <result property="fileId"    column="file_id"    />
+            <result property="fileName"    column="file_name"    />
+            <result property="filePath"    column="file_path"    />
+            <result property="fileType"    column="file_type"    />
+        </collection>
+    </resultMap>
+    <resultMap id="EvaTaskFile" type="BIndexEvaluationTaskFile" extends="com.ruoyi.coordination.index.mapper.BIndexEvaluationTaskFileMapper.BIndexEvaluationTaskFileResult"/>
+
+    <sql id="selectBIndexEvaluationTaskVo">
+        select task_id, task_name, task_level, task_type, task_source, task_target, task_content, task_ask, task_state, start_time, end_time, create_dept_id, create_dept_name, create_user_id, create_user_name, create_time, remark from b_index_evaluation_task
+    </sql>
+
+    <select id="selectBIndexEvaluationTaskList" parameterType="BIndexEvaluationTask" resultMap="BIndexEvaluationTaskResult">
+        <include refid="selectBIndexEvaluationTaskVo"/>
+        <where>  
+            <if test="taskName != null  and taskName != ''"> and task_name like concat('%', #{taskName}, '%')</if>
+            <if test="taskLevel != null  and taskLevel != ''"> and task_level = #{taskLevel}</if>
+            <if test="taskType != null  and taskType != ''"> and task_type = #{taskType}</if>
+            <if test="taskSource != null  and taskSource != ''"> and task_source = #{taskSource}</if>
+            <if test="taskTarget != null  and taskTarget != ''"> and task_target = #{taskTarget}</if>
+            <if test="taskContent != null  and taskContent != ''"> and task_content = #{taskContent}</if>
+            <if test="taskAsk != null  and taskAsk != ''"> and task_ask = #{taskAsk}</if>
+            <if test="taskState != null  and taskState != ''"> and task_state = #{taskState}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="createDeptId != null "> and create_dept_id = #{createDeptId}</if>
+            <if test="createDeptName != null  and createDeptName != ''"> and create_dept_name like concat('%', #{createDeptName}, '%')</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectBIndexEvaluationTaskByTaskId" parameterType="Long" resultMap="EvaIndexTaskAndFileRes">
+        SELECT
+            biet.task_id ,
+            biet.task_name,
+            biet.task_level,
+            biet.task_type,
+            biet.task_source,
+            biet.task_target,
+            biet.task_content,
+            biet.task_ask,
+            biet.task_state,
+            biet.start_time,
+            biet.end_time,
+            biet.create_dept_id,
+            biet.create_dept_name,
+            biet.create_user_id,
+            biet.create_user_name,biet.create_time,biet.remark,
+            bietf.file_id,
+            bietf.file_name,
+            bietf.file_path,
+            bietf.file_type
+        FROM
+            b_index_evaluation_task biet
+                LEFT JOIN b_index_evaluation_task_file bietf ON biet.task_id = bietf.task_id
+        where biet.task_id = #{taskId}
+    </select>
+    <select id="selectBIndexEvaluationTaskListByDeptId"
+            resultMap="EvaTaskAndReceiveResult">
+        SELECT
+            biet.task_id,
+            biet.task_name,
+            biet.task_level,
+            biet.task_type,
+            biet.task_source,
+            biet.task_target,
+            biet.task_content,
+            biet.task_ask,
+            biet.task_state,
+            biet.start_time,
+            biet.end_time,
+            biet.create_dept_id,
+            biet.create_dept_name,
+            biet.create_user_id,
+            biet.create_user_name,
+            biet.create_time,
+            bier.receive_id,
+            bier.receive_dept_id,
+            bier.receive_dept_name,
+            bier.receive_state,
+            bier.receive_time
+        FROM b_index_evaluation_receive bier LEFT JOIN b_index_evaluation_task biet on
+            bier.task_id = biet.task_id where bier.receive_dept_id = #{receiveDeptId}
+        <if test="taskName != null  and taskName != ''"> and task_name like concat('%', #{taskName}, '%')</if>
+        <if test="taskLevel != null  and taskLevel != ''"> and task_level = #{taskLevel}</if>
+        <if test="taskType != null  and taskType != ''"> and task_type = #{taskType}</if>
+        <if test="taskSource != null  and taskSource != ''"> and task_source = #{taskSource}</if>
+        <if test="taskTarget != null  and taskTarget != ''"> and task_target = #{taskTarget}</if>
+        <if test="taskState != null  and taskState != ''"> and task_state = #{taskState}</if>
+        <if test="startTime != null "> and start_time = #{startTime}</if>
+        <if test="endTime != null "> and end_time = #{endTime}</if>
+    </select>
+
+    <insert id="insertBIndexEvaluationTask" parameterType="BIndexEvaluationTask" useGeneratedKeys="true" keyProperty="taskId">
+        insert into b_index_evaluation_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">task_id,</if>
+            <if test="taskName != null">task_name,</if>
+            <if test="taskLevel != null">task_level,</if>
+            <if test="taskType != null">task_type,</if>
+            <if test="taskSource != null">task_source,</if>
+            <if test="taskTarget != null">task_target,</if>
+            <if test="taskContent != null">task_content,</if>
+            <if test="taskAsk != null">task_ask,</if>
+            <if test="taskState != null">task_state,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="createDeptId != null">create_dept_id,</if>
+            <if test="createDeptName != null">create_dept_name,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">#{taskId},</if>
+            <if test="taskName != null">#{taskName},</if>
+            <if test="taskLevel != null">#{taskLevel},</if>
+            <if test="taskType != null">#{taskType},</if>
+            <if test="taskSource != null">#{taskSource},</if>
+            <if test="taskTarget != null">#{taskTarget},</if>
+            <if test="taskContent != null">#{taskContent},</if>
+            <if test="taskAsk != null">#{taskAsk},</if>
+            <if test="taskState != null">#{taskState},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="createDeptId != null">#{createDeptId},</if>
+            <if test="createDeptName != null">#{createDeptName},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBIndexEvaluationTask" parameterType="BIndexEvaluationTask">
+        update b_index_evaluation_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskName != null">task_name = #{taskName},</if>
+            <if test="taskLevel != null">task_level = #{taskLevel},</if>
+            <if test="taskType != null">task_type = #{taskType},</if>
+            <if test="taskSource != null">task_source = #{taskSource},</if>
+            <if test="taskTarget != null">task_target = #{taskTarget},</if>
+            <if test="taskContent != null">task_content = #{taskContent},</if>
+            <if test="taskAsk != null">task_ask = #{taskAsk},</if>
+            <if test="taskState != null">task_state = #{taskState},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="createDeptId != null">create_dept_id = #{createDeptId},</if>
+            <if test="createDeptName != null">create_dept_name = #{createDeptName},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where task_id = #{taskId}
+    </update>
+
+    <delete id="deleteBIndexEvaluationTaskByTaskId" parameterType="Long">
+        delete from b_index_evaluation_task where task_id = #{taskId}
+    </delete>
+
+    <delete id="deleteBIndexEvaluationTaskByTaskIds" parameterType="String">
+        delete from b_index_evaluation_task where task_id in 
+        <foreach item="taskId" collection="array" open="(" separator="," close=")">
+            #{taskId}
+        </foreach>
+    </delete>
+</mapper>

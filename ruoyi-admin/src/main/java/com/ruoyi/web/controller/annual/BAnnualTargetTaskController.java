@@ -3,11 +3,8 @@ package com.ruoyi.web.controller.annual;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.coordination.annual.domain.BAnnualTargetTaskFile;
 import com.ruoyi.coordination.annual.domain.dto.TaskAndFile;
 import io.swagger.annotations.Api;
-import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -59,14 +56,13 @@ public class BAnnualTargetTaskController extends BaseController {
         return getDataTable(list);
     }
 
+    // 下级单位任务列表
     @GetMapping("/listByDeptId")
     public TableDataInfo listByDeptId(BAnnualTargetTask bAnnualTargetTask){
-
         startPage();
         Long deptId = getDeptId();
         List<TaskAndFile> list = bAnnualTargetTaskService.selectBAnnualTargetTaskByDeptId(bAnnualTargetTask,deptId);
         return getDataTable(list);
-
     }
 
     /**
@@ -109,7 +105,6 @@ public class BAnnualTargetTaskController extends BaseController {
     @PostMapping
     public AjaxResult addTask(@RequestBody TaskAndFile bAnnualTargetTask)
     {
-
         return toAjax(bAnnualTargetTaskService.insertBAnnualTargetTaskAndRec(bAnnualTargetTask));
     }
 

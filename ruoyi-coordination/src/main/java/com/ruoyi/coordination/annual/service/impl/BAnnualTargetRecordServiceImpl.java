@@ -128,7 +128,7 @@ public class BAnnualTargetRecordServiceImpl implements IBAnnualTargetRecordServi
         int num = bAnnualTargetRecordMapper.insertBAnnualTargetRecord(record);
         List<BAnnualTargetRecordFile> fileList = bAnnualTargetRecord.getFileList();
         if (fileList.size() > 0){
-            fileList.forEach(f -> f.setTaskId(record.getRecordId()));
+            fileList.forEach(f -> f.setRecordId(record.getRecordId()));
             int i = fileMapper.insertListBAnnualTargetRecordFiles(fileList);
         }
         return num;
