@@ -61,4 +61,8 @@ public interface BIndexEvaluationRecordMapper
     public int deleteBIndexEvaluationRecordByRecordIds(Long[] recordIds);
 
     List<EvaRecordAndFile> selectBIndexEvaluationRecords(BIndexEvaluationRecord bIndexEvaluationRecord);
+
+    EvaRecordAndFile selectBIndexEvaluationRecordsByReceiveId(Long receiveId);
+
+    Integer getMaxRecordNum(Long receiveId);
 }

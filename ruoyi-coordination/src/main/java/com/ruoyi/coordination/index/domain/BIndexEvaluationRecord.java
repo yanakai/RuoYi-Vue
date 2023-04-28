@@ -28,6 +28,10 @@ public class BIndexEvaluationRecord extends BaseEntity
     @Excel(name = "主任务表id")
     private Long taskId;
 
+
+    @Excel(name = "任务办理记录序号")
+    private Integer recordNum;
+
     /** 上报内容 */
     @Excel(name = "上报内容")
     private String recordContent;
@@ -109,7 +113,16 @@ public class BIndexEvaluationRecord extends BaseEntity
     {
         return taskId;
     }
-    public void setRecordContent(String recordContent) 
+
+    public Integer getRecordNum() {
+        return recordNum;
+    }
+
+    public void setRecordNum(Integer recordNum) {
+        this.recordNum = recordNum;
+    }
+
+    public void setRecordContent(String recordContent)
     {
         this.recordContent = recordContent;
     }

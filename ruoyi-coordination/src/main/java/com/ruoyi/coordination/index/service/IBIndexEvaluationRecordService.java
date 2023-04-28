@@ -61,4 +61,6 @@ public interface IBIndexEvaluationRecordService
     public int deleteBIndexEvaluationRecordByRecordId(Long recordId);
 
     List<EvaRecordAndFile> selectBIndexEvaluationRecords(BIndexEvaluationRecord bIndexEvaluationRecord);
+
+    EvaRecordAndFile selectBIndexEvaluationRecordByReceiveId(Long receiveId);
 }

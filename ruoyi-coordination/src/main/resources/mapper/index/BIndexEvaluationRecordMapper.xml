@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="recordId"    column="record_id"    />
         <result property="receiveId"    column="receive_id"    />
         <result property="taskId"    column="task_id"    />
+        <result property="recordNum" column="record_num"/>
         <result property="recordContent"    column="record_content"    />
         <result property="recordState"    column="record_state"    />
         <result property="createTime"    column="create_time"    />
@@ -77,6 +78,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             b_index_evaluation_record bier
                 LEFT JOIN b_index_evaluation_record_file bierf ON bier.record_id = bierf.record_id
         where bier.receive_id = #{receiveId}
+    </select>
+    <select id="selectBIndexEvaluationRecordsByReceiveId" parameterType="Long"
+            resultMap="BIndexEvaRecordAndFileRes">
+        SELECT
+            MAX( bier.record_num ),
+            bier.record_id,
+            record_content,
+            file_id,
+            file_name,
+            file_path,
+            file_type
+        FROM
+            b_index_evaluation_record bier
+                LEFT JOIN
+            b_index_evaluation_record_file bierf
+            on
+                bier.record_id = bierf.record_id
+        where bier.record_id = #{recordId}
+    </select>
+    <select id="getMaxRecordNum" resultType="java.lang.Integer">
+        select max(record_num) from b_index_evaluation_record where receive_id = #{receiveId}
     </select>
 
     <insert id="insertBIndexEvaluationRecord" parameterType="BIndexEvaluationRecord" useGeneratedKeys="true" keyProperty="recordId">

@@ -85,6 +85,16 @@ public class BIndexEvaluationRecordController extends BaseController
     }
 
     /**
+     * 获取协同平台---指标管理--查询最新的上报记录
+     */
+    //@PreAuthorize("@ss.hasPermi('index:record:query')")
+    @GetMapping(value = "/receiveId")
+    public AjaxResult getRecordDetail(Long receiveId)
+    {
+        return success(bIndexEvaluationRecordService.selectBIndexEvaluationRecordByReceiveId(receiveId));
+    }
+
+    /**
      * 新增协同平台---指标管理--指标任务接收单位上报记录
      */
     //@PreAuthorize("@ss.hasPermi('index:record:add')")

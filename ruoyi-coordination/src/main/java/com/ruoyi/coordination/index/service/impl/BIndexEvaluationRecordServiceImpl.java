@@ -96,7 +96,19 @@ public class BIndexEvaluationRecordServiceImpl implements IBIndexEvaluationRecor
     @Override
     public int updateBIndexEvaluationRecord(BIndexEvaluationRecord bIndexEvaluationRecord)
     {
+        Long deptId = SecurityUtils.getDeptId();
+        if (deptId == 100L){
+            bIndexEvaluationRecord.setAuditDeptId(deptId);
+            bIndexEvaluationRecord.setAuditUserId(SecurityUtils.getUserId());
+            bIndexEvaluationRecord.setAuditUserName(SecurityUtils.getUsername());
+            bIndexEvaluationRecord.setAuditDeptName(sysDeptMapper.selectDeptById(deptId).getDeptName());
+            bIndexEvaluationRecord.setAuditTime(DateUtils.getNowDate());
+            bIndexEvaluationRecord.setRecordNum(getMaxRecordNum(1L)+1);
+        }
         return bIndexEvaluationRecordMapper.updateBIndexEvaluationRecord(bIndexEvaluationRecord);
+    }
+    private synchronized Integer getMaxRecordNum(Long receiveId) {
+        return bIndexEvaluationRecordMapper.getMaxRecordNum(receiveId);
     }
 
     /**
@@ -127,5 +139,11 @@ public class BIndexEvaluationRecordServiceImpl implements IBIndexEvaluationRecor
     public List<EvaRecordAndFile> selectBIndexEvaluationRecords(BIndexEvaluationRecord bIndexEvaluationRecord) {
 
         return bIndexEvaluationRecordMapper.selectBIndexEvaluationRecords(bIndexEvaluationRecord);
+    }
+
+    @Override
+    public EvaRecordAndFile selectBIndexEvaluationRecordByReceiveId(Long receiveId) {
+
+        return bIndexEvaluationRecordMapper.selectBIndexEvaluationRecordsByReceiveId(receiveId);
     }
 }

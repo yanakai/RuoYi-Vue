@@ -46,6 +46,7 @@ public class BIndexEvaluationTaskController extends BaseController
     public TableDataInfo list(BIndexEvaluationTask bIndexEvaluationTask)
     {
         startPage();
+        Long deptId = SecurityUtils.getDeptId();
         List<BIndexEvaluationTask> list = bIndexEvaluationTaskService.selectBIndexEvaluationTaskList(bIndexEvaluationTask);
         return getDataTable(list);
     }
