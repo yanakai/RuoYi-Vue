@@ -1,6 +1,7 @@
 package com.ruoyi.coordination.index.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.ruoyi.common.core.domain.entity.SysDept;
@@ -87,9 +88,11 @@ public class BIndexEvaluationTaskServiceImpl implements IBIndexEvaluationTaskSer
         int num = bIndexEvaluationTaskMapper.insertBIndexEvaluationTask(task);
         //获取任务附件集合
         List<BIndexEvaluationTaskFile> fileList = bIndexEvaluationTask.getFileList();
-        fileList.forEach(f -> f.setTaskId(task.getTaskId()));
-        //批量添加附件
-        taskFileMapper.insertBatchBIndexEvaluationTaskFile(fileList);
+        if (!fileList.isEmpty()){
+            fileList.forEach(f -> f.setTaskId(task.getTaskId()));
+            //批量添加附件
+            taskFileMapper.insertBatchBIndexEvaluationTaskFile(fileList);
+        }
         //下级单位接收任务
         //获取接收单位的id数组
         Long[] deptIds = bIndexEvaluationTask.getDeptIds();

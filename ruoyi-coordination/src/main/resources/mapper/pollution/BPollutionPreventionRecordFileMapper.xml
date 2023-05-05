@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.coordination.pollution.mapper.BPollutionPreventionRecordFileMapper">
+    
+    <resultMap type="BPollutionPreventionRecordFile" id="BPollutionPreventionRecordFileResult">
+        <result property="fileId"    column="file_id"    />
+        <result property="recordId"    column="record_id"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="fileType"    column="file_type"    />
+    </resultMap>
+
+    <sql id="selectBPollutionPreventionRecordFileVo">
+        select file_id, record_id, file_name, file_path, file_type from b_pollution_prevention_record_file
+    </sql>
+
+    <select id="selectBPollutionPreventionRecordFileList" parameterType="BPollutionPreventionRecordFile" resultMap="BPollutionPreventionRecordFileResult">
+        <include refid="selectBPollutionPreventionRecordFileVo"/>
+        <where>  
+            <if test="recordId != null "> and record_id = #{recordId}</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="filePath != null  and filePath != ''"> and file_path = #{filePath}</if>
+            <if test="fileType != null  and fileType != ''"> and file_type = #{fileType}</if>
+        </where>
+    </select>
+    
+    <select id="selectBPollutionPreventionRecordFileByFileId" parameterType="Long" resultMap="BPollutionPreventionRecordFileResult">
+        <include refid="selectBPollutionPreventionRecordFileVo"/>
+        where file_id = #{fileId}
+    </select>
+        
+    <insert id="insertBPollutionPreventionRecordFile" parameterType="BPollutionPreventionRecordFile" useGeneratedKeys="true" keyProperty="fileId">
+        insert into b_pollution_prevention_record_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="recordId != null">record_id,</if>
+            <if test="fileName != null">file_name,</if>
+            <if test="filePath != null">file_path,</if>
+            <if test="fileType != null">file_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="recordId != null">#{recordId},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="filePath != null">#{filePath},</if>
+            <if test="fileType != null">#{fileType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBPollutionPreventionRecordFile" parameterType="BPollutionPreventionRecordFile">
+        update b_pollution_prevention_record_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="recordId != null">record_id = #{recordId},</if>
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="filePath != null">file_path = #{filePath},</if>
+            <if test="fileType != null">file_type = #{fileType},</if>
+        </trim>
+        where file_id = #{fileId}
+    </update>
+
+    <delete id="deleteBPollutionPreventionRecordFileByFileId" parameterType="Long">
+        delete from b_pollution_prevention_record_file where file_id = #{fileId}
+    </delete>
+
+    <delete id="deleteBPollutionPreventionRecordFileByFileIds" parameterType="String">
+        delete from b_pollution_prevention_record_file where file_id in 
+        <foreach item="fileId" collection="array" open="(" separator="," close=")">
+            #{fileId}
+        </foreach>
+    </delete>
+</mapper>

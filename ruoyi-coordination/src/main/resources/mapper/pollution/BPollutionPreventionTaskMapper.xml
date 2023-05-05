@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.coordination.pollution.mapper.BPollutionPreventionTaskMapper">
+    
+    <resultMap type="BPollutionPreventionTask" id="BPollutionPreventionTaskResult">
+        <result property="taskId"    column="task_id"    />
+        <result property="examineFileId"    column="examine_file_id"    />
+        <result property="taskName"    column="task_name"    />
+        <result property="taskLevel"    column="task_level"    />
+        <result property="taskType"    column="task_type"    />
+        <result property="taskRemindType" column="task_remind_type"/>
+        <result property="taskTimeLimit"  column="task_time_limit"/>
+        <result property="taskSource"    column="task_source"    />
+        <result property="taskState"    column="task_state"    />
+        <result property="taskAsk"    column="task_ask"    />
+        <result property="taskContent"    column="task_content"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="createDeptId"    column="create_dept_id"    />
+        <result property="createDeptName"    column="create_dept_name"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <resultMap id="BPPTaskAndFileRes" type="BPPTaskAndFile" extends="BPollutionPreventionTaskResult">
+        <result property="receiveId" column="receive_id"/>
+        <collection property="fileList" javaType="java.util.List" ofType="BPollutionPreventionTaskFile">
+            <result property="fileId" column="file_id"/>
+            <result property="fileName" column="file_name"/>
+            <result property="filePath" column="file_path"/>
+            <result property="fileType" column="file_type"/>
+        </collection>
+    </resultMap>
+    <resultMap id="BPPTaskFile" type="BPollutionPreventionTaskFile">
+        <result property="fileId" column="file_id"/>
+        <result property="fileName" column="file_name"/>
+        <result property="filePath" column="file_path"/>
+        <result property="fileType" column="file_type"/>
+    </resultMap>
+
+    <sql id="selectBPollutionPreventionTaskVo">
+        select task_id, examine_file_id, task_name, task_level, task_type, task_remind_type, task_time_limit, task_source, task_state, task_ask, task_content, start_time, end_time, create_dept_id, create_dept_name, create_user_id, create_user_name, create_time, remark from b_pollution_prevention_task
+    </sql>
+
+    <select id="selectBPollutionPreventionTaskList" resultMap="BPollutionPreventionTaskResult">
+        <include refid="selectBPollutionPreventionTaskVo"/>
+        <where>
+            <if test="task.examineFileId != null "> and examine_file_id = #{task.examineFileId}</if>
+            <if test="task.taskName != null  and task.taskName != ''"> and task_name like concat('%', #{task.taskName}, '%')</if>
+            <if test="task.taskLevel != null  and task.taskLevel != ''"> and task_level = #{task.taskLevel}</if>
+            <if test="task.taskType != null  and task.taskType != ''"> and task_type = #{task.taskType}</if>
+            <if test="task.taskRemindType != null  and task.taskRemindType != ''"> and task_remind_type = #{task.taskRemindType}</if>
+            <if test="task.taskTimeLimit != null  and task.taskTimeLimit != ''"> and task_time_limit = #{task.taskTimeLimit}</if>
+            <if test="task.taskSource != null  and task.taskSource != ''"> and task_source = #{task.taskSource}</if>
+            <if test="task.taskState != null  and task.taskState != ''"> and task_state = #{task.taskState}</if>
+            <if test="task.taskAsk != null  and task.taskAsk != ''"> and task_ask = #{task.taskAsk}</if>
+            <if test="task.taskContent != null  and task.taskContent != ''"> and task_content = #{task.taskContent}</if>
+            <if test="task.startTime != null "> and start_time = #{task.startTime}</if>
+            <if test="task.endTime != null "> and end_time = #{task.endTime}</if>
+            <!--<if test="createDeptId != null "> and create_dept_id = #{createDeptId}</if>-->
+            <if test="task.createDeptName != null  and task.createDeptName != ''"> and create_dept_name like concat('%', #{task.createDeptName}, '%')</if>
+            <if test="task.createUserId != null "> and create_user_id = #{task.createUserId}</if>
+            <if test="task.createUserName != null  and task.createUserName != ''"> and create_user_name like concat('%', #{task.createUserName}, '%')</if>
+             and create_dept_id in
+             <foreach collection="deptIds" item="deptId" index="index" open="(" close=")" separator=",">
+                 #{deptId}
+             </foreach>
+        </where>
+    </select>
+    
+    <select id="selectBPollutionPreventionTaskByTaskId" parameterType="Long" resultMap="BPollutionPreventionTaskResult">
+        <include refid="selectBPollutionPreventionTaskVo"/>
+        where task_id = #{taskId}
+    </select>
+    <select id="selectBPollutionPreventionTaskListByDeptId" resultMap="BPPTaskAndFileRes">
+        select bppt.task_id,bppt.examine_file_id, bppt.task_name, bppt.task_level, bppt.task_type,
+        bppt.task_remind_type, bppt.task_time_limit, bppt.task_source, bppt.task_state, bppt.task_ask, bppt.task_content,
+        bppt.start_time, bppt.end_time, bppr.receive_id, bpptf.file_id, bpptf.file_name, bpptf.file_path, bpptf.file_type from b_pollution_prevention_task bppt
+        LEFT JOIN b_pollution_prevention_receive bppr on bppt.task_id = bppr.task_id left join
+        b_pollution_prevention_task_file bpptf on bppt.task_id = bpptf.task_id
+        WHERE bppr.receive_dept_id = #{deptId}
+            <if test="task.examineFileId != null "> and examine_file_id = #{task.examineFileId}</if>
+            <if test="task.taskName != null  and task.taskName != ''"> and task_name like concat('%', #{task.taskName}, '%')</if>
+            <if test="task.taskLevel != null  and task.taskLevel != ''"> and task_level = #{task.taskLevel}</if>
+            <if test="task.taskType != null  and task.taskType != ''"> and task_type = #{task.taskType}</if>
+            <if test="task.taskRemindType != null  and task.taskRemindType != ''"> and task_remind_type = #{task.taskRemindType}</if>
+            <if test="task.taskTimeLimit != null  and task.taskTimeLimit != ''"> and task_time_limit = #{task.taskTimeLimit}</if>
+            <if test="task.taskSource != null  and task.taskSource != ''"> and task_source = #{task.taskSource}</if>
+            <if test="task.taskState != null  and task.taskState != ''"> and task_state = #{task.taskState}</if>
+            <if test="task.taskAsk != null  and task.taskAsk != ''"> and task_ask = #{task.taskAsk}</if>
+            <if test="task.taskContent != null  and task.taskContent != ''"> and task_content = #{task.taskContent}</if>
+            <if test="task.startTime != null "> and start_time = #{task.startTime}</if>
+            <if test="task.endTime != null "> and end_time = #{task.endTime}</if>
+            <if test="task.createDeptId != null "> and task.create_dept_id = #{createDeptId}</if>
+            <if test="task.createDeptName != null  and task.createDeptName != ''"> and task.create_dept_name like concat('%', #{task.createDeptName}, '%')</if>
+            <if test="task.createUserId != null "> and task.create_user_id = #{task.createUserId}</if>
+            <if test="task.createUserName != null  and task.createUserName != ''"> and task.create_user_name like concat('%', #{task.createUserName}, '%')</if>
+
+    </select>
+
+    <insert id="insertBPollutionPreventionTask" parameterType="BPollutionPreventionTask" useGeneratedKeys="true" keyProperty="taskId">
+        insert into b_pollution_prevention_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="examineFileId != null">examine_file_id,</if>
+            <if test="taskName != null">task_name,</if>
+            <if test="taskLevel != null">task_level,</if>
+            <if test="taskType != null">task_type,</if>
+            <if test="taskRemindType != null">task_remind_type,</if>
+            <if test="taskTimeLimit != null">task_time_limit,</if>
+            <if test="taskSource != null">task_source,</if>
+            <if test="taskState != null">task_state,</if>
+            <if test="taskAsk != null">task_ask,</if>
+            <if test="taskContent != null">task_content,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="createDeptId != null">create_dept_id,</if>
+            <if test="createDeptName != null">create_dept_name,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="examineFileId != null">#{examineFileId},</if>
+            <if test="taskName != null">#{taskName},</if>
+            <if test="taskLevel != null">#{taskLevel},</if>
+            <if test="taskType != null">#{taskType},</if>
+            <if test="taskRemindType != null">#{taskRemindType},</if>
+            <if test="taskTimeLimit != null">#{taskTimeLimit},</if>
+            <if test="taskSource != null">#{taskSource},</if>
+            <if test="taskState != null">#{taskState},</if>
+            <if test="taskAsk != null">#{taskAsk},</if>
+            <if test="taskContent != null">#{taskContent},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="createDeptId != null">#{createDeptId},</if>
+            <if test="createDeptName != null">#{createDeptName},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBPollutionPreventionTask" parameterType="BPollutionPreventionTask">
+        update b_pollution_prevention_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="examineFileId != null">examine_file_id = #{examineFileId},</if>
+            <if test="taskName != null">task_name = #{taskName},</if>
+            <if test="taskLevel != null">task_level = #{taskLevel},</if>
+            <if test="taskType != null">task_type = #{taskType},</if>
+            <if test="taskRemindType != null">task_remind_type = #{taskRemindType},</if>
+            <if test="taskTimeLimit != null">task_time_limit = #{taskTimeLimit},</if>
+            <if test="taskSource != null">task_source = #{taskSource},</if>
+            <if test="taskState != null">task_state = #{taskState},</if>
+            <if test="taskAsk != null">task_ask = #{taskAsk},</if>
+            <if test="taskContent != null">task_content = #{taskContent},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="createDeptId != null">create_dept_id = #{createDeptId},</if>
+            <if test="createDeptName != null">create_dept_name = #{createDeptName},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where task_id = #{taskId}
+    </update>
+
+    <delete id="deleteBPollutionPreventionTaskByTaskId" parameterType="Long">
+        delete from b_pollution_prevention_task where task_id = #{taskId}
+    </delete>
+
+    <delete id="deleteBPollutionPreventionTaskByTaskIds" parameterType="String">
+        delete from b_pollution_prevention_task where task_id in 
+        <foreach item="taskId" collection="array" open="(" separator="," close=")">
+            #{taskId}
+        </foreach>
+    </delete>
+</mapper>

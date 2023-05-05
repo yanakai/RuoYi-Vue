@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.coordination.pollution.mapper.BPollutionPreventionFileMapper">
+    
+    <resultMap type="BPollutionPreventionFile" id="BPollutionPreventionFileResult">
+        <result property="fileId"    column="file_id"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="fileSize"    column="file_size"    />
+        <result property="fileType"    column="file_type"    />
+        <result property="fileKind"    column="file_kind"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="targetContent" column="target_content" />
+        <result property="newName"  column="new_name"/>
+    </resultMap>
+
+    <sql id="selectBPollutionPreventionFileVo">
+        select file_id, file_name, file_path, file_size, file_type, file_kind, create_user_name, create_time, target_content, new_name from b_pollution_prevention_file
+    </sql>
+
+    <select id="selectBPollutionPreventionFileList" parameterType="BPollutionPreventionFile" resultMap="BPollutionPreventionFileResult">
+        <include refid="selectBPollutionPreventionFileVo"/>
+        <where>  
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="filePath != null  and filePath != ''"> and file_path = #{filePath}</if>
+            <if test="fileSize != null  and fileSize != ''"> and file_size = #{fileSize}</if>
+            <if test="fileType != null  and fileType != ''"> and file_type = #{fileType}</if>
+        </where>
+    </select>
+    
+    <select id="selectBPollutionPreventionFileByFileId" parameterType="Long" resultMap="BPollutionPreventionFileResult">
+        <include refid="selectBPollutionPreventionFileVo"/>
+        where file_id = #{fileId}
+    </select>
+        
+    <insert id="insertBPollutionPreventionFile" parameterType="BPollutionPreventionFile" useGeneratedKeys="true" keyProperty="fileId">
+        insert into b_pollution_prevention_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fileName != null">file_name,</if>
+            <if test="filePath != null">file_path,</if>
+            <if test="fileSize != null">file_size,</if>
+            <if test="fileType != null">file_type,</if>
+            <if test="fileKind != null">file_kind,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="targetContent != null">target_content,</if>
+            <if test="newName != null">new_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fileName != null">#{fileName},</if>
+            <if test="filePath != null">#{filePath},</if>
+            <if test="fileSize != null">#{fileSize},</if>
+            <if test="fileType != null">#{fileType},</if>
+            <if test="fileKind != null">#{fileKind},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="targetContent != null">#{targetContent},</if>
+            <if test="newName != null">#{newName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBPollutionPreventionFile" parameterType="BPollutionPreventionFile">
+        update b_pollution_prevention_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="filePath != null">file_path = #{filePath},</if>
+            <if test="fileSize != null">file_size = #{fileSize},</if>
+            <if test="fileType != null">file_type = #{fileType},</if>
+            <if test="fileKind != null">file_kind = #{fileKind},</if>
+            <if test="targetContent != null">target_content = #{targetContent},</if>
+            <if test="newName != null">new_name = #{newName},</if>
+        </trim>
+        where file_id = #{fileId}
+    </update>
+
+    <delete id="deleteBPollutionPreventionFileByFileId" parameterType="Long">
+        delete from b_pollution_prevention_file where file_id = #{fileId}
+    </delete>
+
+    <delete id="deleteBPollutionPreventionFileByFileIds" parameterType="String">
+        delete from b_pollution_prevention_file where file_id in 
+        <foreach item="fileId" collection="array" open="(" separator="," close=")">
+            #{fileId}
+        </foreach>
+    </delete>
+</mapper>

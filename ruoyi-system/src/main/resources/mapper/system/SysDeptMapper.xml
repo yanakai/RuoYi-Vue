@@ -96,6 +96,9 @@
 		<include refid="selectDeptVo"/>
 		where dept_name=#{deptName} and parent_id = #{parentId} and del_flag = '0' limit 1
 	</select>
+	<select id="selectChildrenDeptByPid" resultMap="SysDeptResult">
+		select * from sys_dept where parent_id = #{deptId}
+	</select>
 
 	<insert id="insertDept" parameterType="SysDept">
 		insert into sys_dept(

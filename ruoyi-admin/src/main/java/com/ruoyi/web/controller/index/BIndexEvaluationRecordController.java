@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.index;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.common.utils.SecurityUtils;
@@ -91,7 +93,12 @@ public class BIndexEvaluationRecordController extends BaseController
     @GetMapping(value = "/receiveId")
     public AjaxResult getRecordDetail(Long receiveId)
     {
-        return success(bIndexEvaluationRecordService.selectBIndexEvaluationRecordByReceiveId(receiveId));
+        EvaRecordAndFile recordAndFile = bIndexEvaluationRecordService.selectBIndexEvaluationRecordByReceiveId(receiveId);
+        if (recordAndFile == null){
+            recordAndFile = new EvaRecordAndFile();
+            recordAndFile.setFileList(new ArrayList<>());
+        }
+        return AjaxResult.success(recordAndFile);
     }
 
     /**

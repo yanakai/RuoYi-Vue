@@ -75,6 +75,7 @@ public class BIndexEvaluationRecordServiceImpl implements IBIndexEvaluationRecor
         evaluationRecord.setCreateDeptId(SecurityUtils.getDeptId());
         evaluationRecord.setCreateDeptName(sysDeptMapper.selectDeptById(SecurityUtils.getDeptId()).getDeptName());
         evaluationRecord.setCreateTime(DateUtils.getNowDate());
+        evaluationRecord.setRecordNum(getMaxRecordNum(bIndexEvaluationRecord.getReceiveId())+1);
         int num = bIndexEvaluationRecordMapper.insertBIndexEvaluationRecord(evaluationRecord);
 
         //添加附件
@@ -97,14 +98,11 @@ public class BIndexEvaluationRecordServiceImpl implements IBIndexEvaluationRecor
     public int updateBIndexEvaluationRecord(BIndexEvaluationRecord bIndexEvaluationRecord)
     {
         Long deptId = SecurityUtils.getDeptId();
-        if (deptId == 100L){
             bIndexEvaluationRecord.setAuditDeptId(deptId);
             bIndexEvaluationRecord.setAuditUserId(SecurityUtils.getUserId());
             bIndexEvaluationRecord.setAuditUserName(SecurityUtils.getUsername());
             bIndexEvaluationRecord.setAuditDeptName(sysDeptMapper.selectDeptById(deptId).getDeptName());
             bIndexEvaluationRecord.setAuditTime(DateUtils.getNowDate());
-            bIndexEvaluationRecord.setRecordNum(getMaxRecordNum(1L)+1);
-        }
         return bIndexEvaluationRecordMapper.updateBIndexEvaluationRecord(bIndexEvaluationRecord);
     }
     private synchronized Integer getMaxRecordNum(Long receiveId) {

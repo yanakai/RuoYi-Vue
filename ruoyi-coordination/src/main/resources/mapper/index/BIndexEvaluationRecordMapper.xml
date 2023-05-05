@@ -82,8 +82,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectBIndexEvaluationRecordsByReceiveId" parameterType="Long"
             resultMap="BIndexEvaRecordAndFileRes">
         SELECT
-            MAX( bier.record_num ),
             bier.record_id,
+            record_num,
             record_content,
             file_id,
             file_name,
@@ -95,7 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             b_index_evaluation_record_file bierf
             on
                 bier.record_id = bierf.record_id
-        where bier.record_id = #{recordId}
+        where bier.receive_id = #{receiveId} ORDER BY record_num desc LIMIT 1
     </select>
     <select id="getMaxRecordNum" resultType="java.lang.Integer">
         select max(record_num) from b_index_evaluation_record where receive_id = #{receiveId}
@@ -108,6 +108,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="taskId != null">task_id,</if>
             <if test="recordContent != null">record_content,</if>
             <if test="recordState != null">record_state,</if>
+            <if test="recordNum != null">record_num,</if>
             <if test="createTime != null">create_time,</if>
             <if test="createDeptId != null">create_dept_id,</if>
             <if test="createDeptName != null">create_dept_name,</if>
@@ -127,6 +128,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="taskId != null">#{taskId},</if>
             <if test="recordContent != null">#{recordContent},</if>
             <if test="recordState != null">#{recordState},</if>
+            <if test="recordNum != null">#{recordNum},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="createDeptId != null">#{createDeptId},</if>
             <if test="createDeptName != null">#{createDeptName},</if>
@@ -150,6 +152,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="taskId != null">task_id = #{taskId},</if>
             <if test="recordContent != null">record_content = #{recordContent},</if>
             <if test="recordState != null">record_state = #{recordState},</if>
+            <if test="recordNum != null">record_num = #{recordNum},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="createDeptId != null">create_dept_id = #{createDeptId},</if>
             <if test="createDeptName != null">create_dept_name = #{createDeptName},</if>

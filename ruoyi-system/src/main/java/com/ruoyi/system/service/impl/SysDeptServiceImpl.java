@@ -298,7 +298,7 @@ public class SysDeptServiceImpl implements ISysDeptService
     @Override
     public List<SysDept> selectChildDept() {
         Long deptId = SecurityUtils.getDeptId();
-        return deptMapper.selectChildrenDeptById(deptId);
+        return deptMapper.selectChildrenDeptByPid(deptId);
     }
 
     /**
