@@ -98,7 +98,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where bier.receive_id = #{receiveId} ORDER BY record_num desc LIMIT 1
     </select>
     <select id="getMaxRecordNum" resultType="java.lang.Integer">
-        select max(record_num) from b_index_evaluation_record where receive_id = #{receiveId}
+        select count(1) from b_index_evaluation_record where receive_id = #{receiveId}
     </select>
 
     <insert id="insertBIndexEvaluationRecord" parameterType="BIndexEvaluationRecord" useGeneratedKeys="true" keyProperty="recordId">

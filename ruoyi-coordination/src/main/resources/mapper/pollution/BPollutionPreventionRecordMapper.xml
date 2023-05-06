@@ -19,13 +19,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="remark"    column="remark"    />
     </resultMap>
 
+    <resultMap id="BPPRecordAndFileRes" type="BPPRecordAndFile" extends="BPollutionPreventionRecordResult">
+        <collection property="fileList" javaType="java.util.List" ofType="BPollutionPreventionRecordFile">
+            <result property="fileId" column="file_id"/>
+            <result property="fileName" column="file_name"/>
+            <result property="filePath" column="file_path"/>
+            <result property="fileType" column="file_type"/>
+        </collection>
+    </resultMap>
+    <resultMap id="BPPRecordFile" type="BPollutionPreventionRecordFile">
+        <result property="fileId" column="file_id"/>
+        <result property="fileName" column="file_name"/>
+        <result property="filePath" column="file_path"/>
+        <result property="fileType" column="file_type"/>
+    </resultMap>
+
     <sql id="selectBPollutionPreventionRecordVo">
         select record_id, receive_id, task_id, record_num, record_state, record_content, create_time, create_dept_id, create_dept_name, create_user_id, create_user_name, remark from b_pollution_prevention_record
     </sql>
 
-    <select id="selectBPollutionPreventionRecordList" parameterType="BPollutionPreventionRecord" resultMap="BPollutionPreventionRecordResult">
-        <include refid="selectBPollutionPreventionRecordVo"/>
-        <where>  
+    <select id="selectBPollutionPreventionRecordList" parameterType="BPollutionPreventionRecord" resultMap="BPPRecordAndFileRes">
+        <!--<include refid="selectBPollutionPreventionRecordVo"/>-->
+        select bppr.record_id, bppr.receive_id, bppr.task_id, bppr.record_num, bppr.record_state, bppr.record_content, bppr.create_time,
+        bppr.create_dept_id, bppr.create_dept_name, bppr.create_user_id,bppr.create_user_name, bppr.remark,
+        bpprf.file_id,bpprf.file_name,bpprf.file_path,bpprf.file_type
+        from b_pollution_prevention_record bppr left join b_pollution_prevention_record_file bpprf
+        on bppr.record_id = bpprf.record_id
+        <where>
             <if test="receiveId != null "> and receive_id = #{receiveId}</if>
             <if test="taskId != null "> and task_id = #{taskId}</if>
             <if test="recordNum != null "> and record_num = #{recordNum}</if>
@@ -42,7 +62,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectBPollutionPreventionRecordVo"/>
         where record_id = #{recordId}
     </select>
-        
+    <select id="getMaxRecordNum" resultType="java.lang.Long">
+        select count(1) from b_pollution_prevention_record where receive_id = #{receiveId}
+    </select>
+
     <insert id="insertBPollutionPreventionRecord" parameterType="BPollutionPreventionRecord" useGeneratedKeys="true" keyProperty="recordId">
         insert into b_pollution_prevention_record
         <trim prefix="(" suffix=")" suffixOverrides=",">

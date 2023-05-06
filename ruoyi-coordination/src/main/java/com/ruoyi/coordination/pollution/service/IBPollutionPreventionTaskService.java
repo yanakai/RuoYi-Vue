@@ -3,6 +3,7 @@ package com.ruoyi.coordination.pollution.service;
 import java.util.List;
 import com.ruoyi.coordination.pollution.domain.BPollutionPreventionTask;
 import com.ruoyi.coordination.pollution.domain.dto.BPPTaskAndFile;
+import com.ruoyi.coordination.pollution.domain.dto.BPPTaskAndReceive;
 
 /**
  * 协同平台--污染防治目标--主任务Service接口
@@ -60,5 +61,5 @@ public interface IBPollutionPreventionTaskService
      */
     public int deleteBPollutionPreventionTaskByTaskId(Long taskId);
 
-    List<BPollutionPreventionTask> selectBPollutionPreventionTaskListByDeptId(BPollutionPreventionTask bPollutionPreventionTask);
+    List<BPPTaskAndReceive> selectBPollutionPreventionTaskListByDeptId(BPPTaskAndReceive bPollutionPreventionTask);
 }

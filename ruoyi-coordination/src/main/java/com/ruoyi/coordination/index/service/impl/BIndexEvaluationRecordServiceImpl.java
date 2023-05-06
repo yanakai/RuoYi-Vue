@@ -80,9 +80,11 @@ public class BIndexEvaluationRecordServiceImpl implements IBIndexEvaluationRecor
 
         //添加附件
         List<BIndexEvaluationRecordFile> fileList = bIndexEvaluationRecord.getFileList();
-        fileList.forEach(f -> f.setRecordId(evaluationRecord.getRecordId()));
-        //附件批量添加
-        fileMapper.insertBatchBIndexEvaluationRecordFile(fileList);
+        if (fileList.size() > 0){
+            fileList.forEach(f -> f.setRecordId(evaluationRecord.getRecordId()));
+            //附件批量添加
+            fileMapper.insertBatchBIndexEvaluationRecordFile(fileList);
+        }
 
 
         return num;

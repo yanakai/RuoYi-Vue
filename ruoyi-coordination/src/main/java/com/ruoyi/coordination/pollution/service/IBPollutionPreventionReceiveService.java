@@ -3,6 +3,7 @@ package com.ruoyi.coordination.pollution.service;
 import java.util.List;
 import com.ruoyi.coordination.pollution.domain.BPollutionPreventionReceive;
 import com.ruoyi.coordination.pollution.domain.BPollutionPreventionTask;
+import com.ruoyi.coordination.pollution.domain.dto.BPPReceive;
 
 /**
  * 协同平台---污染防治目标--任务接收单位Service接口
@@ -34,7 +35,7 @@ public interface IBPollutionPreventionReceiveService
      * @param bPollutionPreventionReceive 协同平台---污染防治目标--任务接收单位
      * @return 结果
      */
-    public int insertBPollutionPreventionReceive(BPollutionPreventionReceive bPollutionPreventionReceive);
+    public int insertBPollutionPreventionReceive(BPPReceive bPollutionPreventionReceive);
 
     /**
      * 修改协同平台---污染防治目标--任务接收单位

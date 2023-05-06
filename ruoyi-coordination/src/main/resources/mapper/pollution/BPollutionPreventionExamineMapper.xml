@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.coordination.pollution.mapper.BPollutionPreventionExamineMapper">
+    
+    <resultMap type="BPollutionPreventionExamine" id="BPollutionPreventionExamineResult">
+        <result property="exId"    column="ex_id"    />
+        <result property="receiveId"    column="receive_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="recordId"    column="record_id"    />
+        <result property="exState"    column="ex_state"    />
+        <result property="exContent"    column="ex_content"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createDeptId"    column="create_dept_id"    />
+        <result property="createDeptName"    column="create_dept_name"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBPollutionPreventionExamineVo">
+        select ex_id, receive_id, task_id, record_id, ex_state, ex_content, create_time, create_dept_id, create_dept_name, create_user_id, create_user_name, remark from b_pollution_prevention_examine
+    </sql>
+
+    <select id="selectBPollutionPreventionExamineList" parameterType="BPollutionPreventionExamine" resultMap="BPollutionPreventionExamineResult">
+        <include refid="selectBPollutionPreventionExamineVo"/>
+        <where>  
+            <if test="receiveId != null "> and receive_id = #{receiveId}</if>
+            <if test="taskId != null "> and task_id = #{taskId}</if>
+            <if test="recordId != null "> and record_id = #{recordId}</if>
+            <if test="exState != null  and exState != ''"> and ex_state = #{exState}</if>
+            <if test="exContent != null  and exContent != ''"> and ex_content = #{exContent}</if>
+            <if test="createDeptId != null "> and create_dept_id = #{createDeptId}</if>
+            <if test="createDeptName != null  and createDeptName != ''"> and create_dept_name like concat('%', #{createDeptName}, '%')</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectBPollutionPreventionExamineByExId" parameterType="Long" resultMap="BPollutionPreventionExamineResult">
+        <include refid="selectBPollutionPreventionExamineVo"/>
+        where ex_id = #{exId}
+    </select>
+        
+    <insert id="insertBPollutionPreventionExamine" parameterType="BPollutionPreventionExamine" useGeneratedKeys="true" keyProperty="exId">
+        insert into b_pollution_prevention_examine
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="receiveId != null">receive_id,</if>
+            <if test="taskId != null">task_id,</if>
+            <if test="recordId != null">record_id,</if>
+            <if test="exState != null">ex_state,</if>
+            <if test="exContent != null">ex_content,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createDeptId != null">create_dept_id,</if>
+            <if test="createDeptName != null">create_dept_name,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="receiveId != null">#{receiveId},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="recordId != null">#{recordId},</if>
+            <if test="exState != null">#{exState},</if>
+            <if test="exContent != null">#{exContent},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createDeptId != null">#{createDeptId},</if>
+            <if test="createDeptName != null">#{createDeptName},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBPollutionPreventionExamine" parameterType="BPollutionPreventionExamine">
+        update b_pollution_prevention_examine
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="receiveId != null">receive_id = #{receiveId},</if>
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="recordId != null">record_id = #{recordId},</if>
+            <if test="exState != null">ex_state = #{exState},</if>
+            <if test="exContent != null">ex_content = #{exContent},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createDeptId != null">create_dept_id = #{createDeptId},</if>
+            <if test="createDeptName != null">create_dept_name = #{createDeptName},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where ex_id = #{exId}
+    </update>
+
+    <delete id="deleteBPollutionPreventionExamineByExId" parameterType="Long">
+        delete from b_pollution_prevention_examine where ex_id = #{exId}
+    </delete>
+
+    <delete id="deleteBPollutionPreventionExamineByExIds" parameterType="String">
+        delete from b_pollution_prevention_examine where ex_id in 
+        <foreach item="exId" collection="array" open="(" separator="," close=")">
+            #{exId}
+        </foreach>
+    </delete>
+</mapper>

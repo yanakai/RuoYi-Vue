@@ -2,6 +2,7 @@ package com.ruoyi.coordination.pollution.mapper;
 
 import java.util.List;
 import com.ruoyi.coordination.pollution.domain.BPollutionPreventionTask;
+import com.ruoyi.coordination.pollution.domain.dto.BPPTaskAndReceive;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -60,5 +61,5 @@ public interface BPollutionPreventionTaskMapper
      */
     public int deleteBPollutionPreventionTaskByTaskIds(Long[] taskIds);
 
-    List<BPollutionPreventionTask> selectBPollutionPreventionTaskListByDeptId(@Param("task") BPollutionPreventionTask bPollutionPreventionTask,@Param("deptId") Long deptId);
+    List<BPPTaskAndReceive> selectBPollutionPreventionTaskListByDeptId(@Param("task") BPPTaskAndReceive bPollutionPreventionTask, @Param("deptId") Long deptId);
 }

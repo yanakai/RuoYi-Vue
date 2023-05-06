@@ -2,11 +2,20 @@ package com.ruoyi.coordination.pollution.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.bean.BeanUtils;
+import com.ruoyi.coordination.pollution.domain.BPollutionPreventionReceive;
+import com.ruoyi.coordination.pollution.domain.BPollutionPreventionRecordFile;
+import com.ruoyi.coordination.pollution.domain.dto.BPPRecordAndFile;
+import com.ruoyi.coordination.pollution.mapper.BPollutionPreventionReceiveMapper;
+import com.ruoyi.coordination.pollution.mapper.BPollutionPreventionRecordFileMapper;
+import com.ruoyi.system.mapper.SysDeptMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.coordination.pollution.mapper.BPollutionPreventionRecordMapper;
 import com.ruoyi.coordination.pollution.domain.BPollutionPreventionRecord;
 import com.ruoyi.coordination.pollution.service.IBPollutionPreventionRecordService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 协同平台---污染防治目标--任务接收单位上报记录Service业务层处理
@@ -19,6 +28,12 @@ public class BPollutionPreventionRecordServiceImpl implements IBPollutionPrevent
 {
     @Autowired
     private BPollutionPreventionRecordMapper bPollutionPreventionRecordMapper;
+    @Autowired
+    private SysDeptMapper sysDeptMapper;
+    @Autowired
+    private BPollutionPreventionRecordFileMapper recordFileMapper;
+    @Autowired
+    private BPollutionPreventionReceiveMapper receiveMapper;
 
     /**
      * 查询协同平台---污染防治目标--任务接收单位上报记录
@@ -39,7 +54,7 @@ public class BPollutionPreventionRecordServiceImpl implements IBPollutionPrevent
      * @return 协同平台---污染防治目标--任务接收单位上报记录
      */
     @Override
-    public List<BPollutionPreventionRecord> selectBPollutionPreventionRecordList(BPollutionPreventionRecord bPollutionPreventionRecord)
+    public List<BPPRecordAndFile> selectBPollutionPreventionRecordList(BPollutionPreventionRecord bPollutionPreventionRecord)
     {
         return bPollutionPreventionRecordMapper.selectBPollutionPreventionRecordList(bPollutionPreventionRecord);
     }
@@ -51,10 +66,35 @@ public class BPollutionPreventionRecordServiceImpl implements IBPollutionPrevent
      * @return 结果
      */
     @Override
-    public int insertBPollutionPreventionRecord(BPollutionPreventionRecord bPollutionPreventionRecord)
+    @Transactional(rollbackFor = Exception.class)
+    public int insertBPollutionPreventionRecord(BPPRecordAndFile bPollutionPreventionRecord)
     {
         bPollutionPreventionRecord.setCreateTime(DateUtils.getNowDate());
-        return bPollutionPreventionRecordMapper.insertBPollutionPreventionRecord(bPollutionPreventionRecord);
+        bPollutionPreventionRecord.setCreateDeptId(SecurityUtils.getDeptId());
+        bPollutionPreventionRecord.setCreateDeptName(sysDeptMapper.selectDeptById(SecurityUtils.getDeptId()).getDeptName());
+        bPollutionPreventionRecord.setCreateUserId(SecurityUtils.getUserId());
+        bPollutionPreventionRecord.setCreateUserName(SecurityUtils.getUsername());
+        bPollutionPreventionRecord.setRecordNum(getMaxRecordNum(bPollutionPreventionRecord.getReceiveId())+1);
+        BPollutionPreventionRecord record = new BPollutionPreventionRecord();
+        BeanUtils.copyProperties(bPollutionPreventionRecord,record);
+        int num = bPollutionPreventionRecordMapper.insertBPollutionPreventionRecord(record);
+
+        List<BPollutionPreventionRecordFile> fileList = bPollutionPreventionRecord.getFileList();
+        if (fileList.size() > 0){
+            fileList.stream().forEach(f -> f.setRecordId(record.getRecordId()));
+            recordFileMapper.insertBPollutionPreventionRecordFileList(fileList);
+        }
+
+        //更新接收记录状态
+        BPollutionPreventionReceive receive = new BPollutionPreventionReceive();
+        receive.setReceiveId(bPollutionPreventionRecord.getReceiveId());
+        receive.setReceiveState("3");//接收记录状态置为已反馈
+        receiveMapper.updateBPollutionPreventionReceive(receive);
+        return num;
+    }
+
+    private Long getMaxRecordNum(Long receiveId) {
+        return bPollutionPreventionRecordMapper.getMaxRecordNum(receiveId);
     }
 
     /**

@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.bean.BeanUtils;
 import com.ruoyi.coordination.pollution.domain.BPollutionPreventionTask;
+import com.ruoyi.coordination.pollution.domain.dto.BPPReceive;
 import com.ruoyi.system.mapper.SysDeptMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.coordination.pollution.mapper.BPollutionPreventionReceiveMapper;
 import com.ruoyi.coordination.pollution.domain.BPollutionPreventionReceive;
 import com.ruoyi.coordination.pollution.service.IBPollutionPreventionReceiveService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 协同平台---污染防治目标--任务接收单位Service业务层处理
@@ -57,10 +60,36 @@ public class BPollutionPreventionReceiveServiceImpl implements IBPollutionPreven
      * @return 结果
      */
     @Override
-    public int insertBPollutionPreventionReceive(BPollutionPreventionReceive bPollutionPreventionReceive)
+    @Transactional(rollbackFor = Exception.class)
+    public int insertBPollutionPreventionReceive(BPPReceive bPollutionPreventionReceive)
     {
         bPollutionPreventionReceive.setCreateTime(DateUtils.getNowDate());
-        return bPollutionPreventionReceiveMapper.insertBPollutionPreventionReceive(bPollutionPreventionReceive);
+        bPollutionPreventionReceive.setCreateDeptId(SecurityUtils.getDeptId());
+        bPollutionPreventionReceive.setCreateDeptName(sysDeptMapper.selectDeptById(SecurityUtils.getDeptId()).getDeptName());
+        bPollutionPreventionReceive.setCreateUserId(SecurityUtils.getUserId());
+        bPollutionPreventionReceive.setCreateUserName(SecurityUtils.getUsername());
+//        bPollutionPreventionReceive.setCompleteTime();
+        bPollutionPreventionReceive.setReceiveState("0");
+        bPollutionPreventionReceive.setUrgingState("0");
+        Long[] deptIds = bPollutionPreventionReceive.getDeptIds();
+        List<BPollutionPreventionReceive> list = new ArrayList<>();
+        if (deptIds.length > 0){
+            for (Long deptId : deptIds) {
+                BPollutionPreventionReceive receive = new BPollutionPreventionReceive();
+                BeanUtils.copyProperties(bPollutionPreventionReceive,receive);
+                receive.setReceiveDeptId(deptId);
+                receive.setReceiveTime(DateUtils.getNowDate());
+                receive.setReceiveDeptName(sysDeptMapper.selectDeptById(deptId).getDeptName());
+                list.add(receive);
+            }
+        }
+        // 更新父级接收记录的状态
+        String receivePid = bPollutionPreventionReceive.getReceivePid();
+        BPollutionPreventionReceive receive = new BPollutionPreventionReceive();
+        receive.setReceiveId(Long.parseLong(receivePid));
+        receive.setReceiveState("2"); //状态改为 已下发
+        bPollutionPreventionReceiveMapper.updateBPollutionPreventionReceive(receive);
+        return bPollutionPreventionReceiveMapper.insertBPollutionPreventionReceiveList(list);
     }
 
     /**
@@ -72,6 +101,9 @@ public class BPollutionPreventionReceiveServiceImpl implements IBPollutionPreven
     @Override
     public int updateBPollutionPreventionReceive(BPollutionPreventionReceive bPollutionPreventionReceive)
     {
+        bPollutionPreventionReceive.setReceiveUserId(SecurityUtils.getUserId());
+        bPollutionPreventionReceive.setReceiveUserName(SecurityUtils.getUsername());
+        bPollutionPreventionReceive.setReceiveTime(DateUtils.getNowDate());
         return bPollutionPreventionReceiveMapper.updateBPollutionPreventionReceive(bPollutionPreventionReceive);
     }
 
@@ -108,6 +140,7 @@ public class BPollutionPreventionReceiveServiceImpl implements IBPollutionPreven
             receiveList = new ArrayList<>();
             for (Long deptId : deptIds) {
                 BPollutionPreventionReceive bPollutionPreventionReceive = new BPollutionPreventionReceive();
+                bPollutionPreventionReceive.setCreateTime(DateUtils.getNowDate());
                 bPollutionPreventionReceive.setReceiveDeptId(deptId);
                 bPollutionPreventionReceive.setReceiveDeptName(sysDeptMapper.selectDeptById(deptId).getDeptName());
                 bPollutionPreventionReceive.setTaskId(bPollutionPreventionTask.getTaskId());
@@ -118,10 +151,10 @@ public class BPollutionPreventionReceiveServiceImpl implements IBPollutionPreven
                 bPollutionPreventionReceive.setCreateDeptId(SecurityUtils.getDeptId());
                 bPollutionPreventionReceive.setCreateDeptName(bPollutionPreventionTask.getCreateDeptName());
                 bPollutionPreventionReceive.setUrgingState("0"); //默认为 未催办
+                bPollutionPreventionReceive.setReceiveState("0");
                 receiveList.add(bPollutionPreventionReceive);
             }
         }
-
         return bPollutionPreventionReceiveMapper.insertBPollutionPreventionReceiveList(receiveList);
     }
 }

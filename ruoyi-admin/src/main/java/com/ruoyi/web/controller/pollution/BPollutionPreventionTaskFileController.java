@@ -37,19 +37,19 @@ public class BPollutionPreventionTaskFileController extends BaseController
     /**
      * 查询协同平台---污染防治目标--主任务关联的附件列表
      */
-    @PreAuthorize("@ss.hasPermi('pollution:taskFile:list')")
+    // @PreAuthorize("@ss.hasPermi('pollution:taskFile:list')")
     @GetMapping("/list")
-    public TableDataInfo list(BPollutionPreventionTaskFile bPollutionPreventionTaskFile)
+    public AjaxResult list(BPollutionPreventionTaskFile bPollutionPreventionTaskFile)
     {
-        startPage();
+//        startPage();
         List<BPollutionPreventionTaskFile> list = bPollutionPreventionTaskFileService.selectBPollutionPreventionTaskFileList(bPollutionPreventionTaskFile);
-        return getDataTable(list);
+        return success(list);
     }
 
     /**
      * 导出协同平台---污染防治目标--主任务关联的附件列表
      */
-    @PreAuthorize("@ss.hasPermi('pollution:taskFile:export')")
+    // @PreAuthorize("@ss.hasPermi('pollution:taskFile:export')")
     @Log(title = "协同平台---污染防治目标--主任务关联的附件", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, BPollutionPreventionTaskFile bPollutionPreventionTaskFile)
@@ -62,7 +62,7 @@ public class BPollutionPreventionTaskFileController extends BaseController
     /**
      * 获取协同平台---污染防治目标--主任务关联的附件详细信息
      */
-    @PreAuthorize("@ss.hasPermi('pollution:taskFile:query')")
+    // @PreAuthorize("@ss.hasPermi('pollution:taskFile:query')")
     @GetMapping(value = "/{fileId}")
     public AjaxResult getInfo(@PathVariable("fileId") Long fileId)
     {
@@ -72,7 +72,7 @@ public class BPollutionPreventionTaskFileController extends BaseController
     /**
      * 新增协同平台---污染防治目标--主任务关联的附件
      */
-    @PreAuthorize("@ss.hasPermi('pollution:taskFile:add')")
+    // @PreAuthorize("@ss.hasPermi('pollution:taskFile:add')")
     @Log(title = "协同平台---污染防治目标--主任务关联的附件", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody BPollutionPreventionTaskFile bPollutionPreventionTaskFile)
@@ -83,7 +83,7 @@ public class BPollutionPreventionTaskFileController extends BaseController
     /**
      * 修改协同平台---污染防治目标--主任务关联的附件
      */
-    @PreAuthorize("@ss.hasPermi('pollution:taskFile:edit')")
+    // @PreAuthorize("@ss.hasPermi('pollution:taskFile:edit')")
     @Log(title = "协同平台---污染防治目标--主任务关联的附件", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody BPollutionPreventionTaskFile bPollutionPreventionTaskFile)
@@ -94,7 +94,7 @@ public class BPollutionPreventionTaskFileController extends BaseController
     /**
      * 删除协同平台---污染防治目标--主任务关联的附件
      */
-    @PreAuthorize("@ss.hasPermi('pollution:taskFile:remove')")
+    // @PreAuthorize("@ss.hasPermi('pollution:taskFile:remove')")
     @Log(title = "协同平台---污染防治目标--主任务关联的附件", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{fileIds}")
     public AjaxResult remove(@PathVariable Long[] fileIds)

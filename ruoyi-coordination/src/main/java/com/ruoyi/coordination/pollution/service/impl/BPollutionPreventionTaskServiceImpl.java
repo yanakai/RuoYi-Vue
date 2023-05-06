@@ -7,9 +7,9 @@ import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.bean.BeanUtils;
-import com.ruoyi.coordination.pollution.domain.BPollutionPreventionReceive;
 import com.ruoyi.coordination.pollution.domain.BPollutionPreventionTaskFile;
 import com.ruoyi.coordination.pollution.domain.dto.BPPTaskAndFile;
+import com.ruoyi.coordination.pollution.domain.dto.BPPTaskAndReceive;
 import com.ruoyi.coordination.pollution.mapper.BPollutionPreventionTaskFileMapper;
 import com.ruoyi.coordination.pollution.service.IBPollutionPreventionReceiveService;
 import com.ruoyi.system.mapper.SysDeptMapper;
@@ -138,7 +138,7 @@ public class BPollutionPreventionTaskServiceImpl implements IBPollutionPreventio
     }
 
     @Override
-    public List<BPollutionPreventionTask> selectBPollutionPreventionTaskListByDeptId(BPollutionPreventionTask bPollutionPreventionTask) {
+    public List<BPPTaskAndReceive> selectBPollutionPreventionTaskListByDeptId(BPPTaskAndReceive bPollutionPreventionTask) {
 
         Long deptId = SecurityUtils.getDeptId();
         return bPollutionPreventionTaskMapper.selectBPollutionPreventionTaskListByDeptId(bPollutionPreventionTask,deptId);

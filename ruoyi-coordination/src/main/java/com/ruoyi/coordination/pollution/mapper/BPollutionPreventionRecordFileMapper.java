@@ -58,4 +58,6 @@ public interface BPollutionPreventionRecordFileMapper
      * @return 结果
      */
     public int deleteBPollutionPreventionRecordFileByFileIds(Long[] fileIds);
+
+    int insertBPollutionPreventionRecordFileList(List<BPollutionPreventionRecordFile> fileList);
 }

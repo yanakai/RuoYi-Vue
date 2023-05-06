@@ -2,6 +2,7 @@ package com.ruoyi.coordination.pollution.mapper;
 
 import java.util.List;
 import com.ruoyi.coordination.pollution.domain.BPollutionPreventionRecord;
+import com.ruoyi.coordination.pollution.domain.dto.BPPRecordAndFile;
 
 /**
  * 协同平台---污染防治目标--任务接收单位上报记录Mapper接口
@@ -25,7 +26,7 @@ public interface BPollutionPreventionRecordMapper
      * @param bPollutionPreventionRecord 协同平台---污染防治目标--任务接收单位上报记录
      * @return 协同平台---污染防治目标--任务接收单位上报记录集合
      */
-    public List<BPollutionPreventionRecord> selectBPollutionPreventionRecordList(BPollutionPreventionRecord bPollutionPreventionRecord);
+    public List<BPPRecordAndFile> selectBPollutionPreventionRecordList(BPollutionPreventionRecord bPollutionPreventionRecord);
 
     /**
      * 新增协同平台---污染防治目标--任务接收单位上报记录
@@ -58,4 +59,6 @@ public interface BPollutionPreventionRecordMapper
      * @return 结果
      */
     public int deleteBPollutionPreventionRecordByRecordIds(Long[] recordIds);
+
+    Long getMaxRecordNum(Long receiveId);
 }

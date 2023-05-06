@@ -1,6 +1,5 @@
 package com.ruoyi.coordination.pollution.domain.dto;
 
-import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.coordination.pollution.domain.BPollutionPreventionTask;
 import com.ruoyi.coordination.pollution.domain.BPollutionPreventionTaskFile;
 
@@ -12,7 +11,7 @@ public class BPPTaskAndFile extends BPollutionPreventionTask {
 
     private Long[] deptIds;
 
-    private Long receiveId;
+
 
     public List<BPollutionPreventionTaskFile> getFileList() {
         return fileList;
@@ -29,11 +28,4 @@ public class BPPTaskAndFile extends BPollutionPreventionTask {
         this.deptIds = deptIds;
     }
 
-    public Long getReceiveId() {
-        return receiveId;
-    }
-
-    public void setReceiveId(Long receiveId) {
-        this.receiveId = receiveId;
-    }
 }

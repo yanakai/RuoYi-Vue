@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.pollution;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.coordination.pollution.domain.dto.BPPRecordAndFile;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,32 +39,32 @@ public class BPollutionPreventionRecordController extends BaseController
     /**
      * 查询协同平台---污染防治目标--任务接收单位上报记录列表
      */
-    @PreAuthorize("@ss.hasPermi('pollution:record:list')")
+    // @PreAuthorize("@ss.hasPermi('pollution:record:list')")
     @GetMapping("/list")
-    public TableDataInfo list(BPollutionPreventionRecord bPollutionPreventionRecord)
+    public AjaxResult list(BPollutionPreventionRecord bPollutionPreventionRecord)
     {
-        startPage();
-        List<BPollutionPreventionRecord> list = bPollutionPreventionRecordService.selectBPollutionPreventionRecordList(bPollutionPreventionRecord);
-        return getDataTable(list);
+//        startPage();
+        List<BPPRecordAndFile> list = bPollutionPreventionRecordService.selectBPollutionPreventionRecordList(bPollutionPreventionRecord);
+        return success(list);
     }
 
     /**
      * 导出协同平台---污染防治目标--任务接收单位上报记录列表
      */
-    @PreAuthorize("@ss.hasPermi('pollution:record:export')")
+    // @PreAuthorize("@ss.hasPermi('pollution:record:export')")
     @Log(title = "协同平台---污染防治目标--任务接收单位上报记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, BPollutionPreventionRecord bPollutionPreventionRecord)
     {
-        List<BPollutionPreventionRecord> list = bPollutionPreventionRecordService.selectBPollutionPreventionRecordList(bPollutionPreventionRecord);
+        List<BPPRecordAndFile> list = bPollutionPreventionRecordService.selectBPollutionPreventionRecordList(bPollutionPreventionRecord);
         ExcelUtil<BPollutionPreventionRecord> util = new ExcelUtil<BPollutionPreventionRecord>(BPollutionPreventionRecord.class);
-        util.exportExcel(response, list, "协同平台---污染防治目标--任务接收单位上报记录数据");
+//        util.exportExcel(response, list, "协同平台---污染防治目标--任务接收单位上报记录数据");
     }
 
     /**
      * 获取协同平台---污染防治目标--任务接收单位上报记录详细信息
      */
-    @PreAuthorize("@ss.hasPermi('pollution:record:query')")
+    // @PreAuthorize("@ss.hasPermi('pollution:record:query')")
     @GetMapping(value = "/{recordId}")
     public AjaxResult getInfo(@PathVariable("recordId") Long recordId)
     {
@@ -72,10 +74,10 @@ public class BPollutionPreventionRecordController extends BaseController
     /**
      * 新增协同平台---污染防治目标--任务接收单位上报记录
      */
-    @PreAuthorize("@ss.hasPermi('pollution:record:add')")
+    // @PreAuthorize("@ss.hasPermi('pollution:record:add')")
     @Log(title = "协同平台---污染防治目标--任务接收单位上报记录", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody BPollutionPreventionRecord bPollutionPreventionRecord)
+    public AjaxResult add(@RequestBody BPPRecordAndFile bPollutionPreventionRecord)
     {
         return toAjax(bPollutionPreventionRecordService.insertBPollutionPreventionRecord(bPollutionPreventionRecord));
     }
@@ -83,7 +85,7 @@ public class BPollutionPreventionRecordController extends BaseController
     /**
      * 修改协同平台---污染防治目标--任务接收单位上报记录
      */
-    @PreAuthorize("@ss.hasPermi('pollution:record:edit')")
+    // @PreAuthorize("@ss.hasPermi('pollution:record:edit')")
     @Log(title = "协同平台---污染防治目标--任务接收单位上报记录", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody BPollutionPreventionRecord bPollutionPreventionRecord)
@@ -94,7 +96,7 @@ public class BPollutionPreventionRecordController extends BaseController
     /**
      * 删除协同平台---污染防治目标--任务接收单位上报记录
      */
-    @PreAuthorize("@ss.hasPermi('pollution:record:remove')")
+    // @PreAuthorize("@ss.hasPermi('pollution:record:remove')")
     @Log(title = "协同平台---污染防治目标--任务接收单位上报记录", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{recordIds}")
     public AjaxResult remove(@PathVariable Long[] recordIds)

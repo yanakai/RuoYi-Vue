@@ -20,6 +20,8 @@ public class BPollutionPreventionReceive extends BaseEntity
     /** 主键id */
     private Long receiveId;
 
+    private String receivePid;
+
     /** 主任务id */
     @Excel(name = "主任务id")
     private Long taskId;
@@ -31,10 +33,6 @@ public class BPollutionPreventionReceive extends BaseEntity
     /** 催办状态：0：未催办；1：已催办 */
     @Excel(name = "催办状态：0：未催办；1：已催办")
     private String urgingState;
-
-    /** 接收人 */
-    @Excel(name = "接收人")
-    private String jsr;
 
     /** 接收单位id */
     @Excel(name = "接收单位id")
@@ -48,6 +46,10 @@ public class BPollutionPreventionReceive extends BaseEntity
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "接收时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date receiveTime;
+
+    private Long receiveUserId;
+
+    private String receiveUserName;
 
     /** 完成时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -79,7 +81,16 @@ public class BPollutionPreventionReceive extends BaseEntity
     {
         return receiveId;
     }
-    public void setTaskId(Long taskId) 
+
+    public String getReceivePid() {
+        return receivePid;
+    }
+
+    public void setReceivePid(String receivePid) {
+        this.receivePid = receivePid;
+    }
+
+    public void setTaskId(Long taskId)
     {
         this.taskId = taskId;
     }
@@ -124,7 +135,24 @@ public class BPollutionPreventionReceive extends BaseEntity
     {
         return receiveTime;
     }
-    public void setCompleteTime(Date completeTime) 
+
+    public Long getReceiveUserId() {
+        return receiveUserId;
+    }
+
+    public void setReceiveUserId(Long receiveUserId) {
+        this.receiveUserId = receiveUserId;
+    }
+
+    public String getReceiveUserName() {
+        return receiveUserName;
+    }
+
+    public void setReceiveUserName(String receiveUserName) {
+        this.receiveUserName = receiveUserName;
+    }
+
+    public void setCompleteTime(Date completeTime)
     {
         this.completeTime = completeTime;
     }
@@ -168,14 +196,6 @@ public class BPollutionPreventionReceive extends BaseEntity
     public String getCreateUserName() 
     {
         return createUserName;
-    }
-
-    public String getJsr() {
-        return jsr;
-    }
-
-    public void setJsr(String jsr) {
-        this.jsr = jsr;
     }
 
     public String getUrgingState() {

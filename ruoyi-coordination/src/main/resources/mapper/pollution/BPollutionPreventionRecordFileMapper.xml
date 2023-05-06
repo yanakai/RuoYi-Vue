@@ -46,6 +46,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="fileType != null">#{fileType},</if>
          </trim>
     </insert>
+    <insert id="insertBPollutionPreventionRecordFileList" parameterType="BAnnualTargetRecordFile">
+        insert into b_pollution_prevention_record_file(record_id,file_name,file_path,file_type)
+        values
+        <foreach collection="list" item="t" index="index" separator=",">
+            (#{t.recordId},
+            #{t.fileName},
+            #{t.filePath},
+            #{t.fileType})
+        </foreach>
+    </insert>
 
     <update id="updateBPollutionPreventionRecordFile" parameterType="BPollutionPreventionRecordFile">
         update b_pollution_prevention_record_file

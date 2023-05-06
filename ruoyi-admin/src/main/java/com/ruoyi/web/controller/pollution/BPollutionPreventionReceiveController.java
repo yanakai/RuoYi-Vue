@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.pollution;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.coordination.pollution.domain.dto.BPPReceive;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +39,7 @@ public class BPollutionPreventionReceiveController extends BaseController
     /**
      * 查询协同平台---污染防治目标--任务接收单位列表
      */
-    @PreAuthorize("@ss.hasPermi('pollution:receive:list')")
+    // @PreAuthorize("@ss.hasPermi('pollution:receive:list')")
     @GetMapping("/list")
     public AjaxResult list(BPollutionPreventionReceive bPollutionPreventionReceive)
     {
@@ -49,7 +51,7 @@ public class BPollutionPreventionReceiveController extends BaseController
     /**
      * 导出协同平台---污染防治目标--任务接收单位列表
      */
-    @PreAuthorize("@ss.hasPermi('pollution:receive:export')")
+    // @PreAuthorize("@ss.hasPermi('pollution:receive:export')")
     @Log(title = "协同平台---污染防治目标--任务接收单位", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, BPollutionPreventionReceive bPollutionPreventionReceive)
@@ -62,7 +64,7 @@ public class BPollutionPreventionReceiveController extends BaseController
     /**
      * 获取协同平台---污染防治目标--任务接收单位详细信息
      */
-    @PreAuthorize("@ss.hasPermi('pollution:receive:query')")
+    // @PreAuthorize("@ss.hasPermi('pollution:receive:query')")
     @GetMapping(value = "/{receiveId}")
     public AjaxResult getInfo(@PathVariable("receiveId") Long receiveId)
     {
@@ -72,10 +74,10 @@ public class BPollutionPreventionReceiveController extends BaseController
     /**
      * 新增协同平台---污染防治目标--任务接收单位
      */
-    @PreAuthorize("@ss.hasPermi('pollution:receive:add')")
+    // @PreAuthorize("@ss.hasPermi('pollution:receive:add')")
     @Log(title = "协同平台---污染防治目标--任务接收单位", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody BPollutionPreventionReceive bPollutionPreventionReceive)
+    public AjaxResult add(@RequestBody BPPReceive bPollutionPreventionReceive)
     {
         return toAjax(bPollutionPreventionReceiveService.insertBPollutionPreventionReceive(bPollutionPreventionReceive));
     }
@@ -83,7 +85,7 @@ public class BPollutionPreventionReceiveController extends BaseController
     /**
      * 修改协同平台---污染防治目标--任务接收单位
      */
-    @PreAuthorize("@ss.hasPermi('pollution:receive:edit')")
+    // @PreAuthorize("@ss.hasPermi('pollution:receive:edit')")
     @Log(title = "协同平台---污染防治目标--任务接收单位", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody BPollutionPreventionReceive bPollutionPreventionReceive)
@@ -94,7 +96,7 @@ public class BPollutionPreventionReceiveController extends BaseController
     /**
      * 删除协同平台---污染防治目标--任务接收单位
      */
-    @PreAuthorize("@ss.hasPermi('pollution:receive:remove')")
+    // @PreAuthorize("@ss.hasPermi('pollution:receive:remove')")
     @Log(title = "协同平台---污染防治目标--任务接收单位", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{receiveIds}")
     public AjaxResult remove(@PathVariable Long[] receiveIds)

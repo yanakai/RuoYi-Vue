@@ -27,7 +27,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <resultMap id="BPPTaskAndFileRes" type="BPPTaskAndFile" extends="BPollutionPreventionTaskResult">
-        <result property="receiveId" column="receive_id"/>
         <collection property="fileList" javaType="java.util.List" ofType="BPollutionPreventionTaskFile">
             <result property="fileId" column="file_id"/>
             <result property="fileName" column="file_name"/>
@@ -40,6 +39,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="fileName" column="file_name"/>
         <result property="filePath" column="file_path"/>
         <result property="fileType" column="file_type"/>
+    </resultMap>
+    <resultMap id="BPPTaskAndReceiveRes" type="BPPTaskAndReceive" extends="BPollutionPreventionTaskResult">
+        <result property="receiveId" column="receive_id"/>
+        <result property="receiveState" column="receive_state"/>
+        <result property="createTime" column="create_time"/>
+        <result property="completeTime" column="complete_time"/>
     </resultMap>
 
     <sql id="selectBPollutionPreventionTaskVo">
@@ -76,13 +81,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectBPollutionPreventionTaskVo"/>
         where task_id = #{taskId}
     </select>
-    <select id="selectBPollutionPreventionTaskListByDeptId" resultMap="BPPTaskAndFileRes">
+    <select id="selectBPollutionPreventionTaskListByDeptId" resultMap="BPPTaskAndReceiveRes">
         select bppt.task_id,bppt.examine_file_id, bppt.task_name, bppt.task_level, bppt.task_type,
         bppt.task_remind_type, bppt.task_time_limit, bppt.task_source, bppt.task_state, bppt.task_ask, bppt.task_content,
-        bppt.start_time, bppt.end_time, bppr.receive_id, bpptf.file_id, bpptf.file_name, bpptf.file_path, bpptf.file_type from b_pollution_prevention_task bppt
-        LEFT JOIN b_pollution_prevention_receive bppr on bppt.task_id = bppr.task_id left join
-        b_pollution_prevention_task_file bpptf on bppt.task_id = bpptf.task_id
+        bppt.start_time, bppt.end_time, bppr.receive_id,bppr.receive_state,bppr.create_time,
+        bppt.create_dept_name,bppt.create_user_name
+        from b_pollution_prevention_task bppt
+        LEFT JOIN b_pollution_prevention_receive bppr on bppt.task_id = bppr.task_id
         WHERE bppr.receive_dept_id = #{deptId}
+            <if test="task.searchCode == 0">and bppr.receive_state in ('0','1')</if>
+            <if test="task.searchCode == 1">and bppr.receive_state in ('2','3')</if>
             <if test="task.examineFileId != null "> and examine_file_id = #{task.examineFileId}</if>
             <if test="task.taskName != null  and task.taskName != ''"> and task_name like concat('%', #{task.taskName}, '%')</if>
             <if test="task.taskLevel != null  and task.taskLevel != ''"> and task_level = #{task.taskLevel}</if>
