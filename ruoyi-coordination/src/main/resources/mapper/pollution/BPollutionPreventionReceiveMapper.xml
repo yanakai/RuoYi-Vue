@@ -128,8 +128,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="receiveDeptId != null">receive_dept_id = #{receiveDeptId},</if>
             <if test="receiveDeptName != null">receive_dept_name = #{receiveDeptName},</if>
             <if test="receiveTime != null">receive_time = #{receiveTime},</if>
-            <if test="receiveUserId != null">receive_time = #{receiveUserId}</if>
-            <if test="receiveUserName != null">receive_time = #{receiveUserName},</if>
+            <if test="receiveUserId != null">receive_user_id = #{receiveUserId},</if>
+            <if test="receiveUserName != null">receive_user_name = #{receiveUserName},</if>
             <if test="completeTime != null">complete_time = #{completeTime},</if>
             <if test="createDeptId != null">create_dept_id = #{createDeptId},</if>
             <if test="createDeptName != null">create_dept_name = #{createDeptName},</if>

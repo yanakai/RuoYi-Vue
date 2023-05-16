@@ -57,6 +57,7 @@ public class BAnnualTargetTaskController extends BaseController {
     }
 
     // 下级单位任务列表
+    @PreAuthorize("@ss.hasPermi('annual:task:listByDeptId')")
     @GetMapping("/listByDeptId")
     public TableDataInfo listByDeptId(BAnnualTargetTask bAnnualTargetTask){
         startPage();
@@ -68,7 +69,7 @@ public class BAnnualTargetTaskController extends BaseController {
     /**
      * 导出协同平台--年度目标任务--任务主列表
      */
-//    @PreAuthorize("@ss.hasPermi('annual:task:export')")
+    @PreAuthorize("@ss.hasPermi('annual:task:export')")
     @Log(title = "协同平台--年度目标任务--任务主", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, BAnnualTargetTask bAnnualTargetTask)

@@ -99,6 +99,7 @@ public class BPollutionPreventionReceiveServiceImpl implements IBPollutionPreven
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int updateBPollutionPreventionReceive(BPollutionPreventionReceive bPollutionPreventionReceive)
     {
         bPollutionPreventionReceive.setReceiveUserId(SecurityUtils.getUserId());
@@ -144,14 +145,14 @@ public class BPollutionPreventionReceiveServiceImpl implements IBPollutionPreven
                 bPollutionPreventionReceive.setReceiveDeptId(deptId);
                 bPollutionPreventionReceive.setReceiveDeptName(sysDeptMapper.selectDeptById(deptId).getDeptName());
                 bPollutionPreventionReceive.setTaskId(bPollutionPreventionTask.getTaskId());
-                bPollutionPreventionReceive.setReceiveTime(DateUtils.getNowDate());
+//                bPollutionPreventionReceive.setReceiveTime(DateUtils.getNowDate());
                 bPollutionPreventionReceive.setCompleteTime(bPollutionPreventionTask.getEndTime());
                 bPollutionPreventionReceive.setCreateUserId(SecurityUtils.getUserId());
                 bPollutionPreventionReceive.setCreateUserName(SecurityUtils.getUsername());
                 bPollutionPreventionReceive.setCreateDeptId(SecurityUtils.getDeptId());
                 bPollutionPreventionReceive.setCreateDeptName(bPollutionPreventionTask.getCreateDeptName());
                 bPollutionPreventionReceive.setUrgingState("0"); //默认为 未催办
-                bPollutionPreventionReceive.setReceiveState("0");
+                bPollutionPreventionReceive.setReceiveState("0"); //默认 未接收
                 receiveList.add(bPollutionPreventionReceive);
             }
         }

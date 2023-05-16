@@ -62,4 +62,6 @@ public interface IBPollutionPreventionTaskService
     public int deleteBPollutionPreventionTaskByTaskId(Long taskId);
 
     List<BPPTaskAndReceive> selectBPollutionPreventionTaskListByDeptId(BPPTaskAndReceive bPollutionPreventionTask);
+
+    List<BPPTaskAndReceive> selectBPollutionPreventionExTaskListByDeptId(BPPTaskAndReceive bPollutionPreventionTask);
 }

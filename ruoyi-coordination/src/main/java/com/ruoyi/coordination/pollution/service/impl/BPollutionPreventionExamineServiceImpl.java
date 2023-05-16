@@ -2,11 +2,16 @@ package com.ruoyi.coordination.pollution.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.coordination.pollution.domain.BPollutionPreventionReceive;
+import com.ruoyi.coordination.pollution.mapper.BPollutionPreventionReceiveMapper;
+import com.ruoyi.system.mapper.SysDeptMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.coordination.pollution.mapper.BPollutionPreventionExamineMapper;
 import com.ruoyi.coordination.pollution.domain.BPollutionPreventionExamine;
 import com.ruoyi.coordination.pollution.service.IBPollutionPreventionExamineService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 协同平台---污染防治目标--任务审核记录Service业务层处理
@@ -19,6 +24,10 @@ public class BPollutionPreventionExamineServiceImpl implements IBPollutionPreven
 {
     @Autowired
     private BPollutionPreventionExamineMapper bPollutionPreventionExamineMapper;
+    @Autowired
+    private BPollutionPreventionReceiveMapper receiveMapper;
+    @Autowired
+    private SysDeptMapper sysDeptMapper;
 
     /**
      * 查询协同平台---污染防治目标--任务审核记录
@@ -51,11 +60,25 @@ public class BPollutionPreventionExamineServiceImpl implements IBPollutionPreven
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int insertBPollutionPreventionExamine(BPollutionPreventionExamine bPollutionPreventionExamine)
     {
-
         bPollutionPreventionExamine.setCreateTime(DateUtils.getNowDate());
-        return bPollutionPreventionExamineMapper.insertBPollutionPreventionExamine(bPollutionPreventionExamine);
+        bPollutionPreventionExamine.setExUserId(SecurityUtils.getUserId());
+        bPollutionPreventionExamine.setExUserName(SecurityUtils.getUsername());
+        bPollutionPreventionExamine.setExDeptId(SecurityUtils.getDeptId());
+        bPollutionPreventionExamine.setExDeptName(sysDeptMapper.selectDeptById(SecurityUtils.getDeptId()).getDeptName());
+        int num = bPollutionPreventionExamineMapper.insertBPollutionPreventionExamine(bPollutionPreventionExamine);
+        BPollutionPreventionReceive receive = new BPollutionPreventionReceive();
+        receive.setReceiveId(bPollutionPreventionExamine.getReceiveId());
+        if ("0".equals(bPollutionPreventionExamine.getExState())){ // 0 审核通过
+            receive.setReceiveState("4"); //新增审核记录后，将接收记录置为已审核
+        }else {
+            receive.setReceiveState("5"); //审核未通过，状态置为未通过，重新处理
+        }
+
+        receiveMapper.updateBPollutionPreventionReceive(receive);
+        return num;
     }
 
     /**

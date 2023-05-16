@@ -53,6 +53,17 @@ public class BPollutionPreventionTaskController extends BaseController
         List<BPPTaskAndReceive> list = bPollutionPreventionTaskService.selectBPollutionPreventionTaskListByDeptId(bPollutionPreventionTask);
         return getDataTable(list);
     }
+    /*
+    * 查询协同平台--污染防治目标--审核待办列表
+    *
+    * */
+    @GetMapping("/exDaiBanList")
+    public TableDataInfo exDaiBanList(BPPTaskAndReceive bPollutionPreventionTask)
+    {
+        startPage();
+        List<BPPTaskAndReceive> list = bPollutionPreventionTaskService.selectBPollutionPreventionExTaskListByDeptId(bPollutionPreventionTask);
+        return getDataTable(list);
+    }
 
     /**
      * 导出协同平台--污染防治目标--主任务列表

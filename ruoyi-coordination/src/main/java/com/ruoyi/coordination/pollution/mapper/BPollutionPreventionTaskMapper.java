@@ -62,4 +62,6 @@ public interface BPollutionPreventionTaskMapper
     public int deleteBPollutionPreventionTaskByTaskIds(Long[] taskIds);
 
     List<BPPTaskAndReceive> selectBPollutionPreventionTaskListByDeptId(@Param("task") BPPTaskAndReceive bPollutionPreventionTask, @Param("deptId") Long deptId);
+
+    List<BPPTaskAndReceive> selectBPollutionPreventionExTaskListByDeptId(@Param("task") BPPTaskAndReceive bPollutionPreventionTask, @Param("deptId") Long deptId);
 }

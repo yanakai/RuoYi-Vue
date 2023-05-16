@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: air
+# 开发环境配置
+server:
+  # 服务器的HTTP端口，默认为8080
+  port: 8080

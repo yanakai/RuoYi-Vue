@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.coordination.clue.mapper.BClueInfoRulesMapper">
+    
+    <resultMap type="BClueInfoRules" id="BClueInfoRulesResult">
+        <result property="rulesId"    column="rules_id"    />
+        <result property="rulesData"    column="rules_data" typeHandler="com.ruoyi.coordination.clue.typeHandler.JsonTypeHandler"  />
+        <result property="createTime"    column="create_time"    />
+        <result property="createDeptId"    column="create_dept_id"    />
+        <result property="createDeptName"    column="create_dept_name"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateDeptId"    column="update_dept_id"    />
+        <result property="updateDeptName"    column="update_dept_name"    />
+        <result property="updateUserId"    column="update_user_id"    />
+        <result property="updateUserName"    column="update_user_name"    />
+    </resultMap>
+
+    <sql id="selectBClueInfoRulesVo">
+        select rules_id, rules_data, create_time, create_dept_id, create_dept_name, create_user_id, create_user_name, update_time, update_dept_id, update_dept_name, update_user_id, update_user_name from b_clue_info_rules
+    </sql>
+
+    <select id="selectBClueInfoRulesList" parameterType="BClueInfoRules" resultMap="BClueInfoRulesResult">
+        <include refid="selectBClueInfoRulesVo"/>
+        <where>  
+            <if test="rulesData != null  and rulesData != ''"> and rules_data = #{rulesData}</if>
+            <if test="createDeptId != null "> and create_dept_id = #{createDeptId}</if>
+            <if test="createDeptName != null  and createDeptName != ''"> and create_dept_name like concat('%', #{createDeptName}, '%')</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+            <if test="updateDeptId != null "> and update_dept_id = #{updateDeptId}</if>
+            <if test="updateDeptName != null  and updateDeptName != ''"> and update_dept_name like concat('%', #{updateDeptName}, '%')</if>
+            <if test="updateUserId != null "> and update_user_id = #{updateUserId}</if>
+            <if test="updateUserName != null  and updateUserName != ''"> and update_user_name like concat('%', #{updateUserName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectBClueInfoRulesByRulesId" parameterType="Long" resultMap="BClueInfoRulesResult">
+        <include refid="selectBClueInfoRulesVo"/>
+        where rules_id = #{rulesId}
+    </select>
+        
+    <insert id="insertBClueInfoRules" parameterType="BClueInfoRules">
+        insert into b_clue_info_rules
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="rulesId != null">rules_id,</if>
+            <if test="rulesData != null">rules_data,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createDeptId != null">create_dept_id,</if>
+            <if test="createDeptName != null">create_dept_name,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateDeptId != null">update_dept_id,</if>
+            <if test="updateDeptName != null">update_dept_name,</if>
+            <if test="updateUserId != null">update_user_id,</if>
+            <if test="updateUserName != null">update_user_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="rulesId != null">#{rulesId},</if>
+            <if test="rulesData != null">#{rulesData,typeHandler=com.ruoyi.coordination.clue.typeHandler.JsonTypeHandler},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createDeptId != null">#{createDeptId},</if>
+            <if test="createDeptName != null">#{createDeptName},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateDeptId != null">#{updateDeptId},</if>
+            <if test="updateDeptName != null">#{updateDeptName},</if>
+            <if test="updateUserId != null">#{updateUserId},</if>
+            <if test="updateUserName != null">#{updateUserName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBClueInfoRules" parameterType="BClueInfoRules">
+        update b_clue_info_rules
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="rulesData != null">rules_data = #{rulesData,typeHandler=com.ruoyi.coordination.clue.typeHandler.JsonTypeHandler},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createDeptId != null">create_dept_id = #{createDeptId},</if>
+            <if test="createDeptName != null">create_dept_name = #{createDeptName},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateDeptId != null">update_dept_id = #{updateDeptId},</if>
+            <if test="updateDeptName != null">update_dept_name = #{updateDeptName},</if>
+            <if test="updateUserId != null">update_user_id = #{updateUserId},</if>
+            <if test="updateUserName != null">update_user_name = #{updateUserName},</if>
+        </trim>
+        where rules_id = #{rulesId}
+    </update>
+
+    <delete id="deleteBClueInfoRulesByRulesId" parameterType="Long">
+        delete from b_clue_info_rules where rules_id = #{rulesId}
+    </delete>
+
+    <delete id="deleteBClueInfoRulesByRulesIds" parameterType="String">
+        delete from b_clue_info_rules where rules_id in 
+        <foreach item="rulesId" collection="array" open="(" separator="," close=")">
+            #{rulesId}
+        </foreach>
+    </delete>
+</mapper>

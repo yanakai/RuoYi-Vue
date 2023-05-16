@@ -31,10 +31,13 @@ public class BPollutionPreventionTask extends BaseEntity
     /** 任务级别；关联字典表 */
     @Excel(name = "任务级别；关联字典表")
     private String taskLevel;
+    private String taskLevelName;
 
     /** 任务类型：关联字典表 */
     @Excel(name = "任务类型：关联字典表")
     private String taskType;
+
+    private String taskTypeName;
 
     /** 任务提醒类型：关联字典表 */
     @Excel(name = "任务提醒类型：关联字典表")
@@ -122,7 +125,24 @@ public class BPollutionPreventionTask extends BaseEntity
     {
         return taskLevel;
     }
-    public void setTaskType(String taskType) 
+
+    public String getTaskLevelName() {
+        return taskLevelName;
+    }
+
+    public void setTaskLevelName(String taskLevelName) {
+        this.taskLevelName = taskLevelName;
+    }
+
+    public String getTaskTypeName() {
+        return taskTypeName;
+    }
+
+    public void setTaskTypeName(String taskTypeName) {
+        this.taskTypeName = taskTypeName;
+    }
+
+    public void setTaskType(String taskType)
     {
         this.taskType = taskType;
     }

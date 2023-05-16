@@ -10,6 +10,8 @@ import com.ruoyi.common.utils.bean.BeanUtils;
 import com.ruoyi.coordination.pollution.domain.BPollutionPreventionTaskFile;
 import com.ruoyi.coordination.pollution.domain.dto.BPPTaskAndFile;
 import com.ruoyi.coordination.pollution.domain.dto.BPPTaskAndReceive;
+import com.ruoyi.coordination.pollution.domain.enums.BPPTaskLevelEnum;
+import com.ruoyi.coordination.pollution.domain.enums.BPPTaskTypeEnum;
 import com.ruoyi.coordination.pollution.mapper.BPollutionPreventionTaskFileMapper;
 import com.ruoyi.coordination.pollution.service.IBPollutionPreventionReceiveService;
 import com.ruoyi.system.mapper.SysDeptMapper;
@@ -62,7 +64,12 @@ public class BPollutionPreventionTaskServiceImpl implements IBPollutionPreventio
         List<SysDept> sysDepts = sysDeptMapper.selectChildrenDeptById(SecurityUtils.getDeptId());
         List<Long> childDeptIds = sysDepts.stream().map(d -> d.getDeptId()).collect(Collectors.toList());
         childDeptIds.add(SecurityUtils.getDeptId());
-        return bPollutionPreventionTaskMapper.selectBPollutionPreventionTaskList(bPollutionPreventionTask,childDeptIds);
+        List<BPollutionPreventionTask> taskList = bPollutionPreventionTaskMapper.selectBPollutionPreventionTaskList(bPollutionPreventionTask, childDeptIds);
+        taskList.forEach(t -> {
+            t.setTaskTypeName(BPPTaskTypeEnum.getByValue(t.getTaskType()));
+            t.setTaskLevelName(BPPTaskLevelEnum.getByValue(t.getTaskLevel()));
+        });
+        return taskList;
     }
 
     /**
@@ -82,8 +89,14 @@ public class BPollutionPreventionTaskServiceImpl implements IBPollutionPreventio
         bPollutionPreventionTask.setCreateUserId(SecurityUtils.getUserId());
         bPollutionPreventionTask.setCreateUserName(SecurityUtils.getUsername());
         bPollutionPreventionTask.setCreateDeptId(SecurityUtils.getDeptId());
-        bPollutionPreventionTask.setCreateDeptName(sysDeptMapper.selectDeptById(SecurityUtils.getDeptId()).getDeptName());
+        SysDept sysDept = sysDeptMapper.selectDeptById(SecurityUtils.getDeptId());
+        bPollutionPreventionTask.setCreateDeptName(sysDept.getDeptName());
         bPollutionPreventionTask.setCreateTime(DateUtils.getNowDate());
+        if (sysDept.getParentId().equals("0")){ //即当前为市级
+            bPollutionPreventionTask.setTaskSource("市发任务");
+        }else {
+            bPollutionPreventionTask.setTaskSource("县级任务");
+        }
         int num = bPollutionPreventionTaskMapper.insertBPollutionPreventionTask(bPollutionPreventionTask);
 
         //获取附件集合  判断
@@ -141,6 +154,22 @@ public class BPollutionPreventionTaskServiceImpl implements IBPollutionPreventio
     public List<BPPTaskAndReceive> selectBPollutionPreventionTaskListByDeptId(BPPTaskAndReceive bPollutionPreventionTask) {
 
         Long deptId = SecurityUtils.getDeptId();
-        return bPollutionPreventionTaskMapper.selectBPollutionPreventionTaskListByDeptId(bPollutionPreventionTask,deptId);
+        List<BPPTaskAndReceive> taskList = bPollutionPreventionTaskMapper.selectBPollutionPreventionTaskListByDeptId(bPollutionPreventionTask, deptId);
+        taskList.forEach(t -> {
+            t.setTaskTypeName(BPPTaskTypeEnum.getByValue(t.getTaskType()));
+            t.setTaskLevelName(BPPTaskLevelEnum.getByValue(t.getTaskLevel()));
+        });
+        return taskList;
+    }
+
+    @Override
+    public List<BPPTaskAndReceive> selectBPollutionPreventionExTaskListByDeptId(BPPTaskAndReceive bPollutionPreventionTask) {
+        Long deptId = SecurityUtils.getDeptId();
+        List<BPPTaskAndReceive> taskList = bPollutionPreventionTaskMapper.selectBPollutionPreventionExTaskListByDeptId(bPollutionPreventionTask, deptId);
+        taskList.forEach(t -> {
+            t.setTaskTypeName(BPPTaskTypeEnum.getByValue(t.getTaskType()));
+            t.setTaskLevelName(BPPTaskLevelEnum.getByValue(t.getTaskLevel()));
+        });
+        return taskList;
     }
 }

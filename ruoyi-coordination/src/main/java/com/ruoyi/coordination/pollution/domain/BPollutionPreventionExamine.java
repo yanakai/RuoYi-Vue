@@ -1,9 +1,12 @@
 package com.ruoyi.coordination.pollution.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+
+import java.util.Date;
 
 /**
  * 协同平台---污染防治目标--任务审核记录对象 b_pollution_prevention_examine
@@ -30,28 +33,49 @@ public class BPollutionPreventionExamine extends BaseEntity
     @Excel(name = "任务办理记录表id")
     private Long recordId;
 
-    /** 审核状态：0：未签收；1：已签收未上报；2：已上报未审核；3：已审核；4：已审核，未通过 */
-    @Excel(name = "审核状态：0：未签收；1：已签收未上报；2：已上报未审核；3：已审核；4：已审核，未通过")
+    /** 审核状态：0：审核通过；1：审核未通过 */
+    @Excel(name = "审核状态：0：审核通过；1：审核未通过")
     private String exState;
 
     /** 审核内容 */
     @Excel(name = "审核内容")
     private String exContent;
 
-    /** 审核单位id */
+    /** 审核内容 */
+    @Excel(name = "审核人id")
+    private Long exUserId;
+
+    /** 审核内容 */
+    @Excel(name = "审核人名称")
+    private String exUserName;
+
+    /** 审核内容 */
     @Excel(name = "审核单位id")
+    private Long exDeptId;
+
+    /** 审核内容 */
+    @Excel(name = "审核单位名称")
+    private String exDeptName;
+
+    /** 审核内容 */
+    @Excel(name = "审核时间")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date exTime;
+
+    /** 审核单位id */
+    @Excel(name = "创建单位id")
     private Long createDeptId;
 
     /** 审核单位名称 */
-    @Excel(name = "审核单位名称")
+    @Excel(name = "创建单位名称")
     private String createDeptName;
 
     /** 审核人id */
-    @Excel(name = "审核人id")
+    @Excel(name = "创建人id")
     private Long createUserId;
 
     /** 审核人名称 */
-    @Excel(name = "审核人名称")
+    @Excel(name = "创建人名称")
     private String createUserName;
 
     public void setExId(Long exId) 
@@ -108,7 +132,48 @@ public class BPollutionPreventionExamine extends BaseEntity
     {
         return exContent;
     }
-    public void setCreateDeptId(Long createDeptId) 
+
+    public Long getExUserId() {
+        return exUserId;
+    }
+
+    public void setExUserId(Long exUserId) {
+        this.exUserId = exUserId;
+    }
+
+    public String getExUserName() {
+        return exUserName;
+    }
+
+    public void setExUserName(String exUserName) {
+        this.exUserName = exUserName;
+    }
+
+    public Long getExDeptId() {
+        return exDeptId;
+    }
+
+    public void setExDeptId(Long exDeptId) {
+        this.exDeptId = exDeptId;
+    }
+
+    public String getExDeptName() {
+        return exDeptName;
+    }
+
+    public void setExDeptName(String exDeptName) {
+        this.exDeptName = exDeptName;
+    }
+
+    public Date getExTime() {
+        return exTime;
+    }
+
+    public void setExTime(Date exTime) {
+        this.exTime = exTime;
+    }
+
+    public void setCreateDeptId(Long createDeptId)
     {
         this.createDeptId = createDeptId;
     }

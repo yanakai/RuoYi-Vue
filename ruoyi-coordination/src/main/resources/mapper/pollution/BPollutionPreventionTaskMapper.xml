@@ -74,6 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <foreach collection="deptIds" item="deptId" index="index" open="(" close=")" separator=",">
                  #{deptId}
              </foreach>
+             order by create_time desc
         </where>
     </select>
     
@@ -88,9 +89,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         bppt.create_dept_name,bppt.create_user_name
         from b_pollution_prevention_task bppt
         LEFT JOIN b_pollution_prevention_receive bppr on bppt.task_id = bppr.task_id
+        left join b_pollution_prevention_examine bppe on bppr.receive_id = bppe.receive_id
         WHERE bppr.receive_dept_id = #{deptId}
-            <if test="task.searchCode == 0">and bppr.receive_state in ('0','1')</if>
-            <if test="task.searchCode == 1">and bppr.receive_state in ('2','3')</if>
+            <if test="task.searchCode == 0">and bppr.receive_state in ('0','1','5')</if>
+            <if test="task.searchCode == 1">and bppr.receive_state in ('2','3','4')</if>
             <if test="task.examineFileId != null "> and examine_file_id = #{task.examineFileId}</if>
             <if test="task.taskName != null  and task.taskName != ''"> and task_name like concat('%', #{task.taskName}, '%')</if>
             <if test="task.taskLevel != null  and task.taskLevel != ''"> and task_level = #{task.taskLevel}</if>
@@ -107,7 +109,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="task.createDeptName != null  and task.createDeptName != ''"> and task.create_dept_name like concat('%', #{task.createDeptName}, '%')</if>
             <if test="task.createUserId != null "> and task.create_user_id = #{task.createUserId}</if>
             <if test="task.createUserName != null  and task.createUserName != ''"> and task.create_user_name like concat('%', #{task.createUserName}, '%')</if>
-
+            order by bppr.create_time desc
+    </select>
+    <select id="selectBPollutionPreventionExTaskListByDeptId" resultMap="BPPTaskAndReceiveRes">
+        select bppt.task_id,bppt.examine_file_id, bppt.task_name, bppt.task_level, bppt.task_type,
+        bppt.task_remind_type, bppt.task_time_limit, bppt.task_source, bppt.task_state, bppt.task_ask, bppt.task_content,
+        bppt.start_time, bppt.end_time, bppr.receive_id,bppr.receive_state,bppr.create_time,
+        bppt.create_dept_name,bppt.create_user_name
+        from b_pollution_prevention_task bppt
+        LEFT JOIN b_pollution_prevention_receive bppr on bppt.task_id = bppr.task_id
+        WHERE bppr.create_dept_id = #{deptId}
+        <if test="task.searchCode == 0">and bppr.receive_state in ('2','3')</if>
+        <if test="task.searchCode == 1">and bppr.receive_state in ('4')</if>
+        <if test="task.examineFileId != null "> and examine_file_id = #{task.examineFileId}</if>
+        <if test="task.taskName != null  and task.taskName != ''"> and task_name like concat('%', #{task.taskName}, '%')</if>
+        <if test="task.taskLevel != null  and task.taskLevel != ''"> and task_level = #{task.taskLevel}</if>
+        <if test="task.taskType != null  and task.taskType != ''"> and task_type = #{task.taskType}</if>
+        <if test="task.taskRemindType != null  and task.taskRemindType != ''"> and task_remind_type = #{task.taskRemindType}</if>
+        <if test="task.taskTimeLimit != null  and task.taskTimeLimit != ''"> and task_time_limit = #{task.taskTimeLimit}</if>
+        <if test="task.taskSource != null  and task.taskSource != ''"> and task_source = #{task.taskSource}</if>
+        <if test="task.taskState != null  and task.taskState != ''"> and task_state = #{task.taskState}</if>
+        <if test="task.taskAsk != null  and task.taskAsk != ''"> and task_ask = #{task.taskAsk}</if>
+        <if test="task.taskContent != null  and task.taskContent != ''"> and task_content = #{task.taskContent}</if>
+        <if test="task.startTime != null "> and start_time = #{task.startTime}</if>
+        <if test="task.endTime != null "> and end_time = #{task.endTime}</if>
+        <if test="task.createDeptId != null "> and task.create_dept_id = #{createDeptId}</if>
+        <if test="task.createDeptName != null  and task.createDeptName != ''"> and task.create_dept_name like concat('%', #{task.createDeptName}, '%')</if>
+        <if test="task.createUserId != null "> and task.create_user_id = #{task.createUserId}</if>
+        <if test="task.createUserName != null  and task.createUserName != ''"> and task.create_user_name like concat('%', #{task.createUserName}, '%')</if>
+        order by bppr.receive_time
     </select>
 
     <insert id="insertBPollutionPreventionTask" parameterType="BPollutionPreventionTask" useGeneratedKeys="true" keyProperty="taskId">

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.coordination.clue.mapper.BClueInfoRecordMapper">
+    
+    <resultMap type="BClueInfoRecord" id="BClueInfoRecordResult">
+        <result property="recordId"    column="record_id"    />
+        <result property="receiveId"    column="receive_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="recordNum"    column="record_num"    />
+        <result property="recordState"    column="record_state"    />
+        <result property="recordContent"    column="record_content"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createDeptId"    column="create_dept_id"    />
+        <result property="createDeptName"    column="create_dept_name"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="completeTime"    column="complete_time"    />
+        <result property="auditTime"    column="audit_time"    />
+        <result property="auditIdea"    column="audit_idea"    />
+        <result property="auditDeptId"    column="audit_dept_id"    />
+        <result property="auditDeptName"    column="audit_dept_name"    />
+        <result property="auditUserId"    column="audit_user_id"    />
+        <result property="auditUserName"    column="audit_user_name"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+    <resultMap id="BClueRecordAndFileRes" type="BCIRecordAndFile" extends="BClueInfoRecordResult">
+        <result property="exId" column="ex_id"/>
+        <result property="exState" column="ex_state"/>
+        <result property="exContent" column="ex_content"/>
+        <result property="exUserName" column="ex_user_name"/>
+        <result property="exDeptName" column="ex_dept_name"/>
+        <collection property="fileList" javaType="java.util.List" ofType="BClueInfoRecordFile">
+            <result property="fileId" column="file_id"/>
+            <result property="fileName" column="file_name"/>
+            <result property="filePath" column="file_path"/>
+            <result property="fileType" column="file_type"/>
+        </collection>
+    </resultMap>
+    <resultMap id="BCIRecordFileRes" type="BClueInfoRecordFile">
+        <result property="fileId" column="file_id"/>
+        <result property="fileName" column="file_name"/>
+        <result property="filePath" column="file_path"/>
+        <result property="fileType" column="file_type"/>
+    </resultMap>
+
+    <sql id="selectBClueInfoRecordVo">
+        select record_id, receive_id, task_id, record_num, record_state, record_content, create_time, create_dept_id, create_dept_name, create_user_id, create_user_name, complete_time, audit_time, audit_idea, audit_dept_id, audit_dept_name, audit_user_id, audit_user_name, remark from b_clue_info_record
+    </sql>
+
+    <select id="selectBClueInfoRecordList" parameterType="BClueInfoRecord" resultMap="BClueInfoRecordResult">
+        <include refid="selectBClueInfoRecordVo"/>
+        <where>  
+            <if test="receiveId != null "> and receive_id = #{receiveId}</if>
+            <if test="taskId != null "> and task_id = #{taskId}</if>
+            <if test="recordNum != null "> and record_num = #{recordNum}</if>
+            <if test="recordState != null  and recordState != ''"> and record_state = #{recordState}</if>
+            <if test="recordContent != null  and recordContent != ''"> and record_content = #{recordContent}</if>
+            <if test="createDeptId != null "> and create_dept_id = #{createDeptId}</if>
+            <if test="createDeptName != null  and createDeptName != ''"> and create_dept_name like concat('%', #{createDeptName}, '%')</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+            <if test="completeTime != null "> and complete_time = #{completeTime}</if>
+            <if test="auditTime != null "> and audit_time = #{auditTime}</if>
+            <if test="auditIdea != null  and auditIdea != ''"> and audit_idea = #{auditIdea}</if>
+            <if test="auditDeptId != null "> and audit_dept_id = #{auditDeptId}</if>
+            <if test="auditDeptName != null  and auditDeptName != ''"> and audit_dept_name like concat('%', #{auditDeptName}, '%')</if>
+            <if test="auditUserId != null "> and audit_user_id = #{auditUserId}</if>
+            <if test="auditUserName != null  and auditUserName != ''"> and audit_user_name like concat('%', #{auditUserName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectBClueInfoRecordByRecordId" parameterType="Long" resultMap="BClueInfoRecordResult">
+        <include refid="selectBClueInfoRecordVo"/>
+        where record_id = #{recordId}
+    </select>
+    <select id="getMaxRecordNum" resultType="java.lang.Long">
+        select count(1) from b_clue_info_record where receive_id = #{receiveId}
+    </select>
+    <select id="selectBClueInfoRecordAndList" parameterType="BClueInfoRecord" resultMap="BClueRecordAndFileRes">
+        SELECT
+        bcir.record_id, bcir.receive_id, bcir.task_id, bcir.record_num, bcir.record_state, bcir.record_content,
+        bcir.create_time, bcir.create_dept_id, bcir.create_dept_name, bcir.create_user_id, bcir.create_user_name,
+        bcir.remark, bcirf.file_id, bcirf.file_name, bcirf.file_path, bcirf.file_type, bcie.ex_id, bcie.ex_state,
+        bcie.ex_content, bcie.ex_user_name, bcie.ex_dept_name, bcie.ex_time
+        FROM
+        b_clue_info_record bcir
+        LEFT JOIN b_clue_info_examine bcie
+        ON bcir.record_id = bcie.record_id
+        LEFT JOIN b_clue_info_record_file bcirf
+        ON bcir.record_id = bcirf.record_id
+        <where>
+        <if test="receiveId != null "> and bcir.receive_id = #{receiveId}</if>
+        <if test="taskId != null "> and bcir.task_id = #{taskId}</if>
+        </where>
+        order by bcir.record_num desc
+    </select>
+
+    <insert id="insertBClueInfoRecord" parameterType="BClueInfoRecord" useGeneratedKeys="true" keyProperty="recordId">
+        insert into b_clue_info_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="receiveId != null">receive_id,</if>
+            <if test="taskId != null">task_id,</if>
+            <if test="recordNum != null">record_num,</if>
+            <if test="recordState != null">record_state,</if>
+            <if test="recordContent != null">record_content,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createDeptId != null">create_dept_id,</if>
+            <if test="createDeptName != null">create_dept_name,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="completeTime != null">complete_time,</if>
+            <if test="auditTime != null">audit_time,</if>
+            <if test="auditIdea != null">audit_idea,</if>
+            <if test="auditDeptId != null">audit_dept_id,</if>
+            <if test="auditDeptName != null">audit_dept_name,</if>
+            <if test="auditUserId != null">audit_user_id,</if>
+            <if test="auditUserName != null">audit_user_name,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="receiveId != null">#{receiveId},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="recordNum != null">#{recordNum},</if>
+            <if test="recordState != null">#{recordState},</if>
+            <if test="recordContent != null">#{recordContent},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createDeptId != null">#{createDeptId},</if>
+            <if test="createDeptName != null">#{createDeptName},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="completeTime != null">#{completeTime},</if>
+            <if test="auditTime != null">#{auditTime},</if>
+            <if test="auditIdea != null">#{auditIdea},</if>
+            <if test="auditDeptId != null">#{auditDeptId},</if>
+            <if test="auditDeptName != null">#{auditDeptName},</if>
+            <if test="auditUserId != null">#{auditUserId},</if>
+            <if test="auditUserName != null">#{auditUserName},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBClueInfoRecord" parameterType="BClueInfoRecord">
+        update b_clue_info_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="receiveId != null">receive_id = #{receiveId},</if>
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="recordNum != null">record_num = #{recordNum},</if>
+            <if test="recordState != null">record_state = #{recordState},</if>
+            <if test="recordContent != null">record_content = #{recordContent},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createDeptId != null">create_dept_id = #{createDeptId},</if>
+            <if test="createDeptName != null">create_dept_name = #{createDeptName},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="completeTime != null">complete_time = #{completeTime},</if>
+            <if test="auditTime != null">audit_time = #{auditTime},</if>
+            <if test="auditIdea != null">audit_idea = #{auditIdea},</if>
+            <if test="auditDeptId != null">audit_dept_id = #{auditDeptId},</if>
+            <if test="auditDeptName != null">audit_dept_name = #{auditDeptName},</if>
+            <if test="auditUserId != null">audit_user_id = #{auditUserId},</if>
+            <if test="auditUserName != null">audit_user_name = #{auditUserName},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where record_id = #{recordId}
+    </update>
+
+    <delete id="deleteBClueInfoRecordByRecordId" parameterType="Long">
+        delete from b_clue_info_record where record_id = #{recordId}
+    </delete>
+
+    <delete id="deleteBClueInfoRecordByRecordIds" parameterType="String">
+        delete from b_clue_info_record where record_id in 
+        <foreach item="recordId" collection="array" open="(" separator="," close=")">
+            #{recordId}
+        </foreach>
+    </delete>
+</mapper>

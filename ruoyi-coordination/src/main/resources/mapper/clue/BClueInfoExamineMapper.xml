@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.coordination.clue.mapper.BClueInfoExamineMapper">
+    
+    <resultMap type="BClueInfoExamine" id="BClueInfoExamineResult">
+        <result property="exId"    column="ex_id"    />
+        <result property="receiveId"    column="receive_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="recordId"    column="record_id"    />
+        <result property="exState"    column="ex_state"    />
+        <result property="exContent"    column="ex_content"    />
+        <result property="exUserId"    column="ex_user_id"    />
+        <result property="exUserName"    column="ex_user_name"    />
+        <result property="exDeptId"    column="ex_dept_id"    />
+        <result property="exDeptName"    column="ex_dept_name"    />
+        <result property="exTime"    column="ex_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createDeptId"    column="create_dept_id"    />
+        <result property="createDeptName"    column="create_dept_name"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+    <resultMap id="BClueTaskAndReceive" type="BCITaskAndReceive" extends="com.ruoyi.coordination.clue.mapper.BClueInfoTaskMapper.BClueTaskAndReceiveRes"/>
+
+    <sql id="selectBClueInfoExamineVo">
+        select ex_id, receive_id, task_id, record_id, ex_state, ex_content, ex_user_id, ex_user_name, ex_dept_id, ex_dept_name, ex_time, create_time, create_dept_id, create_dept_name, create_user_id, create_user_name, remark from b_clue_info_examine
+    </sql>
+
+    <select id="selectBClueInfoExamineList" parameterType="BClueInfoExamine" resultMap="BClueInfoExamineResult">
+        <include refid="selectBClueInfoExamineVo"/>
+        <where>  
+            <if test="receiveId != null "> and receive_id = #{receiveId}</if>
+            <if test="taskId != null "> and task_id = #{taskId}</if>
+            <if test="recordId != null "> and record_id = #{recordId}</if>
+            <if test="exState != null  and exState != ''"> and ex_state = #{exState}</if>
+            <if test="exContent != null  and exContent != ''"> and ex_content = #{exContent}</if>
+            <if test="exUserId != null "> and ex_user_id = #{exUserId}</if>
+            <if test="exUserName != null  and exUserName != ''"> and ex_user_name like concat('%', #{exUserName}, '%')</if>
+            <if test="exDeptId != null "> and ex_dept_id = #{exDeptId}</if>
+            <if test="exDeptName != null  and exDeptName != ''"> and ex_dept_name like concat('%', #{exDeptName}, '%')</if>
+            <if test="exTime != null "> and ex_time = #{exTime}</if>
+            <if test="createDeptId != null "> and create_dept_id = #{createDeptId}</if>
+            <if test="createDeptName != null  and createDeptName != ''"> and create_dept_name like concat('%', #{createDeptName}, '%')</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectBClueInfoExamineByExId" parameterType="Long" resultMap="BClueInfoExamineResult">
+        <include refid="selectBClueInfoExamineVo"/>
+        where ex_id = #{exId}
+    </select>
+    <select id="selectBClueInfoExamineToDoList" resultMap="BClueTaskAndReceive">
+        select bcit.task_id, bcit.task_name, bcit.task_level, bcit.task_type,
+        bcit.task_remind_type, bcit.task_time_limit, bcit.task_source, bcit.task_state, bcit.task_ask, bcit.task_content,
+        bcit.start_time, bcit.end_time, bcir.receive_id,bcir.receive_state,bcir.create_time,
+        bcit.create_dept_name,bcit.create_user_name
+        from b_clue_info_task bcit 
+        LEFT JOIN b_clue_info_receive bcir on bcit.task_id = bcir.task_id
+        WHERE bcir.create_dept_id = #{createDeptId}
+        <if test="searchCode == 0">and bcir.receive_state in ('2','3')</if>
+        <if test="searchCode == 1">and bcir.receive_state in ('4','5')</if>
+        <if test="taskSource != null  and taskSource != ''"> and bcit.task_source = #{taskSource}</if>
+        <if test="startTime != null and endTime != null "> and bcit.start_time between #{startTime} and #{endTime}</if>
+        order by bcit.create_time desc
+    </select>
+
+    <insert id="insertBClueInfoExamine" parameterType="BClueInfoExamine" useGeneratedKeys="true" keyProperty="exId">
+        insert into b_clue_info_examine
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="receiveId != null">receive_id,</if>
+            <if test="taskId != null">task_id,</if>
+            <if test="recordId != null">record_id,</if>
+            <if test="exState != null">ex_state,</if>
+            <if test="exContent != null">ex_content,</if>
+            <if test="exUserId != null">ex_user_id,</if>
+            <if test="exUserName != null">ex_user_name,</if>
+            <if test="exDeptId != null">ex_dept_id,</if>
+            <if test="exDeptName != null">ex_dept_name,</if>
+            <if test="exTime != null">ex_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createDeptId != null">create_dept_id,</if>
+            <if test="createDeptName != null">create_dept_name,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="receiveId != null">#{receiveId},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="recordId != null">#{recordId},</if>
+            <if test="exState != null">#{exState},</if>
+            <if test="exContent != null">#{exContent},</if>
+            <if test="exUserId != null">#{exUserId},</if>
+            <if test="exUserName != null">#{exUserName},</if>
+            <if test="exDeptId != null">#{exDeptId},</if>
+            <if test="exDeptName != null">#{exDeptName},</if>
+            <if test="exTime != null">#{exTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createDeptId != null">#{createDeptId},</if>
+            <if test="createDeptName != null">#{createDeptName},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBClueInfoExamine" parameterType="BClueInfoExamine">
+        update b_clue_info_examine
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="receiveId != null">receive_id = #{receiveId},</if>
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="recordId != null">record_id = #{recordId},</if>
+            <if test="exState != null">ex_state = #{exState},</if>
+            <if test="exContent != null">ex_content = #{exContent},</if>
+            <if test="exUserId != null">ex_user_id = #{exUserId},</if>
+            <if test="exUserName != null">ex_user_name = #{exUserName},</if>
+            <if test="exDeptId != null">ex_dept_id = #{exDeptId},</if>
+            <if test="exDeptName != null">ex_dept_name = #{exDeptName},</if>
+            <if test="exTime != null">ex_time = #{exTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createDeptId != null">create_dept_id = #{createDeptId},</if>
+            <if test="createDeptName != null">create_dept_name = #{createDeptName},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where ex_id = #{exId}
+    </update>
+
+    <delete id="deleteBClueInfoExamineByExId" parameterType="Long">
+        delete from b_clue_info_examine where ex_id = #{exId}
+    </delete>
+
+    <delete id="deleteBClueInfoExamineByExIds" parameterType="String">
+        delete from b_clue_info_examine where ex_id in 
+        <foreach item="exId" collection="array" open="(" separator="," close=")">
+            #{exId}
+        </foreach>
+    </delete>
+</mapper>

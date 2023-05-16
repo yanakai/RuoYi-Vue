@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.coordination.clue.mapper.BClueInfoReceiveMapper">
+    
+    <resultMap type="BClueInfoReceive" id="BClueInfoReceiveResult">
+        <result property="receiveId"    column="receive_id"    />
+        <result property="receivePid"   column="receive_pid" />
+        <result property="taskId"    column="task_id"    />
+        <result property="disseminateComments" column="disseminate_comments" />
+        <result property="receiveState"    column="receive_state"    />
+        <result property="urgingState"    column="urging_state"    />
+        <result property="receiveUserId"    column="receive_user_id"    />
+        <result property="receiveUserName"    column="receive_user_name"    />
+        <result property="receiveDeptId"    column="receive_dept_id"    />
+        <result property="receiveDeptName"    column="receive_dept_name"    />
+        <result property="receiveTime"    column="receive_time"    />
+        <result property="completeTime"    column="complete_time"    />
+        <result property="createDeptId"    column="create_dept_id"    />
+        <result property="createDeptName"    column="create_dept_name"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBClueInfoReceiveVo">
+        select receive_id, receive_pid, task_id, receive_state, urging_state, receive_user_id, receive_user_name, receive_dept_id, receive_dept_name, receive_time, complete_time, create_dept_id, create_dept_name, create_user_id, create_user_name, create_time, remark from b_clue_info_receive
+    </sql>
+
+    <select id="selectBClueInfoReceiveList" parameterType="BClueInfoReceive" resultMap="BClueInfoReceiveResult">
+        <include refid="selectBClueInfoReceiveVo"/>
+        <where>
+            <if test="receivePid != null "> and receive_pid = #{receivePid}</if>
+            <if test="taskId != null "> and task_id = #{taskId}</if>
+            <if test="receiveState != null  and receiveState != ''"> and receive_state = #{receiveState}</if>
+            <if test="urgingState != null  and urgingState != ''"> and urging_state = #{urgingState}</if>
+            <if test="receiveDeptId != null "> and receive_dept_id = #{receiveDeptId}</if>
+            <if test="receiveDeptName != null  and receiveDeptName != ''"> and receive_dept_name like concat('%', #{receiveDeptName}, '%')</if>
+            <if test="receiveTime != null "> and receive_time = #{receiveTime}</if>
+            <if test="completeTime != null "> and complete_time = #{completeTime}</if>
+            <if test="createDeptId != null "> and create_dept_id = #{createDeptId}</if>
+            <if test="createDeptName != null  and createDeptName != ''"> and create_dept_name like concat('%', #{createDeptName}, '%')</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectBClueInfoReceiveByReceiveId" parameterType="Long" resultMap="BClueInfoReceiveResult">
+        <include refid="selectBClueInfoReceiveVo"/>
+        where receive_id = #{receiveId}
+    </select>
+        
+    <insert id="insertBClueInfoReceive" parameterType="BClueInfoReceive" useGeneratedKeys="true" keyProperty="receiveId">
+        insert into b_clue_info_receive
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="receivePid != null">receive_pid,</if>
+            <if test="taskId != null">task_id,</if>
+            <if test="receiveState != null">receive_state,</if>
+            <if test="urgingState != null">urging_state,</if>
+            <if test="receiveUserId != null">receive_user_id,</if>
+            <if test="receiveUserName != null">receive_user_name,</if>
+            <if test="receiveDeptId != null">receive_dept_id,</if>
+            <if test="receiveDeptName != null">receive_dept_name,</if>
+            <if test="receiveTime != null">receive_time,</if>
+            <if test="completeTime != null">complete_time,</if>
+            <if test="createDeptId != null">create_dept_id,</if>
+            <if test="createDeptName != null">create_dept_name,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="receivePid != null">#{receivePid},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="receiveState != null">#{receiveState},</if>
+            <if test="urgingState != null">#{urgingState},</if>
+            <if test="receiveUserId != null">#{receiveUserId},</if>
+            <if test="receiveUserName != null">#{receiveUserName},</if>
+            <if test="receiveDeptId != null">#{receiveDeptId},</if>
+            <if test="receiveDeptName != null">#{receiveDeptName},</if>
+            <if test="receiveTime != null">#{receiveTime},</if>
+            <if test="completeTime != null">#{completeTime},</if>
+            <if test="createDeptId != null">#{createDeptId},</if>
+            <if test="createDeptName != null">#{createDeptName},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+    <insert id="insertBClueInfoReceiveList" parameterType="BPollutionPreventionReceive">
+        insert into b_clue_info_receive(
+        receive_pid, task_id, disseminate_comments, receive_state, urging_state, receive_dept_id, receive_dept_name, receive_time ,receive_user_id ,receive_user_name , complete_time, create_dept_id, create_dept_name, create_user_id, create_user_name, create_time, remark
+        )values
+        <foreach collection="list" index="index" item="t" separator=",">
+            (
+            #{t.receivePid},
+            #{t.taskId},
+             #{t.disseminateComments},
+            #{t.receiveState},
+            #{t.urgingState},
+            #{t.receiveDeptId},
+            #{t.receiveDeptName},
+            #{t.receiveTime},
+            #{t.receiveUserId},
+            #{t.receiveUserName},
+            #{t.completeTime},
+            #{t.createDeptId},
+            #{t.createDeptName},
+            #{t.createUserId},
+            #{t.createUserName},
+            #{t.createTime},
+            #{t.remark}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateBClueInfoReceive" parameterType="BClueInfoReceive">
+        update b_clue_info_receive
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="receivePid != null">receive_pid = #{receivePid},</if>
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="receiveState != null">receive_state = #{receiveState},</if>
+            <if test="urgingState != null">urging_state = #{urgingState},</if>
+            <if test="receiveDeptId != null">receive_dept_id = #{receiveDeptId},</if>
+            <if test="receiveDeptName != null">receive_dept_name = #{receiveDeptName},</if>
+            <if test="receiveTime != null">receive_time = #{receiveTime},</if>
+            <if test="completeTime != null">complete_time = #{completeTime},</if>
+            <if test="createDeptId != null">create_dept_id = #{createDeptId},</if>
+            <if test="createDeptName != null">create_dept_name = #{createDeptName},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where receive_id = #{receiveId}
+    </update>
+
+    <delete id="deleteBClueInfoReceiveByReceiveId" parameterType="Long">
+        delete from b_clue_info_receive where receive_id = #{receiveId}
+    </delete>
+
+    <delete id="deleteBClueInfoReceiveByReceiveIds" parameterType="String">
+        delete from b_clue_info_receive where receive_id in 
+        <foreach item="receiveId" collection="array" open="(" separator="," close=")">
+            #{receiveId}
+        </foreach>
+    </delete>
+</mapper>

@@ -14,7 +14,6 @@ public class BPPTaskAndReceive extends BPollutionPreventionTask {
     private Date createTime;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date completeTime;
-
     private String searchCode;
 
     public Long getReceiveId() {

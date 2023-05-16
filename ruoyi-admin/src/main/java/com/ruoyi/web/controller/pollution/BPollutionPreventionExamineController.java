@@ -37,7 +37,7 @@ public class BPollutionPreventionExamineController extends BaseController
     /**
      * 查询协同平台---污染防治目标--任务审核记录列表
      */
-    @PreAuthorize("@ss.hasPermi('pollution:examine:list')")
+    // @PreAuthorize("@ss.hasPermi('pollution:examine:list')")
     @GetMapping("/list")
     public TableDataInfo list(BPollutionPreventionExamine bPollutionPreventionExamine)
     {
@@ -49,7 +49,7 @@ public class BPollutionPreventionExamineController extends BaseController
     /**
      * 导出协同平台---污染防治目标--任务审核记录列表
      */
-    @PreAuthorize("@ss.hasPermi('pollution:examine:export')")
+    // @PreAuthorize("@ss.hasPermi('pollution:examine:export')")
     @Log(title = "协同平台---污染防治目标--任务审核记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, BPollutionPreventionExamine bPollutionPreventionExamine)
@@ -62,7 +62,7 @@ public class BPollutionPreventionExamineController extends BaseController
     /**
      * 获取协同平台---污染防治目标--任务审核记录详细信息
      */
-    @PreAuthorize("@ss.hasPermi('pollution:examine:query')")
+    // @PreAuthorize("@ss.hasPermi('pollution:examine:query')")
     @GetMapping(value = "/{exId}")
     public AjaxResult getInfo(@PathVariable("exId") Long exId)
     {
@@ -72,7 +72,7 @@ public class BPollutionPreventionExamineController extends BaseController
     /**
      * 新增协同平台---污染防治目标--任务审核记录
      */
-    @PreAuthorize("@ss.hasPermi('pollution:examine:add')")
+    // @PreAuthorize("@ss.hasPermi('pollution:examine:add')")
     @Log(title = "协同平台---污染防治目标--任务审核记录", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody BPollutionPreventionExamine bPollutionPreventionExamine)
@@ -83,7 +83,7 @@ public class BPollutionPreventionExamineController extends BaseController
     /**
      * 修改协同平台---污染防治目标--任务审核记录
      */
-    @PreAuthorize("@ss.hasPermi('pollution:examine:edit')")
+    // @PreAuthorize("@ss.hasPermi('pollution:examine:edit')")
     @Log(title = "协同平台---污染防治目标--任务审核记录", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody BPollutionPreventionExamine bPollutionPreventionExamine)
@@ -94,7 +94,7 @@ public class BPollutionPreventionExamineController extends BaseController
     /**
      * 删除协同平台---污染防治目标--任务审核记录
      */
-    @PreAuthorize("@ss.hasPermi('pollution:examine:remove')")
+    // @PreAuthorize("@ss.hasPermi('pollution:examine:remove')")
     @Log(title = "协同平台---污染防治目标--任务审核记录", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{exIds}")
     public AjaxResult remove(@PathVariable Long[] exIds)

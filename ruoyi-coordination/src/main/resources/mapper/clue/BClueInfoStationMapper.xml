@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.coordination.clue.mapper.BClueInfoStationMapper">
+    
+    <resultMap type="BClueInfoStation" id="BClueInfoStationResult">
+        <result property="earlyId"    column="early_id"    />
+        <result property="stationCode"    column="station_code"    />
+        <result property="stationName"    column="station_name"    />
+        <result property="stationType"    column="station_type"    />
+        <result property="regionCode"    column="region_code"    />
+        <result property="regionName"    column="region_name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="earlyState"    column="early_state"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createDeptId"    column="create_dept_id"    />
+        <result property="createDeptName"    column="create_dept_name"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+    </resultMap>
+
+    <sql id="selectBClueInfoStationVo">
+        select early_id, station_code, station_name, station_type, region_code, region_name, dept_id, dept_name, early_state, create_time, create_dept_id, create_dept_name, create_user_id, create_user_name from b_clue_info_station
+    </sql>
+
+    <select id="selectBClueInfoStationList" parameterType="BClueInfoStation" resultMap="BClueInfoStationResult">
+        <include refid="selectBClueInfoStationVo"/>
+        <where>  
+            <if test="stationCode != null  and stationCode != ''"> and station_code = #{stationCode}</if>
+            <if test="stationName != null  and stationName != ''"> and station_name like concat('%', #{stationName}, '%')</if>
+            <if test="stationType != null  and stationType != ''"> and station_type = #{stationType}</if>
+            <if test="regionCode != null  and regionCode != ''"> and region_code = #{regionCode}</if>
+            <if test="regionName != null  and regionName != ''"> and region_name like concat('%', #{regionName}, '%')</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="deptName != null  and deptName != ''"> and dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="earlyState != null  and earlyState != ''"> and early_state = #{earlyState}</if>
+            <if test="createDeptId != null "> and create_dept_id = #{createDeptId}</if>
+            <if test="createDeptName != null  and createDeptName != ''"> and create_dept_name like concat('%', #{createDeptName}, '%')</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectBClueInfoStationByEarlyId" parameterType="Long" resultMap="BClueInfoStationResult">
+        <include refid="selectBClueInfoStationVo"/>
+        where early_id = #{earlyId}
+    </select>
+        
+    <insert id="insertBClueInfoStation" parameterType="BClueInfoStation">
+        insert into b_clue_info_station
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="earlyId != null">early_id,</if>
+            <if test="stationCode != null and stationCode != ''">station_code,</if>
+            <if test="stationName != null">station_name,</if>
+            <if test="stationType != null">station_type,</if>
+            <if test="regionCode != null">region_code,</if>
+            <if test="regionName != null">region_name,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="deptName != null">dept_name,</if>
+            <if test="earlyState != null">early_state,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createDeptId != null">create_dept_id,</if>
+            <if test="createDeptName != null">create_dept_name,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="earlyId != null">#{earlyId},</if>
+            <if test="stationCode != null and stationCode != ''">#{stationCode},</if>
+            <if test="stationName != null">#{stationName},</if>
+            <if test="stationType != null">#{stationType},</if>
+            <if test="regionCode != null">#{regionCode},</if>
+            <if test="regionName != null">#{regionName},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="deptName != null">#{deptName},</if>
+            <if test="earlyState != null">#{earlyState},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createDeptId != null">#{createDeptId},</if>
+            <if test="createDeptName != null">#{createDeptName},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBClueInfoStation" parameterType="BClueInfoStation">
+        update b_clue_info_station
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stationCode != null and stationCode != ''">station_code = #{stationCode},</if>
+            <if test="stationName != null">station_name = #{stationName},</if>
+            <if test="stationType != null">station_type = #{stationType},</if>
+            <if test="regionCode != null">region_code = #{regionCode},</if>
+            <if test="regionName != null">region_name = #{regionName},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="deptName != null">dept_name = #{deptName},</if>
+            <if test="earlyState != null">early_state = #{earlyState},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createDeptId != null">create_dept_id = #{createDeptId},</if>
+            <if test="createDeptName != null">create_dept_name = #{createDeptName},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+        </trim>
+        where early_id = #{earlyId}
+    </update>
+
+    <delete id="deleteBClueInfoStationByEarlyId" parameterType="Long">
+        delete from b_clue_info_station where early_id = #{earlyId}
+    </delete>
+
+    <delete id="deleteBClueInfoStationByEarlyIds" parameterType="String">
+        delete from b_clue_info_station where early_id in 
+        <foreach item="earlyId" collection="array" open="(" separator="," close=")">
+            #{earlyId}
+        </foreach>
+    </delete>
+</mapper>

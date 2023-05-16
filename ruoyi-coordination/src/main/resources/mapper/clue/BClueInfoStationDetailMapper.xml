@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.coordination.clue.mapper.BClueInfoStationDetailMapper">
+    
+    <resultMap type="BClueInfoStationDetail" id="BClueInfoStationDetailResult">
+        <result property="stationId"    column="station_id"    />
+        <result property="stationCode"    column="station_code"    />
+        <result property="stationName"    column="station_name"    />
+        <result property="stationType"    column="station_type"    />
+        <result property="divisionCode"    column="division_code"    />
+        <result property="divisionName"    column="division_name"    />
+        <result property="responsibilityUnitId"    column="responsibility_unit_id"    />
+        <result property="responsibilityUnitName"    column="responsibility_unit_name"    />
+    </resultMap>
+
+    <sql id="selectBClueInfoStationDetailVo">
+        select station_id, station_code, station_name, station_type, division_code, division_name, responsibility_unit_id, responsibility_unit_name from b_clue_info_station_detail
+    </sql>
+
+    <select id="selectBClueInfoStationDetailList" parameterType="BClueInfoStationDetail" resultMap="BClueInfoStationDetailResult">
+        <include refid="selectBClueInfoStationDetailVo"/>
+        <where>  
+            <if test="stationCode != null  and stationCode != ''"> and station_code = #{stationCode}</if>
+            <if test="stationName != null  and stationName != ''"> and station_name like concat('%', #{stationName}, '%')</if>
+            <if test="stationType != null  and stationType != ''"> and station_type = #{stationType}</if>
+            <if test="divisionCode != null  and divisionCode != ''"> and division_code = #{divisionCode}</if>
+            <if test="divisionName != null  and divisionName != ''"> and division_name like concat('%', #{divisionName}, '%')</if>
+            <if test="responsibilityUnitId != null  and responsibilityUnitId != ''"> and responsibility_unit_id = #{responsibilityUnitId}</if>
+            <if test="responsibilityUnitName != null  and responsibilityUnitName != ''"> and responsibility_unit_name like concat('%', #{responsibilityUnitName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectBClueInfoStationDetailByStationId" parameterType="Long" resultMap="BClueInfoStationDetailResult">
+        <include refid="selectBClueInfoStationDetailVo"/>
+        where station_id = #{stationId}
+    </select>
+    <select id="selectRegionDict" resultType="java.util.Map">
+        select * from b_region_dict
+    </select>
+    <select id="selectUnitDict" resultType="java.util.Map">
+        select * from b_unit_dict;
+    </select>
+
+    <insert id="insertBClueInfoStationDetail" parameterType="BClueInfoStationDetail">
+        insert into b_clue_info_station_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stationId != null">station_id,</if>
+            <if test="stationCode != null">station_code,</if>
+            <if test="stationName != null">station_name,</if>
+            <if test="stationType != null">station_type,</if>
+            <if test="divisionCode != null">division_code,</if>
+            <if test="divisionName != null">division_name,</if>
+            <if test="responsibilityUnitId != null">responsibility_unit_id,</if>
+            <if test="responsibilityUnitName != null">responsibility_unit_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stationId != null">#{stationId},</if>
+            <if test="stationCode != null">#{stationCode},</if>
+            <if test="stationName != null">#{stationName},</if>
+            <if test="stationType != null">#{stationType},</if>
+            <if test="divisionCode != null">#{divisionCode},</if>
+            <if test="divisionName != null">#{divisionName},</if>
+            <if test="responsibilityUnitId != null">#{responsibilityUnitId},</if>
+            <if test="responsibilityUnitName != null">#{responsibilityUnitName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBClueInfoStationDetail" parameterType="BClueInfoStationDetail">
+        update b_clue_info_station_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stationCode != null">station_code = #{stationCode},</if>
+            <if test="stationName != null">station_name = #{stationName},</if>
+            <if test="stationType != null">station_type = #{stationType},</if>
+            <if test="divisionCode != null">division_code = #{divisionCode},</if>
+            <if test="divisionName != null">division_name = #{divisionName},</if>
+            <if test="responsibilityUnitId != null">responsibility_unit_id = #{responsibilityUnitId},</if>
+            <if test="responsibilityUnitName != null">responsibility_unit_name = #{responsibilityUnitName},</if>
+        </trim>
+        where station_id = #{stationId}
+    </update>
+
+    <delete id="deleteBClueInfoStationDetailByStationId" parameterType="Long">
+        delete from b_clue_info_station_detail where station_id = #{stationId}
+    </delete>
+
+    <delete id="deleteBClueInfoStationDetailByStationIds" parameterType="String">
+        delete from b_clue_info_station_detail where station_id in 
+        <foreach item="stationId" collection="array" open="(" separator="," close=")">
+            #{stationId}
+        </foreach>
+    </delete>
+</mapper>
