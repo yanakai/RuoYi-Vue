@@ -59,6 +59,13 @@
             <artifactId>ruoyi-system</artifactId>
         </dependency>
 
+        <!-- magic-api 集成-->
+        <dependency>
+            <groupId>org.ssssssss</groupId>
+            <artifactId>magic-api-spring-boot-starter</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+
     </dependencies>
 
 </project>

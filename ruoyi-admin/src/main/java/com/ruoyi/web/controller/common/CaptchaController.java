@@ -6,6 +6,9 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.annotation.RateLimiter;
+import com.ruoyi.common.enums.LimitType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +45,7 @@ public class CaptchaController
     /**
      * 生成验证码
      */
+    @RateLimiter(time=5,count=1,limitType= LimitType.IP)
     @GetMapping("/captchaImage")
     public AjaxResult getCode(HttpServletResponse response) throws IOException
     {

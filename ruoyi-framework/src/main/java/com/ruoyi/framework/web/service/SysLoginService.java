@@ -111,20 +111,23 @@ public class SysLoginService
     public void validateCaptcha(String username, String code, String uuid)
     {
         boolean captchaEnabled = configService.selectCaptchaEnabled();
-        if (captchaEnabled)
-        {
-            String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + StringUtils.nvl(uuid, "");
-            String captcha = redisCache.getCacheObject(verifyKey);
-            redisCache.deleteObject(verifyKey);
-            if (captcha == null)
-            {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire")));
-                throw new CaptchaExpireException();
-            }
-            if (!code.equalsIgnoreCase(captcha))
-            {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error")));
-                throw new CaptchaException();
+        if (captchaEnabled){
+            if (!UserConstants.FREE_CAPTCHA.equals(code)){
+                /**
+                 *  TODO 当开启验证码登录时，判断当前验证码是否是固定验证码，是 跳过验证码验证；否 执行验证码登录。
+                 *  用于提供接口数据时，可以使用固定验证码。
+                 */
+                String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + StringUtils.nvl(uuid, "");
+                String captcha = redisCache.getCacheObject(verifyKey);
+                redisCache.deleteObject(verifyKey);
+                if (captcha == null){
+                    AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire")));
+                    throw new CaptchaExpireException();
+                }
+                if (!code.equalsIgnoreCase(captcha)){
+                    AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error")));
+                    throw new CaptchaException();
+                }
             }
         }
     }

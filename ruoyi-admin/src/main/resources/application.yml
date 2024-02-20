@@ -127,3 +127,58 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+magic-api:
+  #在线编辑代码的入口地址
+  web: /magic/web
+  #编辑器配置
+  editor-config: classpath:./magic-api/magic-editor-config.js
+  # 数据库查询结果驼峰转换
+  sql-column-case: camel
+  # 跨域支持，默认开启
+  support-cross-domain: true
+  #配置打印SQL
+  show-sql: true
+  # 执行出错时，异常将抛出处理
+  throw-exception: true
+  #配置存储方式
+  resource:
+    # 配置接口资源存储位置，可选 file、database、redis
+    type: database
+    #location: /data/magic-api # 存放本地
+    tableName: magic_api_file_v2 # 数据库中的表名
+    readonly: false # 是否是只读模式
+  backup: #备份相关配置
+    enable: true #是否启用
+    max-history: -1 #备份保留天数，-1为永久保留
+    #datasource: ry-vue  #指定数据源（单数据源时无需配置，多数据源时默认使用主数据源，如果存在其他数据源中需要指定。）
+    table-name: magic_backup_record_v2 #使用数据库存储备份时的表名
+  # 分页配置
+  page-config:
+    # 页大小的请求参数名称
+    size: size
+    # 页码的请求参数名称
+    page: page
+    # 未传页码时的默认页码
+    default-page: 1
+    # 未传页大小时的默认页大小
+    default-size: 10
+  # 配置请求参数支持的日期格式
+  date-pattern:
+    - yyyy-MM-dd
+    - yyyy-MM-dd HH:mm:ss
+    - yyyyMMddHHmmss
+    - yyyyMMdd
+  #配置JSON格式，格式为magic-script中的表达式
+  response: |-
+    {
+      code: code,
+      message: message,
+      data,
+      timestamp,
+      requestTime,
+      executeTime,
+    }
+  response-code:
+    success: 1 #执行成功的code值
+    invalid: 0 #参数验证未通过的code值
+    exception: -1 #执行出现异常的code值
