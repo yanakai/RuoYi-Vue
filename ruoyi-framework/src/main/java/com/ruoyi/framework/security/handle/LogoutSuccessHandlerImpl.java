@@ -40,13 +40,15 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler
             throws IOException, ServletException
     {
         LoginUser loginUser = tokenService.getLoginUser(request);
-        if (StringUtils.isNotNull(loginUser))
-        {
+        if (StringUtils.isNotNull(loginUser)){
+            String systemKey = Constants.SYSTEM_KEY;
+            // 判断退出登录方法是否传子系统的key，为空则默认赋后台系统的key
+            if(StringUtils.isNotNull(request.getParameter("systemKey"))) systemKey = request.getParameter("systemKey");
             String userName = loginUser.getUsername();
             // 删除用户缓存记录
             tokenService.delLoginUser(loginUser.getToken());
             // 记录用户退出日志
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(userName, Constants.LOGOUT, MessageUtils.message("user.logout.success")));
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(userName, Constants.LOGOUT, systemKey, MessageUtils.message("user.logout.success")));
         }
         ServletUtils.renderString(response, JSON.toJSONString(AjaxResult.success(MessageUtils.message("user.logout.success"))));
     }

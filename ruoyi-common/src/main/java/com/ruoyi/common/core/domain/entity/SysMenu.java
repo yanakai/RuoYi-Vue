@@ -63,6 +63,9 @@ public class SysMenu extends BaseEntity
     /** 菜单图标 */
     private String icon;
 
+    /** 菜单唯一key */
+    private String menuKey;
+
     /** 子菜单 */
     private List<SysMenu> children = new ArrayList<SysMenu>();
 
@@ -223,6 +226,14 @@ public class SysMenu extends BaseEntity
         this.icon = icon;
     }
 
+    public String getMenuKey() {
+        return menuKey;
+    }
+
+    public void setMenuKey(String menuKey) {
+        this.menuKey = menuKey;
+    }
+
     public List<SysMenu> getChildren()
     {
         return children;
@@ -249,6 +260,7 @@ public class SysMenu extends BaseEntity
             .append("status ", getStatus())
             .append("perms", getPerms())
             .append("icon", getIcon())
+            .append("menuKey",getMenuKey())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())

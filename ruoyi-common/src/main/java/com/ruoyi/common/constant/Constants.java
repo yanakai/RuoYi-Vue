@@ -10,6 +10,11 @@ import io.jsonwebtoken.Claims;
 public class Constants
 {
     /**
+     * 后台子系统唯一key值
+     */
+    public static final String SYSTEM_KEY="system";
+
+    /**
      * UTF-8 字符集
      */
     public static final String UTF8 = "UTF-8";

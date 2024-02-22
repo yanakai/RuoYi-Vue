@@ -57,7 +57,7 @@ public class CustomAuthorizationInterceptor implements AuthorizationInterceptor 
     public MagicUser login(String username, String password) throws MagicLoginException {
         // 根据实际情况进行修改，如查询数据库。。
         if(StringUtils.isNotEmpty(username) && StringUtils.isNotEmpty(password)){
-            String token = loginService.login(username, password, UserConstants.FREE_CAPTCHA,"");
+            String token = loginService.login(username, password, UserConstants.FREE_CAPTCHA,"","");
             MagicUser magicUser = new MagicUser("",username,token);
             return magicUser;   // 从token中获取MagicUser对象
         }

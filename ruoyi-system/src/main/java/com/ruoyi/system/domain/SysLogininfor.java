@@ -52,6 +52,18 @@ public class SysLogininfor extends BaseEntity
     @Excel(name = "访问时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date loginTime;
 
+    /** 子系统唯一key */
+    @Excel(name = "子系统唯一key")
+    private String systemKey;
+
+    /** 子子系统id */
+    @Excel(name = "子系统id")
+    private Long systemId;
+
+    /** 子系统名称 */
+    @Excel(name = "子系统名称")
+    private String systemName;
+
     public Long getInfoId()
     {
         return infoId;
@@ -140,5 +152,29 @@ public class SysLogininfor extends BaseEntity
     public void setLoginTime(Date loginTime)
     {
         this.loginTime = loginTime;
+    }
+
+    public String getSystemKey() {
+        return systemKey;
+    }
+
+    public void setSystemKey(String systemKey) {
+        this.systemKey = systemKey;
+    }
+
+    public Long getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(Long systemId) {
+        this.systemId = systemId;
+    }
+
+    public String getSystemName() {
+        return systemName;
+    }
+
+    public void setSystemName(String systemName) {
+        this.systemName = systemName;
     }
 }

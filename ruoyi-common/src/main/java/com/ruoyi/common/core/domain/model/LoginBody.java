@@ -26,6 +26,20 @@ public class LoginBody
      * 唯一标识
      */
     private String uuid;
+    /**
+     * 子系统key，用于记录子系统的登录信息
+     */
+    private String systemKey;
+
+    public String getSystemKey()
+    {
+        return systemKey;
+    }
+
+    public void setSystemKey(String systemKey)
+    {
+        this.systemKey = systemKey;
+    }
 
     public String getUsername()
     {

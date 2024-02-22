@@ -46,7 +46,7 @@ public class SysLoginController
         AjaxResult ajax = AjaxResult.success();
         // 生成令牌
         String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
-                loginBody.getUuid());
+                loginBody.getUuid(),loginBody.getSystemKey());
         ajax.put(Constants.TOKEN, token);
         return ajax;
     }
@@ -73,14 +73,32 @@ public class SysLoginController
 
     /**
      * 获取路由信息
-     * 
+     *   TODO 由于引入子系统的权限集中管理，重构之前的获取路由信息代码
      * @return 路由信息
      */
-    @GetMapping("getRouters")
+    /*@GetMapping("getRouters")
     public AjaxResult getRouters()
     {
         Long userId = SecurityUtils.getUserId();
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId);
         return AjaxResult.success(menuService.buildMenus(menus));
+    }*/
+
+    /**
+     * @title getRouters
+     * @description  获取路由信息
+     * @param systemId   子系统ID
+     * @return com.ruoyi.common.core.domain.AjaxResult
+     * @author yanakai@126.com
+     * @date   2024-02-22
+     */
+    @GetMapping("getRouters")
+    public AjaxResult getRouters(Long systemId)
+    {
+        Long userId = SecurityUtils.getUserId();
+        List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId,systemId);
+        return AjaxResult.success(menuService.buildMenus(menus,systemId));
     }
+
+
 }

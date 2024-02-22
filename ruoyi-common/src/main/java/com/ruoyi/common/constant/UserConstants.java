@@ -47,6 +47,9 @@ public class UserConstants
     /** 是否菜单外链（否） */
     public static final String NO_FRAME = "1";
 
+    /** 菜单类型（子系统） */
+    public static final String TYPE_SUBSYSTEM= "X";
+
     /** 菜单类型（目录） */
     public static final String TYPE_DIR = "M";
 
