@@ -5,6 +5,7 @@ import java.util.TimerTask;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.utils.http.HttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,19 +100,20 @@ public class AsyncFactory {
             {
                 // 远程查询操作地点
                 operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
-                ObjectMapper mapper = new ObjectMapper();
-                try {
-                    String operLogStr = mapper.writeValueAsString(operLog);
-                    String result = HttpRequest.post(ssoUrl + "/saveSysOperLog", operLogStr, token);
-                    System.out.println(result);
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                if(RuoYiConfig.isOriginLogEnabled()){
+                    // 日志保存到统一权限库
+                    ObjectMapper mapper = new ObjectMapper();
+                    try {
+                        String operLogStr = mapper.writeValueAsString(operLog);
+                        HttpRequest.post(ssoUrl + "/saveSysOperLog", operLogStr, token);
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }else{
+                    SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
                 }
-
-
-                // SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
             }
         };
     }

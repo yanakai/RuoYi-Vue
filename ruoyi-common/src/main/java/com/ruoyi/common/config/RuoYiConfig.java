@@ -30,6 +30,9 @@ public class RuoYiConfig
     /** 验证码类型 */
     private static String captchaType;
 
+    /** 获取地址开关 */
+    private static boolean originLogEnabled;
+
     /** 统一权限路径 */
     private static String ssoUrl;
 
@@ -97,6 +100,14 @@ public class RuoYiConfig
 
     public static void setSsoUrl(String ssoUrl) {
         RuoYiConfig.ssoUrl = ssoUrl;
+    }
+
+    public static boolean isOriginLogEnabled() {
+        return originLogEnabled;
+    }
+
+    public static void setOriginLogEnabled(boolean originLogEnabled) {
+        RuoYiConfig.originLogEnabled = originLogEnabled;
     }
 
     /**

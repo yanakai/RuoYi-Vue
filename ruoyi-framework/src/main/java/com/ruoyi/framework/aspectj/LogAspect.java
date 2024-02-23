@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.framework.web.service.TokenService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.JoinPoint;
@@ -54,9 +55,6 @@ public class LogAspect
 
     @Resource
     private TokenService tokenService;
-
-    @Value("${sso.url}")
-    private String ssourl;
 
     /**
      * 处理请求前执行
@@ -130,7 +128,7 @@ public class LogAspect
             // 设置消耗时间
             operLog.setCostTime(System.currentTimeMillis() - TIME_THREADLOCAL.get());
             // 保存数据库
-            AsyncManager.me().execute(AsyncFactory.recordOper(operLog,ssourl,tokenService.getToken(ServletUtils.getRequest())));
+            AsyncManager.me().execute(AsyncFactory.recordOper(operLog, RuoYiConfig.getSsoUrl(),tokenService.getToken(ServletUtils.getRequest())));
         }
         catch (Exception exp)
         {

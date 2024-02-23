@@ -13,11 +13,6 @@ public enum BusinessType
     OTHER,
 
     /**
-     * 查询
-     */
-    QUERY,
-
-    /**
      * 新增
      */
     INSERT,
@@ -61,4 +56,9 @@ public enum BusinessType
      * 清空数据
      */
     CLEAN,
+
+    /**
+     * 查询
+     */
+    QUERY,
 }

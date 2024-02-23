@@ -12,7 +12,9 @@ ruoyi:
   addressEnabled: false
   # 验证码类型 math 数字计算 char 字符验证
   captchaType: math
-  # 统一权限url
+  # 日志远程保存开关，默认开启，true: 日志数据远程保存到统一权限数据库；false: 日志保存到项目自连接数据库
+  originLogEnabled: true
+  # 统一权限url  originLogEnabled= true时必须配置此连接
   ssoUrl: http://localhost:8080
 # 开发环境配置
 server:
@@ -97,10 +99,6 @@ token:
   secret: abcdefghijklmnopqrstuvwxyz
   # 令牌有效期（默认30分钟）
   expireTime: 30
-  
-# 统一权限url
-sso:
-  url: http://localhost:8080
   
 # MyBatis配置
 mybatis:
