@@ -9,6 +9,7 @@
           style="width: 240px;"
           @keyup.enter.native="handleQuery"
         />
+      </el-form-item>
       <el-form-item label="系统名称" prop="systemKey">
         <el-select v-model="queryParams.systemKey" placeholder="">
           <el-option
