@@ -1,6 +1,5 @@
 package com.ruoyi.framework.config;
 
-import com.ruoyi.framework.interceptor.impl.MagicAPIAccessDecisionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
