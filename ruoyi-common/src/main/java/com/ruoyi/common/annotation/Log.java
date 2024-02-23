@@ -19,6 +19,13 @@ import com.ruoyi.common.enums.OperatorType;
 @Documented
 public @interface Log
 {
+
+    /**
+     * 子系统名称
+     * 默认为系统管理
+     */
+    public String systemName() default "system";
+
     /**
      * 模块
      */
