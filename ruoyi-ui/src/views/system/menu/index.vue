@@ -57,6 +57,7 @@
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
       <el-table-column prop="menuName" label="菜单名称" :show-overflow-tooltip="true" width="160"></el-table-column>
+      <el-table-column prop="menuKey" label="唯一key"></el-table-column>
       <el-table-column prop="icon" label="图标" align="center" width="100">
         <template slot-scope="scope">
           <svg-icon :icon-class="scope.row.icon" />
@@ -120,6 +121,7 @@
           <el-col :span="24">
             <el-form-item label="菜单类型" prop="menuType">
               <el-radio-group v-model="form.menuType">
+                <el-radio label="X">子系统</el-radio>
                 <el-radio label="M">目录</el-radio>
                 <el-radio label="C">菜单</el-radio>
                 <el-radio label="F">按钮</el-radio>
@@ -158,7 +160,12 @@
               <el-input-number v-model="form.orderNum" controls-position="right" :min="0" />
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="form.menuType != 'F'">
+          <el-col :span="12" v-if="form.menuType == 'X' " >
+            <el-form-item label="唯一key" prop="menuKey">
+              <el-input v-model="form.menuKey" placeholder="请输入菜单的唯一key" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="form.menuType != 'F' && form.menuType != 'X' ">
             <el-form-item prop="isFrame">
               <span slot="label">
                 <el-tooltip content="选择是外链则路由地址需要以`http(s)://`开头" placement="top">
@@ -172,7 +179,7 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="form.menuType != 'F'">
+          <el-col :span="12" v-if="form.menuType != 'F' && form.menuType != 'X' ">
             <el-form-item prop="path">
               <span slot="label">
                 <el-tooltip content="访问的路由地址，如：`user`，如外网地址需内链访问则以`http(s)://`开头" placement="top">
@@ -194,7 +201,7 @@
               <el-input v-model="form.component" placeholder="请输入组件路径" />
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="form.menuType != 'M'">
+          <el-col :span="12" v-if="form.menuType != 'M' && form.menuType != 'X'">
             <el-form-item prop="perms">
               <el-input v-model="form.perms" placeholder="请输入权限标识" maxlength="100" />
               <span slot="label">
@@ -230,7 +237,7 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="form.menuType != 'F'">
+          <el-col :span="12" v-if="form.menuType != 'F' && form.menuType != 'X' ">
             <el-form-item prop="visible">
               <span slot="label">
                 <el-tooltip content="选择隐藏则路由将不会出现在侧边栏，但仍然可以访问" placement="top">
@@ -247,7 +254,7 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="form.menuType != 'F'">
+          <el-col :span="12" v-if="form.menuType != 'F' && form.menuType != 'X'">
             <el-form-item prop="status">
               <span slot="label">
                 <el-tooltip content="选择停用则路由将不会出现在侧边栏，也不能被访问" placement="top">
@@ -285,6 +292,13 @@ export default {
   dicts: ['sys_show_hide', 'sys_normal_disable'],
   components: { Treeselect, IconSelect },
   data() {
+    const menuKeyVerify = (rule, value, callback) => {   
+      if (value=='system') {
+        callback(new Error("子系统唯一key不能设置system"));
+      } else {
+        callback();
+      }
+    };
     return {
       // 遮罩层
       loading: true,
@@ -317,6 +331,11 @@ export default {
         orderNum: [
           { required: true, message: "菜单顺序不能为空", trigger: "blur" }
         ],
+        menuKey: [
+          { required: true, message: "菜单唯一key不能为空", trigger: "blur" },
+          { pattern: /^[a-zA-Z0-9]+$/, message: "菜单唯一key只能输入大小写字母", trigger: "blur" },
+           { required: true, validator: menuKeyVerify, trigger: "blur" },
+        ],
         path: [
           { required: true, message: "路由地址不能为空", trigger: "blur" }
         ]
@@ -324,6 +343,7 @@ export default {
     };
   },
   created() {
+
     this.getList();
   },
   methods: {
@@ -370,6 +390,7 @@ export default {
         menuId: undefined,
         parentId: 0,
         menuName: undefined,
+        menuKey: '',
         icon: undefined,
         menuType: "M",
         orderNum: undefined,
