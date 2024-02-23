@@ -345,6 +345,17 @@ public class SysMenuServiceImpl implements ISysMenuService
         return menuMapper.getSystemList(params);
     }
 
+    @Override
+    public boolean checkMenuKeyUnique(SysMenu menu) {
+        Long menuId = StringUtils.isNull(menu.getMenuId()) ? -1L : menu.getMenuId();
+        SysMenu info = menuMapper.checkMenuKeyUnique(menu.getMenuKey());
+        if (StringUtils.isNotNull(info) && info.getMenuId().longValue() != menuId.longValue())
+        {
+            return UserConstants.NOT_UNIQUE;
+        }
+        return UserConstants.UNIQUE;
+    }
+
     /**
      * 获取路由名称
      * 

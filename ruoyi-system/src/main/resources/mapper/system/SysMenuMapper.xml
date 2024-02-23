@@ -145,7 +145,12 @@
 		<include refid="selectMenuVo"/>
 		where menu_name=#{menuName} and parent_id = #{parentId} limit 1
 	</select>
-	
+
+	<select id="checkMenuKeyUnique" parameterType="SysMenu" resultMap="SysMenuResult">
+		<include refid="selectMenuVo"/>
+		where menu_key=#{menuKey} limit 1
+	</select>
+
 	<update id="updateMenu" parameterType="SysMenu">
 		update sys_menu
 		<set>

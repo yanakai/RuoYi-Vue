@@ -134,4 +134,14 @@ public interface SysMenuMapper
      * @date   2024-02-22
      */
     List<SysMenu> getSystemList(Map<String, Object> params);
+
+    /**
+     * @title checkMenuKeyUnique
+     * @description  校验子系统唯一key是否已存在
+     * @param menuKey
+     * @return com.ruoyi.common.core.domain.entity.SysMenu
+     * @author yanakai@126.com
+     * @date   2024-02-23
+     */
+    SysMenu checkMenuKeyUnique(String menuKey);
 }

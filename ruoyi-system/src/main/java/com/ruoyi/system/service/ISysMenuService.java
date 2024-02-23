@@ -154,4 +154,13 @@ public interface ISysMenuService
      * @date   2024-02-22
      */
     List<SysMenu> getSystemList(Map<String, Object> params);
+    /**
+     * @title checkMenuKeyUnique
+     * @description  校验子系统唯一key是否已存在
+     * @param menu
+     * @return boolean
+     * @author yanakai@126.com
+     * @date   2024-02-23
+     */
+    boolean checkMenuKeyUnique(SysMenu menu);
 }
