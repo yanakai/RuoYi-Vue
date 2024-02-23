@@ -35,7 +35,7 @@ public class SysNoticeController extends BaseController
     /**
      * 获取通知公告列表
      */
-    @Log(systemName = "system1", title = "通知公告列表", businessType = BusinessType.OTHER)
+    @Log(systemKey = "system1", title = "通知公告列表", businessType = BusinessType.QUERY)
     @PreAuthorize("@ss.hasPermi('system:notice:list')")
     @GetMapping("/list")
     public TableDataInfo list(SysNotice notice)

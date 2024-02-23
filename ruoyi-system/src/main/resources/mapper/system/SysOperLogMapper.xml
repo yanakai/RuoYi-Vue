@@ -22,20 +22,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="errorMsg"       column="error_msg"      />
 		<result property="operTime"       column="oper_time"      />
 		<result property="costTime"       column="cost_time"      />
+		<result property="systemKey"     column="system_key"        />
+		<result property="systemId"     column="system_id"        />
+		<result property="systemName"     column="system_name"        />
 	</resultMap>
 
 	<sql id="selectOperLogVo">
-        select oper_id, title, business_type, method, request_method, operator_type, oper_name, dept_name, oper_url, oper_ip, oper_location, oper_param, json_result, status, error_msg, oper_time, cost_time
+        select oper_id, title, business_type, method, request_method, operator_type, oper_name, dept_name, oper_url,
+               oper_ip, oper_location, oper_param, json_result, status, error_msg, oper_time, cost_time,
+               system_key, system_id, system_name
         from sys_oper_log
     </sql>
     
 	<insert id="insertOperlog" parameterType="SysOperLog">
-		insert into sys_oper_log(title, business_type, method, request_method, operator_type, oper_name, dept_name, oper_url, oper_ip, oper_location, oper_param, json_result, status, error_msg, cost_time, oper_time)
-        values (#{title}, #{businessType}, #{method}, #{requestMethod}, #{operatorType}, #{operName}, #{deptName}, #{operUrl}, #{operIp}, #{operLocation}, #{operParam}, #{jsonResult}, #{status}, #{errorMsg}, #{costTime}, sysdate())
+		insert into sys_oper_log(title, business_type, method, request_method, operator_type, oper_name, dept_name,
+		                         oper_url, oper_ip, oper_location, oper_param, json_result, status, error_msg,
+		                         cost_time, oper_time,system_key, system_id, system_name)
+        values (#{title}, #{businessType}, #{method}, #{requestMethod}, #{operatorType}, #{operName}, #{deptName},
+                #{operUrl}, #{operIp}, #{operLocation}, #{operParam}, #{jsonResult}, #{status}, #{errorMsg},
+                #{costTime}, sysdate(), #{systemKey}, #{systemId}, #{systemName})
 	</insert>
 	
 	<select id="selectOperLogList" parameterType="SysOperLog" resultMap="SysOperLogResult">
-		<include refid="selectOperLogVo"/>
+		select oper_id, title, business_type, method, request_method, operator_type, oper_name, dept_name, oper_url,
+		oper_ip, oper_location, oper_param, json_result, status, error_msg, oper_time, cost_time,
+		system_key, system_id,
+		(select menu_name from sys_menu where menu_key = sol.system_key and menu_key != 'system') as system_name
+		from sys_oper_log sol
 		<where>
 			<if test="operIp != null and operIp != ''">
 				AND oper_ip like concat('%', #{operIp}, '%')
@@ -64,8 +77,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
 				AND oper_time &lt;= #{params.endTime}
 			</if>
+			<if test="systemKey != null and systemKey != ''">
+				AND system_key = #{systemKey}
+			</if>
+			<if test="systemId != null ">
+				AND system_id = #{systemId}
+			</if>
+			<if test="systemName != null and systemName != ''">
+				AND system_name like concat('%', #{systemName}, '%')
+			</if>
 		</where>
-		order by oper_id desc
+		order by oper_time desc
 	</select>
 	
 	<delete id="deleteOperLogByIds" parameterType="Long">

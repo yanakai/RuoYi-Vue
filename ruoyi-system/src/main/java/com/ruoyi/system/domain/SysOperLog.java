@@ -19,6 +19,18 @@ public class SysOperLog extends BaseEntity
     @Excel(name = "操作序号", cellType = ColumnType.NUMERIC)
     private Long operId;
 
+    /** 子系统唯一key */
+    @Excel(name = "子系统唯一key")
+    private String systemKey;
+
+    /** 子子系统id */
+    @Excel(name = "子系统id")
+    private Long systemId;
+
+    /** 子系统名称 */
+    @Excel(name = "子系统名称")
+    private String systemName;
+
     /** 操作模块 */
     @Excel(name = "操作模块")
     private String title;
@@ -265,5 +277,29 @@ public class SysOperLog extends BaseEntity
     public void setCostTime(Long costTime)
     {
         this.costTime = costTime;
+    }
+
+    public String getSystemKey() {
+        return systemKey;
+    }
+
+    public void setSystemKey(String systemKey) {
+        this.systemKey = systemKey;
+    }
+
+    public Long getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(Long systemId) {
+        this.systemId = systemId;
+    }
+
+    public String getSystemName() {
+        return systemName;
+    }
+
+    public void setSystemName(String systemName) {
+        this.systemName = systemName;
     }
 }
