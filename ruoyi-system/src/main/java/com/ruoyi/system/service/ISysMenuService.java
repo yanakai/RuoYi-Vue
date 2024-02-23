@@ -1,6 +1,7 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import com.ruoyi.common.core.domain.TreeSelect;
 import com.ruoyi.common.core.domain.entity.SysMenu;
@@ -143,4 +144,14 @@ public interface ISysMenuService
      * @return 结果
      */
     public boolean checkMenuNameUnique(SysMenu menu);
+
+    /**
+     * @title getSystemList
+     * @description  获取子系统列表
+     * @param params
+     * @return java.util.List<com.ruoyi.common.core.domain.entity.SysMenu>
+     * @author yanakai@126.com
+     * @date   2024-02-22
+     */
+    List<SysMenu> getSystemList(Map<String, Object> params);
 }

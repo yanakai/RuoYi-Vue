@@ -31,6 +31,14 @@ public class SysOperlogController extends BaseController
     @Autowired
     private ISysOperLogService operLogService;
 
+    /**
+     * @title list
+     * @description  操作日志列表查询
+     * @param operLog
+     * @return com.ruoyi.common.core.page.TableDataInfo
+     * @author yanakai@126.com
+     * @date   2024-02-22
+     */
     @PreAuthorize("@ss.hasPermi('monitor:operlog:list')")
     @GetMapping("/list")
     public TableDataInfo list(SysOperLog operLog)

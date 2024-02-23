@@ -1,6 +1,8 @@
 package com.ruoyi.system.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 import com.ruoyi.common.core.domain.entity.SysMenu;
 
@@ -122,4 +124,14 @@ public interface SysMenuMapper
      * @return 结果
      */
     public SysMenu checkMenuNameUnique(@Param("menuName") String menuName, @Param("parentId") Long parentId);
+
+    /**
+     * @title getSystemList
+     * @description  查询子系统列表
+     * @param params
+     * @return java.util.List<com.ruoyi.common.core.domain.entity.SysMenu>
+     * @author yanakai@126.com
+     * @date   2024-02-22
+     */
+    List<SysMenu> getSystemList(Map<String, Object> params);
 }

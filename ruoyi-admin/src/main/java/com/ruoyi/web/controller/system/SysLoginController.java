@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.system;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -98,6 +100,19 @@ public class SysLoginController
         Long userId = SecurityUtils.getUserId();
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId,systemId);
         return AjaxResult.success(menuService.buildMenus(menus,systemId));
+    }
+
+    /**
+     * @title getSystemList
+     * @description  获取子系统列表
+     * @return com.ruoyi.common.core.domain.AjaxResult
+     * @author yanakai@126.com
+     * @date   2024-02-22
+     */
+    @GetMapping("/getSystemList")
+    public AjaxResult getSystemList(){
+        Map<String, Object> params = new HashMap<>();
+        return AjaxResult.success(menuService.getSystemList(params));
     }
 
 

@@ -216,4 +216,16 @@
 	    delete from sys_menu where menu_id = #{menuId}
 	</delete>
 
+	<!--获取子系统列表-->
+	<select id="getSystemList" parameterType="map" resultMap="SysMenuResult">
+		SELECT
+			*
+		FROM
+			sys_menu
+		WHERE
+			menu_key IN ( SELECT menu_key FROM sys_menu WHERE menu_key IS NOT NULL AND menu_key != 'system' GROUP BY menu_key )
+	</select>
+
+
+
 </mapper> 
