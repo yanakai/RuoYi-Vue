@@ -143,6 +143,8 @@ public class LogAspect
      */
     public void getControllerMethodDescription(JoinPoint joinPoint, Log log, SysOperLog operLog, Object jsonResult) throws Exception
     {
+        // 设置子系统唯一key
+        operLog.setSystemKey(log.systemKey());
         // 设置action动作
         operLog.setBusinessType(log.businessType().ordinal());
         // 设置标题
