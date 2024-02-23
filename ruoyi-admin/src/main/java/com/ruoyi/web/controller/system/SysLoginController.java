@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.ruoyi.system.domain.SysOperLog;
+import com.ruoyi.system.service.ISysOperLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +38,9 @@ public class SysLoginController
 
     @Autowired
     private SysPermissionService permissionService;
+
+    @Autowired
+    private ISysOperLogService operLogService;
 
     /**
      * 登录方法
@@ -113,6 +119,19 @@ public class SysLoginController
     public AjaxResult getSystemList(){
         Map<String, Object> params = new HashMap<>();
         return AjaxResult.success(menuService.getSystemList(params));
+    }
+
+    /**
+     * @title saveSysOperLog
+     * @description  保存子系统的传来的操作日志信息
+     * @param operLog
+     * @return com.ruoyi.common.core.domain.AjaxResult
+     * @author yanakai@126.com
+     * @date   2024-02-23
+     */
+    @PostMapping("/saveSysOperLog")
+    public AjaxResult saveSysOperLog(@RequestBody SysOperLog operLog){
+        return AjaxResult.success(operLogService.insertOperlog(operLog));
     }
 
 

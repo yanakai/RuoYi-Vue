@@ -15,7 +15,7 @@ public interface ISysOperLogService
      * 
      * @param operLog 操作日志对象
      */
-    public void insertOperlog(SysOperLog operLog);
+    public int insertOperlog(SysOperLog operLog);
 
     /**
      * 查询系统操作日志集合
