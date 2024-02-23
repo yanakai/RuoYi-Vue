@@ -69,6 +69,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
  	
  	<insert id="insertJobLog" parameterType="SysJobLog">
+		<selectKey keyProperty="jobLogId" order="BEFORE" resultType="Long">
+			select ZKYT_XTPT_sequence_250000.nextval as jobLogId from DUAL
+		</selectKey>
  		insert into sys_job_log(
  			<if test="jobLogId != null and jobLogId != 0">job_log_id,</if>
  			<if test="jobName != null and jobName != ''">job_name,</if>

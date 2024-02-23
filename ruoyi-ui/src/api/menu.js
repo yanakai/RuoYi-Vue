@@ -7,3 +7,14 @@ export const getRouters = () => {
     method: 'get'
   })
 }
+
+
+// 获取子系统名称，排除后台管理系统名称
+export const systemList = () => {
+  return request({
+    url: '/getSystemList',
+    method: 'get'
+  })
+}
+
+

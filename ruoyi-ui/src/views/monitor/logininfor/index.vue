@@ -1,6 +1,16 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="78px">
+      <el-form-item label="系统名称" prop="systemKey">
+        <el-select v-model="queryParams.systemKey" placeholder="">
+          <el-option
+            v-for="dict in systemList"
+            :key="dict.menuKey"
+            :label="dict.menuName"
+            :value="dict.menuKey"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="登录地址" prop="ipaddr">
         <el-input
           v-model="queryParams.ipaddr"
@@ -101,6 +111,11 @@
     <el-table ref="tables" v-loading="loading" :data="list" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="访问编号" align="center" prop="infoId" />
+      <el-table-column label="系统名称" align="center" prop="systemName" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          <span>{{scope.row.systemName == null? '系统管理': scope.row.systemName}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="用户名称" align="center" prop="userName" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" />
       <el-table-column label="登录地址" align="center" prop="ipaddr" width="130" :show-overflow-tooltip="true" />
       <el-table-column label="登录地点" align="center" prop="loginLocation" :show-overflow-tooltip="true" />
@@ -131,6 +146,7 @@
 
 <script>
 import { list, delLogininfor, cleanLogininfor, unlockLogininfor } from "@/api/monitor/logininfor";
+import { systemList } from "@/api/menu";
 
 export default {
   name: "Logininfor",
@@ -153,6 +169,8 @@ export default {
       total: 0,
       // 表格数据
       list: [],
+      //子系统列表
+      systemList: [],
       // 日期范围
       dateRange: [],
       // 默认排序
@@ -161,6 +179,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        systemKey: 'system',
         ipaddr: undefined,
         userName: undefined,
         status: undefined
@@ -168,9 +187,17 @@ export default {
     };
   },
   created() {
+    this.getSystemList();
     this.getList();
   },
   methods: {
+    /** 查询系统列表 */
+    getSystemList() {
+      systemList().then(response => {
+        this.systemList = response.data;
+        this.systemList.unshift({menuKey: 'system', menuName: '系统管理'});
+      });
+    },
     /** 查询登录日志列表 */
     getList() {
       this.loading = true;

@@ -9,6 +9,15 @@
           style="width: 240px;"
           @keyup.enter.native="handleQuery"
         />
+      <el-form-item label="系统名称" prop="systemKey">
+        <el-select v-model="queryParams.systemKey" placeholder="">
+          <el-option
+            v-for="dict in systemList"
+            :key="dict.menuKey"
+            :label="dict.menuName"
+            :value="dict.menuKey"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="系统模块" prop="title">
         <el-input
@@ -114,6 +123,11 @@
     <el-table ref="tables" v-loading="loading" :data="list" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
       <el-table-column type="selection" width="50" align="center" />
       <el-table-column label="日志编号" align="center" prop="operId" />
+      <el-table-column label="系统名称" align="center" prop="systemName" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          <span>{{scope.row.systemName == null? '系统管理': scope.row.systemName}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="系统模块" align="center" prop="title" :show-overflow-tooltip="true" />
       <el-table-column label="操作类型" align="center" prop="businessType">
         <template slot-scope="scope">
@@ -208,6 +222,7 @@
 
 <script>
 import { list, delOperlog, cleanOperlog } from "@/api/monitor/operlog";
+import { systemList } from "@/api/menu";
 
 export default {
   name: "Operlog",
@@ -226,6 +241,8 @@ export default {
       total: 0,
       // 表格数据
       list: [],
+      //子系统列表
+      systemList: [],
       // 是否显示弹出层
       open: false,
       // 日期范围
@@ -239,6 +256,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         operIp: undefined,
+        systemKey: 'system',
         title: undefined,
         operName: undefined,
         businessType: undefined,
@@ -247,9 +265,17 @@ export default {
     };
   },
   created() {
+    this.getSystemList();
     this.getList();
   },
   methods: {
+    /** 查询系统列表 */
+    getSystemList() {
+      systemList().then(response => {
+        this.systemList = response.data;
+        this.systemList.unshift({menuKey: 'system', menuName: '系统管理'});
+      });
+    },
     /** 查询登录日志 */
     getList() {
       this.loading = true;

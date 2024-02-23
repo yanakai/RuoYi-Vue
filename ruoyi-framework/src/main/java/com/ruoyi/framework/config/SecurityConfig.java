@@ -1,5 +1,6 @@
 package com.ruoyi.framework.config;
 
+import com.ruoyi.framework.interceptor.impl.MagicAPIAccessDecisionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -19,6 +20,7 @@ import com.ruoyi.framework.config.properties.PermitAllUrlProperties;
 import com.ruoyi.framework.security.filter.JwtAuthenticationTokenFilter;
 import com.ruoyi.framework.security.handle.AuthenticationEntryPointImpl;
 import com.ruoyi.framework.security.handle.LogoutSuccessHandlerImpl;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 /**
  * spring security配置
@@ -63,6 +65,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
      */
     @Autowired
     private PermitAllUrlProperties permitAllUrl;
+
+    @Autowired
+    RequestMappingHandlerMapping requestMappingHandlerMapping;
 
     /**
      * 解决 无法直接注入 AuthenticationManager
@@ -115,7 +120,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 // 静态资源，可匿名访问
                 .antMatchers(HttpMethod.GET, "/", "/*.html", "/**/*.html", "/**/*.css", "/**/*.js", "/profile/**").permitAll()
                 .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/*/api-docs", "/druid/**").permitAll()
+<<<<<<< HEAD
                 .antMatchers("/magic/web/**","/**/freeApi/**").permitAll()
+=======
+                .antMatchers("/magic/web/**").permitAll()
+                //.accessDecisionManager(new MagicAPIAccessDecisionManager(requestMappingHandlerMapping))
+>>>>>>> hefei
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()
                 .and()

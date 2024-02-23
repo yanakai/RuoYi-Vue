@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    <include refid="selectPostVo"/>
 		<where>
 			<if test="postCode != null and postCode != ''">
-				AND post_code like concat('%', #{postCode}, '%')
+				AND post_code like concat(concat('%', #{postCode}), '%')
 			</if>
 			<if test="status != null and status != ''">
 				AND status = #{status}
@@ -87,7 +87,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
  	
  	<insert id="insertPost" parameterType="SysPost" useGeneratedKeys="true" keyProperty="postId">
- 		insert into sys_post(
+		<selectKey keyProperty="postId" order="BEFORE" resultType="Long">
+			select ZKYT_XTPT_sequence_10000.nextval as postId from DUAL
+		</selectKey>
+		insert into sys_post(
  			<if test="postId != null and postId != 0">post_id,</if>
  			<if test="postCode != null and postCode != ''">post_code,</if>
  			<if test="postName != null and postName != ''">post_name,</if>

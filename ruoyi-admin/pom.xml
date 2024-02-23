@@ -42,6 +42,24 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+ <!--       <dependency>
+            <groupId>com.vertica</groupId>
+            <artifactId>vertica-jdbc</artifactId>
+            <version>9.1.1</version>
+        </dependency>-->
+        <!--vertica驱动包-->
+        <dependency>
+            <groupId>com.vertica.jdbc</groupId>
+            <artifactId>vertica-jdbc</artifactId>
+            <version>12.0.3-0</version>
+        </dependency>
+
+
+        <!-- 主线业务模块-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-business</artifactId>
+        </dependency>
 
         <!-- 核心模块-->
         <dependency>

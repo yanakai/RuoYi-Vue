@@ -20,10 +20,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<insert id="insertLogininfor" parameterType="SysLogininfor">
+<<<<<<< HEAD
 		insert into sys_logininfor (user_name, status, ipaddr, login_location, browser, os, msg, login_time,
 		                            system_key, system_id, system_name)
 		values (#{userName}, #{status}, #{ipaddr}, #{loginLocation}, #{browser}, #{os}, #{msg}, sysdate(), #{systemKey},
 		        #{systemId}, #{systemName})
+=======
+		<selectKey keyProperty="infoId" order="BEFORE" resultType="Long">
+			select ZKYT_XTPT_sequence_250000.nextval as infoId from DUAL
+		</selectKey>
+		insert into sys_logininfor (user_name, status, ipaddr, login_location, browser, os, msg, login_time)
+		values (#{userName}, #{status}, #{ipaddr}, #{loginLocation}, #{browser}, #{os}, #{msg}, sysdate())
+>>>>>>> hefei
 	</insert>
 	
 	<select id="selectLogininforList" parameterType="SysLogininfor" resultMap="SysLogininforResult">
@@ -35,13 +43,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    sys_logininfor sl
 		<where>
 			<if test="ipaddr != null and ipaddr != ''">
-				AND ipaddr like concat('%', #{ipaddr}, '%')
+				AND ipaddr like concat(concat('%', #{ipaddr}), '%')
 			</if>
 			<if test="status != null and status != ''">
 				AND status = #{status}
 			</if>
 			<if test="userName != null and userName != ''">
-				AND user_name like concat('%', #{userName}, '%')
+				AND user_name like concat(concat('%', #{userName}), '%')
 			</if>
 			<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
 				AND login_time &gt;= #{params.beginTime}

@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
     
     <sql id="selectNoticeVo">
-        select notice_id, notice_title, notice_type, cast(notice_content as char) as notice_content, status, create_by, create_time, update_by, update_time, remark 
+        select notice_id, notice_title, notice_type, notice_content , status, create_by, create_time, update_by, update_time, remark
 		from sys_notice
     </sql>
     
@@ -31,18 +31,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectNoticeVo"/>
         <where>
 			<if test="noticeTitle != null and noticeTitle != ''">
-				AND notice_title like concat('%', #{noticeTitle}, '%')
+				AND notice_title like concat(concat('%', #{noticeTitle}), '%')
 			</if>
 			<if test="noticeType != null and noticeType != ''">
 				AND notice_type = #{noticeType}
 			</if>
 			<if test="createBy != null and createBy != ''">
-				AND create_by like concat('%', #{createBy}, '%')
+				AND create_by like concat(concat('%', #{createBy}), '%')
 			</if>
 		</where>
     </select>
     
     <insert id="insertNotice" parameterType="SysNotice">
+        <selectKey keyProperty="noticeId" order="BEFORE" resultType="Long">
+            select ZKYT_XTPT_sequence_10000.nextval as noticeId from DUAL
+        </selectKey>
         insert into sys_notice (
 			<if test="noticeTitle != null and noticeTitle != '' ">notice_title, </if>
 			<if test="noticeType != null and noticeType != '' ">notice_type, </if>
