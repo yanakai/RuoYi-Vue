@@ -128,36 +128,6 @@ public class TokenService
     }
 
     /**
-     * @title getLoginUser
-     * @description  通过前端传的authorization解析token值获取当前用户信息   适用magic-api获取用户信息
-     * @param authorization
-     * @return com.ruoyi.common.core.domain.model.LoginUser
-     * @author yanakai@126.com
-     * @date   2023/3/16
-     */
-    public LoginUser getLoginUser(String authorization ){
-        // 获取请求携带的令牌
-        String token = getToken(authorization);
-        return getLoginUserFromRedis(token);
-
-    }
-
-    private LoginUser getLoginUserFromRedis(String token) {
-        if (StringUtils.isNotEmpty(token)){
-            try{
-                Claims claims = parseToken(token);
-                // 解析对应的权限以及用户信息
-                String uuid = (String) claims.get(Constants.LOGIN_USER_KEY);
-                String userKey = getTokenKey(uuid);
-                LoginUser user = redisCache.getCacheObject(userKey);
-                return user;
-            }catch (Exception e){
-            }
-        }
-        return null;
-    }
-
-    /**
      * 设置用户身份信息
      */
     public void setLoginUser(LoginUser loginUser)
@@ -294,21 +264,6 @@ public class TokenService
         String token = request.getHeader(header);
         if (StringUtils.isNotEmpty(token) && token.startsWith(Constants.TOKEN_PREFIX))
         {
-            token = token.replace(Constants.TOKEN_PREFIX, "");
-        }
-        return token;
-    }
-
-    /**
-     * @title getToken
-     * @description  解析token的值
-     * @param token
-     * @return java.lang.String
-     * @author yanakai@126.com
-     * @date   2023/3/16
-     */
-    private String getToken(String token){
-        if (StringUtils.isNotEmpty(token) && token.startsWith(Constants.TOKEN_PREFIX)){
             token = token.replace(Constants.TOKEN_PREFIX, "");
         }
         return token;
