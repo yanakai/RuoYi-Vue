@@ -1,6 +1,11 @@
 package com.ruoyi.framework.manager.factory;
 
+import java.io.IOException;
 import java.util.TimerTask;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ruoyi.common.utils.http.HttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ruoyi.common.constant.Constants;
@@ -21,8 +26,7 @@ import eu.bitwalker.useragentutils.UserAgent;
  * 
  * @author ruoyi
  */
-public class AsyncFactory
-{
+public class AsyncFactory {
     private static final Logger sys_user_logger = LoggerFactory.getLogger("sys-user");
 
     /**
@@ -86,7 +90,7 @@ public class AsyncFactory
      * @param operLog 操作日志信息
      * @return 任务task
      */
-    public static TimerTask recordOper(final SysOperLog operLog)
+    public static TimerTask recordOper(final SysOperLog operLog, final String ssoUrl, final String token)
     {
         return new TimerTask()
         {
@@ -95,7 +99,19 @@ public class AsyncFactory
             {
                 // 远程查询操作地点
                 operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
-                SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    String operLogStr = mapper.writeValueAsString(operLog);
+                    String result = HttpRequest.post(ssoUrl + "/saveSysOperLog", operLogStr, token);
+                    System.out.println(result);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+
+                // SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
             }
         };
     }

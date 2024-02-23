@@ -2,8 +2,11 @@ package com.ruoyi.framework.aspectj;
 
 import java.util.Collection;
 import java.util.Map;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.framework.web.service.TokenService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -12,6 +15,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
@@ -47,6 +51,12 @@ public class LogAspect
 
     /** 计算操作消耗时间 */
     private static final ThreadLocal<Long> TIME_THREADLOCAL = new NamedThreadLocal<Long>("Cost Time");
+
+    @Resource
+    private TokenService tokenService;
+
+    @Value("${sso.url}")
+    private String ssourl;
 
     /**
      * 处理请求前执行
@@ -120,7 +130,7 @@ public class LogAspect
             // 设置消耗时间
             operLog.setCostTime(System.currentTimeMillis() - TIME_THREADLOCAL.get());
             // 保存数据库
-            AsyncManager.me().execute(AsyncFactory.recordOper(operLog));
+            AsyncManager.me().execute(AsyncFactory.recordOper(operLog,ssourl,tokenService.getToken(ServletUtils.getRequest())));
         }
         catch (Exception exp)
         {

@@ -30,6 +30,9 @@ public class RuoYiConfig
     /** 验证码类型 */
     private static String captchaType;
 
+    /** 统一权限路径 */
+    private static String ssoUrl;
+
     public String getName()
     {
         return name;
@@ -86,6 +89,14 @@ public class RuoYiConfig
 
     public void setCaptchaType(String captchaType) {
         RuoYiConfig.captchaType = captchaType;
+    }
+
+    public static String getSsoUrl() {
+        return ssoUrl;
+    }
+
+    public static void setSsoUrl(String ssoUrl) {
+        RuoYiConfig.ssoUrl = ssoUrl;
     }
 
     /**

@@ -41,8 +41,7 @@ public class SysLoginController
      * @return 结果
      */
     @PostMapping("/login")
-    public AjaxResult login(@RequestBody LoginBody loginBody)
-    {
+    public AjaxResult login(@RequestBody LoginBody loginBody){
         AjaxResult ajax = AjaxResult.success();
         // 生成令牌
         String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),

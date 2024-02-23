@@ -7,16 +7,17 @@ ruoyi:
   # 版权年份
   copyrightYear: 2023
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
-  profile: D:/ruoyi/uploadPath
+  profile: D:/data/ruoyi/uploadPath
   # 获取ip地址开关
   addressEnabled: false
   # 验证码类型 math 数字计算 char 字符验证
   captchaType: math
-
+  # 统一权限url
+  ssoUrl: http://localhost:8080
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为8080
-  port: 8080
+  port: 8088
   servlet:
     # 应用的访问路径
     context-path: /
@@ -96,7 +97,11 @@ token:
   secret: abcdefghijklmnopqrstuvwxyz
   # 令牌有效期（默认30分钟）
   expireTime: 30
-
+  
+# 统一权限url
+sso:
+  url: http://localhost:8080
+  
 # MyBatis配置
 mybatis:
   # 搜索指定包别名
