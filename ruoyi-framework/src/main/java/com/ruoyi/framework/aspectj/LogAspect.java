@@ -56,6 +56,8 @@ public class LogAspect
     @Resource
     private TokenService tokenService;
 
+
+
     /**
      * 处理请求前执行
      */
@@ -117,6 +119,12 @@ public class LogAspect
                 operLog.setStatus(BusinessStatus.FAIL.ordinal());
                 operLog.setErrorMsg(StringUtils.substring(e.getMessage(), 0, 2000));
             }
+            // 设置子系统id
+            operLog.setSystemId(RuoYiConfig.getSystemId());
+            // 设置系统key
+            operLog.setSystemKey(RuoYiConfig.getSystemKey());
+            // 设置子系统名称
+            operLog.setSystemName(RuoYiConfig.getSystemName());
             // 设置方法名称
             String className = joinPoint.getTarget().getClass().getName();
             String methodName = joinPoint.getSignature().getName();
@@ -151,8 +159,6 @@ public class LogAspect
      */
     public void getControllerMethodDescription(JoinPoint joinPoint, Log log, SysOperLog operLog, Object jsonResult) throws Exception
     {
-        // 设置子系统唯一key
-        operLog.setSystemKey(log.systemKey());
         // 设置action动作
         operLog.setBusinessType(log.businessType().ordinal());
         // 设置标题

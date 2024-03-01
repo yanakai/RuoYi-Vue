@@ -12,8 +12,14 @@ ruoyi:
   addressEnabled: false
   # 验证码类型 math 数字计算 char 字符验证
   captchaType: math
-  # 日志远程保存开关，默认开启，true: 日志数据远程保存到统一权限数据库；false: 日志保存到项目自连接数据库
+  # 日志远程保存开关，默认开启，true: 日志数据远程保存到统一权限数据库；false: 日志保存到项目自连接数据库或者日志通过前端上传至统一权限库
   originLogEnabled: true
+  # 子系统唯一id 数据从统一权限菜单列表中获取
+  systemId: 2005
+  # 子系统唯一key 数据从统一权限菜单列表中获取
+  systemKey: system1
+  # 子系统名称 数据从统一权限菜单列表中获取
+  systemName: 子系统1
   # 统一权限url  originLogEnabled= true时必须配置此连接
   ssoUrl: http://localhost:8080
 # 开发环境配置

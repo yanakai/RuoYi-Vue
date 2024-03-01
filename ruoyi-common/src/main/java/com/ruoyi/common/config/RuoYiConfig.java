@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 读取项目相关配置
- * 
+ *
  * @author ruoyi
  */
 @Component
@@ -30,9 +30,14 @@ public class RuoYiConfig
     /** 验证码类型 */
     private static String captchaType;
 
-    /** 获取地址开关 */
+    /** 日志远程上传开关 */
     private static boolean originLogEnabled;
-
+    /** 子系统唯一id 数据从统一权限菜单列表中获取 */
+    private static Long systemId;
+    /** 子系统唯一key 数据从统一权限菜单列表中获取 */
+    private static String systemKey;
+    /** 子系统名称 数据从统一权限菜单列表中获取 */
+    private static String systemName;
     /** 统一权限路径 */
     private static String ssoUrl;
 
@@ -98,16 +103,40 @@ public class RuoYiConfig
         return ssoUrl;
     }
 
-    public static void setSsoUrl(String ssoUrl) {
-        RuoYiConfig.ssoUrl = ssoUrl;
+    public void setSsoUrl(String ssoUrl) {
+        this.ssoUrl = ssoUrl;
     }
 
     public static boolean isOriginLogEnabled() {
         return originLogEnabled;
     }
 
-    public static void setOriginLogEnabled(boolean originLogEnabled) {
+    public void setOriginLogEnabled(boolean originLogEnabled) {
         RuoYiConfig.originLogEnabled = originLogEnabled;
+    }
+
+    public static Long getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(Long systemId) {
+        this.systemId = systemId;
+    }
+
+    public static String getSystemKey() {
+        return systemKey;
+    }
+
+    public void setSystemKey(String systemKey) {
+        this.systemKey = systemKey;
+    }
+
+    public static String getSystemName() {
+        return systemName;
+    }
+
+    public void setSystemName(String systemName) {
+        this.systemName = systemName;
     }
 
     /**
