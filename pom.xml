@@ -202,8 +202,34 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
+            <!--源码-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>rdc-releases</id>
+            <url>file:D:\\</url>
+        </repository>
+        <!--快照发布地址-->
+        <snapshotRepository>
+            <id>rdc-snapshots</id>
+            <url>file:D:\\</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <repositories>
         <repository>
