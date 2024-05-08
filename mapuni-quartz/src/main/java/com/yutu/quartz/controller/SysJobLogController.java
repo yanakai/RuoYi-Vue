@@ -1,4 +1,4 @@
-package com.ruoyi.quartz.controller;
+package com.yutu.quartz.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
@@ -10,19 +10,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.page.TableDataInfo;
-import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.quartz.domain.SysJobLog;
-import com.ruoyi.quartz.service.ISysJobLogService;
+import com.yutu.common.annotation.Log;
+import com.yutu.common.core.controller.BaseController;
+import com.yutu.common.core.domain.AjaxResult;
+import com.yutu.common.core.page.TableDataInfo;
+import com.yutu.common.enums.BusinessType;
+import com.yutu.common.utils.poi.ExcelUtil;
+import com.yutu.quartz.domain.SysJobLog;
+import com.yutu.quartz.service.ISysJobLogService;
 
 /**
  * 调度日志操作处理
  * 
- * @author ruoyi
+ * @author yutu
  */
 @RestController
 @RequestMapping("/monitor/jobLog")

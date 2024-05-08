@@ -1,12 +1,12 @@
-package com.ruoyi.quartz.mapper;
+package com.yutu.quartz.mapper;
 
 import java.util.List;
-import com.ruoyi.quartz.domain.SysJobLog;
+import com.yutu.quartz.domain.SysJobLog;
 
 /**
  * 调度任务日志信息 数据层
  * 
- * @author ruoyi
+ * @author yutu
  */
 public interface SysJobLogMapper
 {

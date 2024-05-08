@@ -1,4 +1,4 @@
-package com.ruoyi.quartz.domain;
+package com.yutu.quartz.domain;
 
 import java.util.Date;
 import javax.validation.constraints.NotBlank;
@@ -6,17 +6,17 @@ import javax.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.annotation.Excel.ColumnType;
-import com.ruoyi.common.constant.ScheduleConstants;
-import com.ruoyi.common.core.domain.BaseEntity;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.quartz.util.CronUtils;
+import com.yutu.common.annotation.Excel;
+import com.yutu.common.annotation.Excel.ColumnType;
+import com.yutu.common.constant.ScheduleConstants;
+import com.yutu.common.core.domain.BaseEntity;
+import com.yutu.common.utils.StringUtils;
+import com.yutu.quartz.util.CronUtils;
 
 /**
  * 定时任务调度表 sys_job
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class SysJob extends BaseEntity
 {
