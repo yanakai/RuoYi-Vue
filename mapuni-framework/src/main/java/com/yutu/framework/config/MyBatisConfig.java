@@ -1,4 +1,4 @@
-package com.ruoyi.framework.config;
+package com.yutu.framework.config;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,12 +22,12 @@ import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.util.ClassUtils;
-import com.ruoyi.common.utils.StringUtils;
+import com.yutu.common.utils.StringUtils;
 
 /**
  * Mybatis支持*匹配扫描包
  * 
- * @author ruoyi
+ * @author yutu
  */
 @Configuration
 public class MyBatisConfig

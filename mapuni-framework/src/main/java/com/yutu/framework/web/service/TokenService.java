@@ -1,4 +1,4 @@
-package com.ruoyi.framework.web.service;
+package com.yutu.framework.web.service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,15 +9,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import com.ruoyi.common.constant.CacheConstants;
-import com.ruoyi.common.constant.Constants;
-import com.ruoyi.common.core.domain.model.LoginUser;
-import com.ruoyi.common.core.redis.RedisCache;
-import com.ruoyi.common.utils.ServletUtils;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.ip.AddressUtils;
-import com.ruoyi.common.utils.ip.IpUtils;
-import com.ruoyi.common.utils.uuid.IdUtils;
+import com.yutu.common.constant.CacheConstants;
+import com.yutu.common.constant.Constants;
+import com.yutu.common.core.domain.model.LoginUser;
+import com.yutu.common.core.redis.RedisCache;
+import com.yutu.common.utils.ServletUtils;
+import com.yutu.common.utils.StringUtils;
+import com.yutu.common.utils.ip.AddressUtils;
+import com.yutu.common.utils.ip.IpUtils;
+import com.yutu.common.utils.uuid.IdUtils;
 import eu.bitwalker.useragentutils.UserAgent;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -26,7 +26,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 /**
  * token验证处理
  *
- * @author ruoyi
+ * @author yutu
  */
 @Component
 public class TokenService
@@ -87,7 +87,7 @@ public class TokenService
      * @description  通过前端传的authorization解析token值获取当前用户信息
      *                 适用magic-api获取用户信息
      * @param authorization
-     * @return com.ruoyi.common.core.domain.model.LoginUser
+     * @return com.yutu.common.core.domain.model.LoginUser
      * @author yanakai@126.com
      * @date   2024-02-20
      */

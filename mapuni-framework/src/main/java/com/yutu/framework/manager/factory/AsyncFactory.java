@@ -1,25 +1,25 @@
-package com.ruoyi.framework.manager.factory;
+package com.yutu.framework.manager.factory;
 
 import java.util.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.ruoyi.common.constant.Constants;
-import com.ruoyi.common.utils.LogUtils;
-import com.ruoyi.common.utils.ServletUtils;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.ip.AddressUtils;
-import com.ruoyi.common.utils.ip.IpUtils;
-import com.ruoyi.common.utils.spring.SpringUtils;
-import com.ruoyi.system.domain.SysLogininfor;
-import com.ruoyi.system.domain.SysOperLog;
-import com.ruoyi.system.service.ISysLogininforService;
-import com.ruoyi.system.service.ISysOperLogService;
+import com.yutu.common.constant.Constants;
+import com.yutu.common.utils.LogUtils;
+import com.yutu.common.utils.ServletUtils;
+import com.yutu.common.utils.StringUtils;
+import com.yutu.common.utils.ip.AddressUtils;
+import com.yutu.common.utils.ip.IpUtils;
+import com.yutu.common.utils.spring.SpringUtils;
+import com.yutu.system.domain.SysLogininfor;
+import com.yutu.system.domain.SysOperLog;
+import com.yutu.system.service.ISysLogininforService;
+import com.yutu.system.service.ISysOperLogService;
 import eu.bitwalker.useragentutils.UserAgent;
 
 /**
  * 异步工厂（产生任务用）
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class AsyncFactory
 {

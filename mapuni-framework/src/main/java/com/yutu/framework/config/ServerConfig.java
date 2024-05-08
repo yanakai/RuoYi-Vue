@@ -1,13 +1,13 @@
-package com.ruoyi.framework.config;
+package com.yutu.framework.config;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
-import com.ruoyi.common.utils.ServletUtils;
+import com.yutu.common.utils.ServletUtils;
 
 /**
  * 服务相关配置
  * 
- * @author ruoyi
+ * @author yutu
  */
 @Component
 public class ServerConfig

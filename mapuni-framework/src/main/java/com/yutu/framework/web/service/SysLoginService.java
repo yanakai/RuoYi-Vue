@@ -1,4 +1,4 @@
-package com.ruoyi.framework.web.service;
+package com.yutu.framework.web.service;
 
 import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,32 +7,32 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import com.ruoyi.common.constant.CacheConstants;
-import com.ruoyi.common.constant.Constants;
-import com.ruoyi.common.constant.UserConstants;
-import com.ruoyi.common.core.domain.entity.SysUser;
-import com.ruoyi.common.core.domain.model.LoginUser;
-import com.ruoyi.common.core.redis.RedisCache;
-import com.ruoyi.common.exception.ServiceException;
-import com.ruoyi.common.exception.user.BlackListException;
-import com.ruoyi.common.exception.user.CaptchaException;
-import com.ruoyi.common.exception.user.CaptchaExpireException;
-import com.ruoyi.common.exception.user.UserNotExistsException;
-import com.ruoyi.common.exception.user.UserPasswordNotMatchException;
-import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.common.utils.MessageUtils;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.ip.IpUtils;
-import com.ruoyi.framework.manager.AsyncManager;
-import com.ruoyi.framework.manager.factory.AsyncFactory;
-import com.ruoyi.framework.security.context.AuthenticationContextHolder;
-import com.ruoyi.system.service.ISysConfigService;
-import com.ruoyi.system.service.ISysUserService;
+import com.yutu.common.constant.CacheConstants;
+import com.yutu.common.constant.Constants;
+import com.yutu.common.constant.UserConstants;
+import com.yutu.common.core.domain.entity.SysUser;
+import com.yutu.common.core.domain.model.LoginUser;
+import com.yutu.common.core.redis.RedisCache;
+import com.yutu.common.exception.ServiceException;
+import com.yutu.common.exception.user.BlackListException;
+import com.yutu.common.exception.user.CaptchaException;
+import com.yutu.common.exception.user.CaptchaExpireException;
+import com.yutu.common.exception.user.UserNotExistsException;
+import com.yutu.common.exception.user.UserPasswordNotMatchException;
+import com.yutu.common.utils.DateUtils;
+import com.yutu.common.utils.MessageUtils;
+import com.yutu.common.utils.StringUtils;
+import com.yutu.common.utils.ip.IpUtils;
+import com.yutu.framework.manager.AsyncManager;
+import com.yutu.framework.manager.factory.AsyncFactory;
+import com.yutu.framework.security.context.AuthenticationContextHolder;
+import com.yutu.system.service.ISysConfigService;
+import com.yutu.system.service.ISysUserService;
 
 /**
  * 登录校验方法
  * 
- * @author ruoyi
+ * @author yutu
  */
 @Component
 public class SysLoginService

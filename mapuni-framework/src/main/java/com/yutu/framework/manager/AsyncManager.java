@@ -1,15 +1,15 @@
-package com.ruoyi.framework.manager;
+package com.yutu.framework.manager;
 
 import java.util.TimerTask;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import com.ruoyi.common.utils.Threads;
-import com.ruoyi.common.utils.spring.SpringUtils;
+import com.yutu.common.utils.Threads;
+import com.yutu.common.utils.spring.SpringUtils;
 
 /**
  * 异步任务管理器
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class AsyncManager
 {

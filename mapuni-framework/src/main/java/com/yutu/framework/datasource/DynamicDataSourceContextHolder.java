@@ -1,4 +1,4 @@
-package com.ruoyi.framework.datasource;
+package com.yutu.framework.datasource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 数据源切换处理
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class DynamicDataSourceContextHolder
 {

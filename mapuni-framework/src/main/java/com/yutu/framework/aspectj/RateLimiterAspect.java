@@ -1,4 +1,4 @@
-package com.ruoyi.framework.aspectj;
+package com.yutu.framework.aspectj;
 
 import java.lang.reflect.Method;
 import java.util.Collections;
@@ -13,16 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Component;
-import com.ruoyi.common.annotation.RateLimiter;
-import com.ruoyi.common.enums.LimitType;
-import com.ruoyi.common.exception.ServiceException;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.ip.IpUtils;
+import com.yutu.common.annotation.RateLimiter;
+import com.yutu.common.enums.LimitType;
+import com.yutu.common.exception.ServiceException;
+import com.yutu.common.utils.StringUtils;
+import com.yutu.common.utils.ip.IpUtils;
 
 /**
  * 限流处理
  *
- * @author ruoyi
+ * @author yutu
  */
 @Aspect
 @Component

@@ -1,19 +1,19 @@
-package com.ruoyi.framework.web.service;
+package com.yutu.framework.web.service;
 
 import java.util.Set;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import com.ruoyi.common.constant.Constants;
-import com.ruoyi.common.core.domain.entity.SysRole;
-import com.ruoyi.common.core.domain.model.LoginUser;
-import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.framework.security.context.PermissionContextHolder;
+import com.yutu.common.constant.Constants;
+import com.yutu.common.core.domain.entity.SysRole;
+import com.yutu.common.core.domain.model.LoginUser;
+import com.yutu.common.utils.SecurityUtils;
+import com.yutu.common.utils.StringUtils;
+import com.yutu.framework.security.context.PermissionContextHolder;
 
 /**
  * RuoYi首创 自定义权限实现，ss取自SpringSecurity首字母
  * 
- * @author ruoyi
+ * @author yutu
  */
 @Service("ss")
 public class PermissionService

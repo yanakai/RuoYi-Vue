@@ -1,9 +1,9 @@
-package com.ruoyi.framework.interceptor;
+package com.yutu.framework.interceptor;
 
-import com.ruoyi.common.core.domain.model.LoginUser;
-import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.framework.web.service.TokenService;
+import com.yutu.common.core.domain.model.LoginUser;
+import com.yutu.common.utils.SecurityUtils;
+import com.yutu.common.utils.StringUtils;
+import com.yutu.framework.web.service.TokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

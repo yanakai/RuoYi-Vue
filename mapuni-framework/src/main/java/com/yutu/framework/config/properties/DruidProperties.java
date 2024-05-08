@@ -1,4 +1,4 @@
-package com.ruoyi.framework.config.properties;
+package com.yutu.framework.config.properties;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -7,7 +7,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 /**
  * druid 配置属性
  * 
- * @author ruoyi
+ * @author yutu
  */
 @Configuration
 public class DruidProperties

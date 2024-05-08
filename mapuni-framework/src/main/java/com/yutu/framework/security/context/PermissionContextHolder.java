@@ -1,13 +1,13 @@
-package com.ruoyi.framework.security.context;
+package com.yutu.framework.security.context;
 
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
-import com.ruoyi.common.core.text.Convert;
+import com.yutu.common.core.text.Convert;
 
 /**
  * 权限信息
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class PermissionContextHolder
 {

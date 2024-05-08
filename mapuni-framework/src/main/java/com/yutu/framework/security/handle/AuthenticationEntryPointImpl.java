@@ -1,4 +1,4 @@
-package com.ruoyi.framework.security.handle;
+package com.yutu.framework.security.handle;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -8,15 +8,15 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 import com.alibaba.fastjson2.JSON;
-import com.ruoyi.common.constant.HttpStatus;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.utils.ServletUtils;
-import com.ruoyi.common.utils.StringUtils;
+import com.yutu.common.constant.HttpStatus;
+import com.yutu.common.core.domain.AjaxResult;
+import com.yutu.common.utils.ServletUtils;
+import com.yutu.common.utils.StringUtils;
 
 /**
  * 认证失败处理类 返回未授权
  * 
- * @author ruoyi
+ * @author yutu
  */
 @Component
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint, Serializable

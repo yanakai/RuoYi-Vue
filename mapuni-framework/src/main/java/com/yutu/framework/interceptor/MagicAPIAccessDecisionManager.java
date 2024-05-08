@@ -1,6 +1,6 @@
-package com.ruoyi.framework.interceptor;
+package com.yutu.framework.interceptor;
 
-import com.ruoyi.common.utils.StringUtils;
+import com.yutu.common.utils.StringUtils;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;

@@ -1,4 +1,4 @@
-package com.ruoyi.framework.security.handle;
+package com.yutu.framework.security.handle;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -9,20 +9,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import com.alibaba.fastjson2.JSON;
-import com.ruoyi.common.constant.Constants;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.model.LoginUser;
-import com.ruoyi.common.utils.MessageUtils;
-import com.ruoyi.common.utils.ServletUtils;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.framework.manager.AsyncManager;
-import com.ruoyi.framework.manager.factory.AsyncFactory;
-import com.ruoyi.framework.web.service.TokenService;
+import com.yutu.common.constant.Constants;
+import com.yutu.common.core.domain.AjaxResult;
+import com.yutu.common.core.domain.model.LoginUser;
+import com.yutu.common.utils.MessageUtils;
+import com.yutu.common.utils.ServletUtils;
+import com.yutu.common.utils.StringUtils;
+import com.yutu.framework.manager.AsyncManager;
+import com.yutu.framework.manager.factory.AsyncFactory;
+import com.yutu.framework.web.service.TokenService;
 
 /**
  * 自定义退出处理类 返回成功
  * 
- * @author ruoyi
+ * @author yutu
  */
 @Configuration
 public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler

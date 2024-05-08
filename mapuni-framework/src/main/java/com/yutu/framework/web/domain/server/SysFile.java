@@ -1,9 +1,9 @@
-package com.ruoyi.framework.web.domain.server;
+package com.yutu.framework.web.domain.server;
 
 /**
  * 系统文件相关信息
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class SysFile
 {
