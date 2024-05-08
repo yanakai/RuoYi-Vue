@@ -1,4 +1,4 @@
-package com.ruoyi.generator.service;
+package com.yutu.generator.service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -23,24 +23,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.ruoyi.common.constant.Constants;
-import com.ruoyi.common.constant.GenConstants;
-import com.ruoyi.common.core.text.CharsetKit;
-import com.ruoyi.common.exception.ServiceException;
-import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.generator.domain.GenTable;
-import com.ruoyi.generator.domain.GenTableColumn;
-import com.ruoyi.generator.mapper.GenTableColumnMapper;
-import com.ruoyi.generator.mapper.GenTableMapper;
-import com.ruoyi.generator.util.GenUtils;
-import com.ruoyi.generator.util.VelocityInitializer;
-import com.ruoyi.generator.util.VelocityUtils;
+import com.yutu.common.constant.Constants;
+import com.yutu.common.constant.GenConstants;
+import com.yutu.common.core.text.CharsetKit;
+import com.yutu.common.exception.ServiceException;
+import com.yutu.common.utils.SecurityUtils;
+import com.yutu.common.utils.StringUtils;
+import com.yutu.generator.domain.GenTable;
+import com.yutu.generator.domain.GenTableColumn;
+import com.yutu.generator.mapper.GenTableColumnMapper;
+import com.yutu.generator.mapper.GenTableMapper;
+import com.yutu.generator.util.GenUtils;
+import com.yutu.generator.util.VelocityInitializer;
+import com.yutu.generator.util.VelocityUtils;
 
 /**
  * 业务 服务层实现
  * 
- * @author ruoyi
+ * @author yutu
  */
 @Service
 public class GenTableServiceImpl implements IGenTableService
