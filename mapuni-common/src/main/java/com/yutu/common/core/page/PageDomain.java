@@ -5,7 +5,7 @@ import com.yutu.common.utils.StringUtils;
 /**
  * 分页数据
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class PageDomain
 {

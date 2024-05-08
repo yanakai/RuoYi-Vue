@@ -3,7 +3,7 @@ package com.yutu.common.exception.user;
 /**
  * 用户不存在异常类
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class UserNotExistsException extends UserException
 {

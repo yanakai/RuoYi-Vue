@@ -9,7 +9,7 @@ import com.yutu.common.utils.StringUtils;
 /**
  * 获取IP方法
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class IpUtils
 {

@@ -15,7 +15,7 @@ import com.yutu.common.xss.Xss;
 /**
  * 用户对象 sys_user
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class SysUser extends BaseEntity
 {

@@ -11,7 +11,7 @@ import com.yutu.common.enums.LimitType;
 /**
  * 限流注解
  * 
- * @author ruoyi
+ * @author yutu
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

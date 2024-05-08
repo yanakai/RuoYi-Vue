@@ -3,7 +3,7 @@ package com.yutu.common.utils.uuid;
 /**
  * ID生成器工具类
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class IdUtils
 {

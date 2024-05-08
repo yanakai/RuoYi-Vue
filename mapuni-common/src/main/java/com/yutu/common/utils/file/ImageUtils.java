@@ -17,7 +17,7 @@ import com.yutu.common.utils.StringUtils;
 /**
  * 图片处理工具类
  *
- * @author ruoyi
+ * @author yutu
  */
 public class ImageUtils
 {

@@ -3,7 +3,7 @@ package com.yutu.common.utils.file;
 /**
  * 媒体类型工具类
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class MimeTypeUtils
 {

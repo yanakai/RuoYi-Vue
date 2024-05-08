@@ -19,7 +19,7 @@ import com.yutu.common.utils.StringUtils;
 /**
  * 文件上传工具类
  *
- * @author ruoyi
+ * @author yutu
  */
 public class FileUploadUtils
 {

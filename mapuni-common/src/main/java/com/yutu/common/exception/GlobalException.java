@@ -3,7 +3,7 @@ package com.yutu.common.exception;
 /**
  * 全局异常
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class GlobalException extends RuntimeException
 {

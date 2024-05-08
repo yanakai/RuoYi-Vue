@@ -5,7 +5,7 @@ import com.yutu.common.utils.StringUtils;
 /**
  * 字符串格式化
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class StrFormatter
 {

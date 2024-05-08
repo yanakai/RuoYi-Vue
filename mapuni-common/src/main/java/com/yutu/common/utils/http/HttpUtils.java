@@ -26,7 +26,7 @@ import com.yutu.common.utils.StringUtils;
 /**
  * 通用http发送方法
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class HttpUtils
 {

@@ -3,7 +3,7 @@ package com.yutu.common.constant;
 /**
  * 任务调度通用常量
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class ScheduleConstants
 {

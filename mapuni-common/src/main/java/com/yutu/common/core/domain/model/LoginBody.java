@@ -3,7 +3,7 @@ package com.yutu.common.core.domain.model;
 /**
  * 用户登录对象
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class LoginBody
 {

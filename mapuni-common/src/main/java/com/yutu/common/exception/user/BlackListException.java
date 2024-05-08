@@ -3,7 +3,7 @@ package com.yutu.common.exception.user;
 /**
  * 黑名单IP异常类
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class BlackListException extends UserException
 {

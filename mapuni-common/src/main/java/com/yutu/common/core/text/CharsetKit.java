@@ -7,7 +7,7 @@ import com.yutu.common.utils.StringUtils;
 /**
  * 字符集工具类
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class CharsetKit
 {

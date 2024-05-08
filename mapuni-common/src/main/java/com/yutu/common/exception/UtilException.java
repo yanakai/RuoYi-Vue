@@ -3,7 +3,7 @@ package com.yutu.common.exception;
 /**
  * 工具类异常
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class UtilException extends RuntimeException
 {

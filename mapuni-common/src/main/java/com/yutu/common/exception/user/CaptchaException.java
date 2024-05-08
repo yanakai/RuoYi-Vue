@@ -3,7 +3,7 @@ package com.yutu.common.exception.user;
 /**
  * 验证码错误异常类
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class CaptchaException extends UserException
 {

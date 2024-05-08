@@ -3,7 +3,7 @@ package com.yutu.common.enums;
 /**
  * 数据源
  * 
- * @author ruoyi
+ * @author yutu
  */
 public enum DataSourceType
 {

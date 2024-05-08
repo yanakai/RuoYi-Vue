@@ -3,7 +3,7 @@ package com.yutu.common.constant;
 /**
  * 返回状态码
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class HttpStatus
 {

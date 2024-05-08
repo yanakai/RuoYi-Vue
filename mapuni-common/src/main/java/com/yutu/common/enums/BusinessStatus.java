@@ -3,7 +3,7 @@ package com.yutu.common.enums;
 /**
  * 操作状态
  * 
- * @author ruoyi
+ * @author yutu
  *
  */
 public enum BusinessStatus

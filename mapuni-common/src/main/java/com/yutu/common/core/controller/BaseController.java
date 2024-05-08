@@ -25,7 +25,7 @@ import com.yutu.common.utils.SecurityUtils;
 /**
  * web层通用数据处理
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class BaseController
 {

@@ -8,7 +8,7 @@ import com.yutu.common.utils.StringUtils;
 /**
  * 操作消息提醒
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class AjaxResult extends HashMap<String, Object>
 {

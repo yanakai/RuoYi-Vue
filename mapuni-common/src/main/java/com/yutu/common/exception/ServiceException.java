@@ -3,7 +3,7 @@ package com.yutu.common.exception;
 /**
  * 业务异常
  * 
- * @author ruoyi
+ * @author yutu
  */
 public final class ServiceException extends RuntimeException
 {

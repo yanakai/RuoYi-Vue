@@ -13,7 +13,7 @@ import com.yutu.common.core.domain.BaseEntity;
 /**
  * 部门表 sys_dept
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class SysDept extends BaseEntity
 {

@@ -3,7 +3,7 @@ package com.yutu.common.enums;
 /**
  * 用户状态
  * 
- * @author ruoyi
+ * @author yutu
  */
 public enum UserStatus
 {

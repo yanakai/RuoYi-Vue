@@ -3,7 +3,7 @@ package com.yutu.common.exception.job;
 /**
  * 计划策略异常
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class TaskException extends Exception
 {

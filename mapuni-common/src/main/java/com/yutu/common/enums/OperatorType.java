@@ -3,7 +3,7 @@ package com.yutu.common.enums;
 /**
  * 操作人类别
  * 
- * @author ruoyi
+ * @author yutu
  */
 public enum OperatorType
 {

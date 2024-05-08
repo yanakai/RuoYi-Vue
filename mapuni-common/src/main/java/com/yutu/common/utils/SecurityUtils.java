@@ -17,7 +17,7 @@ import com.yutu.common.core.domain.model.LoginUser;
 /**
  * 安全服务工具类
  * 
- * @author ruoyi
+ * @author yutu
  */
 public class SecurityUtils
 {
