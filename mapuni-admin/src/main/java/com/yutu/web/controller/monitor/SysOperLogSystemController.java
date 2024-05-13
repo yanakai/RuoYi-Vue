@@ -72,7 +72,7 @@ public class SysOperLogSystemController extends BaseController
     /**
      * 新增访问日志
      */
-    @PostMapping("/saveSysOperLogSystem")
+    @PostMapping("/saveSysOperLogSystemInfo")
     public AjaxResult saveSysOperLogSystem(@RequestBody SysOperLogSystem sysOperLogSystem) {
         return toAjax(sysOperLogSystemService.insertSysOperLogSystem(sysOperLogSystem));
     }
@@ -82,7 +82,7 @@ public class SysOperLogSystemController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:operlogSystem:edit')")
     @Log(title = "访问日志", businessType = BusinessType.UPDATE)
-    @PutMapping
+    @PostMapping("/editSysOperLogSystemInfo")
     public AjaxResult edit(@RequestBody SysOperLogSystem sysOperLogSystem)
     {
         return toAjax(sysOperLogSystemService.updateSysOperLogSystem(sysOperLogSystem));
@@ -93,7 +93,7 @@ public class SysOperLogSystemController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:operlogSystem:remove')")
     @Log(title = "访问日志", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{operIds}")
+    @PostMapping("/{operIds}")
     public AjaxResult remove(@PathVariable Long[] operIds)
     {
         return toAjax(sysOperLogSystemService.deleteSysOperLogSystemByOperIds(operIds));
