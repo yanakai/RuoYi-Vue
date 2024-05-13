@@ -1,8 +1,9 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <!-- <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" /> -->
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/>
+    <logo v-if="showLogo" :collapse="false" />
+    <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/> -->
     <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
 
     <div class="right-menu">
@@ -56,6 +57,7 @@ import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
 import RuoYiGit from '@/components/RuoYi/Git'
 import RuoYiDoc from '@/components/RuoYi/Doc'
+import Logo from './Logo.vue'
 
 export default {
   components: {
@@ -66,7 +68,8 @@ export default {
     SizeSelect,
     Search,
     RuoYiGit,
-    RuoYiDoc
+    RuoYiDoc,
+    Logo
   },
   computed: {
     ...mapGetters([
@@ -89,7 +92,10 @@ export default {
       get() {
         return this.$store.state.settings.topNav
       }
-    }
+    },
+    showLogo() {
+            return this.$store.state.settings.sidebarLogo;
+        },
   },
   methods: {
     toggleSideBar() {
@@ -114,12 +120,18 @@ export default {
 .navbar {
   height: 50px;
   overflow: hidden;
-  position: relative;
-  background: #fff;
+  position: absolute;
+  // background: #fff;
+  background: #304156;
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  // position: fixed;
+    top: -50px;
+    z-index: 0;
+    width: 100%;
 
   .hamburger-container {
-    line-height: 46px;
+    // line-height: 46px;
+    line-height: 36px;
     height: 100%;
     float: left;
     cursor: pointer;

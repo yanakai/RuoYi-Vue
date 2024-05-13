@@ -36,7 +36,7 @@ export function roleMenuTreeselect(roleId) {
 // 新增菜单
 export function addMenu(data) {
   return request({
-    url: '/system/menu',
+    url: '/system/menu/addSysMenuInfo',
     method: 'post',
     data: data
   })
@@ -45,8 +45,8 @@ export function addMenu(data) {
 // 修改菜单
 export function updateMenu(data) {
   return request({
-    url: '/system/menu',
-    method: 'put',
+    url: '/system/menu/editSysMenuInfo',
+    method: 'post',
     data: data
   })
 }
@@ -55,6 +55,6 @@ export function updateMenu(data) {
 export function delMenu(menuId) {
   return request({
     url: '/system/menu/' + menuId,
-    method: 'delete'
+    method: 'post'
   })
 }

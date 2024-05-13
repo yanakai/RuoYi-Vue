@@ -20,7 +20,7 @@ export function getPost(postId) {
 // 新增岗位
 export function addPost(data) {
   return request({
-    url: '/system/post',
+    url: '/system/post/addSysPostInfo',
     method: 'post',
     data: data
   })
@@ -29,8 +29,8 @@ export function addPost(data) {
 // 修改岗位
 export function updatePost(data) {
   return request({
-    url: '/system/post',
-    method: 'put',
+    url: '/system/post/editSysPostInfo',
+    method: 'post',
     data: data
   })
 }
@@ -39,6 +39,6 @@ export function updatePost(data) {
 export function delPost(postId) {
   return request({
     url: '/system/post/' + postId,
-    method: 'delete'
+    method: 'post'
   })
 }

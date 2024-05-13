@@ -1,10 +1,10 @@
 <template>
   <div :class="classObj" class="app-wrapper" :style="{'--current-color': theme}">
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
+    <navbar/>
     <sidebar v-if="!sidebar.hide" class="sidebar-container"/>
     <div :class="{hasTagsView:needTagsView,sidebarHide:sidebar.hide}" class="main-container">
-      <div :class="{'fixed-header':fixedHeader}">
-        <navbar/>
+      <div :class="{'fixed-header':fixedHeader}" class="ddtitle">
         <tags-view v-if="needTagsView"/>
       </div>
       <app-main/>
@@ -86,6 +86,12 @@ export default {
     height: 100%;
     position: absolute;
     z-index: 999;
+  }
+  .ddtitle {
+    // position: fixed;
+    // top: 50px;
+    // right: 0;
+    // width: calc(100% - 200px);
   }
 
   .fixed-header {

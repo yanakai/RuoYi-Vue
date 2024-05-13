@@ -1,5 +1,7 @@
 <template>
   <div id="tags-view-container" class="tags-view-container">
+    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+
     <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
       <router-link
         v-for="tag in visitedViews"
@@ -29,11 +31,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import ScrollPane from './ScrollPane'
 import path from 'path'
+import Hamburger from '@/components/Hamburger'
 
 export default {
-  components: { ScrollPane },
+  components: { ScrollPane,Hamburger},
   data() {
     return {
       visible: false,
@@ -44,6 +48,11 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'sidebar',
+      'avatar',
+      'device'
+    ]),
     visitedViews() {
       return this.$store.state.tagsView.visitedViews
     },
@@ -72,6 +81,9 @@ export default {
     this.addTags()
   },
   methods: {
+    toggleSideBar() {
+      this.$store.dispatch('app/toggleSideBar')
+    },
     isActive(route) {
       return route.path === this.$route.path
     },
@@ -238,6 +250,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hamburger-container {
+    line-height: 36px;
+    height: 100%;
+    float: left;
+    cursor: pointer;
+    transition: background .3s;
+    -webkit-tap-highlight-color:transparent;
+
+    &:hover {
+      background: rgba(0, 0, 0, .025)
+    }
+  }
 .tags-view-container {
   height: 34px;
   width: 100%;

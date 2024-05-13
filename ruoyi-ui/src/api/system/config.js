@@ -28,7 +28,7 @@ export function getConfigKey(configKey) {
 // 新增参数配置
 export function addConfig(data) {
   return request({
-    url: '/system/config',
+    url: '/system/config/addSysConfigInfo',
     method: 'post',
     data: data
   })
@@ -37,8 +37,8 @@ export function addConfig(data) {
 // 修改参数配置
 export function updateConfig(data) {
   return request({
-    url: '/system/config',
-    method: 'put',
+    url: '/system/config/editSysConfigInfo',
+    method: 'post',
     data: data
   })
 }
@@ -47,7 +47,7 @@ export function updateConfig(data) {
 export function delConfig(configId) {
   return request({
     url: '/system/config/' + configId,
-    method: 'delete'
+    method: 'post'
   })
 }
 
@@ -55,6 +55,6 @@ export function delConfig(configId) {
 export function refreshCache() {
   return request({
     url: '/system/config/refreshCache',
-    method: 'delete'
+    method: 'post'
   })
 }

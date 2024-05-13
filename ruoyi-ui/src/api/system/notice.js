@@ -20,7 +20,7 @@ export function getNotice(noticeId) {
 // 新增公告
 export function addNotice(data) {
   return request({
-    url: '/system/notice',
+    url: '/system/notice/addSysNoticeInfo',
     method: 'post',
     data: data
   })
@@ -29,8 +29,8 @@ export function addNotice(data) {
 // 修改公告
 export function updateNotice(data) {
   return request({
-    url: '/system/notice',
-    method: 'put',
+    url: '/system/notice/editSysNoticeInfo',
+    method: 'post',
     data: data
   })
 }
@@ -39,6 +39,6 @@ export function updateNotice(data) {
 export function delNotice(noticeId) {
   return request({
     url: '/system/notice/' + noticeId,
-    method: 'delete'
+    method: 'post'
   })
 }

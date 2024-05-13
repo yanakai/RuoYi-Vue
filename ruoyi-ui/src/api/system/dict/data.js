@@ -28,7 +28,7 @@ export function getDicts(dictType) {
 // 新增字典数据
 export function addData(data) {
   return request({
-    url: '/system/dict/data',
+    url: '/system/dict/data/addSysDictDataInfo',
     method: 'post',
     data: data
   })
@@ -37,8 +37,8 @@ export function addData(data) {
 // 修改字典数据
 export function updateData(data) {
   return request({
-    url: '/system/dict/data',
-    method: 'put',
+    url: '/system/dict/data/editSysDictDataInfo',
+    method: 'post',
     data: data
   })
 }
@@ -47,6 +47,6 @@ export function updateData(data) {
 export function delData(dictCode) {
   return request({
     url: '/system/dict/data/' + dictCode,
-    method: 'delete'
+    method: 'post'
   })
 }

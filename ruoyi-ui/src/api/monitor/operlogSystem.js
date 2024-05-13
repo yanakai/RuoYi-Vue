@@ -20,7 +20,7 @@ export function getOperlogSystem(operId) {
 // 新增访问日志
 export function addOperlogSystem(data) {
   return request({
-    url: '/system/operlogSystem',
+    url: '/system/operlogSystem/saveSysOperLogSystemInfo',
     method: 'post',
     data: data
   })
@@ -29,8 +29,8 @@ export function addOperlogSystem(data) {
 // 修改访问日志
 export function updateOperlogSystem(data) {
   return request({
-    url: '/system/operlogSystem',
-    method: 'put',
+    url: '/system/operlogSystem/editSysOperLogSystemInfo',
+    method: 'post',
     data: data
   })
 }
@@ -39,6 +39,6 @@ export function updateOperlogSystem(data) {
 export function delOperlogSystem(operId) {
   return request({
     url: '/system/operlogSystem/' + operId,
-    method: 'delete'
+    method: 'post'
   })
 }
