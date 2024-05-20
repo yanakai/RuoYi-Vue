@@ -108,7 +108,10 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$store.dispatch('LogOut').then(() => {
-          location.href = '/index';
+          //location.href = '/index'; // 配置nginx代理名称时退出登录不好使
+          let routeData = this.$router.resolve({ path: '/login'});
+          window.open(routeData.href, "_self");
+          this.$store.dispatch('tagsView/delAllViews')
         })
       }).catch(() => {});
     }
