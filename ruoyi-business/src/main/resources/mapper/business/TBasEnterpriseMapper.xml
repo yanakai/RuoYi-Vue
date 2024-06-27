@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.base.mapper.TBasEnterpriseMapper">
+    
+    <resultMap type="TBasEnterprise" id="TBasEnterpriseResult">
+        <result property="id"    column="id"    />
+        <result property="entCode"    column="ent_code"    />
+        <result property="entName"    column="ent_name"    />
+        <result property="socialCreditCode"    column="social_credit_code"    />
+        <result property="shorterName"    column="shorter_name"    />
+        <result property="address"    column="address"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="region"    column="region"    />
+        <result property="entStatus"    column="ent_status"    />
+        <result property="entScale"    column="ent_scale"    />
+        <result property="entType"    column="ent_type"    />
+        <result property="industryType"    column="industry_type"    />
+        <result property="pollutionClass"    column="pollution_class"    />
+        <result property="envManagerPersion"    column="env_manager_persion"    />
+        <result property="linkManPhone"    column="link_man_phone"    />
+        <result property="linkManeMail"    column="link_mane_mail"    />
+        <result property="entIntroduction"    column="ent_introduction"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateUser"    column="update_user"    />
+    </resultMap>
+
+    <sql id="selectTBasEnterpriseVo">
+        select id, ent_code, ent_name, social_credit_code, shorter_name, address, longitude, latitude, region, ent_status, ent_scale, ent_type, industry_type, pollution_class, env_manager_persion, link_man_phone, link_mane_mail, ent_introduction, create_user, create_time, update_time, update_user from t_bas_enterprise
+    </sql>
+
+    <select id="selectTBasEnterpriseList" parameterType="TBasEnterprise" resultMap="TBasEnterpriseResult">
+        <include refid="selectTBasEnterpriseVo"/>
+        <where>  
+            <if test="entCode != null  and entCode != ''"> and ent_code = #{entCode}</if>
+            <if test="entName != null  and entName != ''"> and ent_name like concat('%', #{entName}, '%')</if>
+            <if test="socialCreditCode != null  and socialCreditCode != ''"> and social_credit_code = #{socialCreditCode}</if>
+            <if test="shorterName != null  and shorterName != ''"> and shorter_name like concat('%', #{shorterName}, '%')</if>
+            <if test="region != null  and region != ''"> and region = #{region}</if>
+            <if test="entStatus != null  and entStatus != ''"> and ent_status = #{entStatus}</if>
+            <if test="entScale != null  and entScale != ''"> and ent_scale = #{entScale}</if>
+            <if test="entType != null  and entType != ''"> and ent_type = #{entType}</if>
+            <if test="industryType != null  and industryType != ''"> and industry_type = #{industryType}</if>
+            <if test="pollutionClass != null  and pollutionClass != ''"> and pollution_class = #{pollutionClass}</if>
+        </where>
+    </select>
+    
+    <select id="selectTBasEnterpriseById" parameterType="Long" resultMap="TBasEnterpriseResult">
+        <include refid="selectTBasEnterpriseVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTBasEnterprise" parameterType="TBasEnterprise" useGeneratedKeys="true" keyProperty="id">
+        insert into t_bas_enterprise
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="entCode != null">ent_code,</if>
+            <if test="entName != null">ent_name,</if>
+            <if test="socialCreditCode != null">social_credit_code,</if>
+            <if test="shorterName != null">shorter_name,</if>
+            <if test="address != null">address,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="region != null">region,</if>
+            <if test="entStatus != null">ent_status,</if>
+            <if test="entScale != null">ent_scale,</if>
+            <if test="entType != null">ent_type,</if>
+            <if test="industryType != null">industry_type,</if>
+            <if test="pollutionClass != null">pollution_class,</if>
+            <if test="envManagerPersion != null">env_manager_persion,</if>
+            <if test="linkManPhone != null">link_man_phone,</if>
+            <if test="linkManeMail != null">link_mane_mail,</if>
+            <if test="entIntroduction != null">ent_introduction,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateUser != null">update_user,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="entCode != null">#{entCode},</if>
+            <if test="entName != null">#{entName},</if>
+            <if test="socialCreditCode != null">#{socialCreditCode},</if>
+            <if test="shorterName != null">#{shorterName},</if>
+            <if test="address != null">#{address},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="region != null">#{region},</if>
+            <if test="entStatus != null">#{entStatus},</if>
+            <if test="entScale != null">#{entScale},</if>
+            <if test="entType != null">#{entType},</if>
+            <if test="industryType != null">#{industryType},</if>
+            <if test="pollutionClass != null">#{pollutionClass},</if>
+            <if test="envManagerPersion != null">#{envManagerPersion},</if>
+            <if test="linkManPhone != null">#{linkManPhone},</if>
+            <if test="linkManeMail != null">#{linkManeMail},</if>
+            <if test="entIntroduction != null">#{entIntroduction},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateUser != null">#{updateUser},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTBasEnterprise" parameterType="TBasEnterprise">
+        update t_bas_enterprise
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="entCode != null">ent_code = #{entCode},</if>
+            <if test="entName != null">ent_name = #{entName},</if>
+            <if test="socialCreditCode != null">social_credit_code = #{socialCreditCode},</if>
+            <if test="shorterName != null">shorter_name = #{shorterName},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="region != null">region = #{region},</if>
+            <if test="entStatus != null">ent_status = #{entStatus},</if>
+            <if test="entScale != null">ent_scale = #{entScale},</if>
+            <if test="entType != null">ent_type = #{entType},</if>
+            <if test="industryType != null">industry_type = #{industryType},</if>
+            <if test="pollutionClass != null">pollution_class = #{pollutionClass},</if>
+            <if test="envManagerPersion != null">env_manager_persion = #{envManagerPersion},</if>
+            <if test="linkManPhone != null">link_man_phone = #{linkManPhone},</if>
+            <if test="linkManeMail != null">link_mane_mail = #{linkManeMail},</if>
+            <if test="entIntroduction != null">ent_introduction = #{entIntroduction},</if>
+            <if test="createUser != null">create_user = #{createUser},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTBasEnterpriseById" parameterType="Long">
+        delete from t_bas_enterprise where id = #{id}
+    </delete>
+
+    <delete id="deleteTBasEnterpriseByIds" parameterType="String">
+        delete from t_bas_enterprise where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
