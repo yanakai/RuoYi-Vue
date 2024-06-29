@@ -2,6 +2,8 @@ package com.ruoyi.business.base.domain;
 
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -11,6 +13,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author ruoyi
  * @date 2024-06-26
  */
+@ApiModel("基础信息---企业基础")
 public class TBasEnterprise extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -120,12 +123,14 @@ public class TBasEnterprise extends BaseEntity {
      * 创建人
      */
     @Excel(name = "创建人")
+    @ApiModelProperty(hidden = true)
     private String createUser;
 
     /**
      * 更新人
      */
     @Excel(name = "更新人")
+    @ApiModelProperty(hidden = true)
     private String updateUser;
 
     public Long getId() {

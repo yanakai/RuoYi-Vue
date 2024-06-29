@@ -73,6 +73,8 @@ public class TBasEnterpriseController extends BaseController {
     @Log(title = "基础信息---企业基础", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TBasEnterprise tBasEnterprise) {
+        tBasEnterprise.setCreateUser(getUsername());
+        tBasEnterprise.setCreateBy(getUsername());
         return toAjax(tBasEnterpriseService.insertTBasEnterprise(tBasEnterprise));
     }
 
@@ -84,6 +86,8 @@ public class TBasEnterpriseController extends BaseController {
     @Log(title = "基础信息---企业基础", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TBasEnterprise tBasEnterprise) {
+        tBasEnterprise.setUpdateUser(getUsername());
+        tBasEnterprise.setUpdateBy(getUsername());
         return toAjax(tBasEnterpriseService.updateTBasEnterprise(tBasEnterprise));
     }
 

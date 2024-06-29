@@ -2,6 +2,8 @@ package com.ruoyi.business.base.domain;
 
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -13,6 +15,7 @@ import java.math.BigDecimal;
  * @author lx
  * @date 2024-06-27
  */
+@ApiModel("基础信息--企业--废水排口")
 public class TBasWateroutPutInfo extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -96,12 +99,14 @@ public class TBasWateroutPutInfo extends BaseEntity {
     /**
      * 创建人
      */
+    @ApiModelProperty(hidden = true)
     @Excel(name = "创建人")
     private String createName;
 
     /**
      * 修改人
      */
+    @ApiModelProperty(hidden = true)
     @Excel(name = "修改人")
     private String updateName;
 

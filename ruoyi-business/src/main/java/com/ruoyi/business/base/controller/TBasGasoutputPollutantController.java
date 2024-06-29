@@ -73,6 +73,8 @@ public class TBasGasoutputPollutantController extends BaseController {
     @Log(title = "基础信息--企业--废气排口污染物基本信息", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TBasGasoutputPollutant tBasGasoutputPollutant) {
+        tBasGasoutputPollutant.setCreateBy(getUsername());
+        tBasGasoutputPollutant.setCreateName(getUsername());
         return toAjax(tBasGasoutputPollutantService.insertTBasGasoutputPollutant(tBasGasoutputPollutant));
     }
 
@@ -84,6 +86,8 @@ public class TBasGasoutputPollutantController extends BaseController {
     @Log(title = "基础信息--企业--废气排口污染物基本信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TBasGasoutputPollutant tBasGasoutputPollutant) {
+        tBasGasoutputPollutant.setUpdateBy(getUsername());
+        tBasGasoutputPollutant.setUpdateName(getUsername());
         return toAjax(tBasGasoutputPollutantService.updateTBasGasoutputPollutant(tBasGasoutputPollutant));
     }
 

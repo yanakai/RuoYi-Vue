@@ -73,6 +73,8 @@ public class TBasWateroutputPollutantController extends BaseController {
     @Log(title = "基础信息--企业--废水排口污染物基本信息", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TBasWateroutputPollutant tBasWateroutputPollutant) {
+        tBasWateroutputPollutant.setCreateBy(getUsername());
+        tBasWateroutputPollutant.setCreateName(getUsername());
         return toAjax(tBasWateroutputPollutantService.insertTBasWateroutputPollutant(tBasWateroutputPollutant));
     }
 
@@ -84,6 +86,8 @@ public class TBasWateroutputPollutantController extends BaseController {
     @Log(title = "基础信息--企业--废水排口污染物基本信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TBasWateroutputPollutant tBasWateroutputPollutant) {
+       tBasWateroutputPollutant.setUpdateBy(getUsername());
+       tBasWateroutputPollutant.setUpdateName(getUsername());
         return toAjax(tBasWateroutputPollutantService.updateTBasWateroutputPollutant(tBasWateroutputPollutant));
     }
 

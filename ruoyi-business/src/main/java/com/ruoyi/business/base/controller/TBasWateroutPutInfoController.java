@@ -73,6 +73,8 @@ public class TBasWateroutPutInfoController extends BaseController {
     @Log(title = "基础信息--企业--废水排口", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TBasWateroutPutInfo tBasWateroutPutInfo) {
+        tBasWateroutPutInfo.setCreateBy(getUsername());
+        tBasWateroutPutInfo.setCreateName(getUsername());
         return toAjax(tBasWateroutPutInfoService.insertTBasWateroutPutInfo(tBasWateroutPutInfo));
     }
 
@@ -84,6 +86,8 @@ public class TBasWateroutPutInfoController extends BaseController {
     @Log(title = "基础信息--企业--废水排口", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TBasWateroutPutInfo tBasWateroutPutInfo) {
+        tBasWateroutPutInfo.setUpdateBy(getUsername());
+        tBasWateroutPutInfo.setUpdateName(getUsername());
         return toAjax(tBasWateroutPutInfoService.updateTBasWateroutPutInfo(tBasWateroutPutInfo));
     }
 

@@ -73,6 +73,8 @@ public class TBasGasoutPutInfoController extends BaseController {
     @Log(title = "基础信息--企业--废气排口", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TBasGasoutPutInfo tBasGasoutPutInfo) {
+        tBasGasoutPutInfo.setCreateName(getUsername());
+        tBasGasoutPutInfo.setCreateBy(getUsername());
         return toAjax(tBasGasoutPutInfoService.insertTBasGasoutPutInfo(tBasGasoutPutInfo));
     }
 
@@ -84,6 +86,8 @@ public class TBasGasoutPutInfoController extends BaseController {
     @Log(title = "基础信息--企业--废气排口", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TBasGasoutPutInfo tBasGasoutPutInfo) {
+        tBasGasoutPutInfo.setUpdateBy(getUsername());
+        tBasGasoutPutInfo.setUpdateName(getUsername());
         return toAjax(tBasGasoutPutInfoService.updateTBasGasoutPutInfo(tBasGasoutPutInfo));
     }
 
