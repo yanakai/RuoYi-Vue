@@ -95,14 +95,14 @@ public class TBasGasoutPutInfo extends BaseEntity {
     /**
      * 创建人
      */
-    @ApiModelProperty(value = "创建人",hidden = true)
+    @ApiModelProperty(value = "创建人", hidden = true)
     @Excel(name = "创建人")
     private String createName;
 
     /**
      * 修改人
      */
-    @ApiModelProperty(value = "修改人",hidden = true)
+    @ApiModelProperty(value = "修改人", hidden = true)
     @Excel(name = "修改人")
     private String updateName;
 

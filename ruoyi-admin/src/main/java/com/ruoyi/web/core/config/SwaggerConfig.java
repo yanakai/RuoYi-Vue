@@ -72,8 +72,8 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.OAS_30)
                 .apiInfo(api_base_info())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.ruoyi.business.base"))
-                .paths(PathSelectors.ant("/business/base/**"))
+                .apis(RequestHandlerSelectors.basePackage("com.ruoyi.business"))
+                .paths(PathSelectors.ant("/business/**"))
                 .build()
                 .groupName("基础信息")
                 /* 设置安全模式，swagger可以设置访问token */

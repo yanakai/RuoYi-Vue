@@ -1,63 +1,95 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.business.base.mapper.TBasGasoutputPollutantMapper">
-    
+
     <resultMap type="TBasGasoutputPollutant" id="TBasGasoutputPollutantResult">
-        <result property="id"    column="id"    />
-        <result property="pollutantCode"    column="pollutant_code"    />
-        <result property="pollutantNameCn"    column="pollutant_name_cn"    />
-        <result property="pollutantNameEn"    column="pollutant_name_en"    />
-        <result property="mnNum"    column="mn_num"    />
-        <result property="outPutCode"    column="out_put_code"    />
-        <result property="outPutName"    column="out_put_name"    />
-        <result property="entCode"    column="ent_code"    />
-        <result property="entName"    column="ent_name"    />
-        <result property="pollutantUnitCn"    column="pollutant_unit_cn"    />
-        <result property="pollutantUnitEn"    column="pollutant_unit_en"    />
-        <result property="pollutantSort"    column="pollutant_sort"    />
-        <result property="alarmType"    column="alarm_type"    />
-        <result property="isZeroAlarm"    column="is_zero_alarm"    />
-        <result property="isContinuityAlarm"    column="is_continuity_alarm"    />
-        <result property="standardVal"    column="standard_val"    />
-        <result property="earlyWarnMaxvalue"    column="early_warn_maxValue"    />
-        <result property="earlyWarnMinvalue"    column="early_warn_minValue"    />
-        <result property="overMaxvalue"    column="over_maxValue"    />
-        <result property="overMinvalue"    column="over_minValue"    />
-        <result property="exceptionMaxvalue"    column="exception_maxValue"    />
-        <result property="exceptionMinvalue"    column="exception_minValue"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="createName"    column="create_name"    />
-        <result property="updateTime"    column="update_time"    />
-        <result property="updateName"    column="update_name"    />
-        <result property="remark"    column="remark"    />
+        <result property="id" column="id"/>
+        <result property="pollutantCode" column="pollutant_code"/>
+        <result property="pollutantNameCn" column="pollutant_name_cn"/>
+        <result property="pollutantNameEn" column="pollutant_name_en"/>
+        <result property="mnNum" column="mn_num"/>
+        <result property="outPutCode" column="out_put_code"/>
+        <result property="outPutName" column="out_put_name"/>
+        <result property="entCode" column="ent_code"/>
+        <result property="entName" column="ent_name"/>
+        <result property="pollutantUnitCn" column="pollutant_unit_cn"/>
+        <result property="pollutantUnitEn" column="pollutant_unit_en"/>
+        <result property="pollutantSort" column="pollutant_sort"/>
+        <result property="alarmType" column="alarm_type"/>
+        <result property="isZeroAlarm" column="is_zero_alarm"/>
+        <result property="isContinuityAlarm" column="is_continuity_alarm"/>
+        <result property="standardVal" column="standard_val"/>
+        <result property="earlyWarnMaxvalue" column="early_warn_maxValue"/>
+        <result property="earlyWarnMinvalue" column="early_warn_minValue"/>
+        <result property="overMaxvalue" column="over_maxValue"/>
+        <result property="overMinvalue" column="over_minValue"/>
+        <result property="exceptionMaxvalue" column="exception_maxValue"/>
+        <result property="exceptionMinvalue" column="exception_minValue"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createName" column="create_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateName" column="update_name"/>
+        <result property="remark" column="remark"/>
     </resultMap>
 
     <sql id="selectTBasGasoutputPollutantVo">
-        select id, pollutant_code, pollutant_name_cn, pollutant_name_en, mn_num, out_put_code, out_put_name, ent_code, ent_name, pollutant_unit_cn, pollutant_unit_en, pollutant_sort, alarm_type, is_zero_alarm, is_continuity_alarm, standard_val, early_warn_maxValue, early_warn_minValue, over_maxValue, over_minValue, exception_maxValue, exception_minValue, create_time, create_name, update_time, update_name, remark from t_bas_gasoutput_pollutant
+        select id,
+               pollutant_code,
+               pollutant_name_cn,
+               pollutant_name_en,
+               mn_num,
+               out_put_code,
+               out_put_name,
+               ent_code,
+               ent_name,
+               pollutant_unit_cn,
+               pollutant_unit_en,
+               pollutant_sort,
+               alarm_type,
+               is_zero_alarm,
+               is_continuity_alarm,
+               standard_val,
+               early_warn_maxValue,
+               early_warn_minValue,
+               over_maxValue,
+               over_minValue,
+               exception_maxValue,
+               exception_minValue,
+               create_time,
+               create_name,
+               update_time,
+               update_name,
+               remark
+        from t_bas_gasoutput_pollutant
     </sql>
 
-    <select id="selectTBasGasoutputPollutantList" parameterType="TBasGasoutputPollutant" resultMap="TBasGasoutputPollutantResult">
+    <select id="selectTBasGasoutputPollutantList" parameterType="TBasGasoutputPollutant"
+            resultMap="TBasGasoutputPollutantResult">
         <include refid="selectTBasGasoutputPollutantVo"/>
-        <where>  
-            <if test="pollutantCode != null  and pollutantCode != ''"> and pollutant_code = #{pollutantCode}</if>
-            <if test="pollutantNameCn != null  and pollutantNameCn != ''"> and pollutant_name_cn = #{pollutantNameCn}</if>
-            <if test="pollutantNameEn != null  and pollutantNameEn != ''"> and pollutant_name_en = #{pollutantNameEn}</if>
-            <if test="mnNum != null  and mnNum != ''"> and mn_num = #{mnNum}</if>
-            <if test="outPutCode != null  and outPutCode != ''"> and out_put_code = #{outPutCode}</if>
-            <if test="outPutName != null  and outPutName != ''"> and out_put_name like concat('%', #{outPutName}, '%')</if>
-            <if test="entCode != null  and entCode != ''"> and ent_code = #{entCode}</if>
-            <if test="entName != null  and entName != ''"> and ent_name like concat('%', #{entName}, '%')</if>
+        <where>
+            <if test="pollutantCode != null  and pollutantCode != ''">and pollutant_code = #{pollutantCode}</if>
+            <if test="pollutantNameCn != null  and pollutantNameCn != ''">and pollutant_name_cn = #{pollutantNameCn}
+            </if>
+            <if test="pollutantNameEn != null  and pollutantNameEn != ''">and pollutant_name_en = #{pollutantNameEn}
+            </if>
+            <if test="mnNum != null  and mnNum != ''">and mn_num = #{mnNum}</if>
+            <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
+            <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')
+            </if>
+            <if test="entCode != null  and entCode != ''">and ent_code = #{entCode}</if>
+            <if test="entName != null  and entName != ''">and ent_name like concat('%', #{entName}, '%')</if>
         </where>
     </select>
-    
+
     <select id="selectTBasGasoutputPollutantById" parameterType="Long" resultMap="TBasGasoutputPollutantResult">
         <include refid="selectTBasGasoutputPollutantVo"/>
         where id = #{id}
     </select>
 
-    <insert id="insertTBasGasoutputPollutant" parameterType="TBasGasoutputPollutant" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertTBasGasoutputPollutant" parameterType="TBasGasoutputPollutant" useGeneratedKeys="true"
+            keyProperty="id">
         insert into t_bas_gasoutput_pollutant
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="pollutantCode != null">pollutant_code,</if>
@@ -86,7 +118,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time,</if>
             <if test="updateName != null">update_name,</if>
             <if test="remark != null">remark,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="pollutantCode != null">#{pollutantCode},</if>
             <if test="pollutantNameCn != null">#{pollutantNameCn},</if>
@@ -114,7 +146,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">#{updateTime},</if>
             <if test="updateName != null">#{updateName},</if>
             <if test="remark != null">#{remark},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateTBasGasoutputPollutant" parameterType="TBasGasoutputPollutant">
@@ -151,11 +183,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteTBasGasoutputPollutantById" parameterType="Long">
-        delete from t_bas_gasoutput_pollutant where id = #{id}
+        delete
+        from t_bas_gasoutput_pollutant
+        where id = #{id}
     </delete>
 
     <delete id="deleteTBasGasoutputPollutantByIds" parameterType="String">
-        delete from t_bas_gasoutput_pollutant where id in 
+        delete from t_bas_gasoutput_pollutant where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

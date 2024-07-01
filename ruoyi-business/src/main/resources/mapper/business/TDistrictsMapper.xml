@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.sys.mapper.TDistrictsMapper">
+
+    <resultMap type="TDistricts" id="TDistrictsResult">
+        <result property="id" column="id"/>
+        <result property="pid" column="pid"/>
+        <result property="deep" column="deep"/>
+        <result property="name" column="name"/>
+        <result property="pinyin" column="pinyin"/>
+        <result property="pinyinShor" column="pinyin_shor"/>
+        <result property="extName" column="ext_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="operator" column="operator"/>
+    </resultMap>
+
+    <sql id="selectTDistrictsVo">
+        select id,
+               pid,
+               deep,
+               name,
+               pinyin,
+               pinyin_shor,
+               ext_name,
+               create_time,
+               update_time,
+               operator
+        from t_districts
+    </sql>
+
+    <select id="selectTDistrictsList" parameterType="TDistricts" resultMap="TDistrictsResult">
+        <include refid="selectTDistrictsVo"/>
+        <where>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="pinyin != null  and pinyin != ''">and pinyin like concat('%', #{pinyin}, '%')</if>
+            <if test="pinyinShor != null  and pinyinShor != ''">and pinyin_shor like concat('%', #{pinyinShor}, '%')
+            </if>
+            <if test="extName != null  and extName != ''">and ext_name like concat('%', #{extName}, '%')</if>
+            <if test="pid != null and pid !='' " >and pid = #{pid}</if>
+        </where>
+    </select>
+
+    <select id="selectTDistrictsById" parameterType="String" resultMap="TDistrictsResult">
+        <include refid="selectTDistrictsVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTDistricts" parameterType="TDistricts">
+        insert into t_districts
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="pid != null">pid,</if>
+            <if test="deep != null">deep,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="pinyin != null">pinyin,</if>
+            <if test="pinyinShor != null">pinyin_shor,</if>
+            <if test="extName != null">ext_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="operator != null">operator,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="pid != null">#{pid},</if>
+            <if test="deep != null">#{deep},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="pinyin != null">#{pinyin},</if>
+            <if test="pinyinShor != null">#{pinyinShor},</if>
+            <if test="extName != null">#{extName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="operator != null">#{operator},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTDistricts" parameterType="TDistricts">
+        update t_districts
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pid != null">pid = #{pid},</if>
+            <if test="deep != null">deep = #{deep},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="pinyin != null">pinyin = #{pinyin},</if>
+            <if test="pinyinShor != null">pinyin_shor = #{pinyinShor},</if>
+            <if test="extName != null">ext_name = #{extName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="operator != null">operator = #{operator},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTDistrictsById" parameterType="String">
+        delete
+        from t_districts
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTDistrictsByIds" parameterType="String">
+        delete from t_districts where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
