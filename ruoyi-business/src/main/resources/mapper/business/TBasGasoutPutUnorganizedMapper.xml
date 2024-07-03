@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.base.mapper.TBasGasoutPutUnorganizedMapper">
+
+    <resultMap type="TBasGasoutPutUnorganized" id="TBasGasoutPutUnorganizedResult">
+        <result property="id" column="id"/>
+        <result property="outPutCode" column="out_put_code"/>
+        <result property="outPutName" column="out_put_name"/>
+        <result property="entCode" column="ent_code"/>
+        <result property="entName" column="ent_name"/>
+        <result property="dataSource" column="data_source"/>
+        <result property="longitude" column="longitude"/>
+        <result property="latitude" column="latitude"/>
+        <result property="outPutHeight" column="out_put_height"/>
+        <result property="outPutPosition" column="out_put_position"/>
+        <result property="outPutType" column="out_put_type"/>
+        <result property="outPutStatus" column="out_put_status"/>
+        <result property="outPutImage" column="out_put_image"/>
+        <result property="mnNum" column="mn_num"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createName" column="create_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateName" column="update_name"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectTBasGasoutPutUnorganizedVo">
+        select id,
+               out_put_code,
+               out_put_name,
+               ent_code,
+               ent_name,
+               data_source,
+               longitude,
+               latitude,
+               out_put_height,
+               out_put_position,
+               out_put_type,
+               out_put_status,
+               out_put_image,
+               mn_num,
+               create_time,
+               create_name,
+               update_time,
+               update_name,
+               remark
+        from t_bas_gasout_put_unorganized
+    </sql>
+
+    <select id="selectTBasGasoutPutUnorganizedList" parameterType="TBasGasoutPutUnorganized"
+            resultMap="TBasGasoutPutUnorganizedResult">
+        <include refid="selectTBasGasoutPutUnorganizedVo"/>
+        <where>
+            <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
+            <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')
+            </if>
+            <if test="entCode != null  and entCode != ''">and ent_code = #{entCode}</if>
+            <if test="entName != null  and entName != ''">and ent_name like concat('%', #{entName}, '%')</if>
+            <if test="dataSource != null  and dataSource != ''">and data_source = #{dataSource}</if>
+            <if test="longitude != null  and longitude != ''">and longitude = #{longitude}</if>
+            <if test="latitude != null  and latitude != ''">and latitude = #{latitude}</if>
+            <if test="outPutHeight != null ">and out_put_height = #{outPutHeight}</if>
+            <if test="outPutPosition != null  and outPutPosition != ''">and out_put_position = #{outPutPosition}</if>
+            <if test="outPutType != null  and outPutType != ''">and out_put_type = #{outPutType}</if>
+            <if test="outPutStatus != null  and outPutStatus != ''">and out_put_status = #{outPutStatus}</if>
+            <if test="outPutImage != null  and outPutImage != ''">and out_put_image = #{outPutImage}</if>
+            <if test="mnNum != null  and mnNum != ''">and mn_num = #{mnNum}</if>
+            <if test="createName != null  and createName != ''">and create_name like concat('%', #{createName}, '%')
+            </if>
+            <if test="updateName != null  and updateName != ''">and update_name like concat('%', #{updateName}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectTBasGasoutPutUnorganizedById" parameterType="Long" resultMap="TBasGasoutPutUnorganizedResult">
+        <include refid="selectTBasGasoutPutUnorganizedVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTBasGasoutPutUnorganized" parameterType="TBasGasoutPutUnorganized" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_bas_gasout_put_unorganized
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outPutCode != null">out_put_code,</if>
+            <if test="outPutName != null">out_put_name,</if>
+            <if test="entCode != null">ent_code,</if>
+            <if test="entName != null">ent_name,</if>
+            <if test="dataSource != null">data_source,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="outPutHeight != null">out_put_height,</if>
+            <if test="outPutPosition != null">out_put_position,</if>
+            <if test="outPutType != null">out_put_type,</if>
+            <if test="outPutStatus != null">out_put_status,</if>
+            <if test="outPutImage != null">out_put_image,</if>
+            <if test="mnNum != null">mn_num,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="outPutCode != null">#{outPutCode},</if>
+            <if test="outPutName != null">#{outPutName},</if>
+            <if test="entCode != null">#{entCode},</if>
+            <if test="entName != null">#{entName},</if>
+            <if test="dataSource != null">#{dataSource},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="outPutHeight != null">#{outPutHeight},</if>
+            <if test="outPutPosition != null">#{outPutPosition},</if>
+            <if test="outPutType != null">#{outPutType},</if>
+            <if test="outPutStatus != null">#{outPutStatus},</if>
+            <if test="outPutImage != null">#{outPutImage},</if>
+            <if test="mnNum != null">#{mnNum},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTBasGasoutPutUnorganized" parameterType="TBasGasoutPutUnorganized">
+        update t_bas_gasout_put_unorganized
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="outPutCode != null">out_put_code = #{outPutCode},</if>
+            <if test="outPutName != null">out_put_name = #{outPutName},</if>
+            <if test="entCode != null">ent_code = #{entCode},</if>
+            <if test="entName != null">ent_name = #{entName},</if>
+            <if test="dataSource != null">data_source = #{dataSource},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="outPutHeight != null">out_put_height = #{outPutHeight},</if>
+            <if test="outPutPosition != null">out_put_position = #{outPutPosition},</if>
+            <if test="outPutType != null">out_put_type = #{outPutType},</if>
+            <if test="outPutStatus != null">out_put_status = #{outPutStatus},</if>
+            <if test="outPutImage != null">out_put_image = #{outPutImage},</if>
+            <if test="mnNum != null">mn_num = #{mnNum},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTBasGasoutPutUnorganizedById" parameterType="Long">
+        delete
+        from t_bas_gasout_put_unorganized
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTBasGasoutPutUnorganizedByIds" parameterType="String">
+        delete from t_bas_gasout_put_unorganized where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

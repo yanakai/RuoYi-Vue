@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.base.mapper.TBasWateroutputPollutantUnorganizedMapper">
+
+    <resultMap type="TBasWateroutputPollutantUnorganized" id="TBasWateroutputPollutantUnorganizedResult">
+        <result property="id" column="id"/>
+        <result property="pollutantCode" column="pollutant_code"/>
+        <result property="pollutantNameCn" column="pollutant_name_cn"/>
+        <result property="pollutantNameEn" column="pollutant_name_en"/>
+        <result property="mnNum" column="mn_num"/>
+        <result property="outPutCode" column="out_put_code"/>
+        <result property="outPutName" column="out_put_name"/>
+        <result property="entCode" column="ent_code"/>
+        <result property="entName" column="ent_name"/>
+        <result property="dataSource" column="data_source"/>
+        <result property="pollutantUnitCn" column="pollutant_unit_cn"/>
+        <result property="pollutantUnitEn" column="pollutant_unit_en"/>
+        <result property="pollutantSort" column="pollutant_sort"/>
+        <result property="alarmType" column="alarm_type"/>
+        <result property="isZeroAlarm" column="is_zero_alarm"/>
+        <result property="isContinuityAlarm" column="is_continuity_alarm"/>
+        <result property="standardVal" column="standard_val"/>
+        <result property="earlyWarnMaxvalue" column="early_warn_maxValue"/>
+        <result property="earlyWarnMinvalue" column="early_warn_minValue"/>
+        <result property="overMaxvalue" column="over_maxValue"/>
+        <result property="overMinvalue" column="over_minValue"/>
+        <result property="exceptionMaxvalue" column="exception_maxValue"/>
+        <result property="exceptionMinvalue" column="exception_minValue"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createName" column="create_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateName" column="update_name"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectTBasWateroutputPollutantUnorganizedVo">
+        select id,
+               pollutant_code,
+               pollutant_name_cn,
+               pollutant_name_en,
+               mn_num,
+               out_put_code,
+               out_put_name,
+               ent_code,
+               ent_name,
+               data_source,
+               pollutant_unit_cn,
+               pollutant_unit_en,
+               pollutant_sort,
+               alarm_type,
+               is_zero_alarm,
+               is_continuity_alarm,
+               standard_val,
+               early_warn_maxValue,
+               early_warn_minValue,
+               over_maxValue,
+               over_minValue,
+               exception_maxValue,
+               exception_minValue,
+               create_time,
+               create_name,
+               update_time,
+               update_name,
+               remark
+        from t_bas_wateroutput_pollutant_unorganized
+    </sql>
+
+    <select id="selectTBasWateroutputPollutantUnorganizedList" parameterType="TBasWateroutputPollutantUnorganized"
+            resultMap="TBasWateroutputPollutantUnorganizedResult">
+        <include refid="selectTBasWateroutputPollutantUnorganizedVo"/>
+        <where>
+            <if test="pollutantCode != null  and pollutantCode != ''">and pollutant_code = #{pollutantCode}</if>
+            <if test="pollutantNameCn != null  and pollutantNameCn != ''">and pollutant_name_cn = #{pollutantNameCn}
+            </if>
+            <if test="pollutantNameEn != null  and pollutantNameEn != ''">and pollutant_name_en = #{pollutantNameEn}
+            </if>
+            <if test="mnNum != null  and mnNum != ''">and mn_num = #{mnNum}</if>
+            <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
+            <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')
+            </if>
+            <if test="entCode != null  and entCode != ''">and ent_code = #{entCode}</if>
+            <if test="entName != null  and entName != ''">and ent_name like concat('%', #{entName}, '%')</if>
+            <if test="dataSource != null  and dataSource != ''">and data_source = #{dataSource}</if>
+            <if test="pollutantUnitCn != null  and pollutantUnitCn != ''">and pollutant_unit_cn = #{pollutantUnitCn}
+            </if>
+            <if test="pollutantUnitEn != null  and pollutantUnitEn != ''">and pollutant_unit_en = #{pollutantUnitEn}
+            </if>
+            <if test="pollutantSort != null ">and pollutant_sort = #{pollutantSort}</if>
+            <if test="alarmType != null ">and alarm_type = #{alarmType}</if>
+            <if test="isZeroAlarm != null ">and is_zero_alarm = #{isZeroAlarm}</if>
+            <if test="isContinuityAlarm != null ">and is_continuity_alarm = #{isContinuityAlarm}</if>
+            <if test="standardVal != null ">and standard_val = #{standardVal}</if>
+            <if test="earlyWarnMaxvalue != null ">and early_warn_maxValue = #{earlyWarnMaxvalue}</if>
+            <if test="earlyWarnMinvalue != null ">and early_warn_minValue = #{earlyWarnMinvalue}</if>
+            <if test="overMaxvalue != null ">and over_maxValue = #{overMaxvalue}</if>
+            <if test="overMinvalue != null ">and over_minValue = #{overMinvalue}</if>
+            <if test="exceptionMaxvalue != null ">and exception_maxValue = #{exceptionMaxvalue}</if>
+            <if test="exceptionMinvalue != null ">and exception_minValue = #{exceptionMinvalue}</if>
+            <if test="createName != null  and createName != ''">and create_name like concat('%', #{createName}, '%')
+            </if>
+            <if test="updateName != null  and updateName != ''">and update_name like concat('%', #{updateName}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectTBasWateroutputPollutantUnorganizedById" parameterType="Long"
+            resultMap="TBasWateroutputPollutantUnorganizedResult">
+        <include refid="selectTBasWateroutputPollutantUnorganizedVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTBasWateroutputPollutantUnorganized" parameterType="TBasWateroutputPollutantUnorganized"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into t_bas_wateroutput_pollutant_unorganized
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pollutantCode != null">pollutant_code,</if>
+            <if test="pollutantNameCn != null">pollutant_name_cn,</if>
+            <if test="pollutantNameEn != null">pollutant_name_en,</if>
+            <if test="mnNum != null">mn_num,</if>
+            <if test="outPutCode != null">out_put_code,</if>
+            <if test="outPutName != null">out_put_name,</if>
+            <if test="entCode != null">ent_code,</if>
+            <if test="entName != null">ent_name,</if>
+            <if test="dataSource != null">data_source,</if>
+            <if test="pollutantUnitCn != null">pollutant_unit_cn,</if>
+            <if test="pollutantUnitEn != null">pollutant_unit_en,</if>
+            <if test="pollutantSort != null">pollutant_sort,</if>
+            <if test="alarmType != null">alarm_type,</if>
+            <if test="isZeroAlarm != null">is_zero_alarm,</if>
+            <if test="isContinuityAlarm != null">is_continuity_alarm,</if>
+            <if test="standardVal != null">standard_val,</if>
+            <if test="earlyWarnMaxvalue != null">early_warn_maxValue,</if>
+            <if test="earlyWarnMinvalue != null">early_warn_minValue,</if>
+            <if test="overMaxvalue != null">over_maxValue,</if>
+            <if test="overMinvalue != null">over_minValue,</if>
+            <if test="exceptionMaxvalue != null">exception_maxValue,</if>
+            <if test="exceptionMinvalue != null">exception_minValue,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateName != null">update_name,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pollutantCode != null">#{pollutantCode},</if>
+            <if test="pollutantNameCn != null">#{pollutantNameCn},</if>
+            <if test="pollutantNameEn != null">#{pollutantNameEn},</if>
+            <if test="mnNum != null">#{mnNum},</if>
+            <if test="outPutCode != null">#{outPutCode},</if>
+            <if test="outPutName != null">#{outPutName},</if>
+            <if test="entCode != null">#{entCode},</if>
+            <if test="entName != null">#{entName},</if>
+            <if test="dataSource != null">#{dataSource},</if>
+            <if test="pollutantUnitCn != null">#{pollutantUnitCn},</if>
+            <if test="pollutantUnitEn != null">#{pollutantUnitEn},</if>
+            <if test="pollutantSort != null">#{pollutantSort},</if>
+            <if test="alarmType != null">#{alarmType},</if>
+            <if test="isZeroAlarm != null">#{isZeroAlarm},</if>
+            <if test="isContinuityAlarm != null">#{isContinuityAlarm},</if>
+            <if test="standardVal != null">#{standardVal},</if>
+            <if test="earlyWarnMaxvalue != null">#{earlyWarnMaxvalue},</if>
+            <if test="earlyWarnMinvalue != null">#{earlyWarnMinvalue},</if>
+            <if test="overMaxvalue != null">#{overMaxvalue},</if>
+            <if test="overMinvalue != null">#{overMinvalue},</if>
+            <if test="exceptionMaxvalue != null">#{exceptionMaxvalue},</if>
+            <if test="exceptionMinvalue != null">#{exceptionMinvalue},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateName != null">#{updateName},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTBasWateroutputPollutantUnorganized" parameterType="TBasWateroutputPollutantUnorganized">
+        update t_bas_wateroutput_pollutant_unorganized
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pollutantCode != null">pollutant_code = #{pollutantCode},</if>
+            <if test="pollutantNameCn != null">pollutant_name_cn = #{pollutantNameCn},</if>
+            <if test="pollutantNameEn != null">pollutant_name_en = #{pollutantNameEn},</if>
+            <if test="mnNum != null">mn_num = #{mnNum},</if>
+            <if test="outPutCode != null">out_put_code = #{outPutCode},</if>
+            <if test="outPutName != null">out_put_name = #{outPutName},</if>
+            <if test="entCode != null">ent_code = #{entCode},</if>
+            <if test="entName != null">ent_name = #{entName},</if>
+            <if test="dataSource != null">data_source = #{dataSource},</if>
+            <if test="pollutantUnitCn != null">pollutant_unit_cn = #{pollutantUnitCn},</if>
+            <if test="pollutantUnitEn != null">pollutant_unit_en = #{pollutantUnitEn},</if>
+            <if test="pollutantSort != null">pollutant_sort = #{pollutantSort},</if>
+            <if test="alarmType != null">alarm_type = #{alarmType},</if>
+            <if test="isZeroAlarm != null">is_zero_alarm = #{isZeroAlarm},</if>
+            <if test="isContinuityAlarm != null">is_continuity_alarm = #{isContinuityAlarm},</if>
+            <if test="standardVal != null">standard_val = #{standardVal},</if>
+            <if test="earlyWarnMaxvalue != null">early_warn_maxValue = #{earlyWarnMaxvalue},</if>
+            <if test="earlyWarnMinvalue != null">early_warn_minValue = #{earlyWarnMinvalue},</if>
+            <if test="overMaxvalue != null">over_maxValue = #{overMaxvalue},</if>
+            <if test="overMinvalue != null">over_minValue = #{overMinvalue},</if>
+            <if test="exceptionMaxvalue != null">exception_maxValue = #{exceptionMaxvalue},</if>
+            <if test="exceptionMinvalue != null">exception_minValue = #{exceptionMinvalue},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTBasWateroutputPollutantUnorganizedById" parameterType="Long">
+        delete
+        from t_bas_wateroutput_pollutant_unorganized
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTBasWateroutputPollutantUnorganizedByIds" parameterType="String">
+        delete from t_bas_wateroutput_pollutant_unorganized where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

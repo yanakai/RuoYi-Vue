@@ -1,0 +1,61 @@
+package com.ruoyi.business.base.service;
+
+import com.ruoyi.business.base.domain.TBasGasoutPutUnorganized;
+
+import java.util.List;
+
+/**
+ * 基础信息--企业--废气无组织排口Service接口
+ *
+ * @author lx
+ * @date 2024-07-04
+ */
+public interface ITBasGasoutPutUnorganizedService {
+    /**
+     * 查询基础信息--企业--废气无组织排口
+     *
+     * @param id 基础信息--企业--废气无组织排口主键
+     * @return 基础信息--企业--废气无组织排口
+     */
+    public TBasGasoutPutUnorganized selectTBasGasoutPutUnorganizedById(Long id);
+
+    /**
+     * 查询基础信息--企业--废气无组织排口列表
+     *
+     * @param tBasGasoutPutUnorganized 基础信息--企业--废气无组织排口
+     * @return 基础信息--企业--废气无组织排口集合
+     */
+    public List<TBasGasoutPutUnorganized> selectTBasGasoutPutUnorganizedList(TBasGasoutPutUnorganized tBasGasoutPutUnorganized);
+
+    /**
+     * 新增基础信息--企业--废气无组织排口
+     *
+     * @param tBasGasoutPutUnorganized 基础信息--企业--废气无组织排口
+     * @return 结果
+     */
+    public int insertTBasGasoutPutUnorganized(TBasGasoutPutUnorganized tBasGasoutPutUnorganized);
+
+    /**
+     * 修改基础信息--企业--废气无组织排口
+     *
+     * @param tBasGasoutPutUnorganized 基础信息--企业--废气无组织排口
+     * @return 结果
+     */
+    public int updateTBasGasoutPutUnorganized(TBasGasoutPutUnorganized tBasGasoutPutUnorganized);
+
+    /**
+     * 批量删除基础信息--企业--废气无组织排口
+     *
+     * @param ids 需要删除的基础信息--企业--废气无组织排口主键集合
+     * @return 结果
+     */
+    public int deleteTBasGasoutPutUnorganizedByIds(Long[] ids);
+
+    /**
+     * 删除基础信息--企业--废气无组织排口信息
+     *
+     * @param id 基础信息--企业--废气无组织排口主键
+     * @return 结果
+     */
+    public int deleteTBasGasoutPutUnorganizedById(Long id);
+}

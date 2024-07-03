@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.statistics.mapper.TDataGasoutDayStatisticsMapper">
+
+    <resultMap type="TDataGasoutDayStatistics" id="TDataGasoutDayStatisticsResult">
+        <result property="id" column="id"/>
+        <result property="entCode" column="ent_code"/>
+        <result property="entName" column="ent_name"/>
+        <result property="outPutCode" column="out_put_code"/>
+        <result property="outPutName" column="out_put_name"/>
+        <result property="monitorTime" column="monitor_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="volumeFlow" column="volume_flow"/>
+        <result property="velocityFlow" column="velocity_flow"/>
+        <result property="ycAvgValue" column="yc_avg_value"/>
+        <result property="ycZsavgValue" column="yc_zsavg_value"/>
+        <result property="ycEmissions" column="yc_emissions"/>
+        <result property="ycIsAlram" column="yc_is_alram"/>
+        <result property="so2AvgValue" column="so2_avg_value"/>
+        <result property="so2ZsavgValue" column="so2_zsavg_value"/>
+        <result property="so2Emissions" column="so2_emissions"/>
+        <result property="so2IsAlarm" column="so2_is_alarm"/>
+        <result property="noAvgValue" column="no_avg_value"/>
+        <result property="noZsavgValue" column="no_zsavg_value"/>
+        <result property="noEmissions" column="no_emissions"/>
+        <result property="noSiAlarm" column="no_si_alarm"/>
+        <result property="oxygenContent" column="oxygen_content"/>
+        <result property="yqTemperature" column="yq_temperature"/>
+        <result property="yqHumidity" column="yq_humidity"/>
+        <result property="yqPressure" column="yq_pressure"/>
+    </resultMap>
+
+    <sql id="selectTDataGasoutDayStatisticsVo">
+        select id,
+               ent_code,
+               ent_name,
+               out_put_code,
+               out_put_name,
+               monitor_time,
+               update_time,
+               volume_flow,
+               velocity_flow,
+               yc_avg_value,
+               yc_zsavg_value,
+               yc_emissions,
+               yc_is_alram,
+               so2_avg_value,
+               so2_zsavg_value,
+               so2_emissions,
+               so2_is_alarm,
+               no_avg_value,
+               no_zsavg_value,
+               no_emissions,
+               no_si_alarm,
+               oxygen_content,
+               yq_temperature,
+               yq_humidity,
+               yq_pressure
+        from t_data_gasout_day_statistics
+    </sql>
+
+    <select id="selectTDataGasoutDayStatisticsList" parameterType="TDataGasoutDayStatistics"
+            resultMap="TDataGasoutDayStatisticsResult">
+        <include refid="selectTDataGasoutDayStatisticsVo"/>
+        <where>
+            <if test="entCode != null  and entCode != ''">and ent_code = #{entCode}</if>
+            <if test="entName != null  and entName != ''">and ent_name like concat('%', #{entName}, '%')</if>
+            <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
+            <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')
+            </if>
+            <if test="monitorTime != null ">and monitor_time = #{monitorTime}</if>
+            <if test="volumeFlow != null  and volumeFlow != ''">and volume_flow = #{volumeFlow}</if>
+            <if test="velocityFlow != null  and velocityFlow != ''">and velocity_flow = #{velocityFlow}</if>
+            <if test="ycAvgValue != null  and ycAvgValue != ''">and yc_avg_value = #{ycAvgValue}</if>
+            <if test="ycZsavgValue != null  and ycZsavgValue != ''">and yc_zsavg_value = #{ycZsavgValue}</if>
+            <if test="ycEmissions != null  and ycEmissions != ''">and yc_emissions = #{ycEmissions}</if>
+            <if test="ycIsAlram != null  and ycIsAlram != ''">and yc_is_alram = #{ycIsAlram}</if>
+            <if test="so2AvgValue != null  and so2AvgValue != ''">and so2_avg_value = #{so2AvgValue}</if>
+            <if test="so2ZsavgValue != null  and so2ZsavgValue != ''">and so2_zsavg_value = #{so2ZsavgValue}</if>
+            <if test="so2Emissions != null  and so2Emissions != ''">and so2_emissions = #{so2Emissions}</if>
+            <if test="so2IsAlarm != null  and so2IsAlarm != ''">and so2_is_alarm = #{so2IsAlarm}</if>
+            <if test="noAvgValue != null  and noAvgValue != ''">and no_avg_value = #{noAvgValue}</if>
+            <if test="noZsavgValue != null  and noZsavgValue != ''">and no_zsavg_value = #{noZsavgValue}</if>
+            <if test="noEmissions != null  and noEmissions != ''">and no_emissions = #{noEmissions}</if>
+            <if test="noSiAlarm != null  and noSiAlarm != ''">and no_si_alarm = #{noSiAlarm}</if>
+            <if test="oxygenContent != null  and oxygenContent != ''">and oxygen_content = #{oxygenContent}</if>
+            <if test="yqTemperature != null  and yqTemperature != ''">and yq_temperature = #{yqTemperature}</if>
+            <if test="yqHumidity != null  and yqHumidity != ''">and yq_humidity = #{yqHumidity}</if>
+            <if test="yqPressure != null  and yqPressure != ''">and yq_pressure = #{yqPressure}</if>
+        </where>
+    </select>
+
+    <select id="selectTDataGasoutDayStatisticsById" parameterType="Long" resultMap="TDataGasoutDayStatisticsResult">
+        <include refid="selectTDataGasoutDayStatisticsVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTDataGasoutDayStatistics" parameterType="TDataGasoutDayStatistics" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_data_gasout_day_statistics
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="entCode != null">ent_code,</if>
+            <if test="entName != null">ent_name,</if>
+            <if test="outPutCode != null">out_put_code,</if>
+            <if test="outPutName != null">out_put_name,</if>
+            <if test="monitorTime != null">monitor_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="volumeFlow != null">volume_flow,</if>
+            <if test="velocityFlow != null">velocity_flow,</if>
+            <if test="ycAvgValue != null">yc_avg_value,</if>
+            <if test="ycZsavgValue != null">yc_zsavg_value,</if>
+            <if test="ycEmissions != null">yc_emissions,</if>
+            <if test="ycIsAlram != null">yc_is_alram,</if>
+            <if test="so2AvgValue != null">so2_avg_value,</if>
+            <if test="so2ZsavgValue != null">so2_zsavg_value,</if>
+            <if test="so2Emissions != null">so2_emissions,</if>
+            <if test="so2IsAlarm != null">so2_is_alarm,</if>
+            <if test="noAvgValue != null">no_avg_value,</if>
+            <if test="noZsavgValue != null">no_zsavg_value,</if>
+            <if test="noEmissions != null">no_emissions,</if>
+            <if test="noSiAlarm != null">no_si_alarm,</if>
+            <if test="oxygenContent != null">oxygen_content,</if>
+            <if test="yqTemperature != null">yq_temperature,</if>
+            <if test="yqHumidity != null">yq_humidity,</if>
+            <if test="yqPressure != null">yq_pressure,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="entCode != null">#{entCode},</if>
+            <if test="entName != null">#{entName},</if>
+            <if test="outPutCode != null">#{outPutCode},</if>
+            <if test="outPutName != null">#{outPutName},</if>
+            <if test="monitorTime != null">#{monitorTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="volumeFlow != null">#{volumeFlow},</if>
+            <if test="velocityFlow != null">#{velocityFlow},</if>
+            <if test="ycAvgValue != null">#{ycAvgValue},</if>
+            <if test="ycZsavgValue != null">#{ycZsavgValue},</if>
+            <if test="ycEmissions != null">#{ycEmissions},</if>
+            <if test="ycIsAlram != null">#{ycIsAlram},</if>
+            <if test="so2AvgValue != null">#{so2AvgValue},</if>
+            <if test="so2ZsavgValue != null">#{so2ZsavgValue},</if>
+            <if test="so2Emissions != null">#{so2Emissions},</if>
+            <if test="so2IsAlarm != null">#{so2IsAlarm},</if>
+            <if test="noAvgValue != null">#{noAvgValue},</if>
+            <if test="noZsavgValue != null">#{noZsavgValue},</if>
+            <if test="noEmissions != null">#{noEmissions},</if>
+            <if test="noSiAlarm != null">#{noSiAlarm},</if>
+            <if test="oxygenContent != null">#{oxygenContent},</if>
+            <if test="yqTemperature != null">#{yqTemperature},</if>
+            <if test="yqHumidity != null">#{yqHumidity},</if>
+            <if test="yqPressure != null">#{yqPressure},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTDataGasoutDayStatistics" parameterType="TDataGasoutDayStatistics">
+        update t_data_gasout_day_statistics
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="entCode != null">ent_code = #{entCode},</if>
+            <if test="entName != null">ent_name = #{entName},</if>
+            <if test="outPutCode != null">out_put_code = #{outPutCode},</if>
+            <if test="outPutName != null">out_put_name = #{outPutName},</if>
+            <if test="monitorTime != null">monitor_time = #{monitorTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="volumeFlow != null">volume_flow = #{volumeFlow},</if>
+            <if test="velocityFlow != null">velocity_flow = #{velocityFlow},</if>
+            <if test="ycAvgValue != null">yc_avg_value = #{ycAvgValue},</if>
+            <if test="ycZsavgValue != null">yc_zsavg_value = #{ycZsavgValue},</if>
+            <if test="ycEmissions != null">yc_emissions = #{ycEmissions},</if>
+            <if test="ycIsAlram != null">yc_is_alram = #{ycIsAlram},</if>
+            <if test="so2AvgValue != null">so2_avg_value = #{so2AvgValue},</if>
+            <if test="so2ZsavgValue != null">so2_zsavg_value = #{so2ZsavgValue},</if>
+            <if test="so2Emissions != null">so2_emissions = #{so2Emissions},</if>
+            <if test="so2IsAlarm != null">so2_is_alarm = #{so2IsAlarm},</if>
+            <if test="noAvgValue != null">no_avg_value = #{noAvgValue},</if>
+            <if test="noZsavgValue != null">no_zsavg_value = #{noZsavgValue},</if>
+            <if test="noEmissions != null">no_emissions = #{noEmissions},</if>
+            <if test="noSiAlarm != null">no_si_alarm = #{noSiAlarm},</if>
+            <if test="oxygenContent != null">oxygen_content = #{oxygenContent},</if>
+            <if test="yqTemperature != null">yq_temperature = #{yqTemperature},</if>
+            <if test="yqHumidity != null">yq_humidity = #{yqHumidity},</if>
+            <if test="yqPressure != null">yq_pressure = #{yqPressure},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTDataGasoutDayStatisticsById" parameterType="Long">
+        delete
+        from t_data_gasout_day_statistics
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTDataGasoutDayStatisticsByIds" parameterType="String">
+        delete from t_data_gasout_day_statistics where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

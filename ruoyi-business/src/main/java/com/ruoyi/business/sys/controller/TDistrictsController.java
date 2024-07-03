@@ -22,7 +22,7 @@ import java.util.List;
  * @date 2024-07-01
  */
 @RestController
-@RequestMapping("/business/districts")
+@RequestMapping("/business/sys/districts")
 public class TDistrictsController extends BaseController {
     @Autowired
     private ITDistrictsService tDistrictsService;

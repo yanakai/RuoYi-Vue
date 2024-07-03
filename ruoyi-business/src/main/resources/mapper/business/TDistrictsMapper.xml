@@ -39,7 +39,7 @@
             <if test="pinyinShor != null  and pinyinShor != ''">and pinyin_shor like concat('%', #{pinyinShor}, '%')
             </if>
             <if test="extName != null  and extName != ''">and ext_name like concat('%', #{extName}, '%')</if>
-            <if test="pid != null and pid !='' " >and pid = #{pid}</if>
+            <if test="pid != null and pid !='' ">and pid = #{pid}</if>
         </where>
     </select>
 
