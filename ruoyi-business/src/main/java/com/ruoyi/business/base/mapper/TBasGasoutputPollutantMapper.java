@@ -58,4 +58,18 @@ public interface TBasGasoutputPollutantMapper {
      * @return 结果
      */
     int deleteTBasGasoutputPollutantByIds(Long[] ids);
+
+    /**
+     * 根据废气排口信息id删除废气排口污染物基本信息
+     * @param id
+     * @return
+     */
+    int deleteTBasGasoutputPollutantByInfoId(Long id);
+
+    /**
+     *  根据废气排口信息ids删除废气排口污染物基本信息
+     * @param ids
+     * @return
+     */
+    int deleteTBasGasoutputPollutantByInfoIds(Long[] ids);
 }

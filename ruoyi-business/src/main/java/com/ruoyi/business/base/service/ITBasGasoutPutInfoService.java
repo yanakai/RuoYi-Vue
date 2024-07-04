@@ -1,6 +1,7 @@
 package com.ruoyi.business.base.service;
 
 import com.ruoyi.business.base.domain.TBasGasoutPutInfo;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -49,6 +50,7 @@ public interface ITBasGasoutPutInfoService {
      * @param ids 需要删除的基础信息--企业--废气排口主键集合
      * @return 结果
      */
+    @Transactional
     int deleteTBasGasoutPutInfoByIds(Long[] ids);
 
     /**
@@ -57,5 +59,6 @@ public interface ITBasGasoutPutInfoService {
      * @param id 基础信息--企业--废气排口主键
      * @return 结果
      */
+    @Transactional
     int deleteTBasGasoutPutInfoById(Long id);
 }

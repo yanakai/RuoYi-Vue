@@ -194,4 +194,13 @@
             #{id}
         </foreach>
     </delete>
+
+    <delete id="deleteTBasGasoutputPollutantByInfoId" parameterType="Long">
+        delete from t_bas_gasoutput_pollutant where out_put_code = (select out_put_code from t_bas_gasout_put_info where id = #{id})
+    </delete>
+
+    <delete id="deleteTBasGasoutputPollutantByInfoIds" parameterType="String">
+        delete from t_bas_gasoutput_pollutant where out_put_code in (select out_put_code from t_bas_gasout_put_info where id in
+         <foreach item="id" collection="array" open="(" separator="," close=")">#{id}</foreach>)
+    </delete>
 </mapper>

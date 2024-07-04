@@ -203,4 +203,13 @@
             #{id}
         </foreach>
     </delete>
+
+    <delete id="deleteTBasWateroutputPollutantByInfoId" parameterType="Long">
+        delete from t_bas_wateroutput_pollutant where out_put_code = (select out_put_code from t_bas_waterout_put_info where id = #{id})
+    </delete>
+
+    <delete id="deleteTBasWateroutputPollutantByInfoIds" parameterType="String">
+        delete from t_bas_wateroutput_pollutant where out_put_code in (select out_put_code from t_bas_waterout_put_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">#{id}</foreach>)
+    </delete>
 </mapper>

@@ -58,4 +58,8 @@ public interface TBasGasoutputPollutantUnorganizedMapper {
      * @return 结果
      */
     public int deleteTBasGasoutputPollutantUnorganizedByIds(Long[] ids);
+
+    int deleteTBasGasoutputPollutantUnorganizedByGasoutputId(Long id);
+
+    int deleteTBasGasoutputPollutantUnorganizedByGasoutputIds(Long[] ids);
 }

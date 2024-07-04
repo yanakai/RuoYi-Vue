@@ -58,4 +58,8 @@ public interface TBasWateroutputPollutantUnorganizedMapper {
      * @return 结果
      */
     public int deleteTBasWateroutputPollutantUnorganizedByIds(Long[] ids);
+
+    int deleteTBasWateroutputPollutantUnorganizedByOutputId(Long id);
+
+    int deleteTBasWateroutputPollutantUnorganizedByOutputIds(Long[] ids);
 }

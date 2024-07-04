@@ -2,11 +2,13 @@ package com.ruoyi.business.base.service.impl;
 
 import com.ruoyi.business.base.domain.TBasWateroutPutUnorganized;
 import com.ruoyi.business.base.mapper.TBasWateroutPutUnorganizedMapper;
+import com.ruoyi.business.base.mapper.TBasWateroutputPollutantUnorganizedMapper;
 import com.ruoyi.business.base.service.ITBasWateroutPutUnorganizedService;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,6 +21,8 @@ import java.util.List;
 public class TBasWateroutPutUnorganizedServiceImpl implements ITBasWateroutPutUnorganizedService {
     @Autowired
     private TBasWateroutPutUnorganizedMapper tBasWateroutPutUnorganizedMapper;
+    @Resource
+    private TBasWateroutputPollutantUnorganizedMapper tBasWateroutputPollutantUnorganizedMapper;
 
     /**
      * 查询基础信息--企业--废水无组织排口
@@ -74,6 +78,7 @@ public class TBasWateroutPutUnorganizedServiceImpl implements ITBasWateroutPutUn
      */
     @Override
     public int deleteTBasWateroutPutUnorganizedByIds(Long[] ids) {
+        tBasWateroutputPollutantUnorganizedMapper.deleteTBasWateroutputPollutantUnorganizedByOutputIds(ids);
         return tBasWateroutPutUnorganizedMapper.deleteTBasWateroutPutUnorganizedByIds(ids);
     }
 
@@ -85,6 +90,7 @@ public class TBasWateroutPutUnorganizedServiceImpl implements ITBasWateroutPutUn
      */
     @Override
     public int deleteTBasWateroutPutUnorganizedById(Long id) {
+        tBasWateroutputPollutantUnorganizedMapper.deleteTBasWateroutputPollutantUnorganizedByOutputId(id);
         return tBasWateroutPutUnorganizedMapper.deleteTBasWateroutPutUnorganizedById(id);
     }
 }

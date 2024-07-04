@@ -2,11 +2,13 @@ package com.ruoyi.business.base.service.impl;
 
 import com.ruoyi.business.base.domain.TBasGasoutPutUnorganized;
 import com.ruoyi.business.base.mapper.TBasGasoutPutUnorganizedMapper;
+import com.ruoyi.business.base.mapper.TBasGasoutputPollutantUnorganizedMapper;
 import com.ruoyi.business.base.service.ITBasGasoutPutUnorganizedService;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,6 +21,8 @@ import java.util.List;
 public class TBasGasoutPutUnorganizedServiceImpl implements ITBasGasoutPutUnorganizedService {
     @Autowired
     private TBasGasoutPutUnorganizedMapper tBasGasoutPutUnorganizedMapper;
+    @Resource
+    private TBasGasoutputPollutantUnorganizedMapper tBasGasoutputPollutantUnorganizedMapper;
 
     /**
      * 查询基础信息--企业--废气无组织排口
@@ -74,6 +78,7 @@ public class TBasGasoutPutUnorganizedServiceImpl implements ITBasGasoutPutUnorga
      */
     @Override
     public int deleteTBasGasoutPutUnorganizedByIds(Long[] ids) {
+        tBasGasoutputPollutantUnorganizedMapper.deleteTBasGasoutputPollutantUnorganizedByGasoutputIds(ids);
         return tBasGasoutPutUnorganizedMapper.deleteTBasGasoutPutUnorganizedByIds(ids);
     }
 
@@ -85,6 +90,7 @@ public class TBasGasoutPutUnorganizedServiceImpl implements ITBasGasoutPutUnorga
      */
     @Override
     public int deleteTBasGasoutPutUnorganizedById(Long id) {
+        tBasGasoutputPollutantUnorganizedMapper.deleteTBasGasoutputPollutantUnorganizedByGasoutputId(id);
         return tBasGasoutPutUnorganizedMapper.deleteTBasGasoutPutUnorganizedById(id);
     }
 }

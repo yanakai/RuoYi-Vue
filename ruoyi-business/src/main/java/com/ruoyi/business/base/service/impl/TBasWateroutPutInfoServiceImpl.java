@@ -2,11 +2,13 @@ package com.ruoyi.business.base.service.impl;
 
 import com.ruoyi.business.base.domain.TBasWateroutPutInfo;
 import com.ruoyi.business.base.mapper.TBasWateroutPutInfoMapper;
+import com.ruoyi.business.base.mapper.TBasWateroutputPollutantMapper;
 import com.ruoyi.business.base.service.ITBasWateroutPutInfoService;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,6 +21,8 @@ import java.util.List;
 public class TBasWateroutPutInfoServiceImpl implements ITBasWateroutPutInfoService {
     @Autowired
     private TBasWateroutPutInfoMapper tBasWateroutPutInfoMapper;
+    @Resource
+    private TBasWateroutputPollutantMapper tBasWateroutputPollutantMapper;
 
     /**
      * 查询基础信息--企业--废水排口
@@ -74,6 +78,8 @@ public class TBasWateroutPutInfoServiceImpl implements ITBasWateroutPutInfoServi
      */
     @Override
     public int deleteTBasWateroutPutInfoByIds(Long[] ids) {
+        //删除废水排口污染物基本信息
+        tBasWateroutputPollutantMapper.deleteTBasWateroutputPollutantByInfoIds(ids);
         return tBasWateroutPutInfoMapper.deleteTBasWateroutPutInfoByIds(ids);
     }
 
@@ -85,6 +91,8 @@ public class TBasWateroutPutInfoServiceImpl implements ITBasWateroutPutInfoServi
      */
     @Override
     public int deleteTBasWateroutPutInfoById(Long id) {
+        //删除废水排口污染物基本信息
+        tBasWateroutputPollutantMapper.deleteTBasWateroutputPollutantByInfoId(id);
         return tBasWateroutPutInfoMapper.deleteTBasWateroutPutInfoById(id);
     }
 }
