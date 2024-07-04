@@ -17,7 +17,7 @@ public interface TDataWateroutDayStatisticsMapper {
      * @param id 废水排口--日报统计数据主键
      * @return 废水排口--日报统计数据
      */
-    public TDataWateroutDayStatistics selectTDataWateroutDayStatisticsById(Long id);
+    TDataWateroutDayStatistics selectTDataWateroutDayStatisticsById(Long id);
 
     /**
      * 查询废水排口--日报统计数据列表
@@ -25,7 +25,7 @@ public interface TDataWateroutDayStatisticsMapper {
      * @param tDataWateroutDayStatistics 废水排口--日报统计数据
      * @return 废水排口--日报统计数据集合
      */
-    public List<TDataWateroutDayStatistics> selectTDataWateroutDayStatisticsList(TDataWateroutDayStatistics tDataWateroutDayStatistics);
+    List<TDataWateroutDayStatistics> selectTDataWateroutDayStatisticsList(TDataWateroutDayStatistics tDataWateroutDayStatistics);
 
     /**
      * 新增废水排口--日报统计数据
@@ -33,7 +33,7 @@ public interface TDataWateroutDayStatisticsMapper {
      * @param tDataWateroutDayStatistics 废水排口--日报统计数据
      * @return 结果
      */
-    public int insertTDataWateroutDayStatistics(TDataWateroutDayStatistics tDataWateroutDayStatistics);
+    int insertTDataWateroutDayStatistics(TDataWateroutDayStatistics tDataWateroutDayStatistics);
 
     /**
      * 修改废水排口--日报统计数据
@@ -41,7 +41,7 @@ public interface TDataWateroutDayStatisticsMapper {
      * @param tDataWateroutDayStatistics 废水排口--日报统计数据
      * @return 结果
      */
-    public int updateTDataWateroutDayStatistics(TDataWateroutDayStatistics tDataWateroutDayStatistics);
+    int updateTDataWateroutDayStatistics(TDataWateroutDayStatistics tDataWateroutDayStatistics);
 
     /**
      * 删除废水排口--日报统计数据
@@ -49,7 +49,7 @@ public interface TDataWateroutDayStatisticsMapper {
      * @param id 废水排口--日报统计数据主键
      * @return 结果
      */
-    public int deleteTDataWateroutDayStatisticsById(Long id);
+    int deleteTDataWateroutDayStatisticsById(Long id);
 
     /**
      * 批量删除废水排口--日报统计数据
@@ -57,5 +57,5 @@ public interface TDataWateroutDayStatisticsMapper {
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteTDataWateroutDayStatisticsByIds(Long[] ids);
+    int deleteTDataWateroutDayStatisticsByIds(Long[] ids);
 }
