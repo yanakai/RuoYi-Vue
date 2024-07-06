@@ -25,98 +25,115 @@ public class TBasEnterprise extends BaseEntity {
     /**
      * 企业编码
      */
+    @ApiModelProperty(value = "企业编码")
     @Excel(name = "企业编码")
     private String entCode;
 
     /**
      * 企业名称
      */
+    @ApiModelProperty(value = "企业名称")
     @Excel(name = "企业名称")
     private String entName;
 
     /**
      * 社会统一信用代码
      */
+    @ApiModelProperty(value = "社会统一信用代码")
     @Excel(name = "社会统一信用代码")
     private String socialCreditCode;
 
     /**
      * 企业简称
      */
+    @ApiModelProperty(value = "企业简称")
     @Excel(name = "企业简称")
     private String shorterName;
 
     /**
      * 企业地址
      */
+    @ApiModelProperty(value = "企业地址")
     private String address;
 
     /**
      * 经度
      */
+    @ApiModelProperty(value = "经度")
     private String longitude;
 
     /**
      * 纬度
      */
+    @ApiModelProperty(value = "纬度")
     private String latitude;
 
     /**
      * 行政区划
      */
+    @ApiModelProperty(value = "行政区划")
     @Excel(name = "行政区划")
     private String region;
 
     /**
      * 企业状态
      */
+    @ApiModelProperty(value = "企业状态")
     @Excel(name = "企业状态")
     private String entStatus;
 
     /**
      * 企业规模
      */
+    @ApiModelProperty(value = "企业规模")
     @Excel(name = "企业规模")
     private String entScale;
 
     /**
      * 企业类型
      */
+    @ApiModelProperty(value = "企业类型")
     @Excel(name = "企业类型")
     private String entType;
 
     /**
      * 行业类型
      */
+    @ApiModelProperty(value = "行业类型")
     @Excel(name = "行业类型")
     private String industryType;
 
     /**
      * 污染源类别
      */
+    @ApiModelProperty(value = "污染源类别")
     private String pollutionClass;
 
     /**
      * 环保管理人员
      */
+    @ApiModelProperty(value = "环保管理人员")
     @Excel(name = "环保管理人员")
     private String envManagerPersion;
 
     /**
      * 联系电话
      */
+    @ApiModelProperty(value = "联系电话")
     @Excel(name = "联系电话")
     private String linkManPhone;
 
     /**
      * 联系人邮箱
      */
+    @ApiModelProperty(value = "联系人邮箱")
     @Excel(name = "联系人邮箱")
     private String linkManeMail;
 
     /**
      * 企业介绍
      */
+    @ApiModelProperty(value = "企业介绍")
     private String entIntroduction;
 
     /**
