@@ -12,7 +12,7 @@ import java.util.Date;
  * 废水排口--小时报统计数据对象 t_data_waterout_hour_statistics
  *
  * @author lx
- * @date 2024-07-04
+ * @date 2024-07-08
  */
 public class TDataWateroutHourStatistics extends BaseEntity {
     private static final long serialVersionUID = 1L;
@@ -47,12 +47,6 @@ public class TDataWateroutHourStatistics extends BaseEntity {
     private String outPutName;
 
     /**
-     * 污染因子code
-     */
-    @Excel(name = "污染因子code")
-    private String pollutantCode;
-
-    /**
      * 监测时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -60,16 +54,28 @@ public class TDataWateroutHourStatistics extends BaseEntity {
     private Date monitorTime;
 
     /**
-     * 流量
+     * 废水流量均值
      */
-    @Excel(name = "流量")
-    private String volumeFlow;
+    @Excel(name = "废水流量均值")
+    private String volumeAvgFlow;
+
+    /**
+     * 废水总流量
+     */
+    @Excel(name = "废水总流量")
+    private String volumeTotalFlow;
 
     /**
      * PH值
      */
     @Excel(name = "PH值")
     private String phValue;
+
+    /**
+     * 报警状态：0：正常；1：区间报警；2：超大值报警；3：超小值报警；4：零值报警；5：恒值报警
+     */
+    @Excel(name = "报警状态：0：正常；1：区间报警；2：超大值报警；3：超小值报警；4：零值报警；5：恒值报警")
+    private String phIsAlarm;
 
     /**
      * 氨氮均值
@@ -84,6 +90,12 @@ public class TDataWateroutHourStatistics extends BaseEntity {
     private String anEmissions;
 
     /**
+     * 报警状态：0：正常；1：区间报警；2：超大值报警；3：超小值报警；4：零值报警；5：恒值报警
+     */
+    @Excel(name = "报警状态：0：正常；1：区间报警；2：超大值报警；3：超小值报警；4：零值报警；5：恒值报警")
+    private String anIsAlarm;
+
+    /**
      * 化学需氧量均值
      */
     @Excel(name = "化学需氧量均值")
@@ -96,10 +108,16 @@ public class TDataWateroutHourStatistics extends BaseEntity {
     private String codEmissions;
 
     /**
+     * 报警状态：0：正常；1：区间报警；2：超大值报警；3：超小值报警；4：零值报警；5：恒值报警
+     */
+    @Excel(name = "报警状态：0：正常；1：区间报警；2：超大值报警；3：超小值报警；4：零值报警；5：恒值报警")
+    private String codIsAlarm;
+
+    /**
      * 氮氧化物均值
      */
     @Excel(name = "氮氧化物均值")
-    private String noValue;
+    private String noAvgValue;
 
     /**
      * 氮氧化物排放量
@@ -108,10 +126,16 @@ public class TDataWateroutHourStatistics extends BaseEntity {
     private String noEmissions;
 
     /**
+     * 报警状态：0：正常；1：区间报警；2：超大值报警；3：超小值报警；4：零值报警；5：恒值报警
+     */
+    @Excel(name = "报警状态：0：正常；1：区间报警；2：超大值报警；3：超小值报警；4：零值报警；5：恒值报警")
+    private String noIsAlarm;
+
+    /**
      * 总磷均值
      */
     @Excel(name = "总磷均值")
-    private String tpValue;
+    private String tpAvgValue;
 
     /**
      * 总磷排放量
@@ -120,16 +144,28 @@ public class TDataWateroutHourStatistics extends BaseEntity {
     private String tpEmissions;
 
     /**
+     * 报警状态：0：正常；1：区间报警；2：超大值报警；3：超小值报警；4：零值报警；5：恒值报警
+     */
+    @Excel(name = "报警状态：0：正常；1：区间报警；2：超大值报警；3：超小值报警；4：零值报警；5：恒值报警")
+    private String tpIsAlarm;
+
+    /**
      * 总氮均值
      */
     @Excel(name = "总氮均值")
-    private String tnValue;
+    private String tnAvgValue;
 
     /**
      * 总氮排放量
      */
     @Excel(name = "总氮排放量")
     private String tnEmissions;
+
+    /**
+     * 报警状态：0：正常；1：区间报警；2：超大值报警；3：超小值报警；4：零值报警；5：恒值报警
+     */
+    @Excel(name = "报警状态：0：正常；1：区间报警；2：超大值报警；3：超小值报警；4：零值报警；5：恒值报警")
+    private String tnIsAlarm;
 
     public Long getId() {
         return id;
@@ -171,14 +207,6 @@ public class TDataWateroutHourStatistics extends BaseEntity {
         this.outPutName = outPutName;
     }
 
-    public String getPollutantCode() {
-        return pollutantCode;
-    }
-
-    public void setPollutantCode(String pollutantCode) {
-        this.pollutantCode = pollutantCode;
-    }
-
     public Date getMonitorTime() {
         return monitorTime;
     }
@@ -187,12 +215,20 @@ public class TDataWateroutHourStatistics extends BaseEntity {
         this.monitorTime = monitorTime;
     }
 
-    public String getVolumeFlow() {
-        return volumeFlow;
+    public String getVolumeAvgFlow() {
+        return volumeAvgFlow;
     }
 
-    public void setVolumeFlow(String volumeFlow) {
-        this.volumeFlow = volumeFlow;
+    public void setVolumeAvgFlow(String volumeAvgFlow) {
+        this.volumeAvgFlow = volumeAvgFlow;
+    }
+
+    public String getVolumeTotalFlow() {
+        return volumeTotalFlow;
+    }
+
+    public void setVolumeTotalFlow(String volumeTotalFlow) {
+        this.volumeTotalFlow = volumeTotalFlow;
     }
 
     public String getPhValue() {
@@ -201,6 +237,14 @@ public class TDataWateroutHourStatistics extends BaseEntity {
 
     public void setPhValue(String phValue) {
         this.phValue = phValue;
+    }
+
+    public String getPhIsAlarm() {
+        return phIsAlarm;
+    }
+
+    public void setPhIsAlarm(String phIsAlarm) {
+        this.phIsAlarm = phIsAlarm;
     }
 
     public String getAnAvgValue() {
@@ -219,6 +263,14 @@ public class TDataWateroutHourStatistics extends BaseEntity {
         this.anEmissions = anEmissions;
     }
 
+    public String getAnIsAlarm() {
+        return anIsAlarm;
+    }
+
+    public void setAnIsAlarm(String anIsAlarm) {
+        this.anIsAlarm = anIsAlarm;
+    }
+
     public String getCodAvgValue() {
         return codAvgValue;
     }
@@ -235,12 +287,20 @@ public class TDataWateroutHourStatistics extends BaseEntity {
         this.codEmissions = codEmissions;
     }
 
-    public String getNoValue() {
-        return noValue;
+    public String getCodIsAlarm() {
+        return codIsAlarm;
     }
 
-    public void setNoValue(String noValue) {
-        this.noValue = noValue;
+    public void setCodIsAlarm(String codIsAlarm) {
+        this.codIsAlarm = codIsAlarm;
+    }
+
+    public String getNoAvgValue() {
+        return noAvgValue;
+    }
+
+    public void setNoAvgValue(String noAvgValue) {
+        this.noAvgValue = noAvgValue;
     }
 
     public String getNoEmissions() {
@@ -251,12 +311,20 @@ public class TDataWateroutHourStatistics extends BaseEntity {
         this.noEmissions = noEmissions;
     }
 
-    public String getTpValue() {
-        return tpValue;
+    public String getNoIsAlarm() {
+        return noIsAlarm;
     }
 
-    public void setTpValue(String tpValue) {
-        this.tpValue = tpValue;
+    public void setNoIsAlarm(String noIsAlarm) {
+        this.noIsAlarm = noIsAlarm;
+    }
+
+    public String getTpAvgValue() {
+        return tpAvgValue;
+    }
+
+    public void setTpAvgValue(String tpAvgValue) {
+        this.tpAvgValue = tpAvgValue;
     }
 
     public String getTpEmissions() {
@@ -267,12 +335,20 @@ public class TDataWateroutHourStatistics extends BaseEntity {
         this.tpEmissions = tpEmissions;
     }
 
-    public String getTnValue() {
-        return tnValue;
+    public String getTpIsAlarm() {
+        return tpIsAlarm;
     }
 
-    public void setTnValue(String tnValue) {
-        this.tnValue = tnValue;
+    public void setTpIsAlarm(String tpIsAlarm) {
+        this.tpIsAlarm = tpIsAlarm;
+    }
+
+    public String getTnAvgValue() {
+        return tnAvgValue;
+    }
+
+    public void setTnAvgValue(String tnAvgValue) {
+        this.tnAvgValue = tnAvgValue;
     }
 
     public String getTnEmissions() {
@@ -283,6 +359,14 @@ public class TDataWateroutHourStatistics extends BaseEntity {
         this.tnEmissions = tnEmissions;
     }
 
+    public String getTnIsAlarm() {
+        return tnIsAlarm;
+    }
+
+    public void setTnIsAlarm(String tnIsAlarm) {
+        this.tnIsAlarm = tnIsAlarm;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
@@ -291,21 +375,27 @@ public class TDataWateroutHourStatistics extends BaseEntity {
                 .append("entName", getEntName())
                 .append("outPutCode", getOutPutCode())
                 .append("outPutName", getOutPutName())
-                .append("pollutantCode", getPollutantCode())
                 .append("monitorTime", getMonitorTime())
                 .append("updateTime", getUpdateTime())
-                .append("volumeFlow", getVolumeFlow())
+                .append("volumeAvgFlow", getVolumeAvgFlow())
+                .append("volumeTotalFlow", getVolumeTotalFlow())
                 .append("phValue", getPhValue())
+                .append("phIsAlarm", getPhIsAlarm())
                 .append("anAvgValue", getAnAvgValue())
                 .append("anEmissions", getAnEmissions())
+                .append("anIsAlarm", getAnIsAlarm())
                 .append("codAvgValue", getCodAvgValue())
                 .append("codEmissions", getCodEmissions())
-                .append("noValue", getNoValue())
+                .append("codIsAlarm", getCodIsAlarm())
+                .append("noAvgValue", getNoAvgValue())
                 .append("noEmissions", getNoEmissions())
-                .append("tpValue", getTpValue())
+                .append("noIsAlarm", getNoIsAlarm())
+                .append("tpAvgValue", getTpAvgValue())
                 .append("tpEmissions", getTpEmissions())
-                .append("tnValue", getTnValue())
+                .append("tpIsAlarm", getTpIsAlarm())
+                .append("tnAvgValue", getTnAvgValue())
                 .append("tnEmissions", getTnEmissions())
+                .append("tnIsAlarm", getTnIsAlarm())
                 .toString();
     }
 }

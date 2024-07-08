@@ -12,12 +12,13 @@
         <result property="outPutName" column="out_put_name"/>
         <result property="monitorTime" column="monitor_time"/>
         <result property="updateTime" column="update_time"/>
-        <result property="volumeFlow" column="volume_flow"/>
+        <result property="volumeAvgFlow" column="volume_avg_flow"/>
+        <result property="volumeTotalFlow" column="volume_total_flow"/>
         <result property="velocityFlow" column="velocity_flow"/>
         <result property="ycAvgValue" column="yc_avg_value"/>
         <result property="ycZsavgValue" column="yc_zsavg_value"/>
         <result property="ycEmissions" column="yc_emissions"/>
-        <result property="ycIsAlram" column="yc_is_alram"/>
+        <result property="ycIsAlarm" column="yc_is_alarm"/>
         <result property="so2AvgValue" column="so2_avg_value"/>
         <result property="so2ZsavgValue" column="so2_zsavg_value"/>
         <result property="so2Emissions" column="so2_emissions"/>
@@ -40,12 +41,13 @@
                out_put_name,
                monitor_time,
                update_time,
-               volume_flow,
+               volume_avg_flow,
+               volume_total_flow,
                velocity_flow,
                yc_avg_value,
                yc_zsavg_value,
                yc_emissions,
-               yc_is_alram,
+               yc_is_alarm,
                so2_avg_value,
                so2_zsavg_value,
                so2_emissions,
@@ -71,12 +73,14 @@
             <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')
             </if>
             <if test="monitorTime != null ">and monitor_time = #{monitorTime}</if>
-            <if test="volumeFlow != null  and volumeFlow != ''">and volume_flow = #{volumeFlow}</if>
+            <if test="volumeAvgFlow != null  and volumeAvgFlow != ''">and volume_avg_flow = #{volumeAvgFlow}</if>
+            <if test="volumeTotalFlow != null  and volumeTotalFlow != ''">and volume_total_flow = #{volumeTotalFlow}
+            </if>
             <if test="velocityFlow != null  and velocityFlow != ''">and velocity_flow = #{velocityFlow}</if>
             <if test="ycAvgValue != null  and ycAvgValue != ''">and yc_avg_value = #{ycAvgValue}</if>
             <if test="ycZsavgValue != null  and ycZsavgValue != ''">and yc_zsavg_value = #{ycZsavgValue}</if>
             <if test="ycEmissions != null  and ycEmissions != ''">and yc_emissions = #{ycEmissions}</if>
-            <if test="ycIsAlram != null  and ycIsAlram != ''">and yc_is_alram = #{ycIsAlram}</if>
+            <if test="ycIsAlarm != null  and ycIsAlarm != ''">and yc_is_alarm = #{ycIsAlarm}</if>
             <if test="so2AvgValue != null  and so2AvgValue != ''">and so2_avg_value = #{so2AvgValue}</if>
             <if test="so2ZsavgValue != null  and so2ZsavgValue != ''">and so2_zsavg_value = #{so2ZsavgValue}</if>
             <if test="so2Emissions != null  and so2Emissions != ''">and so2_emissions = #{so2Emissions}</if>
@@ -107,12 +111,13 @@
             <if test="outPutName != null">out_put_name,</if>
             <if test="monitorTime != null">monitor_time,</if>
             <if test="updateTime != null">update_time,</if>
-            <if test="volumeFlow != null">volume_flow,</if>
+            <if test="volumeAvgFlow != null">volume_avg_flow,</if>
+            <if test="volumeTotalFlow != null">volume_total_flow,</if>
             <if test="velocityFlow != null">velocity_flow,</if>
             <if test="ycAvgValue != null">yc_avg_value,</if>
             <if test="ycZsavgValue != null">yc_zsavg_value,</if>
             <if test="ycEmissions != null">yc_emissions,</if>
-            <if test="ycIsAlram != null">yc_is_alram,</if>
+            <if test="ycIsAlarm != null">yc_is_alarm,</if>
             <if test="so2AvgValue != null">so2_avg_value,</if>
             <if test="so2ZsavgValue != null">so2_zsavg_value,</if>
             <if test="so2Emissions != null">so2_emissions,</if>
@@ -133,12 +138,13 @@
             <if test="outPutName != null">#{outPutName},</if>
             <if test="monitorTime != null">#{monitorTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
-            <if test="volumeFlow != null">#{volumeFlow},</if>
+            <if test="volumeAvgFlow != null">#{volumeAvgFlow},</if>
+            <if test="volumeTotalFlow != null">#{volumeTotalFlow},</if>
             <if test="velocityFlow != null">#{velocityFlow},</if>
             <if test="ycAvgValue != null">#{ycAvgValue},</if>
             <if test="ycZsavgValue != null">#{ycZsavgValue},</if>
             <if test="ycEmissions != null">#{ycEmissions},</if>
-            <if test="ycIsAlram != null">#{ycIsAlram},</if>
+            <if test="ycIsAlarm != null">#{ycIsAlarm},</if>
             <if test="so2AvgValue != null">#{so2AvgValue},</if>
             <if test="so2ZsavgValue != null">#{so2ZsavgValue},</if>
             <if test="so2Emissions != null">#{so2Emissions},</if>
@@ -163,12 +169,13 @@
             <if test="outPutName != null">out_put_name = #{outPutName},</if>
             <if test="monitorTime != null">monitor_time = #{monitorTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
-            <if test="volumeFlow != null">volume_flow = #{volumeFlow},</if>
+            <if test="volumeAvgFlow != null">volume_avg_flow = #{volumeAvgFlow},</if>
+            <if test="volumeTotalFlow != null">volume_total_flow = #{volumeTotalFlow},</if>
             <if test="velocityFlow != null">velocity_flow = #{velocityFlow},</if>
             <if test="ycAvgValue != null">yc_avg_value = #{ycAvgValue},</if>
             <if test="ycZsavgValue != null">yc_zsavg_value = #{ycZsavgValue},</if>
             <if test="ycEmissions != null">yc_emissions = #{ycEmissions},</if>
-            <if test="ycIsAlram != null">yc_is_alram = #{ycIsAlram},</if>
+            <if test="ycIsAlarm != null">yc_is_alarm = #{ycIsAlarm},</if>
             <if test="so2AvgValue != null">so2_avg_value = #{so2AvgValue},</if>
             <if test="so2ZsavgValue != null">so2_zsavg_value = #{so2ZsavgValue},</if>
             <if test="so2Emissions != null">so2_emissions = #{so2Emissions},</if>

@@ -10,21 +10,27 @@
         <result property="entName" column="ent_name"/>
         <result property="outPutCode" column="out_put_code"/>
         <result property="outPutName" column="out_put_name"/>
-        <result property="pollutantCode" column="pollutant_code"/>
         <result property="monitorTime" column="monitor_time"/>
         <result property="updateTime" column="update_time"/>
-        <result property="volumeFlow" column="volume_flow"/>
+        <result property="volumeAvgFlow" column="volume_avg_flow"/>
+        <result property="volumeTotalFlow" column="volume_total_flow"/>
         <result property="phValue" column="ph_value"/>
+        <result property="phIsAlarm" column="ph_is_alarm"/>
         <result property="anAvgValue" column="an_avg_value"/>
         <result property="anEmissions" column="an_emissions"/>
+        <result property="anIsAlarm" column="an_is_alarm"/>
         <result property="codAvgValue" column="cod_avg_value"/>
         <result property="codEmissions" column="cod_emissions"/>
-        <result property="noValue" column="no_value"/>
+        <result property="codIsAlarm" column="cod_is_alarm"/>
+        <result property="noAvgValue" column="no_avg_value"/>
         <result property="noEmissions" column="no_emissions"/>
-        <result property="tpValue" column="tp_value"/>
+        <result property="noIsAlarm" column="no_is_alarm"/>
+        <result property="tpAvgValue" column="tp_avg_value"/>
         <result property="tpEmissions" column="tp_emissions"/>
-        <result property="tnValue" column="tn_value"/>
+        <result property="tpIsAlarm" column="tp_is_alarm"/>
+        <result property="tnAvgValue" column="tn_avg_value"/>
         <result property="tnEmissions" column="tn_emissions"/>
+        <result property="tnIsAlarm" column="tn_is_alarm"/>
     </resultMap>
 
     <sql id="selectTDataWateroutHourStatisticsVo">
@@ -33,21 +39,27 @@
                ent_name,
                out_put_code,
                out_put_name,
-               pollutant_code,
                monitor_time,
                update_time,
-               volume_flow,
+               volume_avg_flow,
+               volume_total_flow,
                ph_value,
+               ph_is_alarm,
                an_avg_value,
                an_emissions,
+               an_is_alarm,
                cod_avg_value,
                cod_emissions,
-               no_value,
+               cod_is_alarm,
+               no_avg_value,
                no_emissions,
-               tp_value,
+               no_is_alarm,
+               tp_avg_value,
                tp_emissions,
-               tn_value,
-               tn_emissions
+               tp_is_alarm,
+               tn_avg_value,
+               tn_emissions,
+               tn_is_alarm
         from t_data_waterout_hour_statistics
     </sql>
 
@@ -60,20 +72,27 @@
             <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
             <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')
             </if>
-            <if test="pollutantCode != null  and pollutantCode != ''">and pollutant_code = #{pollutantCode}</if>
             <if test="monitorTime != null ">and monitor_time = #{monitorTime}</if>
-            <if test="volumeFlow != null  and volumeFlow != ''">and volume_flow = #{volumeFlow}</if>
+            <if test="volumeAvgFlow != null  and volumeAvgFlow != ''">and volume_avg_flow = #{volumeAvgFlow}</if>
+            <if test="volumeTotalFlow != null  and volumeTotalFlow != ''">and volume_total_flow = #{volumeTotalFlow}
+            </if>
             <if test="phValue != null  and phValue != ''">and ph_value = #{phValue}</if>
+            <if test="phIsAlarm != null  and phIsAlarm != ''">and ph_is_alarm = #{phIsAlarm}</if>
             <if test="anAvgValue != null  and anAvgValue != ''">and an_avg_value = #{anAvgValue}</if>
             <if test="anEmissions != null  and anEmissions != ''">and an_emissions = #{anEmissions}</if>
+            <if test="anIsAlarm != null  and anIsAlarm != ''">and an_is_alarm = #{anIsAlarm}</if>
             <if test="codAvgValue != null  and codAvgValue != ''">and cod_avg_value = #{codAvgValue}</if>
             <if test="codEmissions != null  and codEmissions != ''">and cod_emissions = #{codEmissions}</if>
-            <if test="noValue != null  and noValue != ''">and no_value = #{noValue}</if>
+            <if test="codIsAlarm != null  and codIsAlarm != ''">and cod_is_alarm = #{codIsAlarm}</if>
+            <if test="noAvgValue != null  and noAvgValue != ''">and no_avg_value = #{noAvgValue}</if>
             <if test="noEmissions != null  and noEmissions != ''">and no_emissions = #{noEmissions}</if>
-            <if test="tpValue != null  and tpValue != ''">and tp_value = #{tpValue}</if>
+            <if test="noIsAlarm != null  and noIsAlarm != ''">and no_is_alarm = #{noIsAlarm}</if>
+            <if test="tpAvgValue != null  and tpAvgValue != ''">and tp_avg_value = #{tpAvgValue}</if>
             <if test="tpEmissions != null  and tpEmissions != ''">and tp_emissions = #{tpEmissions}</if>
-            <if test="tnValue != null  and tnValue != ''">and tn_value = #{tnValue}</if>
+            <if test="tpIsAlarm != null  and tpIsAlarm != ''">and tp_is_alarm = #{tpIsAlarm}</if>
+            <if test="tnAvgValue != null  and tnAvgValue != ''">and tn_avg_value = #{tnAvgValue}</if>
             <if test="tnEmissions != null  and tnEmissions != ''">and tn_emissions = #{tnEmissions}</if>
+            <if test="tnIsAlarm != null  and tnIsAlarm != ''">and tn_is_alarm = #{tnIsAlarm}</if>
         </where>
     </select>
 
@@ -91,42 +110,54 @@
             <if test="entName != null">ent_name,</if>
             <if test="outPutCode != null">out_put_code,</if>
             <if test="outPutName != null">out_put_name,</if>
-            <if test="pollutantCode != null">pollutant_code,</if>
             <if test="monitorTime != null">monitor_time,</if>
             <if test="updateTime != null">update_time,</if>
-            <if test="volumeFlow != null">volume_flow,</if>
+            <if test="volumeAvgFlow != null">volume_avg_flow,</if>
+            <if test="volumeTotalFlow != null">volume_total_flow,</if>
             <if test="phValue != null">ph_value,</if>
+            <if test="phIsAlarm != null">ph_is_alarm,</if>
             <if test="anAvgValue != null">an_avg_value,</if>
             <if test="anEmissions != null">an_emissions,</if>
+            <if test="anIsAlarm != null">an_is_alarm,</if>
             <if test="codAvgValue != null">cod_avg_value,</if>
             <if test="codEmissions != null">cod_emissions,</if>
-            <if test="noValue != null">no_value,</if>
+            <if test="codIsAlarm != null">cod_is_alarm,</if>
+            <if test="noAvgValue != null">no_avg_value,</if>
             <if test="noEmissions != null">no_emissions,</if>
-            <if test="tpValue != null">tp_value,</if>
+            <if test="noIsAlarm != null">no_is_alarm,</if>
+            <if test="tpAvgValue != null">tp_avg_value,</if>
             <if test="tpEmissions != null">tp_emissions,</if>
-            <if test="tnValue != null">tn_value,</if>
+            <if test="tpIsAlarm != null">tp_is_alarm,</if>
+            <if test="tnAvgValue != null">tn_avg_value,</if>
             <if test="tnEmissions != null">tn_emissions,</if>
+            <if test="tnIsAlarm != null">tn_is_alarm,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="entCode != null">#{entCode},</if>
             <if test="entName != null">#{entName},</if>
             <if test="outPutCode != null">#{outPutCode},</if>
             <if test="outPutName != null">#{outPutName},</if>
-            <if test="pollutantCode != null">#{pollutantCode},</if>
             <if test="monitorTime != null">#{monitorTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
-            <if test="volumeFlow != null">#{volumeFlow},</if>
+            <if test="volumeAvgFlow != null">#{volumeAvgFlow},</if>
+            <if test="volumeTotalFlow != null">#{volumeTotalFlow},</if>
             <if test="phValue != null">#{phValue},</if>
+            <if test="phIsAlarm != null">#{phIsAlarm},</if>
             <if test="anAvgValue != null">#{anAvgValue},</if>
             <if test="anEmissions != null">#{anEmissions},</if>
+            <if test="anIsAlarm != null">#{anIsAlarm},</if>
             <if test="codAvgValue != null">#{codAvgValue},</if>
             <if test="codEmissions != null">#{codEmissions},</if>
-            <if test="noValue != null">#{noValue},</if>
+            <if test="codIsAlarm != null">#{codIsAlarm},</if>
+            <if test="noAvgValue != null">#{noAvgValue},</if>
             <if test="noEmissions != null">#{noEmissions},</if>
-            <if test="tpValue != null">#{tpValue},</if>
+            <if test="noIsAlarm != null">#{noIsAlarm},</if>
+            <if test="tpAvgValue != null">#{tpAvgValue},</if>
             <if test="tpEmissions != null">#{tpEmissions},</if>
-            <if test="tnValue != null">#{tnValue},</if>
+            <if test="tpIsAlarm != null">#{tpIsAlarm},</if>
+            <if test="tnAvgValue != null">#{tnAvgValue},</if>
             <if test="tnEmissions != null">#{tnEmissions},</if>
+            <if test="tnIsAlarm != null">#{tnIsAlarm},</if>
         </trim>
     </insert>
 
@@ -137,21 +168,27 @@
             <if test="entName != null">ent_name = #{entName},</if>
             <if test="outPutCode != null">out_put_code = #{outPutCode},</if>
             <if test="outPutName != null">out_put_name = #{outPutName},</if>
-            <if test="pollutantCode != null">pollutant_code = #{pollutantCode},</if>
             <if test="monitorTime != null">monitor_time = #{monitorTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
-            <if test="volumeFlow != null">volume_flow = #{volumeFlow},</if>
+            <if test="volumeAvgFlow != null">volume_avg_flow = #{volumeAvgFlow},</if>
+            <if test="volumeTotalFlow != null">volume_total_flow = #{volumeTotalFlow},</if>
             <if test="phValue != null">ph_value = #{phValue},</if>
+            <if test="phIsAlarm != null">ph_is_alarm = #{phIsAlarm},</if>
             <if test="anAvgValue != null">an_avg_value = #{anAvgValue},</if>
             <if test="anEmissions != null">an_emissions = #{anEmissions},</if>
+            <if test="anIsAlarm != null">an_is_alarm = #{anIsAlarm},</if>
             <if test="codAvgValue != null">cod_avg_value = #{codAvgValue},</if>
             <if test="codEmissions != null">cod_emissions = #{codEmissions},</if>
-            <if test="noValue != null">no_value = #{noValue},</if>
+            <if test="codIsAlarm != null">cod_is_alarm = #{codIsAlarm},</if>
+            <if test="noAvgValue != null">no_avg_value = #{noAvgValue},</if>
             <if test="noEmissions != null">no_emissions = #{noEmissions},</if>
-            <if test="tpValue != null">tp_value = #{tpValue},</if>
+            <if test="noIsAlarm != null">no_is_alarm = #{noIsAlarm},</if>
+            <if test="tpAvgValue != null">tp_avg_value = #{tpAvgValue},</if>
             <if test="tpEmissions != null">tp_emissions = #{tpEmissions},</if>
-            <if test="tnValue != null">tn_value = #{tnValue},</if>
+            <if test="tpIsAlarm != null">tp_is_alarm = #{tpIsAlarm},</if>
+            <if test="tnAvgValue != null">tn_avg_value = #{tnAvgValue},</if>
             <if test="tnEmissions != null">tn_emissions = #{tnEmissions},</if>
+            <if test="tnIsAlarm != null">tn_is_alarm = #{tnIsAlarm},</if>
         </trim>
         where id = #{id}
     </update>

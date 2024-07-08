@@ -12,7 +12,7 @@ import java.util.Date;
  * 废气排口--日报统计数据对象 t_data_gasout_day_statistics
  *
  * @author lx
- * @date 2024-07-04
+ * @date 2024-07-08
  */
 public class TDataGasoutDayStatistics extends BaseEntity {
     private static final long serialVersionUID = 1L;
@@ -54,10 +54,16 @@ public class TDataGasoutDayStatistics extends BaseEntity {
     private Date monitorTime;
 
     /**
-     * 流量
+     * 废气流量均值
      */
-    @Excel(name = "流量")
-    private String volumeFlow;
+    @Excel(name = "废气流量均值")
+    private String volumeAvgFlow;
+
+    /**
+     * 废气总流量
+     */
+    @Excel(name = "废气总流量")
+    private String volumeTotalFlow;
 
     /**
      * 流速
@@ -87,7 +93,7 @@ public class TDataGasoutDayStatistics extends BaseEntity {
      * 报警状态：0：正常；1：区间报警；2：超大值报警；3：超小值报警；4：零值报警；5：恒值报警
      */
     @Excel(name = "报警状态：0：正常；1：区间报警；2：超大值报警；3：超小值报警；4：零值报警；5：恒值报警")
-    private String ycIsAlram;
+    private String ycIsAlarm;
 
     /**
      * so2均值
@@ -209,12 +215,20 @@ public class TDataGasoutDayStatistics extends BaseEntity {
         this.monitorTime = monitorTime;
     }
 
-    public String getVolumeFlow() {
-        return volumeFlow;
+    public String getVolumeAvgFlow() {
+        return volumeAvgFlow;
     }
 
-    public void setVolumeFlow(String volumeFlow) {
-        this.volumeFlow = volumeFlow;
+    public void setVolumeAvgFlow(String volumeAvgFlow) {
+        this.volumeAvgFlow = volumeAvgFlow;
+    }
+
+    public String getVolumeTotalFlow() {
+        return volumeTotalFlow;
+    }
+
+    public void setVolumeTotalFlow(String volumeTotalFlow) {
+        this.volumeTotalFlow = volumeTotalFlow;
     }
 
     public String getVelocityFlow() {
@@ -249,12 +263,12 @@ public class TDataGasoutDayStatistics extends BaseEntity {
         this.ycEmissions = ycEmissions;
     }
 
-    public String getYcIsAlram() {
-        return ycIsAlram;
+    public String getYcIsAlarm() {
+        return ycIsAlarm;
     }
 
-    public void setYcIsAlram(String ycIsAlram) {
-        this.ycIsAlram = ycIsAlram;
+    public void setYcIsAlarm(String ycIsAlarm) {
+        this.ycIsAlarm = ycIsAlarm;
     }
 
     public String getSo2AvgValue() {
@@ -363,12 +377,13 @@ public class TDataGasoutDayStatistics extends BaseEntity {
                 .append("outPutName", getOutPutName())
                 .append("monitorTime", getMonitorTime())
                 .append("updateTime", getUpdateTime())
-                .append("volumeFlow", getVolumeFlow())
+                .append("volumeAvgFlow", getVolumeAvgFlow())
+                .append("volumeTotalFlow", getVolumeTotalFlow())
                 .append("velocityFlow", getVelocityFlow())
                 .append("ycAvgValue", getYcAvgValue())
                 .append("ycZsavgValue", getYcZsavgValue())
                 .append("ycEmissions", getYcEmissions())
-                .append("ycIsAlram", getYcIsAlram())
+                .append("ycIsAlarm", getYcIsAlarm())
                 .append("so2AvgValue", getSo2AvgValue())
                 .append("so2ZsavgValue", getSo2ZsavgValue())
                 .append("so2Emissions", getSo2Emissions())
