@@ -58,4 +58,28 @@ public interface TDataWateroutDayStatisticsMapper {
      * @return 结果
      */
     int deleteTDataWateroutDayStatisticsByIds(Long[] ids);
+
+    /**
+     * 查询废水排口--月统计数据列表
+     *
+     * @param tDataWateroutDayStatistics 废水排口--日报统计数据
+     * @return 废水排口--月统计数据
+     */
+    List<TDataWateroutDayStatistics> selectTDataWateroutMonthStatisticsList(TDataWateroutDayStatistics tDataWateroutDayStatistics);
+
+    /**
+     * 查询废水排口--季度统计数据列表
+     *
+     * @param tDataWateroutDayStatistics 废水排口--日报统计数据
+     * @return 废水排口--季度统计数据
+     */
+    List<TDataWateroutDayStatistics> selectTDataWateroutQuarterStatisticsList(TDataWateroutDayStatistics tDataWateroutDayStatistics);
+
+    /**
+     * 查询废水排口--年统计数据列表
+     *
+     * @param tDataWateroutDayStatistics 废水排口--日报统计数据
+     * @return 废水排口--年统计数据
+     */
+    List<TDataWateroutDayStatistics> selectTDataWateroutYearStatisticsList(TDataWateroutDayStatistics tDataWateroutDayStatistics);
 }

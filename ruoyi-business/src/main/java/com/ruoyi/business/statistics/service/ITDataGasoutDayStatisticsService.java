@@ -1,6 +1,7 @@
 package com.ruoyi.business.statistics.service;
 
 import com.ruoyi.business.statistics.domain.TDataGasoutDayStatistics;
+import com.ruoyi.business.statistics.dto.TDataGasoutStatisticsDTO;
 
 import java.util.List;
 
@@ -58,4 +59,28 @@ public interface ITDataGasoutDayStatisticsService {
      * @return 结果
      */
     public int deleteTDataGasoutDayStatisticsById(Long id);
+
+    /**
+     * 查询废气排口--月度统计数据列表
+     *
+     * @param tDataGasoutStatisticsDTO 废气排口--月度统计数据
+     * @return 废气排口--月度统计数据集合
+     */
+    public List<TDataGasoutDayStatistics> selectTDataGasoutMonthStatisticsList(TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO);
+
+    /**
+     * 查询废气排口--季度统计数据列表
+     *
+     * @param tDataGasoutStatisticsDTO 废气排口--季度统计数据
+     * @return 废气排口--季度统计数据集合
+     */
+    public List<TDataGasoutDayStatistics> selectTDataGasoutQuarterStatisticsList(TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO);
+
+    /**
+     * 查询废气排口--年度统计数据列表
+     *
+     * @param tDataGasoutStatisticsDTO 废气排口--年度统计数据
+     * @return 废气排口--年度统计数据集合
+     */
+    public List<TDataGasoutDayStatistics> selectTDataGasoutYearStatisticsList(TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO);
 }

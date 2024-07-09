@@ -1,6 +1,7 @@
 package com.ruoyi.business.statistics.service;
 
 import com.ruoyi.business.statistics.domain.TDataWateroutDayStatistics;
+import com.ruoyi.business.statistics.dto.TDataWateroutStatisticsDTO;
 
 import java.util.List;
 
@@ -58,4 +59,29 @@ public interface ITDataWateroutDayStatisticsService {
      * @return 结果
      */
     public int deleteTDataWateroutDayStatisticsById(Long id);
+
+    /**
+     * 查询废水排口--月统计数据
+     *
+     * @param tDataWateroutDayStatisticsDTO 废水排口--月统计数据
+     * @return 废水排口--月统计数据
+     */
+    public List<TDataWateroutDayStatistics> selectTDataWateroutMonthStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO);
+
+    /**
+     * 查询废水排口--季度统计数据
+     *
+     * @param tDataWateroutDayStatisticsDTO 废水排口--季度统计数据
+     * @return 废水排口--季度统计数据
+     */
+    public List<TDataWateroutDayStatistics> selectTDataWateroutQuarterStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO);
+
+    /**
+     * 查询废水排口--年统计数据
+     *
+     * @param tDataWateroutDayStatisticsDTO 废水排口--年统计数据
+     * @return 废水排口--年统计数据
+     */
+    public List<TDataWateroutDayStatistics> selectTDataWateroutYearStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO);
+
 }

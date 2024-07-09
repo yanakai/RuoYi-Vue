@@ -58,4 +58,31 @@ public interface TDataGasoutDayStatisticsMapper {
      * @return 结果
      */
     int deleteTDataGasoutDayStatisticsByIds(Long[] ids);
+
+
+    /**
+     * 查询废气排口--月度统计数据列表
+     *
+     * @param tDataGasoutDayStatistics 废气排口--月度统计数据
+     * @return 废气排口--月度统计数据集合
+     */
+    List<TDataGasoutDayStatistics> selectTDataGasoutMonthStatisticsList(TDataGasoutDayStatistics tDataGasoutDayStatistics);
+
+    /**
+     * 查询废气排口--季度统计数据列表
+     *
+     * @param tDataGasoutDayStatistics 废气排口--季度统计数据
+     * @return 废气排口--季度统计数据集合
+     */
+    List<TDataGasoutDayStatistics> selectTDataGasoutQuarterStatisticsList(TDataGasoutDayStatistics tDataGasoutDayStatistics);
+
+    /**
+     * 查询废气排口--年度统计数据列表
+     *
+     * @param tDataGasoutDayStatistics 废气排口--年度统计数据
+     * @return 废气排口--年度统计数据集合
+     */
+    List<TDataGasoutDayStatistics> selectTDataGasoutYearStatisticsList(TDataGasoutDayStatistics tDataGasoutDayStatistics);
+
+
 }

@@ -90,7 +90,7 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.ruoyi.business"))
                 .paths(PathSelectors.ant("/business/statistics/**"))
                 .build()
-                .groupName("监测报表")
+                .groupName("污染物排放监测报表")
                 /* 设置安全模式，swagger可以设置访问token */
                 .securitySchemes(securitySchemes())
                 .securityContexts(securityContexts())

@@ -67,6 +67,8 @@
             resultMap="TDataWateroutDayStatisticsResult">
         <include refid="selectTDataWateroutDayStatisticsVo"/>
         <where>
+            <!--非预警-->
+            ph_is_alarm = 0 and an_is_alarm = 0 and cod_is_alarm = 0 and no_is_alarm = 0 and tp_is_alarm = 0 and tn_is_alarm = 0
             <if test="entCode != null  and entCode != ''">and ent_code = #{entCode}</if>
             <if test="entName != null  and entName != ''">and ent_name like concat('%', #{entName}, '%')</if>
             <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
@@ -204,4 +206,57 @@
             #{id}
         </foreach>
     </delete>
+
+    <!-- 废水排口-月统计数据列表 -->
+    <select id="selectTDataWateroutMonthStatisticsList" parameterType="TDataWateroutDayStatistics"
+            resultMap="TDataWateroutDayStatisticsResult">
+        <include refid="selectTDataWateroutDayStatisticsVo"/>
+        <where>
+            <!--非预警-->
+            ph_is_alarm = 0 and an_is_alarm = 0 and cod_is_alarm = 0 and no_is_alarm = 0 and tp_is_alarm = 0 and tn_is_alarm = 0
+            <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
+            <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+    <!-- 废水排口-季度统计数据列表 -->
+    <select id="selectTDataWateroutQuarterStatisticsList" parameterType="TDataWateroutDayStatistics"
+            resultMap="TDataWateroutDayStatisticsResult">
+        <include refid="selectTDataWateroutDayStatisticsVo"/>
+        <where>
+            <!--非预警-->
+            ph_is_alarm = 0 and an_is_alarm = 0 and cod_is_alarm = 0 and no_is_alarm = 0 and tp_is_alarm = 0 and tn_is_alarm = 0
+            <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
+            <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+    <!-- 废水排口-年度统计数据列表 -->
+    <select id="selectTDataWateroutYearStatisticsList" parameterType="TDataWateroutDayStatistics"
+            resultMap="TDataWateroutDayStatisticsResult">
+        <include refid="selectTDataWateroutDayStatisticsVo"/>
+        <where>
+            <!--非预警-->
+            ph_is_alarm = 0 and an_is_alarm = 0 and cod_is_alarm = 0 and no_is_alarm = 0 and tp_is_alarm = 0 and tn_is_alarm = 0
+            <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
+            <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
 </mapper>

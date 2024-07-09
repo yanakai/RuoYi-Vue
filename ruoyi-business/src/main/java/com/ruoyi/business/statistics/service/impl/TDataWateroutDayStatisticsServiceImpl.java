@@ -1,6 +1,8 @@
 package com.ruoyi.business.statistics.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.ruoyi.business.statistics.domain.TDataWateroutDayStatistics;
+import com.ruoyi.business.statistics.dto.TDataWateroutStatisticsDTO;
 import com.ruoyi.business.statistics.mapper.TDataWateroutDayStatisticsMapper;
 import com.ruoyi.business.statistics.service.ITDataWateroutDayStatisticsService;
 import com.ruoyi.common.utils.DateUtils;
@@ -85,5 +87,44 @@ public class TDataWateroutDayStatisticsServiceImpl implements ITDataWateroutDayS
     @Override
     public int deleteTDataWateroutDayStatisticsById(Long id) {
         return tDataWateroutDayStatisticsMapper.deleteTDataWateroutDayStatisticsById(id);
+    }
+
+    /**
+     * 查询废水排口--月统计数据
+     *
+     * @param tDataWateroutDayStatisticsDTO 废水排口--月统计数据
+     * @return 废水排口--月统计数据
+     */
+    @Override
+    public List<TDataWateroutDayStatistics> selectTDataWateroutMonthStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO) {
+        TDataWateroutDayStatistics tDataWateroutDayStatistics = new TDataWateroutDayStatistics();
+        BeanUtil.copyProperties(tDataWateroutDayStatisticsDTO, tDataWateroutDayStatistics);
+        return tDataWateroutDayStatisticsMapper.selectTDataWateroutMonthStatisticsList(tDataWateroutDayStatistics);
+    }
+
+    /**
+     * 查询废水排口--季度统计数据
+     *
+     * @param tDataWateroutDayStatisticsDTO 废水排口--季度统计数据
+     * @return 废水排口--季度统计数据
+     */
+    @Override
+    public List<TDataWateroutDayStatistics> selectTDataWateroutQuarterStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO) {
+        TDataWateroutDayStatistics tDataWateroutDayStatistics = new TDataWateroutDayStatistics();
+        BeanUtil.copyProperties(tDataWateroutDayStatisticsDTO, tDataWateroutDayStatistics);
+        return tDataWateroutDayStatisticsMapper.selectTDataWateroutQuarterStatisticsList(tDataWateroutDayStatistics);
+    }
+
+    /**
+     * 查询废水排口--年统计数据
+     *
+     * @param tDataWateroutDayStatisticsDTO 废水排口--年统计数据
+     * @return 废水排口--年统计数据
+     */
+    @Override
+    public List<TDataWateroutDayStatistics> selectTDataWateroutYearStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO) {
+        TDataWateroutDayStatistics tDataWateroutDayStatistics = new TDataWateroutDayStatistics();
+        BeanUtil.copyProperties(tDataWateroutDayStatisticsDTO, tDataWateroutDayStatistics);
+        return tDataWateroutDayStatisticsMapper.selectTDataWateroutYearStatisticsList(tDataWateroutDayStatistics);
     }
 }

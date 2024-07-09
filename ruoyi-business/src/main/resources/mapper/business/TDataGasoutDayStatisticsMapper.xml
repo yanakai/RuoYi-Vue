@@ -67,6 +67,8 @@
             resultMap="TDataGasoutDayStatisticsResult">
         <include refid="selectTDataGasoutDayStatisticsVo"/>
         <where>
+            <!-- 非预警状态 -->
+            yc_is_alram = 0 and so2_is_alarm = 0 and no_si_alarm = 0
             <if test="entCode != null  and entCode != ''">and ent_code = #{entCode}</if>
             <if test="entName != null  and entName != ''">and ent_name like concat('%', #{entName}, '%')</if>
             <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
@@ -204,4 +206,62 @@
             #{id}
         </foreach>
     </delete>
+
+
+    <!--废气排口-月统计数据列表-->
+    <select id="selectTDataGasoutMonthStatisticsList" parameterType="TDataGasoutDayStatistics"
+            resultMap="TDataGasoutDayStatisticsResult">
+        <include refid="selectTDataGasoutDayStatisticsVo"/>
+        <where>
+            <!-- 非预警状态 -->
+            yc_is_alram = 0 and so2_is_alarm = 0 and no_si_alarm = 0
+            <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
+            <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%') </if>
+           <!-- <if test="params != null ">and monitor_time = #{monitorTime}</if>-->
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <!--废气排口-季度统计数据列表-->
+    <select id="selectTDataGasoutQuarterStatisticsList" parameterType="TDataGasoutDayStatistics"
+            resultMap="TDataGasoutDayStatisticsResult">
+        <include refid="selectTDataGasoutDayStatisticsVo"/>
+        <where>
+            <!-- 非预警状态 -->
+            yc_is_alram = 0 and so2_is_alarm = 0 and no_si_alarm = 0
+            <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
+            <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%') </if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <!--废气排口-年统计数据列表-->
+    <select id="selectTDataGasoutYearStatisticsList" parameterType="TDataGasoutDayStatistics"
+            resultMap="TDataGasoutDayStatisticsResult">
+        <include refid="selectTDataGasoutDayStatisticsVo"/>
+        <where>
+            <!-- 非预警状态 -->
+            yc_is_alram = 0 and so2_is_alarm = 0 and no_si_alarm = 0
+            <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
+            <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%') </if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+
 </mapper>
