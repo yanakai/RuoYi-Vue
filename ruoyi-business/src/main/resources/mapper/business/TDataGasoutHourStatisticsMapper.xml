@@ -68,7 +68,6 @@
         <include refid="selectTDataGasoutHourStatisticsVo"/>
         <where>
             <!-- 非预警状态 -->
-             yc_is_alarm = 0 and so2_is_alarm = 0 and no_si_alarm = 0
             <if test="entCode != null  and entCode != ''">and ent_code = #{entCode}</if>
             <if test="entName != null  and entName != ''">and ent_name like concat('%', #{entName}, '%')</if>
             <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
@@ -96,6 +95,7 @@
             <if test="yqHumidity != null  and yqHumidity != ''">and yq_humidity = #{yqHumidity}</if>
             <if test="yqPressure != null  and yqPressure != ''">and yq_pressure = #{yqPressure}</if>
         </where>
+        order by monitor_time desc
     </select>
 
     <select id="selectTDataGasoutHourStatisticsById" parameterType="Long" resultMap="TDataGasoutHourStatisticsResult">

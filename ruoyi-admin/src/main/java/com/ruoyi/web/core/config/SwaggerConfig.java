@@ -85,12 +85,42 @@ public class SwaggerConfig {
     @Bean
     public Docket web_api_statistics() {
         return new Docket(DocumentationType.OAS_30)
-                .apiInfo(api_base_info())
+                .apiInfo(api_statistics_info())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.ruoyi.business"))
                 .paths(PathSelectors.ant("/business/statistics/**"))
                 .build()
                 .groupName("污染物排放监测报表")
+                /* 设置安全模式，swagger可以设置访问token */
+                .securitySchemes(securitySchemes())
+                .securityContexts(securityContexts())
+                .pathMapping(pathMapping);
+    }
+
+    @Bean
+    public Docket statistics_alarm_api_statistics() {
+        return new Docket(DocumentationType.OAS_30)
+                .apiInfo(api_statistics_alarm_info())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.ruoyi.business.statisticsAlarm"))
+                .paths(PathSelectors.ant("/business/statisticsAlarm/**"))
+                .build()
+                .groupName("分级预警报警")
+                /* 设置安全模式，swagger可以设置访问token */
+                .securitySchemes(securitySchemes())
+                .securityContexts(securityContexts())
+                .pathMapping(pathMapping);
+    }
+
+    @Bean
+    public Docket online_monitoring_api_statistics() {
+        return new Docket(DocumentationType.OAS_30)
+                .apiInfo(api_online_monitoring_info())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.ruoyi.business.onlineMonitoring"))
+                .paths(PathSelectors.ant("/business/onlinemonitoring/**"))
+                .build()
+                .groupName("排口在线监测")
                 /* 设置安全模式，swagger可以设置访问token */
                 .securitySchemes(securitySchemes())
                 .securityContexts(securityContexts())
@@ -154,7 +184,40 @@ public class SwaggerConfig {
                 .description("基础档案管理信息描述：XXX模块等")
                 // 作者信息
                 .contact(new Contact(ruoyiConfig.getName(), null, null))
-                .termsOfServiceUrl("")//这里可以是项目地址
+               // .termsOfServiceUrl("")//这里可以是项目地址
+                .version("版本号:" + ruoyiConfig.getVersion())
+                .build();
+    }
+
+    public ApiInfo api_statistics_info() {
+        return new ApiInfoBuilder()
+                .title("污染排放监测报表")
+                .description("污染排放监测报表：XXX模块等")
+                // 作者信息
+                .contact(new Contact(ruoyiConfig.getName(), null, null))
+//                .termsOfServiceUrl("")//这里可以是项目地址
+                .version("版本号:" + ruoyiConfig.getVersion())
+                .build();
+    }
+
+    public ApiInfo api_statistics_alarm_info() {
+        return new ApiInfoBuilder()
+                .title("分级预警报警")
+                .description("污染排放监测报表：XXX模块等")
+                // 作者信息
+                .contact(new Contact(ruoyiConfig.getName(), null, null))
+//                .termsOfServiceUrl("")//这里可以是项目地址
+                .version("版本号:" + ruoyiConfig.getVersion())
+                .build();
+    }
+
+    public ApiInfo api_online_monitoring_info() {
+        return new ApiInfoBuilder()
+                .title("排口在线监测")
+                .description("排口在线监测：XXX模块等")
+                // 作者信息
+                .contact(new Contact(ruoyiConfig.getName(), null, null))
+//                .termsOfServiceUrl("")//这里可以是项目地址
                 .version("版本号:" + ruoyiConfig.getVersion())
                 .build();
     }

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 @Data
 public abstract class BaseDto {
-    @ApiParam(name = "params", value = "参数", required = true)
+    @ApiParam(name = "params", value = "参数", required = true,defaultValue="{beginTime:'2021-07-01',endTime:'2021-07-31'}")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> params;
 }
