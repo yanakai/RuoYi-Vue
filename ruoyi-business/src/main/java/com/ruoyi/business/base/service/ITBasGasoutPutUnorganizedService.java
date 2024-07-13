@@ -18,7 +18,7 @@ public interface ITBasGasoutPutUnorganizedService {
      * @param id 基础信息--企业--废气无组织排口主键
      * @return 基础信息--企业--废气无组织排口
      */
-    public TBasGasoutPutUnorganized selectTBasGasoutPutUnorganizedById(Long id);
+    TBasGasoutPutUnorganized selectTBasGasoutPutUnorganizedById(Long id);
 
     /**
      * 查询基础信息--企业--废气无组织排口列表
@@ -26,7 +26,7 @@ public interface ITBasGasoutPutUnorganizedService {
      * @param tBasGasoutPutUnorganized 基础信息--企业--废气无组织排口
      * @return 基础信息--企业--废气无组织排口集合
      */
-    public List<TBasGasoutPutUnorganized> selectTBasGasoutPutUnorganizedList(TBasGasoutPutUnorganized tBasGasoutPutUnorganized);
+    List<TBasGasoutPutUnorganized> selectTBasGasoutPutUnorganizedList(TBasGasoutPutUnorganized tBasGasoutPutUnorganized);
 
     /**
      * 新增基础信息--企业--废气无组织排口
@@ -34,7 +34,7 @@ public interface ITBasGasoutPutUnorganizedService {
      * @param tBasGasoutPutUnorganized 基础信息--企业--废气无组织排口
      * @return 结果
      */
-    public int insertTBasGasoutPutUnorganized(TBasGasoutPutUnorganized tBasGasoutPutUnorganized);
+    int insertTBasGasoutPutUnorganized(TBasGasoutPutUnorganized tBasGasoutPutUnorganized);
 
     /**
      * 修改基础信息--企业--废气无组织排口
@@ -42,7 +42,7 @@ public interface ITBasGasoutPutUnorganizedService {
      * @param tBasGasoutPutUnorganized 基础信息--企业--废气无组织排口
      * @return 结果
      */
-    public int updateTBasGasoutPutUnorganized(TBasGasoutPutUnorganized tBasGasoutPutUnorganized);
+    int updateTBasGasoutPutUnorganized(TBasGasoutPutUnorganized tBasGasoutPutUnorganized);
 
     /**
      * 批量删除基础信息--企业--废气无组织排口
@@ -51,7 +51,7 @@ public interface ITBasGasoutPutUnorganizedService {
      * @return 结果
      */
     @Transactional
-    public int deleteTBasGasoutPutUnorganizedByIds(Long[] ids);
+    int deleteTBasGasoutPutUnorganizedByIds(Long[] ids);
 
     /**
      * 删除基础信息--企业--废气无组织排口信息
@@ -60,5 +60,5 @@ public interface ITBasGasoutPutUnorganizedService {
      * @return 结果
      */
     @Transactional
-    public int deleteTBasGasoutPutUnorganizedById(Long id);
+    int deleteTBasGasoutPutUnorganizedById(Long id);
 }

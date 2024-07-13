@@ -22,7 +22,7 @@ public class TBasGasoutPutInfoServiceImpl implements ITBasGasoutPutInfoService {
     @Autowired
     private TBasGasoutPutInfoMapper tBasGasoutPutInfoMapper;
     @Resource
-    private TBasGasoutputPollutantMapper   tBasGasoutputPollutantMapper;
+    private TBasGasoutputPollutantMapper tBasGasoutputPollutantMapper;
 
     /**
      * 查询基础信息--企业--废气排口

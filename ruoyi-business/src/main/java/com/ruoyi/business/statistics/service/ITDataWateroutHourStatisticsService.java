@@ -17,7 +17,7 @@ public interface ITDataWateroutHourStatisticsService {
      * @param id 废水排口--小时报统计数据主键
      * @return 废水排口--小时报统计数据
      */
-    public TDataWateroutHourStatistics selectTDataWateroutHourStatisticsById(Long id);
+    TDataWateroutHourStatistics selectTDataWateroutHourStatisticsById(Long id);
 
     /**
      * 查询废水排口--小时报统计数据列表
@@ -25,7 +25,7 @@ public interface ITDataWateroutHourStatisticsService {
      * @param tDataWateroutHourStatistics 废水排口--小时报统计数据
      * @return 废水排口--小时报统计数据集合
      */
-    public List<TDataWateroutHourStatistics> selectTDataWateroutHourStatisticsList(TDataWateroutHourStatistics tDataWateroutHourStatistics);
+    List<TDataWateroutHourStatistics> selectTDataWateroutHourStatisticsList(TDataWateroutHourStatistics tDataWateroutHourStatistics);
 
     /**
      * 新增废水排口--小时报统计数据
@@ -33,7 +33,7 @@ public interface ITDataWateroutHourStatisticsService {
      * @param tDataWateroutHourStatistics 废水排口--小时报统计数据
      * @return 结果
      */
-    public int insertTDataWateroutHourStatistics(TDataWateroutHourStatistics tDataWateroutHourStatistics);
+    int insertTDataWateroutHourStatistics(TDataWateroutHourStatistics tDataWateroutHourStatistics);
 
     /**
      * 修改废水排口--小时报统计数据
@@ -41,7 +41,7 @@ public interface ITDataWateroutHourStatisticsService {
      * @param tDataWateroutHourStatistics 废水排口--小时报统计数据
      * @return 结果
      */
-    public int updateTDataWateroutHourStatistics(TDataWateroutHourStatistics tDataWateroutHourStatistics);
+    int updateTDataWateroutHourStatistics(TDataWateroutHourStatistics tDataWateroutHourStatistics);
 
     /**
      * 批量删除废水排口--小时报统计数据
@@ -49,7 +49,7 @@ public interface ITDataWateroutHourStatisticsService {
      * @param ids 需要删除的废水排口--小时报统计数据主键集合
      * @return 结果
      */
-    public int deleteTDataWateroutHourStatisticsByIds(Long[] ids);
+    int deleteTDataWateroutHourStatisticsByIds(Long[] ids);
 
     /**
      * 删除废水排口--小时报统计数据信息
@@ -57,5 +57,5 @@ public interface ITDataWateroutHourStatisticsService {
      * @param id 废水排口--小时报统计数据主键
      * @return 结果
      */
-    public int deleteTDataWateroutHourStatisticsById(Long id);
+    int deleteTDataWateroutHourStatisticsById(Long id);
 }

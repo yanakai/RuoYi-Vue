@@ -17,7 +17,7 @@ public interface ITBasGasoutputPollutantUnorganizedService {
      * @param id 基础信息--企业--废气无组织排口污染物信息主键
      * @return 基础信息--企业--废气无组织排口污染物信息
      */
-    public TBasGasoutputPollutantUnorganized selectTBasGasoutputPollutantUnorganizedById(Long id);
+    TBasGasoutputPollutantUnorganized selectTBasGasoutputPollutantUnorganizedById(Long id);
 
     /**
      * 查询基础信息--企业--废气无组织排口污染物信息列表
@@ -25,7 +25,7 @@ public interface ITBasGasoutputPollutantUnorganizedService {
      * @param tBasGasoutputPollutantUnorganized 基础信息--企业--废气无组织排口污染物信息
      * @return 基础信息--企业--废气无组织排口污染物信息集合
      */
-    public List<TBasGasoutputPollutantUnorganized> selectTBasGasoutputPollutantUnorganizedList(TBasGasoutputPollutantUnorganized tBasGasoutputPollutantUnorganized);
+    List<TBasGasoutputPollutantUnorganized> selectTBasGasoutputPollutantUnorganizedList(TBasGasoutputPollutantUnorganized tBasGasoutputPollutantUnorganized);
 
     /**
      * 新增基础信息--企业--废气无组织排口污染物信息
@@ -33,7 +33,7 @@ public interface ITBasGasoutputPollutantUnorganizedService {
      * @param tBasGasoutputPollutantUnorganized 基础信息--企业--废气无组织排口污染物信息
      * @return 结果
      */
-    public int insertTBasGasoutputPollutantUnorganized(TBasGasoutputPollutantUnorganized tBasGasoutputPollutantUnorganized);
+    int insertTBasGasoutputPollutantUnorganized(TBasGasoutputPollutantUnorganized tBasGasoutputPollutantUnorganized);
 
     /**
      * 修改基础信息--企业--废气无组织排口污染物信息
@@ -41,7 +41,7 @@ public interface ITBasGasoutputPollutantUnorganizedService {
      * @param tBasGasoutputPollutantUnorganized 基础信息--企业--废气无组织排口污染物信息
      * @return 结果
      */
-    public int updateTBasGasoutputPollutantUnorganized(TBasGasoutputPollutantUnorganized tBasGasoutputPollutantUnorganized);
+    int updateTBasGasoutputPollutantUnorganized(TBasGasoutputPollutantUnorganized tBasGasoutputPollutantUnorganized);
 
     /**
      * 批量删除基础信息--企业--废气无组织排口污染物信息
@@ -49,7 +49,7 @@ public interface ITBasGasoutputPollutantUnorganizedService {
      * @param ids 需要删除的基础信息--企业--废气无组织排口污染物信息主键集合
      * @return 结果
      */
-    public int deleteTBasGasoutputPollutantUnorganizedByIds(Long[] ids);
+    int deleteTBasGasoutputPollutantUnorganizedByIds(Long[] ids);
 
     /**
      * 删除基础信息--企业--废气无组织排口污染物信息信息
@@ -57,5 +57,5 @@ public interface ITBasGasoutputPollutantUnorganizedService {
      * @param id 基础信息--企业--废气无组织排口污染物信息主键
      * @return 结果
      */
-    public int deleteTBasGasoutputPollutantUnorganizedById(Long id);
+    int deleteTBasGasoutputPollutantUnorganizedById(Long id);
 }

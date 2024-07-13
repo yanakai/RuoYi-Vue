@@ -13,7 +13,10 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -101,7 +104,7 @@ public class TDataWateroutStatisticsController extends BaseController {
     @PreAuthorize("@ss.hasPermi('business:dataWateroutDayStatistics:export')")
     @Log(title = "废水排口--年统计数据", businessType = BusinessType.EXPORT)
     @PostMapping("/year/export")
-    public void yearExport(HttpServletResponse response,TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO) {
+    public void yearExport(HttpServletResponse response, TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO) {
         List<TDataWateroutDayStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutYearStatisticsList(tDataWateroutDayStatisticsDTO);
         ExcelUtil<TDataWateroutDayStatistics> util = new ExcelUtil<TDataWateroutDayStatistics>(TDataWateroutDayStatistics.class);
         util.exportExcel(response, list, "废水排口--年统计数据数据");

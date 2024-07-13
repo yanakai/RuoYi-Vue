@@ -18,7 +18,7 @@ public interface ITDataWateroutDayStatisticsService {
      * @param id 废水排口--日报统计数据主键
      * @return 废水排口--日报统计数据
      */
-    public TDataWateroutDayStatistics selectTDataWateroutDayStatisticsById(Long id);
+    TDataWateroutDayStatistics selectTDataWateroutDayStatisticsById(Long id);
 
     /**
      * 查询废水排口--日报统计数据列表
@@ -26,7 +26,7 @@ public interface ITDataWateroutDayStatisticsService {
      * @param tDataWateroutDayStatistics 废水排口--日报统计数据
      * @return 废水排口--日报统计数据集合
      */
-    public List<TDataWateroutDayStatistics> selectTDataWateroutDayStatisticsList(TDataWateroutDayStatistics tDataWateroutDayStatistics);
+    List<TDataWateroutDayStatistics> selectTDataWateroutDayStatisticsList(TDataWateroutDayStatistics tDataWateroutDayStatistics);
 
     /**
      * 新增废水排口--日报统计数据
@@ -34,7 +34,7 @@ public interface ITDataWateroutDayStatisticsService {
      * @param tDataWateroutDayStatistics 废水排口--日报统计数据
      * @return 结果
      */
-    public int insertTDataWateroutDayStatistics(TDataWateroutDayStatistics tDataWateroutDayStatistics);
+    int insertTDataWateroutDayStatistics(TDataWateroutDayStatistics tDataWateroutDayStatistics);
 
     /**
      * 修改废水排口--日报统计数据
@@ -42,7 +42,7 @@ public interface ITDataWateroutDayStatisticsService {
      * @param tDataWateroutDayStatistics 废水排口--日报统计数据
      * @return 结果
      */
-    public int updateTDataWateroutDayStatistics(TDataWateroutDayStatistics tDataWateroutDayStatistics);
+    int updateTDataWateroutDayStatistics(TDataWateroutDayStatistics tDataWateroutDayStatistics);
 
     /**
      * 批量删除废水排口--日报统计数据
@@ -50,7 +50,7 @@ public interface ITDataWateroutDayStatisticsService {
      * @param ids 需要删除的废水排口--日报统计数据主键集合
      * @return 结果
      */
-    public int deleteTDataWateroutDayStatisticsByIds(Long[] ids);
+    int deleteTDataWateroutDayStatisticsByIds(Long[] ids);
 
     /**
      * 删除废水排口--日报统计数据信息
@@ -58,7 +58,7 @@ public interface ITDataWateroutDayStatisticsService {
      * @param id 废水排口--日报统计数据主键
      * @return 结果
      */
-    public int deleteTDataWateroutDayStatisticsById(Long id);
+    int deleteTDataWateroutDayStatisticsById(Long id);
 
     /**
      * 查询废水排口--月统计数据
@@ -66,7 +66,7 @@ public interface ITDataWateroutDayStatisticsService {
      * @param tDataWateroutDayStatisticsDTO 废水排口--月统计数据
      * @return 废水排口--月统计数据
      */
-    public List<TDataWateroutDayStatistics> selectTDataWateroutMonthStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO);
+    List<TDataWateroutDayStatistics> selectTDataWateroutMonthStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO);
 
     /**
      * 查询废水排口--季度统计数据
@@ -74,7 +74,7 @@ public interface ITDataWateroutDayStatisticsService {
      * @param tDataWateroutDayStatisticsDTO 废水排口--季度统计数据
      * @return 废水排口--季度统计数据
      */
-    public List<TDataWateroutDayStatistics> selectTDataWateroutQuarterStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO);
+    List<TDataWateroutDayStatistics> selectTDataWateroutQuarterStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO);
 
     /**
      * 查询废水排口--年统计数据
@@ -82,6 +82,6 @@ public interface ITDataWateroutDayStatisticsService {
      * @param tDataWateroutDayStatisticsDTO 废水排口--年统计数据
      * @return 废水排口--年统计数据
      */
-    public List<TDataWateroutDayStatistics> selectTDataWateroutYearStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO);
+    List<TDataWateroutDayStatistics> selectTDataWateroutYearStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO);
 
 }

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+
 @Slf4j
 @Service
 public class GasoutServiceImpl implements IGasoutService {
@@ -24,6 +25,7 @@ public class GasoutServiceImpl implements IGasoutService {
     private ITDataGasoutHourStatisticsService tDataGasoutHourStatisticsService;
     @Resource
     private ITDataGasoutDayStatisticsService tDataGasoutDayStatisticsService;
+
     /**
      * 查询废气排口--在线监测数据列表
      *
@@ -33,40 +35,40 @@ public class GasoutServiceImpl implements IGasoutService {
     @Override
     public TableDataInfo selectDataList(GasoutDTO gasoutDTO) {
         log.info("查询废气排口--在线监测数据列表:{}", gasoutDTO);
-        if(gasoutDTO.getDataEnum().name().equals("hour")) {
+        if (gasoutDTO.getDataEnum().name().equals("hour")) {
             TDataGasoutHourStatistics tDataGasoutHourStatistics = new TDataGasoutHourStatistics();
             BeanUtil.copyProperties(gasoutDTO, tDataGasoutHourStatistics);
             PageUtils.startPage();
             List<TDataGasoutHourStatistics> list = tDataGasoutHourStatisticsService.selectTDataGasoutHourStatisticsList(tDataGasoutHourStatistics);
             return getDataTable(list);
-        }else if(gasoutDTO.getDataEnum().name().equals("day")) {
+        } else if (gasoutDTO.getDataEnum().name().equals("day")) {
             TDataGasoutDayStatistics tDataGasoutDayStatistics = new TDataGasoutDayStatistics();
             BeanUtil.copyProperties(gasoutDTO, tDataGasoutDayStatistics);
             PageUtils.startPage();
             List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutDayStatisticsList(tDataGasoutDayStatistics);
             return getDataTable(list);
-        } else if (gasoutDTO.getDataEnum().name().equals("month")){
+        } else if (gasoutDTO.getDataEnum().name().equals("month")) {
             TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO = new TDataGasoutStatisticsDTO();
             BeanUtil.copyProperties(gasoutDTO, tDataGasoutStatisticsDTO);
             PageUtils.startPage();
             List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutMonthStatisticsList(tDataGasoutStatisticsDTO);
             return getDataTable(list);
-        } else if (gasoutDTO.getDataEnum().name().equals("year")){
+        } else if (gasoutDTO.getDataEnum().name().equals("year")) {
             TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO = new TDataGasoutStatisticsDTO();
             BeanUtil.copyProperties(gasoutDTO, tDataGasoutStatisticsDTO);
             PageUtils.startPage();
             List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutYearStatisticsList(tDataGasoutStatisticsDTO);
             return getDataTable(list);
-        } else if (gasoutDTO.getDataEnum().name().equals("real")){
-             //TODO
-        } else if(gasoutDTO.getDataEnum().name().equals("minute")){
-             //TODO
+        } else if (gasoutDTO.getDataEnum().name().equals("real")) {
+            //TODO
+        } else if (gasoutDTO.getDataEnum().name().equals("minute")) {
+            //TODO
         }
 
         return getDataTable(null);
     }
 
-    protected TableDataInfo getDataTable(List<?> list){
+    protected TableDataInfo getDataTable(List<?> list) {
         TableDataInfo rspData = new TableDataInfo();
         rspData.setCode(HttpStatus.SUCCESS);
         rspData.setMsg("查询成功");

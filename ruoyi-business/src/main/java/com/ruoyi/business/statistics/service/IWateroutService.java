@@ -1,6 +1,5 @@
 package com.ruoyi.business.statistics.service;
 
-import com.ruoyi.business.onlineMonitoring.dto.GasoutDTO;
 import com.ruoyi.business.onlineMonitoring.dto.WateroutDTO;
 import com.ruoyi.common.core.page.TableDataInfo;
 

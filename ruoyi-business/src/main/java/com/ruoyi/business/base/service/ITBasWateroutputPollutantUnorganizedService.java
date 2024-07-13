@@ -17,7 +17,7 @@ public interface ITBasWateroutputPollutantUnorganizedService {
      * @param id 基础信息--企业--废水无组织排口污染物信息主键
      * @return 基础信息--企业--废水无组织排口污染物信息
      */
-    public TBasWateroutputPollutantUnorganized selectTBasWateroutputPollutantUnorganizedById(Long id);
+    TBasWateroutputPollutantUnorganized selectTBasWateroutputPollutantUnorganizedById(Long id);
 
     /**
      * 查询基础信息--企业--废水无组织排口污染物信息列表
@@ -25,7 +25,7 @@ public interface ITBasWateroutputPollutantUnorganizedService {
      * @param tBasWateroutputPollutantUnorganized 基础信息--企业--废水无组织排口污染物信息
      * @return 基础信息--企业--废水无组织排口污染物信息集合
      */
-    public List<TBasWateroutputPollutantUnorganized> selectTBasWateroutputPollutantUnorganizedList(TBasWateroutputPollutantUnorganized tBasWateroutputPollutantUnorganized);
+    List<TBasWateroutputPollutantUnorganized> selectTBasWateroutputPollutantUnorganizedList(TBasWateroutputPollutantUnorganized tBasWateroutputPollutantUnorganized);
 
     /**
      * 新增基础信息--企业--废水无组织排口污染物信息
@@ -33,7 +33,7 @@ public interface ITBasWateroutputPollutantUnorganizedService {
      * @param tBasWateroutputPollutantUnorganized 基础信息--企业--废水无组织排口污染物信息
      * @return 结果
      */
-    public int insertTBasWateroutputPollutantUnorganized(TBasWateroutputPollutantUnorganized tBasWateroutputPollutantUnorganized);
+    int insertTBasWateroutputPollutantUnorganized(TBasWateroutputPollutantUnorganized tBasWateroutputPollutantUnorganized);
 
     /**
      * 修改基础信息--企业--废水无组织排口污染物信息
@@ -41,7 +41,7 @@ public interface ITBasWateroutputPollutantUnorganizedService {
      * @param tBasWateroutputPollutantUnorganized 基础信息--企业--废水无组织排口污染物信息
      * @return 结果
      */
-    public int updateTBasWateroutputPollutantUnorganized(TBasWateroutputPollutantUnorganized tBasWateroutputPollutantUnorganized);
+    int updateTBasWateroutputPollutantUnorganized(TBasWateroutputPollutantUnorganized tBasWateroutputPollutantUnorganized);
 
     /**
      * 批量删除基础信息--企业--废水无组织排口污染物信息
@@ -49,7 +49,7 @@ public interface ITBasWateroutputPollutantUnorganizedService {
      * @param ids 需要删除的基础信息--企业--废水无组织排口污染物信息主键集合
      * @return 结果
      */
-    public int deleteTBasWateroutputPollutantUnorganizedByIds(Long[] ids);
+    int deleteTBasWateroutputPollutantUnorganizedByIds(Long[] ids);
 
     /**
      * 删除基础信息--企业--废水无组织排口污染物信息信息
@@ -57,5 +57,5 @@ public interface ITBasWateroutputPollutantUnorganizedService {
      * @param id 基础信息--企业--废水无组织排口污染物信息主键
      * @return 结果
      */
-    public int deleteTBasWateroutputPollutantUnorganizedById(Long id);
+    int deleteTBasWateroutputPollutantUnorganizedById(Long id);
 }

@@ -3,6 +3,7 @@ package com.ruoyi.business.statistics.dto;
 import com.ruoyi.business.common.BaseDto;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
+
 /**
  * 废水排口--DTO TDataWateroutMonthStatisticsDTO
  *
@@ -12,7 +13,6 @@ import lombok.Data;
 @Data
 public class TDataWateroutStatisticsDTO extends BaseDto {
     private static final long serialVersionUID = 1L;
-
 
 
     /**
