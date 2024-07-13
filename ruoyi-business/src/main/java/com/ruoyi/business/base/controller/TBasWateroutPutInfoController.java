@@ -23,7 +23,7 @@ import java.util.List;
  * @author lx
  * @date 2024-06-27
  */
-@Api(value = "业务模块-企业--废水排口", tags = "基础信息-废水排口")
+@Api(value = "业务模块-企业--废水排口", tags = "企业档案-废水排口")
 @RestController
 @RequestMapping("/business/base/waterOutPutInfo")
 public class TBasWateroutPutInfoController extends BaseController {
@@ -33,6 +33,7 @@ public class TBasWateroutPutInfoController extends BaseController {
     /**
      * 查询基础信息--企业--废水排口列表
      */
+    @Deprecated
     @ApiOperation("获取废水排口列表")
     @PreAuthorize("@ss.hasPermi('business:waterOutPutInfo:list')")
     @GetMapping("/list")
@@ -45,6 +46,7 @@ public class TBasWateroutPutInfoController extends BaseController {
     /**
      * 导出基础信息--企业--废水排口列表
      */
+    @Deprecated
     @ApiOperation("导出废水排口列表")
     @PreAuthorize("@ss.hasPermi('business:waterOutPutInfo:export')")
     @Log(title = "基础信息--企业--废水排口", businessType = BusinessType.EXPORT)

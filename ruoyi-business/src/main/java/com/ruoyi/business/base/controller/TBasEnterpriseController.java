@@ -23,7 +23,7 @@ import java.util.List;
  * @author ruoyi
  * @date 2024-06-26
  */
-@Api(value = "业务模块-企业信息", tags = "基础信息-企业基础信息")
+@Api(value = "业务模块-企业信息", tags = "企业档案-企业基础信息")
 @RestController
 @RequestMapping("/business/base/enterprise")
 public class TBasEnterpriseController extends BaseController {

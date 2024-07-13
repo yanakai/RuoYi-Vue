@@ -23,7 +23,7 @@ import java.util.List;
  * @author lx
  * @date 2024-06-27
  */
-@Api(value = "业务模块-企业--废气排口污染物基本信息", tags = "基础信息-废气排口污染物基本信息")
+@Api(value = "业务模块-企业--废气排口污染物基本信息", tags = "企业档案-废气排口污染物基本信息")
 @RestController
 @RequestMapping("/business/base/gasoutPutPollutant")
 public class TBasGasoutputPollutantController extends BaseController {
@@ -33,6 +33,7 @@ public class TBasGasoutputPollutantController extends BaseController {
     /**
      * 查询基础信息--企业--废气排口污染物基本信息列表
      */
+    @Deprecated
     @ApiOperation("获取废气排口污染物基本信息列表")
     @PreAuthorize("@ss.hasPermi('business:gasoutPutPollutant:list')")
     @GetMapping("/list")
@@ -45,6 +46,7 @@ public class TBasGasoutputPollutantController extends BaseController {
     /**
      * 导出基础信息--企业--废气排口污染物基本信息列表
      */
+    @Deprecated
     @ApiOperation("导出废气排口污染物基本信息列表")
     @PreAuthorize("@ss.hasPermi('business:gasoutPutPollutant:export')")
     @Log(title = "基础信息--企业--废气排口污染物基本信息", businessType = BusinessType.EXPORT)

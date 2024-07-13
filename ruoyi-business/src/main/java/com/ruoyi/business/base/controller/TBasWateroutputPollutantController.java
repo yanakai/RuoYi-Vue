@@ -23,7 +23,7 @@ import java.util.List;
  * @author lx
  * @date 2024-06-27
  */
-@Api(value = "业务模块-企业-废水排口污染物基本信息", tags = "基础信息-废水排口污染物基本信息")
+@Api(value = "业务模块-企业-废水排口污染物基本信息", tags = "企业档案-废水排口污染物基本信息")
 @RestController
 @RequestMapping("/business/base/waterOutputPollutant")
 public class TBasWateroutputPollutantController extends BaseController {

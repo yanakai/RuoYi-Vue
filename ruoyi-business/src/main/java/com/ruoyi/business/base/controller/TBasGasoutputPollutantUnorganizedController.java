@@ -23,7 +23,7 @@ import java.util.List;
  * @author lx
  * @date 2024-07-04
  */
-@Api(value = "业务模块-企业信息", tags = "基础信息-企业废气无组织排口污染物信息")
+@Api(value = "业务模块-企业信息", tags = "企业档案-企业废气无组织排口污染物信息")
 @RestController
 @RequestMapping("/business/base/gasoutputPollutantUnorganized")
 public class TBasGasoutputPollutantUnorganizedController extends BaseController {

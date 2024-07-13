@@ -95,7 +95,6 @@
             <if test="yqHumidity != null  and yqHumidity != ''">and yq_humidity = #{yqHumidity}</if>
             <if test="yqPressure != null  and yqPressure != ''">and yq_pressure = #{yqPressure}</if>
         </where>
-        order by monitor_time desc
     </select>
 
     <select id="selectTDataGasoutHourStatisticsById" parameterType="Long" resultMap="TDataGasoutHourStatisticsResult">

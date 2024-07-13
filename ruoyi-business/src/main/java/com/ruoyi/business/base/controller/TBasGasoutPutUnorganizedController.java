@@ -23,7 +23,7 @@ import java.util.List;
  * @author lx
  * @date 2024-07-04
  */
-@Api(value = "业务模块-企业信息", tags = "基础信息-企业废气无组织排口")
+@Api(value = "业务模块-企业信息", tags = "企业档案-企业废气无组织排口")
 @RestController
 @RequestMapping("/business/base/gasoutPutUnorganized")
 public class TBasGasoutPutUnorganizedController extends BaseController {
@@ -33,6 +33,7 @@ public class TBasGasoutPutUnorganizedController extends BaseController {
     /**
      * 查询基础信息--企业--废气无组织排口列表
      */
+    @Deprecated
     @ApiOperation("获取废气无组织排口列表")
     @PreAuthorize("@ss.hasPermi('business:gasoutPutUnorganized:list')")
     @GetMapping("/list")
@@ -45,6 +46,7 @@ public class TBasGasoutPutUnorganizedController extends BaseController {
     /**
      * 导出基础信息--企业--废气无组织排口列表
      */
+    @Deprecated
     @ApiOperation("导出废气无组织排口列表")
     @PreAuthorize("@ss.hasPermi('business:gasoutPutUnorganized:export')")
     @Log(title = "基础信息--企业--废气无组织排口", businessType = BusinessType.EXPORT)

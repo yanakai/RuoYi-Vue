@@ -8,6 +8,7 @@
         <result property="id" column="id"/>
         <result property="outPutCode" column="out_put_code"/>
         <result property="outPutName" column="out_put_name"/>
+        <result property="monitoringPointType" column="monitoring_point_type"/>
         <result property="entCode" column="ent_code"/>
         <result property="entName" column="ent_name"/>
         <result property="dataSource" column="data_source"/>
@@ -30,6 +31,7 @@
         select id,
                out_put_code,
                out_put_name,
+               monitoring_point_type,
                ent_code,
                ent_name,
                data_source,
@@ -55,6 +57,9 @@
         <where>
             <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
             <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')
+            </if>
+            <if test="monitoringPointType != null  and monitoringPointType != ''">and monitoring_point_type =
+                #{monitoringPointType}
             </if>
             <if test="entCode != null  and entCode != ''">and ent_code = #{entCode}</if>
             <if test="entName != null  and entName != ''">and ent_name like concat('%', #{entName}, '%')</if>
@@ -85,6 +90,7 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="outPutCode != null">out_put_code,</if>
             <if test="outPutName != null">out_put_name,</if>
+            <if test="monitoringPointType != null">monitoring_point_type,</if>
             <if test="entCode != null">ent_code,</if>
             <if test="entName != null">ent_name,</if>
             <if test="dataSource != null">data_source,</if>
@@ -105,6 +111,7 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="outPutCode != null">#{outPutCode},</if>
             <if test="outPutName != null">#{outPutName},</if>
+            <if test="monitoringPointType != null">#{monitoringPointType},</if>
             <if test="entCode != null">#{entCode},</if>
             <if test="entName != null">#{entName},</if>
             <if test="dataSource != null">#{dataSource},</if>
@@ -129,6 +136,7 @@
         <trim prefix="SET" suffixOverrides=",">
             <if test="outPutCode != null">out_put_code = #{outPutCode},</if>
             <if test="outPutName != null">out_put_name = #{outPutName},</if>
+            <if test="monitoringPointType != null">monitoring_point_type = #{monitoringPointType},</if>
             <if test="entCode != null">ent_code = #{entCode},</if>
             <if test="entName != null">ent_name = #{entName},</if>
             <if test="dataSource != null">data_source = #{dataSource},</if>

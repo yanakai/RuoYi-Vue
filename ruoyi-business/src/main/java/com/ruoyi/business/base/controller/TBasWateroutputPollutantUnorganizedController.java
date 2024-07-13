@@ -23,9 +23,11 @@ import java.util.List;
  * @author lx
  * @date 2024-07-04
  */
-@Api(value = "业务模块-企业信息", tags = "基础信息-企业废水无组织排口污染物信息")
-@RestController
-@RequestMapping("/business/base/wateroutputPollUnorganized")
+//类标记无用，删除
+@Deprecated
+//@Api(value = "业务模块-企业信息", tags = "基础信息-企业废水无组织排口污染物信息")
+//@RestController
+//@RequestMapping("/business/base/wateroutputPollUnorganized")
 public class TBasWateroutputPollutantUnorganizedController extends BaseController {
     @Autowired
     private ITBasWateroutputPollutantUnorganizedService tBasWateroutputPollutantUnorganizedService;

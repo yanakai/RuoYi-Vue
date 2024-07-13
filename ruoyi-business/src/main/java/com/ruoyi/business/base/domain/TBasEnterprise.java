@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author ruoyi
  * @date 2024-06-26
  */
-@ApiModel("基础信息---企业基础")
+@ApiModel("1、企业档案---企业基础")
 public class TBasEnterprise extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

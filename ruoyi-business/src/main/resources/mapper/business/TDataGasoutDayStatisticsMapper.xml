@@ -95,7 +95,6 @@
             <if test="yqHumidity != null  and yqHumidity != ''">and yq_humidity = #{yqHumidity}</if>
             <if test="yqPressure != null  and yqPressure != ''">and yq_pressure = #{yqPressure}</if>
         </where>
-        order by monitor_time desc
     </select>
 
     <select id="selectTDataGasoutDayStatisticsById" parameterType="Long" resultMap="TDataGasoutDayStatisticsResult">
@@ -224,7 +223,6 @@
                 and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
             </if>
         </where>
-        order by monitor_time desc
     </select>
 
     <!--废气排口-季度统计数据列表-->
@@ -242,7 +240,6 @@
                 and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
             </if>
         </where>
-        order by monitor_time desc
     </select>
 
     <!--废气排口-年统计数据列表-->
@@ -260,7 +257,6 @@
                 and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
             </if>
         </where>
-        order by monitor_time desc
     </select>
 
 

@@ -27,60 +27,70 @@ public class TBasGasoutputPollutant extends BaseEntity {
     /**
      * 废气污染物编码（hj-2017协议）
      */
+    @ApiModelProperty(value = "废气污染物编码")
     @Excel(name = "废气污染物编码", readConverterExp = "h=j-2017协议")
     private String pollutantCode;
 
     /**
      * 废气污染物名称中文
      */
+    @ApiModelProperty(value = "废气污染物名称中文")
     @Excel(name = "废气污染物名称中文")
     private String pollutantNameCn;
 
     /**
      * 废气污染物名称英文
      */
+    @ApiModelProperty(value = "废气污染物名称英文")
     @Excel(name = "废气污染物名称英文")
     private String pollutantNameEn;
 
     /**
      * mn号
      */
+    @ApiModelProperty(value = "mn号")
     @Excel(name = "mn号")
     private String mnNum;
 
     /**
      * 废气排放口编码
      */
+    @ApiModelProperty(value = "废气排放口编码")
     @Excel(name = "废气排放口编码")
     private String outPutCode;
 
     /**
      * 废气排放口名称
      */
+    @ApiModelProperty(value = "废气排放口名称")
     @Excel(name = "废气排放口名称")
     private String outPutName;
 
     /**
      * 企业编码
      */
+    @ApiModelProperty(value = "企业编码")
     @Excel(name = "企业编码")
     private String entCode;
 
     /**
      * 企业名称
      */
+    @ApiModelProperty(value = "企业名称")
     @Excel(name = "企业名称")
     private String entName;
 
     /**
      * 污染物单位--中文
      */
+    @ApiModelProperty(value = "污染物单位--中文")
     @Excel(name = "污染物单位--中文")
     private String pollutantUnitCn;
 
     /**
      * 污染物单位--英文
      */
+    @ApiModelProperty(value = "污染物单位--英文")
     @Excel(name = "污染物单位--英文")
     private String pollutantUnitEn;
 

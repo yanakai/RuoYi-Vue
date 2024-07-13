@@ -75,7 +75,7 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.ruoyi.business"))
                 .paths(PathSelectors.ant("/business/base/**"))
                 .build()
-                .groupName("基础信息")
+                .groupName("企业档案")
                 /* 设置安全模式，swagger可以设置访问token */
                 .securitySchemes(securitySchemes())
                 .securityContexts(securityContexts())
@@ -180,8 +180,8 @@ public class SwaggerConfig {
 
     public ApiInfo api_base_info() {
         return new ApiInfoBuilder()
-                .title("基础档案管理信息")
-                .description("基础档案管理信息描述：XXX模块等")
+                .title("企业档案")
+                .description("企业档案描述：企业信息管理、排口信息管理（废水、废气、无组织）")
                 // 作者信息
                 .contact(new Contact(ruoyiConfig.getName(), null, null))
                // .termsOfServiceUrl("")//这里可以是项目地址
