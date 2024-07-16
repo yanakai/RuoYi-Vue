@@ -58,4 +58,6 @@ public interface TDataGasoutHourStatisticsMapper {
      * @return 结果
      */
     int deleteTDataGasoutHourStatisticsByIds(Long[] ids);
+
+    List<TDataGasoutHourStatistics> selectTDataGasout4alarmList(TDataGasoutHourStatistics tDataGasoutHourStatistics);
 }

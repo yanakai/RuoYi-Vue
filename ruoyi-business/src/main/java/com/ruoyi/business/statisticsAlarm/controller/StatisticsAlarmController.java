@@ -1,11 +1,15 @@
 package com.ruoyi.business.statisticsAlarm.controller;
 
 import com.ruoyi.business.statistics.domain.TDataGasoutDayStatistics;
+import com.ruoyi.business.statistics.domain.TDataGasoutHourStatistics;
+import com.ruoyi.business.statistics.domain.TDataWateroutHourStatistics;
 import com.ruoyi.business.statistics.dto.TDataGasoutStatisticsDTO;
 import com.ruoyi.business.statistics.service.ITDataGasoutDayStatisticsService;
 import com.ruoyi.business.statisticsAlarm.domain.TDataGasoutControlHour;
 import com.ruoyi.business.statisticsAlarm.domain.TDataWateroutControlHour;
+import com.ruoyi.business.statisticsAlarm.dto.AlarmHourDto;
 import com.ruoyi.business.statisticsAlarm.dto.OutControlHourDto;
+import com.ruoyi.business.statisticsAlarm.service.IStatisticsAlarmService;
 import com.ruoyi.business.statisticsAlarm.service.ITDataGasoutControlHourService;
 import com.ruoyi.business.statisticsAlarm.service.ITDataWateroutControlHourService;
 import com.ruoyi.common.annotation.Log;
@@ -42,6 +46,8 @@ public class StatisticsAlarmController extends BaseController {
     private ITDataWateroutControlHourService tDataWateroutControlHourService;
     @Resource
     private ITDataGasoutControlHourService tDataGasoutControlHourService;
+    @Resource
+    private IStatisticsAlarmService iStatisticsAlarmService;
 
     /**
      * 小时数据报警
@@ -49,10 +55,16 @@ public class StatisticsAlarmController extends BaseController {
     @ApiOperation("小时数据报警")
     @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/alarm/hour")
-    public TableDataInfo hourList(TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
+    public TableDataInfo hourList(AlarmHourDto alarmHourDto) {
         startPage();
-        List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutMonthStatisticsList(tDataGasoutStatisticsDTO);
-        return getDataTable(list);
+        if(alarmHourDto.getOutPutEnum().name().equals("gasout")) {
+            List<TDataGasoutHourStatistics> list = iStatisticsAlarmService.selectTDataGasout4alarmList(alarmHourDto);
+            return getDataTable(list);
+        } else if (alarmHourDto.getOutPutEnum().name().equals("waterout")) {
+            List<TDataWateroutHourStatistics> list = iStatisticsAlarmService.selectTDataWaterout4alarmList(alarmHourDto);
+            return getDataTable(list);
+        }
+        return getDataTable(null);
     }
 
     /**
@@ -62,11 +74,27 @@ public class StatisticsAlarmController extends BaseController {
     @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
     @Log(title = "小时数据报警导出", businessType = BusinessType.EXPORT)
     @PostMapping("/alarm/hour/export")
-    public void hourExport(HttpServletResponse response, TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
-        List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutMonthStatisticsList(tDataGasoutStatisticsDTO);
-        ExcelUtil<TDataGasoutDayStatistics> util = new ExcelUtil<TDataGasoutDayStatistics>(TDataGasoutDayStatistics.class);
-        util.exportExcel(response, list, "小时数据报警导出");
+    public void hourExport(HttpServletResponse response, AlarmHourDto alarmHourDto) {
+        if(alarmHourDto.getOutPutEnum().name().equals("gasout")) {
+            List<TDataGasoutHourStatistics> list = iStatisticsAlarmService.selectTDataGasout4alarmList(alarmHourDto);
+            ExcelUtil<TDataGasoutHourStatistics> util = new ExcelUtil<>(TDataGasoutHourStatistics.class);
+            util.exportExcel(response, list, "小时数据报警导出");
+        } else if (alarmHourDto.getOutPutEnum().name().equals("waterout")) {
+            List<TDataWateroutHourStatistics> list = iStatisticsAlarmService.selectTDataWaterout4alarmList(alarmHourDto);
+            ExcelUtil<TDataWateroutHourStatistics> util = new ExcelUtil<>(TDataWateroutHourStatistics.class);
+            util.exportExcel(response, list, "小时数据报警导出");
+        }
     }
+
+    private List getHourList(AlarmHourDto alarmHourDto){
+        if(alarmHourDto.getOutPutEnum().name().equals("gasout")) {
+            return iStatisticsAlarmService.selectTDataGasout4alarmList(alarmHourDto);
+        } else if (alarmHourDto.getOutPutEnum().name().equals("waterout")) {
+            return iStatisticsAlarmService.selectTDataWaterout4alarmList(alarmHourDto);
+        }
+       return null;
+    }
+
 
     /**
      * 排放量报警

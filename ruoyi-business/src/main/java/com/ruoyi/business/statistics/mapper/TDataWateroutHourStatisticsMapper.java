@@ -58,4 +58,7 @@ public interface TDataWateroutHourStatisticsMapper {
      * @return 结果
      */
     int deleteTDataWateroutHourStatisticsByIds(Long[] ids);
+
+
+    List<TDataWateroutHourStatistics> selectTDataWaterout4alarmList(TDataWateroutHourStatistics tDataWateroutHourStatistics);
 }

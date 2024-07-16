@@ -59,4 +59,5 @@ public interface ITDataGasoutControlHourService {
      * @return 结果
      */
     int deleteTDataGasoutControlHourById(Long id);
+
 }
