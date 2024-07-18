@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.statisticsAlarm.mapper.VOutPutHourStatisticsMapper">
+
+    <resultMap type="VOutPutHourStatistics" id="VOutPutHourStatisticsResult">
+        <result property="entName" column="ent_name"/>
+        <result property="entCode" column="ent_code"/>
+        <result property="outPutCode" column="out_put_code"/>
+        <result property="outPutName" column="out_put_name"/>
+        <result property="monitorTime" column="monitor_time"/>
+        <result property="outPutType" column="out_put_type"/>
+        <result property="pollutantNameCn" column="pollutant_name_cn"/>
+        <result property="alarm" column="alarm"/>
+    </resultMap>
+
+    <sql id="selectVOutPutHourStatisticsVo">
+        select ent_name,
+               ent_code,
+               out_put_code,
+               out_put_name,
+               monitor_time,
+               out_put_type,
+               pollutant_name_cn,
+               alarm
+        from v_out_put_hour_statistics
+    </sql>
+
+    <select id="selectVOutPutHourStatisticsList" parameterType="VOutPutHourStatistics"
+            resultMap="VOutPutHourStatisticsResult">
+        <include refid="selectVOutPutHourStatisticsVo"/>
+        <where>
+            <if test="entName != null  and entName != ''">and ent_name like concat('%', #{entName}, '%')</if>
+            <if test="entCode != null  and entCode != ''">and ent_code = #{entCode}</if>
+            <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
+            <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')
+            </if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+            <if test="outPutType != null  and outPutType != ''">and out_put_type = #{outPutType}</if>
+            <if test="pollutantNameCn != null  and pollutantNameCn != ''">and pollutant_name_cn = #{pollutantNameCn}
+            </if>
+            and alarm in (1, 2, 3)
+        </where>
+    </select>
+
+    <select id="selectVOutPutHourStatisticsByEntName" parameterType="String" resultMap="VOutPutHourStatisticsResult">
+        <include refid="selectVOutPutHourStatisticsVo"/>
+        where ent_name = #{entName}
+    </select>
+
+    <insert id="insertVOutPutHourStatistics" parameterType="VOutPutHourStatistics">
+        insert into v_out_put_hour_statistics
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="entName != null">ent_name,</if>
+            <if test="entCode != null">ent_code,</if>
+            <if test="outPutCode != null">out_put_code,</if>
+            <if test="outPutName != null">out_put_name,</if>
+            <if test="monitorTime != null">monitor_time,</if>
+            <if test="outPutType != null">out_put_type,</if>
+            <if test="pollutantNameCn != null">pollutant_name_cn,</if>
+            <if test="alarm != null">alarm,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="entName != null">#{entName},</if>
+            <if test="entCode != null">#{entCode},</if>
+            <if test="outPutCode != null">#{outPutCode},</if>
+            <if test="outPutName != null">#{outPutName},</if>
+            <if test="monitorTime != null">#{monitorTime},</if>
+            <if test="outPutType != null">#{outPutType},</if>
+            <if test="pollutantNameCn != null">#{pollutantNameCn},</if>
+            <if test="alarm != null">#{alarm},</if>
+        </trim>
+    </insert>
+
+    <update id="updateVOutPutHourStatistics" parameterType="VOutPutHourStatistics">
+        update v_out_put_hour_statistics
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="entCode != null">ent_code = #{entCode},</if>
+            <if test="outPutCode != null">out_put_code = #{outPutCode},</if>
+            <if test="outPutName != null">out_put_name = #{outPutName},</if>
+            <if test="monitorTime != null">monitor_time = #{monitorTime},</if>
+            <if test="outPutType != null">out_put_type = #{outPutType},</if>
+            <if test="pollutantNameCn != null">pollutant_name_cn = #{pollutantNameCn},</if>
+            <if test="alarm != null">alarm = #{alarm},</if>
+        </trim>
+        where ent_name = #{entName}
+    </update>
+
+    <delete id="deleteVOutPutHourStatisticsByEntName" parameterType="String">
+        delete
+        from v_out_put_hour_statistics
+        where ent_name = #{entName}
+    </delete>
+
+    <delete id="deleteVOutPutHourStatisticsByEntNames" parameterType="String">
+        delete from v_out_put_hour_statistics where ent_name in
+        <foreach item="entName" collection="array" open="(" separator="," close=")">
+            #{entName}
+        </foreach>
+    </delete>
+</mapper>

@@ -9,13 +9,16 @@ import lombok.Data;
 @Data
 public class AlarmHourDto extends BaseDto {
     private static final long serialVersionUID = 1L;
+    @ApiParam(name = "entName", value = "企业名称")
+    private String entName;
+    @ApiParam(name = "entCode", value = "企业编码")
+    private String entCode;
 
     /**
      * 排口编码
      */
     @ApiParam(name = "outPutCode", value = "排口编码")
     private String outPutCode;
-
     /**
      * 排口名称
      */
