@@ -29,7 +29,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="entName != null  and entName != ''"> and ent_name like concat('%', #{entName}, '%')</if>
             <if test="outPutCode != null  and outPutCode != ''"> and out_put_code = #{outPutCode}</if>
             <if test="outPutName != null  and outPutName != ''"> and out_put_name like concat('%', #{outPutName}, '%')</if>
-            <if test="pollutantCode != null  and pollutantCode != ''"> and pollutant_code = #{pollutantCode}</if>
         </where>
     </select>
     

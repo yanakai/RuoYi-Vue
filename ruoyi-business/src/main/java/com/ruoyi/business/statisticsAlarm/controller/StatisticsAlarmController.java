@@ -1,6 +1,7 @@
 package com.ruoyi.business.statisticsAlarm.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.ruoyi.business.statistics.domain.TDataGasoutDayStatistics;
 import com.ruoyi.business.statistics.dto.TDataGasoutStatisticsDTO;
 import com.ruoyi.business.statistics.service.ITDataGasoutDayStatisticsService;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,6 +63,9 @@ public class StatisticsAlarmController extends BaseController {
         startPage();
         VOutPutHourStatistics vOutPutHourStatistics = new VOutPutHourStatistics();
         BeanUtil.copyProperties(alarmHourDto, vOutPutHourStatistics);
+        if(ObjUtil.isNotNull(alarmHourDto) && ObjUtil.isNotNull(alarmHourDto.getOutPutEnum())){
+            vOutPutHourStatistics.setOutPutType(alarmHourDto.getOutPutEnum().getName());
+        }
         List<VOutPutHourStatistics> list = vOutPutHourStatisticsService.selectVOutPutHourStatisticsList(vOutPutHourStatistics);
         return getDataTable(list);
     }
@@ -75,6 +80,9 @@ public class StatisticsAlarmController extends BaseController {
     public void hourExport(HttpServletResponse response, AlarmHourDto alarmHourDto) {
         VOutPutHourStatistics vOutPutHourStatistics = new VOutPutHourStatistics();
         BeanUtil.copyProperties(alarmHourDto, vOutPutHourStatistics);
+        if(ObjUtil.isNotNull(alarmHourDto) && ObjUtil.isNotNull(alarmHourDto.getOutPutEnum())){
+            vOutPutHourStatistics.setOutPutType(alarmHourDto.getOutPutEnum().getName());
+        }
         List<VOutPutHourStatistics> list = vOutPutHourStatisticsService.selectVOutPutHourStatisticsList(vOutPutHourStatistics);
         ExcelUtil<VOutPutHourStatistics> util = new ExcelUtil<>(VOutPutHourStatistics.class);
         util.exportExcel(response, list, "小时数据报警导出");
@@ -179,16 +187,18 @@ public class StatisticsAlarmController extends BaseController {
     @GetMapping("/warning/hour")
     public TableDataInfo warningHourList(OutControlHourDto outControlHourDto) {
         startPage();
-        if (outControlHourDto.getOutPutEnum().name().equals("gasout")) {
-            //废气排口
-            List<TDataGasoutControlHour> list = tDataGasoutControlHourService.selectTDataGasoutControlHourList(outControlHourDto);
-            return getDataTable(list);
-        } else if (outControlHourDto.getOutPutEnum().name().equals("waterout")) {
-            //废水排口
-            List<TDataWateroutControlHour> list = tDataWateroutControlHourService.selectTDataWateroutControlHourList(outControlHourDto);
-            return getDataTable(list);
+        if(ObjUtil.isNotNull(outControlHourDto) && ObjUtil.isNotNull(outControlHourDto.getOutPutEnum())){
+            if (outControlHourDto.getOutPutEnum().name().equals("GASOUT")) {
+                //废气排口
+                List<TDataGasoutControlHour> list = tDataGasoutControlHourService.selectTDataGasoutControlHourList(outControlHourDto);
+                return getDataTable(list);
+            } else if (outControlHourDto.getOutPutEnum().name().equals("WATEROUT")) {
+                //废水排口
+                List<TDataWateroutControlHour> list = tDataWateroutControlHourService.selectTDataWateroutControlHourList(outControlHourDto);
+                return getDataTable(list);
+            }
         }
-        return getDataTable(null);
+        return getDataTable(new ArrayList<>());
     }
 
     /**
@@ -199,17 +209,18 @@ public class StatisticsAlarmController extends BaseController {
     @Log(title = "小时数据预警导出", businessType = BusinessType.EXPORT)
     @PostMapping("/warning/hour/export")
     public void warningHourExport(HttpServletResponse response, OutControlHourDto outControlHourDto) {
-
-        if (outControlHourDto.getOutPutEnum().name().equals("gasout")) {
-            //废气排口
-            List<TDataGasoutControlHour> list = tDataGasoutControlHourService.selectTDataGasoutControlHourList(outControlHourDto);
-            ExcelUtil<TDataGasoutControlHour> util = new ExcelUtil<>(TDataGasoutControlHour.class);
-            util.exportExcel(response, list, "小时数据预警导出");
-        } else if (outControlHourDto.getOutPutEnum().name().equals("waterout")) {
-            //废水排口
-            List<TDataWateroutControlHour> list = tDataWateroutControlHourService.selectTDataWateroutControlHourList(outControlHourDto);
-            ExcelUtil<TDataWateroutControlHour> util = new ExcelUtil<>(TDataWateroutControlHour.class);
-            util.exportExcel(response, list, "小时数据预警导出");
+        if(ObjUtil.isNotNull(outControlHourDto) && ObjUtil.isNotNull(outControlHourDto.getOutPutEnum())){
+            if (outControlHourDto.getOutPutEnum().name().equals("GASOUT")) {
+                //废气排口
+                List<TDataGasoutControlHour> list = tDataGasoutControlHourService.selectTDataGasoutControlHourList(outControlHourDto);
+                ExcelUtil<TDataGasoutControlHour> util = new ExcelUtil<>(TDataGasoutControlHour.class);
+                util.exportExcel(response, list, "小时数据预警导出");
+            } else if (outControlHourDto.getOutPutEnum().name().equals("WATEROUT")) {
+                //废水排口
+                List<TDataWateroutControlHour> list = tDataWateroutControlHourService.selectTDataWateroutControlHourList(outControlHourDto);
+                ExcelUtil<TDataWateroutControlHour> util = new ExcelUtil<>(TDataWateroutControlHour.class);
+                util.exportExcel(response, list, "小时数据预警导出");
+            }
         }
     }
 }
