@@ -58,4 +58,11 @@ public interface IVOutPutHourStatisticsService {
      * @return 结果
      */
     int deleteVOutPutHourStatisticsByEntName(String entName);
+
+    /**
+     * 排放量报警
+     * @param vOutPutHourStatistics
+     * @return
+     */
+    List<VOutPutHourStatistics> selectVOutPutHourEmissionsList(VOutPutHourStatistics vOutPutHourStatistics);
 }

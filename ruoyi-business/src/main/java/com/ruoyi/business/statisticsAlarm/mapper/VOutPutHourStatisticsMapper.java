@@ -28,6 +28,13 @@ public interface VOutPutHourStatisticsMapper {
     List<VOutPutHourStatistics> selectVOutPutHourStatisticsList(VOutPutHourStatistics vOutPutHourStatistics);
 
     /**
+     * 排放量报警
+     * @param vOutPutHourStatistics
+     * @return
+     */
+    List<VOutPutHourStatistics> selectVOutPutHourEmissionsList(VOutPutHourStatistics vOutPutHourStatistics);
+
+    /**
      * 新增排口小时报警统计视图
      *
      * @param vOutPutHourStatistics 排口小时报警统计视图

@@ -84,4 +84,15 @@ public class VOutPutHourStatisticsServiceImpl implements IVOutPutHourStatisticsS
     public int deleteVOutPutHourStatisticsByEntName(String entName) {
         return vOutPutHourStatisticsMapper.deleteVOutPutHourStatisticsByEntName(entName);
     }
+
+    /**
+     * 排放量报警
+     *
+     * @param vOutPutHourStatistics
+     * @return
+     */
+    @Override
+    public List<VOutPutHourStatistics> selectVOutPutHourEmissionsList(VOutPutHourStatistics vOutPutHourStatistics) {
+        return vOutPutHourStatisticsMapper.selectVOutPutHourEmissionsList(vOutPutHourStatistics);
+    }
 }
