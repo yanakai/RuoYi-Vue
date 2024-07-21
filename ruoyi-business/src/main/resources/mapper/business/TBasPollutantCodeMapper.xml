@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.base.mapper.TBasPollutantCodeMapper">
+    
+    <resultMap type="TBasPollutantCode" id="TBasPollutantCodeResult">
+        <result property="id"    column="id"    />
+        <result property="code2017"    column="2017_code"    />
+        <result property="code2005"    column="2005_code"    />
+        <result property="pollutantCode"    column="pollutant_code"    />
+        <result property="pollutantNameEn"    column="pollutant_name_en"    />
+        <result property="pollutantNameCn"    column="pollutant_name_cn"    />
+        <result property="pollutantType"    column="pollutant_type"    />
+        <result property="pollutantUnitEn"    column="pollutant_unit_en"    />
+        <result property="pollutantUnitCn"    column="pollutant_unit_cn"    />
+        <result property="pollutantStatus"    column="pollutant_status"    />
+        <result property="pollutantSort"    column="pollutant_sort"    />
+    </resultMap>
+
+    <sql id="selectTBasPollutantCodeVo">
+        select id, 2017_code, 2005_code, pollutant_code, pollutant_name_en, pollutant_name_cn, pollutant_type, pollutant_unit_en, pollutant_unit_cn, pollutant_status, pollutant_sort from t_bas_pollutant_code
+    </sql>
+
+    <select id="selectTBasPollutantCodeList" parameterType="TBasPollutantCode" resultMap="TBasPollutantCodeResult">
+        <include refid="selectTBasPollutantCodeVo"/>
+        <where>  
+            <if test="code2017 != null  and code2017 != ''"> and 2017_code = #{code2017}</if>
+            <if test="code2005 != null  and code2005 != ''"> and 2005_code = #{code2005}</if>
+            <if test="pollutantCode != null  and pollutantCode != ''"> and pollutant_code = #{pollutantCode}</if>
+            <if test="pollutantNameEn != null  and pollutantNameEn != ''"> and pollutant_name_en = #{pollutantNameEn}</if>
+            <if test="pollutantNameCn != null  and pollutantNameCn != ''"> and pollutant_name_cn =  like concat('%', #{pollutantNameCn}, '%') </if>
+            <if test="pollutantType != null "> and pollutant_type = #{pollutantType}</if>
+            <if test="pollutantUnitEn != null  and pollutantUnitEn != ''"> and pollutant_unit_en = #{pollutantUnitEn}</if>
+            <if test="pollutantUnitCn != null  and pollutantUnitCn != ''"> and pollutant_unit_cn = #{pollutantUnitCn}</if>
+            <if test="pollutantStatus != null "> and pollutant_status = #{pollutantStatus}</if>
+            <if test="pollutantSort != null "> and pollutant_sort = #{pollutantSort}</if>
+        </where>
+    </select>
+    
+    <select id="selectTBasPollutantCodeById" parameterType="Long" resultMap="TBasPollutantCodeResult">
+        <include refid="selectTBasPollutantCodeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTBasPollutantCode" parameterType="TBasPollutantCode" useGeneratedKeys="true" keyProperty="id">
+        insert into t_bas_pollutant_code
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code2017 != null">2017_code,</if>
+            <if test="code2005 != null">2005_code,</if>
+            <if test="pollutantCode != null">pollutant_code,</if>
+            <if test="pollutantNameEn != null">pollutant_name_en,</if>
+            <if test="pollutantNameCn != null">pollutant_name_cn,</if>
+            <if test="pollutantType != null">pollutant_type,</if>
+            <if test="pollutantUnitEn != null">pollutant_unit_en,</if>
+            <if test="pollutantUnitCn != null">pollutant_unit_cn,</if>
+            <if test="pollutantStatus != null">pollutant_status,</if>
+            <if test="pollutantSort != null">pollutant_sort,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code2017 != null">#{code2017},</if>
+            <if test="code2005 != null">#{code2005},</if>
+            <if test="pollutantCode != null">#{pollutantCode},</if>
+            <if test="pollutantNameEn != null">#{pollutantNameEn},</if>
+            <if test="pollutantNameCn != null">#{pollutantNameCn},</if>
+            <if test="pollutantType != null">#{pollutantType},</if>
+            <if test="pollutantUnitEn != null">#{pollutantUnitEn},</if>
+            <if test="pollutantUnitCn != null">#{pollutantUnitCn},</if>
+            <if test="pollutantStatus != null">#{pollutantStatus},</if>
+            <if test="pollutantSort != null">#{pollutantSort},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTBasPollutantCode" parameterType="TBasPollutantCode">
+        update t_bas_pollutant_code
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code2017 != null">2017_code = #{code2017},</if>
+            <if test="code2005 != null">2005_code = #{code2005},</if>
+            <if test="pollutantCode != null">pollutant_code = #{pollutantCode},</if>
+            <if test="pollutantNameEn != null">pollutant_name_en = #{pollutantNameEn},</if>
+            <if test="pollutantNameCn != null">pollutant_name_cn = #{pollutantNameCn},</if>
+            <if test="pollutantType != null">pollutant_type = #{pollutantType},</if>
+            <if test="pollutantUnitEn != null">pollutant_unit_en = #{pollutantUnitEn},</if>
+            <if test="pollutantUnitCn != null">pollutant_unit_cn = #{pollutantUnitCn},</if>
+            <if test="pollutantStatus != null">pollutant_status = #{pollutantStatus},</if>
+            <if test="pollutantSort != null">pollutant_sort = #{pollutantSort},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTBasPollutantCodeById" parameterType="Long">
+        delete from t_bas_pollutant_code where id = #{id}
+    </delete>
+
+    <delete id="deleteTBasPollutantCodeByIds" parameterType="String">
+        delete from t_bas_pollutant_code where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
