@@ -15,6 +15,12 @@
         <result property="alarm" column="alarm"/>
     </resultMap>
 
+    <resultMap type="com.ruoyi.business.statisticsAlarm.dto.DataMissingDto" id="DataMissingDtoResult">
+        <result property="outPutName" column="out_put_name"/>
+        <result property="monitorTime" column="monitorTime"/>
+        <result property="missingTime" column="missingTime"/>
+    </resultMap>
+
     <sql id="selectVOutPutHourStatisticsVo">
         select ent_name,
                ent_code,
@@ -76,54 +82,38 @@
         where ent_name = #{entName}
     </select>
 
-    <insert id="insertVOutPutHourStatistics" parameterType="VOutPutHourStatistics">
-        insert into v_out_put_hour_statistics
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="entName != null">ent_name,</if>
-            <if test="entCode != null">ent_code,</if>
-            <if test="outPutCode != null">out_put_code,</if>
-            <if test="outPutName != null">out_put_name,</if>
-            <if test="monitorTime != null">monitor_time,</if>
-            <if test="outPutType != null">out_put_type,</if>
-            <if test="pollutantNameCn != null">pollutant_name_cn,</if>
-            <if test="alarm != null">alarm,</if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="entName != null">#{entName},</if>
-            <if test="entCode != null">#{entCode},</if>
-            <if test="outPutCode != null">#{outPutCode},</if>
-            <if test="outPutName != null">#{outPutName},</if>
-            <if test="monitorTime != null">#{monitorTime},</if>
-            <if test="outPutType != null">#{outPutType},</if>
-            <if test="pollutantNameCn != null">#{pollutantNameCn},</if>
-            <if test="alarm != null">#{alarm},</if>
-        </trim>
-    </insert>
+    <select id="selectDataMissingList" parameterType="com.ruoyi.business.statisticsAlarm.dto.DataMissingDto"
+            resultMap="DataMissingDtoResult">
+        select tmp.out_put_name,date_format(tmp.tday, '%Y-%m-%d' ) monitorTime,group_concat( date_format( tmp.tday, '%H'
+        ) SEPARATOR '时、' ) missingTime from (
+        select a.out_put_name,a.tday, ifnull(b.num, -1) as num
+        from ( ${params.sqlStr} ) as a
+        LEFT JOIN
+        (
+        SELECT v.out_put_name,date_format( monitor_time, '%Y-%m-%d %H' ) monitor_time ,count(1) AS num FROM (SELECT
+        v0.out_put_code,v0.out_put_name,v0.monitor_time FROM v_out_put_hour_statistics v0
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+          GROUP BY  v0.out_put_code,v0.out_put_name,v0.monitor_time) v
+        GROUP BY v.out_put_name,monitor_time
+        ) b ON a.out_put_name=b.out_put_name and a.tday= b.monitor_time
+        ) tmp where tmp.num = -1 GROUP BY tmp.out_put_name,monitorTime
+    </select>
 
-    <update id="updateVOutPutHourStatistics" parameterType="VOutPutHourStatistics">
-        update v_out_put_hour_statistics
-        <trim prefix="SET" suffixOverrides=",">
-            <if test="entCode != null">ent_code = #{entCode},</if>
-            <if test="outPutCode != null">out_put_code = #{outPutCode},</if>
-            <if test="outPutName != null">out_put_name = #{outPutName},</if>
-            <if test="monitorTime != null">monitor_time = #{monitorTime},</if>
-            <if test="outPutType != null">out_put_type = #{outPutType},</if>
-            <if test="pollutantNameCn != null">pollutant_name_cn = #{pollutantNameCn},</if>
-            <if test="alarm != null">alarm = #{alarm},</if>
-        </trim>
-        where ent_name = #{entName}
-    </update>
+    <select id="selectVOutPutHourStatisticsByEntCode" parameterType="String" resultType="java.lang.String">
+        select out_put_name from v_out_put_hour_statistics
+        <where>
+             <if test="entCode != null and entCode != ''">
+                and ent_code = #{entCode}
+            </if>
+        </where>
+        group by out_put_name
+    </select>
 
-    <delete id="deleteVOutPutHourStatisticsByEntName" parameterType="String">
-        delete
-        from v_out_put_hour_statistics
-        where ent_name = #{entName}
-    </delete>
-
-    <delete id="deleteVOutPutHourStatisticsByEntNames" parameterType="String">
-        delete from v_out_put_hour_statistics where ent_name in
-        <foreach item="entName" collection="array" open="(" separator="," close=")">
-            #{entName}
-        </foreach>
-    </delete>
 </mapper>

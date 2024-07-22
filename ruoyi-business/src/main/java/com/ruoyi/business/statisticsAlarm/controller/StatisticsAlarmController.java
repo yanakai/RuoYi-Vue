@@ -8,8 +8,7 @@ import com.ruoyi.business.statistics.service.ITDataGasoutDayStatisticsService;
 import com.ruoyi.business.statisticsAlarm.domain.TDataGasoutControlHour;
 import com.ruoyi.business.statisticsAlarm.domain.TDataWateroutControlHour;
 import com.ruoyi.business.statisticsAlarm.domain.VOutPutHourStatistics;
-import com.ruoyi.business.statisticsAlarm.dto.AlarmHourDto;
-import com.ruoyi.business.statisticsAlarm.dto.OutControlHourDto;
+import com.ruoyi.business.statisticsAlarm.dto.*;
 import com.ruoyi.business.statisticsAlarm.service.IStatisticsAlarmService;
 import com.ruoyi.business.statisticsAlarm.service.ITDataGasoutControlHourService;
 import com.ruoyi.business.statisticsAlarm.service.ITDataWateroutControlHourService;
@@ -88,32 +87,15 @@ public class StatisticsAlarmController extends BaseController {
         util.exportExcel(response, list, "小时数据报警导出");
     }
 
-    private List getHourList(AlarmHourDto alarmHourDto) {
-        if (alarmHourDto.getOutPutEnum().name().equals("gasout")) {
-            return iStatisticsAlarmService.selectTDataGasout4alarmList(alarmHourDto);
-        } else if (alarmHourDto.getOutPutEnum().name().equals("waterout")) {
-            return iStatisticsAlarmService.selectTDataWaterout4alarmList(alarmHourDto);
-        }
-        return null;
-    }
-
-
     /**
      * 排放量报警
      */
-    @Deprecated
     @ApiOperation("排放量报警")
     @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/alarm/emissions")
-    public TableDataInfo emissionList(AlarmHourDto alarmHourDto) {
+    public TableDataInfo emissionList(DataEmissionDto dataEmissionDto) {
         startPage();
-        VOutPutHourStatistics vOutPutHourStatistics = new VOutPutHourStatistics();
-        BeanUtil.copyProperties(alarmHourDto, vOutPutHourStatistics);
-        if(ObjUtil.isNotNull(alarmHourDto) && ObjUtil.isNotNull(alarmHourDto.getOutPutEnum())){
-            vOutPutHourStatistics.setOutPutType(alarmHourDto.getOutPutEnum().getName());
-        }
-        List<VOutPutHourStatistics> list = vOutPutHourStatisticsService.selectVOutPutHourEmissionsList(vOutPutHourStatistics);
-        return getDataTable(list);
+        return getDataTable(new ArrayList<>());
     }
 
     /**
@@ -124,15 +106,10 @@ public class StatisticsAlarmController extends BaseController {
     @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
     @Log(title = "排放量报警导出", businessType = BusinessType.EXPORT)
     @PostMapping("/alarm/emission/export")
-    public void emissionExport(HttpServletResponse response, AlarmHourDto alarmHourDto) {
+    public void emissionExport(HttpServletResponse response, DataEmissionDto dataEmissionDto) {
         VOutPutHourStatistics vOutPutHourStatistics = new VOutPutHourStatistics();
-        BeanUtil.copyProperties(alarmHourDto, vOutPutHourStatistics);
-        if(ObjUtil.isNotNull(alarmHourDto) && ObjUtil.isNotNull(alarmHourDto.getOutPutEnum())){
-            vOutPutHourStatistics.setOutPutType(alarmHourDto.getOutPutEnum().getName());
-        }
-        List<VOutPutHourStatistics> list = vOutPutHourStatisticsService.selectVOutPutHourEmissionsList(vOutPutHourStatistics);
-        ExcelUtil<VOutPutHourStatistics> util = new ExcelUtil<>(VOutPutHourStatistics.class);
-        util.exportExcel(response, list, "排放量报警导出");
+        ExcelUtil<DataEmissionDto> util = new ExcelUtil<>(DataEmissionDto.class);
+        util.exportExcel(response, new ArrayList<>(), "排放量报警导出");
     }
 
     /**
@@ -173,41 +150,38 @@ public class StatisticsAlarmController extends BaseController {
     /**
      * 数据缺失报警
      */
-    @Deprecated
     @ApiOperation("小时数据缺失预警")
     @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/alarm/DataMissing")
-    public TableDataInfo dataMissing(TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
+    public TableDataInfo dataMissing(DataMissingDto dataMissingDto) {
         startPage();
-        List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutYearStatisticsList(tDataGasoutStatisticsDTO);
+        List<DataMissingDto> list = vOutPutHourStatisticsService.selectDataMissingList(dataMissingDto);
         return getDataTable(list);
     }
 
     /**
      * 数据缺失报警导出
      */
-    @Deprecated
     @ApiOperation("小时数据缺失预警导出")
     @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
     @Log(title = "数据缺失报警导出", businessType = BusinessType.EXPORT)
     @PostMapping("/alarm/DataMissing/export")
-    public void dataMissingExport(HttpServletResponse response, TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
-        List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutYearStatisticsList(tDataGasoutStatisticsDTO);
-        ExcelUtil<TDataGasoutDayStatistics> util = new ExcelUtil<TDataGasoutDayStatistics>(TDataGasoutDayStatistics.class);
+    public void dataMissingExport(HttpServletResponse response,DataMissingDto dataMissingDto) {
+        List<DataMissingDto> list = vOutPutHourStatisticsService.selectDataMissingList(dataMissingDto);
+        ExcelUtil<DataMissingDto> util = new ExcelUtil<>(DataMissingDto.class);
         util.exportExcel(response, list, "数据缺失报警");
     }
 
     /**
      * 小时数据缺项预警
      */
-    @Deprecated
     @ApiOperation("传输有效率预警")
     @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/alarm/transmissionEfficiency")
-    public TableDataInfo transmissionEfficiency(TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
+    public TableDataInfo transmissionEfficiency(DataEfficiencyDto dataEfficiencyDto) {
         startPage();
-        List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutYearStatisticsList(tDataGasoutStatisticsDTO);
-        return getDataTable(list);
+//        List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutYearStatisticsList(tDataGasoutStatisticsDTO);
+        return getDataTable(new ArrayList<>());
     }
 
     /**
@@ -216,12 +190,12 @@ public class StatisticsAlarmController extends BaseController {
     @Deprecated
     @ApiOperation("传输有效率预警")
     @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
-    @Log(title = "数据缺失报警导出", businessType = BusinessType.EXPORT)
+    @Log(title = "传输有效率预警导出", businessType = BusinessType.EXPORT)
     @PostMapping("/alarm/transmissionEfficiency/export")
-    public void transmissionEfficiency(HttpServletResponse response, TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
-        List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutYearStatisticsList(tDataGasoutStatisticsDTO);
-        ExcelUtil<TDataGasoutDayStatistics> util = new ExcelUtil<TDataGasoutDayStatistics>(TDataGasoutDayStatistics.class);
-        util.exportExcel(response, list, "传输有效率预警导出");
+    public void transmissionEfficiency(HttpServletResponse response, DataEfficiencyDto dataEfficiencyDto) {
+//        List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutYearStatisticsList(tDataGasoutStatisticsDTO);
+        ExcelUtil<DataEfficiencyDto> util = new ExcelUtil<>(DataEfficiencyDto.class);
+        util.exportExcel(response, new ArrayList<>(), "传输有效率预警导出");
     }
 
     /**
