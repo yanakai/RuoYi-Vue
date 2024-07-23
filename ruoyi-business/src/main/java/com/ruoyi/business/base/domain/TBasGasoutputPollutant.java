@@ -125,6 +125,11 @@ public class TBasGasoutputPollutant extends BaseEntity {
     private BigDecimal standardVal;
 
     /**
+     * 年度限值--预留字段
+     */
+    private BigDecimal annualLimitValue;
+
+    /**
      * 报警上限--预留字段
      */
     private BigDecimal earlyWarnMaxvalue;
@@ -389,5 +394,12 @@ public class TBasGasoutputPollutant extends BaseEntity {
                 .append("updateName", getUpdateName())
                 .append("remark", getRemark())
                 .toString();
+    }
+    public BigDecimal getAnnualLimitValue() {
+        return annualLimitValue;
+    }
+
+    public void setAnnualLimitValue(BigDecimal annualLimitValue) {
+        this.annualLimitValue = annualLimitValue;
     }
 }

@@ -3,6 +3,7 @@ package com.ruoyi.business.statisticsAlarm.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -14,6 +15,7 @@ import java.util.Date;
  * @author lx
  * @date 2024-07-19
  */
+@Data
 public class VOutPutHourStatistics extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -66,81 +68,13 @@ public class VOutPutHourStatistics extends BaseEntity {
     @Excel(name = "报警状态")
     private String alarm;
 
-    public String getEntName() {
-        return entName;
-    }
+    /**
+     * 异常时段  异常报警DTO
+     */
+    private String abnormalTime;
 
-    public void setEntName(String entName) {
-        this.entName = entName;
-    }
-
-    public String getEntCode() {
-        return entCode;
-    }
-
-    public void setEntCode(String entCode) {
-        this.entCode = entCode;
-    }
-
-    public String getOutPutCode() {
-        return outPutCode;
-    }
-
-    public void setOutPutCode(String outPutCode) {
-        this.outPutCode = outPutCode;
-    }
-
-    public String getOutPutName() {
-        return outPutName;
-    }
-
-    public void setOutPutName(String outPutName) {
-        this.outPutName = outPutName;
-    }
-
-    public Date getMonitorTime() {
-        return monitorTime;
-    }
-
-    public void setMonitorTime(Date monitorTime) {
-        this.monitorTime = monitorTime;
-    }
-
-    public String getOutPutType() {
-        return outPutType;
-    }
-
-    public void setOutPutType(String outPutType) {
-        this.outPutType = outPutType;
-    }
-
-    public String getPollutantNameCn() {
-        return pollutantNameCn;
-    }
-
-    public void setPollutantNameCn(String pollutantNameCn) {
-        this.pollutantNameCn = pollutantNameCn;
-    }
-
-    public String getAlarm() {
-        return alarm;
-    }
-
-    public void setAlarm(String alarm) {
-        this.alarm = alarm;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("entName", getEntName())
-                .append("entCode", getEntCode())
-                .append("outPutCode", getOutPutCode())
-                .append("outPutName", getOutPutName())
-                .append("monitorTime", getMonitorTime())
-                .append("outPutType", getOutPutType())
-                .append("pollutantNameCn", getPollutantNameCn())
-                .append("alarm", getAlarm())
-                .toString();
-    }
+    /**
+     * 异常标记说明 异常报警DTO
+     */
+    private String abnormalMark;
 }

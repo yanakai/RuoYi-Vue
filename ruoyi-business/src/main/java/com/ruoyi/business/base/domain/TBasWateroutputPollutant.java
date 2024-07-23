@@ -115,6 +115,11 @@ public class TBasWateroutputPollutant extends BaseEntity {
     private BigDecimal standardVal;
 
     /**
+     * 年度限值--预留字段
+     */
+    private BigDecimal annualLimitValue;
+
+    /**
      * 报警上限--预留字段
      */
     private BigDecimal earlyWarnMaxvalue;
@@ -350,6 +355,13 @@ public class TBasWateroutputPollutant extends BaseEntity {
         this.updateName = updateName;
     }
 
+    public BigDecimal getAnnualLimitValue() {
+        return annualLimitValue;
+    }
+
+    public void setAnnualLimitValue(BigDecimal annualLimitValue) {
+        this.annualLimitValue = annualLimitValue;
+    }
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)

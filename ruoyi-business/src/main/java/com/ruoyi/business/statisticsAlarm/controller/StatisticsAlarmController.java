@@ -90,6 +90,7 @@ public class StatisticsAlarmController extends BaseController {
     /**
      * 排放量报警
      */
+    @Deprecated
     @ApiOperation("排放量报警")
     @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/alarm/emissions")
@@ -175,6 +176,7 @@ public class StatisticsAlarmController extends BaseController {
     /**
      * 小时数据缺项预警
      */
+    @Deprecated
     @ApiOperation("传输有效率预警")
     @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/alarm/transmissionEfficiency")
