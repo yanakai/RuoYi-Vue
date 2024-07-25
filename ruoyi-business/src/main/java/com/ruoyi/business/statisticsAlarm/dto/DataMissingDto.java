@@ -16,8 +16,12 @@ public class DataMissingDto extends BaseDto {
     /**
      * 排口名称
      */
-    @ApiParam(name = "outPutName", value = "排口名称")
+    @ApiParam(name = "outPutName", value = "排口名称",hidden = true)
     private String outPutName;
+
+    @ApiParam(name = "outPutCode" ,value = "接口编码")
+    private String outPutCode;
+
     /**
      * 接口类型
      */

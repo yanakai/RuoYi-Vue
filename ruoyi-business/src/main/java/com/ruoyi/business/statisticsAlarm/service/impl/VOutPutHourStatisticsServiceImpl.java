@@ -4,6 +4,8 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
+import com.ruoyi.business.base.domain.VOutPutInfo;
+import com.ruoyi.business.base.mapper.VOutPutInfoMapper;
 import com.ruoyi.business.statisticsAlarm.domain.VOutPutHourStatistics;
 import com.ruoyi.business.statisticsAlarm.dto.DataMissingDto;
 import com.ruoyi.business.statisticsAlarm.mapper.VOutPutHourStatisticsMapper;
@@ -12,6 +14,7 @@ import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -26,6 +29,10 @@ import java.util.*;
 public class VOutPutHourStatisticsServiceImpl implements IVOutPutHourStatisticsService {
     @Autowired
     private VOutPutHourStatisticsMapper vOutPutHourStatisticsMapper;
+    @Resource
+    private VOutPutInfoMapper vOutPutInfoMapper;
+
+
 
     /**
      * 查询排口小时报警统计视图
@@ -64,14 +71,20 @@ public class VOutPutHourStatisticsServiceImpl implements IVOutPutHourStatisticsS
     @Override
     public List<DataMissingDto> selectDataMissingList(DataMissingDto dataMissingDto) {
         Map<String, Object> params = dataMissingDto.getParams();
-        Date beginTime = MapUtil.getDate(params,"beginTime", new Date());
-        Date endTime =  MapUtil.getDate(params,"endTime", new Date());
         List<String> outPutNames = new ArrayList<>();
-        if(StrUtil.isNotBlank(dataMissingDto.getOutPutName())){
-            outPutNames.add(dataMissingDto.getOutPutName());
+        if(StrUtil.isNotBlank(dataMissingDto.getOutPutCode())){
+            //DA001
+            VOutPutInfo vOutPutInfo = new VOutPutInfo();
+            vOutPutInfo.setOutPutCode(dataMissingDto.getOutPutCode());
+            List<VOutPutInfo> vOutPutInfos = vOutPutInfoMapper.selectVOutPutInfoList(vOutPutInfo);
+            for (VOutPutInfo v:vOutPutInfos) {
+                outPutNames.add(v.getOutPutName());
+            }
         }else{
             outPutNames = vOutPutHourStatisticsMapper.selectVOutPutHourStatisticsByEntCode(dataMissingDto.getEntCode());
         }
+        Date beginTime = MapUtil.getDate(params,"beginTime", new Date());
+        Date endTime =  MapUtil.getDate(params,"endTime", new Date());
         String sqlStr = getSqlStr(outPutNames, beginTime, endTime);
         if(ObjUtil.isNotNull(params)){
             params.put("sqlStr", sqlStr);

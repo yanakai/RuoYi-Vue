@@ -1,6 +1,7 @@
 package com.ruoyi.business.statisticsAlarm.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.ruoyi.business.statistics.domain.TDataGasoutDayStatistics;
 import com.ruoyi.business.statistics.dto.TDataGasoutStatisticsDTO;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -157,6 +159,8 @@ public class StatisticsAlarmController extends BaseController {
     public TableDataInfo dataMissing(DataMissingDto dataMissingDto) {
         startPage();
         List<DataMissingDto> list = vOutPutHourStatisticsService.selectDataMissingList(dataMissingDto);
+        // lambda按对象某个字段倒序
+        //list = (List<DataMissingDto>) list.stream().sorted(Comparator.comparing(DataMissingDto::getMonitorTime).reversed());
         return getDataTable(list);
     }
 
