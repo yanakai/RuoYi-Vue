@@ -128,4 +128,17 @@ public class TDataGasoutDayStatisticsServiceImpl implements ITDataGasoutDayStati
         return tDataGasoutDayStatisticsMapper.selectTDataGasoutYearStatisticsList(tDataGasoutDayStatistics);
     }
 
+    /**
+     * 查询废气排口--分钟或实时统计数据列表
+     *
+     * @param tDataGasoutDayStatistics 废气排口--分钟或实时统计数据
+     * @return 废气排口--分钟或实时统计数据集合
+     */
+    @Override
+    public List<TDataGasoutDayStatistics> selectTDataGasoutMinuteOrRealStatisticsList(TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
+        TDataGasoutDayStatistics tDataGasoutDayStatistics = new TDataGasoutDayStatistics();
+        BeanUtil.copyProperties(tDataGasoutStatisticsDTO, tDataGasoutDayStatistics);
+        return tDataGasoutDayStatisticsMapper.selectTDataGasoutMinuteOrRealStatisticsList(tDataGasoutDayStatistics);
+    }
+
 }

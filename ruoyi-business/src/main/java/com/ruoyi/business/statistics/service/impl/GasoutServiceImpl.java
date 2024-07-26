@@ -1,7 +1,12 @@
 package com.ruoyi.business.statistics.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageInfo;
+import com.ruoyi.business.base.domain.VOutPutInfo;
+import com.ruoyi.business.base.mapper.VOutPutInfoMapper;
 import com.ruoyi.business.onlineMonitoring.dto.GasoutDTO;
 import com.ruoyi.business.statistics.domain.TDataGasoutDayStatistics;
 import com.ruoyi.business.statistics.domain.TDataGasoutHourStatistics;
@@ -13,9 +18,11 @@ import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.PageUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -25,6 +32,9 @@ public class GasoutServiceImpl implements IGasoutService {
     private ITDataGasoutHourStatisticsService tDataGasoutHourStatisticsService;
     @Resource
     private ITDataGasoutDayStatisticsService tDataGasoutDayStatisticsService;
+
+    @Autowired
+    private VOutPutInfoMapper vOutPutInfoMapper;
 
     /**
      * 查询废气排口--在线监测数据列表
@@ -60,12 +70,44 @@ public class GasoutServiceImpl implements IGasoutService {
             List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutYearStatisticsList(tDataGasoutStatisticsDTO);
             return getDataTable(list);
         } else if (gasoutDTO.getDataEnum().name().equals("real")) {
-            //TODO
+            String tableNameReal = getTableName("t_data_gasout_real_",gasoutDTO);
+            if(StrUtil.isNotBlank(tableNameReal)){
+                TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO = new TDataGasoutStatisticsDTO();
+                BeanUtil.copyProperties(gasoutDTO, tDataGasoutStatisticsDTO);
+                tDataGasoutStatisticsDTO.getParams().put("tableName",tableNameReal);
+                PageUtils.startPage();
+                List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutMinuteOrRealStatisticsList(tDataGasoutStatisticsDTO);
+                return getDataTable(list);
+            }
         } else if (gasoutDTO.getDataEnum().name().equals("minute")) {
-            //TODO
+            String tableNameMin = getTableName("t_data_gasout_minute_",gasoutDTO);
+            if(StrUtil.isNotBlank(tableNameMin)){
+                TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO = new TDataGasoutStatisticsDTO();
+                BeanUtil.copyProperties(gasoutDTO, tDataGasoutStatisticsDTO);
+                tDataGasoutStatisticsDTO.getParams().put("tableName",tableNameMin);
+                PageUtils.startPage();
+                List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutMinuteOrRealStatisticsList(tDataGasoutStatisticsDTO);
+                return getDataTable(list);
+            }
         }
 
-        return getDataTable(null);
+        return getDataTable(new ArrayList<>());
+    }
+
+    private String getTableName(String tableName,GasoutDTO gasoutDTO){
+        if(StrUtil.isNotBlank(gasoutDTO.getOutPutCode())){
+            //获取排口信息
+            VOutPutInfo vOutPutInfo = new VOutPutInfo();
+            vOutPutInfo.setOutPutCode(gasoutDTO.getOutPutCode());
+            List<VOutPutInfo> list = vOutPutInfoMapper.selectVOutPutInfoList(vOutPutInfo);
+            if(ArrayUtil.isNotEmpty(list)){
+                vOutPutInfo = list.get(0);
+                tableName = tableName+vOutPutInfo.getMnNum();
+            }
+            return tableName;
+        }else{
+            return null;
+        }
     }
 
     protected TableDataInfo getDataTable(List<?> list) {

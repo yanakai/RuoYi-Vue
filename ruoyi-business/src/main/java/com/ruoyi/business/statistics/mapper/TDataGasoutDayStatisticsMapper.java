@@ -84,5 +84,12 @@ public interface TDataGasoutDayStatisticsMapper {
      */
     List<TDataGasoutDayStatistics> selectTDataGasoutYearStatisticsList(TDataGasoutDayStatistics tDataGasoutDayStatistics);
 
+    /**
+     * 查询废气排口--实时或者分钟数据列表
+     *
+     * @param tDataGasoutDayStatistics 废气排口--实时或者分钟数据列表
+     * @return 废气排口--实时或者分钟数据列表
+     */
+    List<TDataGasoutDayStatistics> selectTDataGasoutMinuteOrRealStatisticsList(TDataGasoutDayStatistics tDataGasoutDayStatistics);
 
 }

@@ -73,28 +73,14 @@
             <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
             <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')
             </if>
-            <if test="monitorTime != null ">and monitor_time = #{monitorTime}</if>
-            <if test="volumeAvgFlow != null  and volumeAvgFlow != ''">and volume_avg_flow = #{volumeAvgFlow}</if>
-            <if test="volumeTotalFlow != null  and volumeTotalFlow != ''">and volume_total_flow = #{volumeTotalFlow}
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
             </if>
-            <if test="velocityFlow != null  and velocityFlow != ''">and velocity_flow = #{velocityFlow}</if>
-            <if test="ycAvgValue != null  and ycAvgValue != ''">and yc_avg_value = #{ycAvgValue}</if>
-            <if test="ycZsavgValue != null  and ycZsavgValue != ''">and yc_zsavg_value = #{ycZsavgValue}</if>
-            <if test="ycEmissions != null  and ycEmissions != ''">and yc_emissions = #{ycEmissions}</if>
-            <if test="ycIsAlarm != null  and ycIsAlarm != ''">and yc_is_alarm = #{ycIsAlarm}</if>
-            <if test="so2AvgValue != null  and so2AvgValue != ''">and so2_avg_value = #{so2AvgValue}</if>
-            <if test="so2ZsavgValue != null  and so2ZsavgValue != ''">and so2_zsavg_value = #{so2ZsavgValue}</if>
-            <if test="so2Emissions != null  and so2Emissions != ''">and so2_emissions = #{so2Emissions}</if>
-            <if test="so2IsAlarm != null  and so2IsAlarm != ''">and so2_is_alarm = #{so2IsAlarm}</if>
-            <if test="noAvgValue != null  and noAvgValue != ''">and no_avg_value = #{noAvgValue}</if>
-            <if test="noZsavgValue != null  and noZsavgValue != ''">and no_zsavg_value = #{noZsavgValue}</if>
-            <if test="noEmissions != null  and noEmissions != ''">and no_emissions = #{noEmissions}</if>
-            <if test="noSiAlarm != null  and noSiAlarm != ''">and no_si_alarm = #{noSiAlarm}</if>
-            <if test="oxygenContent != null  and oxygenContent != ''">and oxygen_content = #{oxygenContent}</if>
-            <if test="yqTemperature != null  and yqTemperature != ''">and yq_temperature = #{yqTemperature}</if>
-            <if test="yqHumidity != null  and yqHumidity != ''">and yq_humidity = #{yqHumidity}</if>
-            <if test="yqPressure != null  and yqPressure != ''">and yq_pressure = #{yqPressure}</if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
         </where>
+        order by monitor_time desc
     </select>
 
     <select id="selectTDataGasoutDayStatisticsById" parameterType="Long" resultMap="TDataGasoutDayStatisticsResult">
@@ -259,5 +245,40 @@
         </where>
     </select>
 
+    <!--废气排口-分钟统计数据列表-->
+    <select id="selectTDataGasoutMinuteOrRealStatisticsList" parameterType="TDataGasoutDayStatistics"
+            resultMap="TDataGasoutDayStatisticsResult">
+        SELECT ent_code,ent_name,out_put_code,out_put_name,monitor_time,update_time,
+        SUM(IF(pollutant_name_cn='烟尘',rtd_value,0)) as yc_avg_value,
+        SUM(IF(pollutant_name_cn='烟尘',zs_avg_value,0)) as yc_zsavg_value,
+        SUM(IF(pollutant_name_cn='烟尘',cou_value,0)) as yc_emissions,
+        SUM(IF(pollutant_name_cn='二氧化硫',rtd_value,0)) as so2_avg_value,
+        SUM(IF(pollutant_name_cn='二氧化硫',zs_avg_value,0)) as so2_zsavg_value,
+        SUM(IF(pollutant_name_cn='二氧化硫',cou_value,0)) as so2_emissions,
+        SUM(IF(pollutant_name_cn='氮氧化物',rtd_value,0)) as no_avg_value,
+        SUM(IF(pollutant_name_cn='氮氧化物',zs_avg_value,0)) as no_zsavg_value,
+        SUM(IF(pollutant_name_cn='氮氧化物',cou_value,0)) as no_emissions,
+        SUM(IF(pollutant_name_cn='氧气含量',rtd_value,0)) as oxygen_content,
+        SUM(IF(pollutant_name_cn='烟气温度',rtd_value,0)) as yq_temperature,
+        SUM(IF(pollutant_name_cn='烟气湿度',rtd_value,0)) as yq_humidity,
+        SUM(IF(pollutant_name_cn='烟气压力',rtd_value,0)) as yq_pressure,
+        SUM(IF(pollutant_name_cn='废气流量',avg_value,0)) as volume_avg_flow,
+        SUM(IF(pollutant_name_cn='废气流量',cou_value,0)) as volume_total_flow,
+        SUM(IF(pollutant_name_cn='烟气流速',rtd_value,0)) as velocity_flow
+        from ${params.tableName}
+        <where>
+            <!-- 非预警状态 -->
+            <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
+            <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%') </if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+        GROUP BY ent_code,ent_name,out_put_code,out_put_name,monitor_time,update_time
+        order by monitor_time desc
+    </select>
 
 </mapper>

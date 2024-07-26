@@ -73,28 +73,14 @@
             <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
             <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')
             </if>
-            <if test="monitorTime != null ">and monitor_time = #{monitorTime}</if>
-            <if test="volumeAvgFlow != null  and volumeAvgFlow != ''">and volume_avg_flow = #{volumeAvgFlow}</if>
-            <if test="volumeTotalFlow != null  and volumeTotalFlow != ''">and volume_total_flow = #{volumeTotalFlow}
-            </if>
-            <if test="velocityFlow != null  and velocityFlow != ''">and velocity_flow = #{velocityFlow}</if>
-            <if test="ycAvgValue != null  and ycAvgValue != ''">and yc_avg_value = #{ycAvgValue}</if>
-            <if test="ycZsavgValue != null  and ycZsavgValue != ''">and yc_zsavg_value = #{ycZsavgValue}</if>
-            <if test="ycEmissions != null  and ycEmissions != ''">and yc_emissions = #{ycEmissions}</if>
-            <if test="ycIsAlarm != null  and ycIsAlarm != ''">and yc_is_alarm = #{ycIsAlarm}</if>
-            <if test="so2AvgValue != null  and so2AvgValue != ''">and so2_avg_value = #{so2AvgValue}</if>
-            <if test="so2ZsavgValue != null  and so2ZsavgValue != ''">and so2_zsavg_value = #{so2ZsavgValue}</if>
-            <if test="so2Emissions != null  and so2Emissions != ''">and so2_emissions = #{so2Emissions}</if>
-            <if test="so2IsAlarm != null  and so2IsAlarm != ''">and so2_is_alarm = #{so2IsAlarm}</if>
-            <if test="noAvgValue != null  and noAvgValue != ''">and no_avg_value = #{noAvgValue}</if>
-            <if test="noZsavgValue != null  and noZsavgValue != ''">and no_zsavg_value = #{noZsavgValue}</if>
-            <if test="noEmissions != null  and noEmissions != ''">and no_emissions = #{noEmissions}</if>
-            <if test="noSiAlarm != null  and noSiAlarm != ''">and no_si_alarm = #{noSiAlarm}</if>
-            <if test="oxygenContent != null  and oxygenContent != ''">and oxygen_content = #{oxygenContent}</if>
-            <if test="yqTemperature != null  and yqTemperature != ''">and yq_temperature = #{yqTemperature}</if>
-            <if test="yqHumidity != null  and yqHumidity != ''">and yq_humidity = #{yqHumidity}</if>
-            <if test="yqPressure != null  and yqPressure != ''">and yq_pressure = #{yqPressure}</if>
+            <!-- 开始时间检索 -->
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')</if>
+            <!-- 结束时间检索 -->
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')</if>
         </where>
+        order by monitor_time desc
     </select>
 
     <select id="selectTDataGasoutHourStatisticsById" parameterType="Long" resultMap="TDataGasoutHourStatisticsResult">
