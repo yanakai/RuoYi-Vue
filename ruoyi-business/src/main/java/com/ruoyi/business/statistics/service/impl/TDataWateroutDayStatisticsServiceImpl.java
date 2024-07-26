@@ -127,4 +127,11 @@ public class TDataWateroutDayStatisticsServiceImpl implements ITDataWateroutDayS
         BeanUtil.copyProperties(tDataWateroutDayStatisticsDTO, tDataWateroutDayStatistics);
         return tDataWateroutDayStatisticsMapper.selectTDataWateroutYearStatisticsList(tDataWateroutDayStatistics);
     }
+
+    @Override
+    public List<TDataWateroutDayStatistics> selectTDataWateroutMinuteOrRealStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO) {
+        TDataWateroutDayStatistics tDataWateroutDayStatistics = new TDataWateroutDayStatistics();
+        BeanUtil.copyProperties(tDataWateroutDayStatisticsDTO, tDataWateroutDayStatistics);
+        return tDataWateroutDayStatisticsMapper.selectTDataWateroutMinuteOrRealStatisticsList(tDataWateroutDayStatistics);
+    }
 }

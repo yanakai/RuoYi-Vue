@@ -84,4 +84,7 @@ public interface ITDataWateroutDayStatisticsService {
      */
     List<TDataWateroutDayStatistics> selectTDataWateroutYearStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO);
 
+
+    List<TDataWateroutDayStatistics> selectTDataWateroutMinuteOrRealStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO);
+
 }

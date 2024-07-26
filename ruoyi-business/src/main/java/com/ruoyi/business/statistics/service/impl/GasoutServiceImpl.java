@@ -1,7 +1,6 @@
 package com.ruoyi.business.statistics.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageInfo;
@@ -17,11 +16,13 @@ import com.ruoyi.business.statistics.service.ITDataGasoutHourStatisticsService;
 import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.PageUtils;
+import com.ruoyi.common.utils.poi.ExcelUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,6 +93,56 @@ public class GasoutServiceImpl implements IGasoutService {
         }
 
         return getDataTable(new ArrayList<>());
+    }
+
+    @Override
+    public void export(HttpServletResponse response,GasoutDTO gasoutDTO) {
+        if (gasoutDTO.getDataEnum().name().equals("hour")) {
+            TDataGasoutHourStatistics tDataGasoutHourStatistics = new TDataGasoutHourStatistics();
+            BeanUtil.copyProperties(gasoutDTO, tDataGasoutHourStatistics);
+            List<TDataGasoutHourStatistics> list = tDataGasoutHourStatisticsService.selectTDataGasoutHourStatisticsList(tDataGasoutHourStatistics);
+            ExcelUtil<TDataGasoutHourStatistics> util = new ExcelUtil<>(TDataGasoutHourStatistics.class);
+            util.exportExcel(response, list, "废气排口在线监测导出");
+        } else if (gasoutDTO.getDataEnum().name().equals("day")) {
+            TDataGasoutDayStatistics tDataGasoutDayStatistics = new TDataGasoutDayStatistics();
+            BeanUtil.copyProperties(gasoutDTO, tDataGasoutDayStatistics);
+            List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutDayStatisticsList(tDataGasoutDayStatistics);
+            ExcelUtil<TDataGasoutDayStatistics> util = new ExcelUtil<>(TDataGasoutDayStatistics.class);
+            util.exportExcel(response, list, "废气排口在线监测导出");
+        } else if (gasoutDTO.getDataEnum().name().equals("month")) {
+            TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO = new TDataGasoutStatisticsDTO();
+            BeanUtil.copyProperties(gasoutDTO, tDataGasoutStatisticsDTO);
+            List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutMonthStatisticsList(tDataGasoutStatisticsDTO);
+            ExcelUtil<TDataGasoutDayStatistics> util = new ExcelUtil<>(TDataGasoutDayStatistics.class);
+            util.exportExcel(response, list, "废气排口在线监测导出");
+        } else if (gasoutDTO.getDataEnum().name().equals("year")) {
+            TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO = new TDataGasoutStatisticsDTO();
+            BeanUtil.copyProperties(gasoutDTO, tDataGasoutStatisticsDTO);
+            PageUtils.startPage();
+            List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutYearStatisticsList(tDataGasoutStatisticsDTO);
+        } else if (gasoutDTO.getDataEnum().name().equals("real")) {
+            String tableNameReal = getTableName("t_data_gasout_real_",gasoutDTO);
+            if(StrUtil.isNotBlank(tableNameReal)){
+                TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO = new TDataGasoutStatisticsDTO();
+                BeanUtil.copyProperties(gasoutDTO, tDataGasoutStatisticsDTO);
+                tDataGasoutStatisticsDTO.getParams().put("tableName",tableNameReal);
+                PageUtils.startPage();
+                List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutMinuteOrRealStatisticsList(tDataGasoutStatisticsDTO);
+                ExcelUtil<TDataGasoutDayStatistics> util = new ExcelUtil<>(TDataGasoutDayStatistics.class);
+                util.exportExcel(response, list, "废气排口在线监测导出");
+            }
+        } else if (gasoutDTO.getDataEnum().name().equals("minute")) {
+            String tableNameMin = getTableName("t_data_gasout_minute_",gasoutDTO);
+            if(StrUtil.isNotBlank(tableNameMin)){
+                TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO = new TDataGasoutStatisticsDTO();
+                BeanUtil.copyProperties(gasoutDTO, tDataGasoutStatisticsDTO);
+                tDataGasoutStatisticsDTO.getParams().put("tableName",tableNameMin);
+                PageUtils.startPage();
+                List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutMinuteOrRealStatisticsList(tDataGasoutStatisticsDTO);
+                ExcelUtil<TDataGasoutDayStatistics> util = new ExcelUtil<>(TDataGasoutDayStatistics.class);
+                util.exportExcel(response, list, "废气排口在线监测导出");
+            }
+        }
     }
 
     private String getTableName(String tableName,GasoutDTO gasoutDTO){

@@ -1,6 +1,8 @@
 package com.ruoyi.business.onlineMonitoring.controller;
 
+import cn.hutool.poi.excel.ExcelUtil;
 import com.ruoyi.business.onlineMonitoring.dto.GasoutDTO;
+import com.ruoyi.business.statistics.domain.TDataGasoutDayStatistics;
 import com.ruoyi.business.statistics.service.IGasoutService;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 废气排口在线监测 Controller
@@ -39,10 +42,6 @@ public class GasoutController extends BaseController {
     @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/list")
     public TableDataInfo list(GasoutDTO gasoutDTO) {
-//        startPage();
-//        List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutMonthStatisticsList(tDataGasoutStatisticsDTO);
-//        return getDataTable(list);
-
         return gasoutService.selectDataList(gasoutDTO);
     }
 
@@ -54,6 +53,7 @@ public class GasoutController extends BaseController {
     @Log(title = "废气排口在线监测导出", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, GasoutDTO gasoutDTO) {
+        gasoutService.export(response,gasoutDTO);
 //        List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutMonthStatisticsList(tDataGasoutStatisticsDTO);
 //        ExcelUtil<TDataGasoutDayStatistics> util = new ExcelUtil<TDataGasoutDayStatistics>(TDataGasoutDayStatistics.class);
 //        util.exportExcel(response, list, "废气排口在线监测导出");

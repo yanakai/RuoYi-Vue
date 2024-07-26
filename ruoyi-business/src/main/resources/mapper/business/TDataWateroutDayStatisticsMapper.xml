@@ -212,8 +212,6 @@
             resultMap="TDataWateroutDayStatisticsResult">
         <include refid="selectTDataWateroutDayStatisticsVo"/>
         <where>
-            <!--非预警-->
-            <!-- ph_is_alarm = 0 and an_is_alarm = 0 and cod_is_alarm = 0 and no_is_alarm = 0 and tp_is_alarm = 0 and tn_is_alarm = 0 -->
             <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
             <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')</if>
             <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
@@ -244,8 +242,6 @@
             resultMap="TDataWateroutDayStatisticsResult">
         <include refid="selectTDataWateroutDayStatisticsVo"/>
         <where>
-            <!--非预警-->
---             <!-- ph_is_alarm = 0 and an_is_alarm = 0 and cod_is_alarm = 0 and no_is_alarm = 0 and tp_is_alarm = 0 and tn_is_alarm = 0 -->
             <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
             <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')</if>
             <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
@@ -257,4 +253,33 @@
         </where>
     </select>
 
+    <!-- 废水排口-分钟和实时统计数据列表 -->
+    <select id="selectTDataWateroutMinuteOrRealStatisticsList" parameterType="TDataWateroutDayStatistics"
+            resultMap="TDataWateroutDayStatisticsResult">
+        SELECT ent_code,ent_name,out_put_code,out_put_name,monitor_time,update_time,
+        SUM(IF(pollutant_name_cn='pH值 ',rtd_value,0)) as ph_value,
+        SUM(IF(pollutant_name_cn='氨氮',avg_value,0)) as an_avg_value,
+        SUM(IF(pollutant_name_cn='氨氮',cou_value,0)) as an_emissions,
+        SUM(IF(pollutant_name_cn='化学需氧量',rtd_value,0)) as cod_avg_value,
+        SUM(IF(pollutant_name_cn='化学需氧量',cou_value,0)) as cod_emissions,
+        SUM(IF(pollutant_name_cn='总氮',rtd_value,0)) as tn_avg_value,
+        SUM(IF(pollutant_name_cn='总氮',cou_value,0)) as tn_emissions,
+        SUM(IF(pollutant_name_cn='总磷',rtd_value,0)) as tp_avg_value,
+        SUM(IF(pollutant_name_cn='总磷',cou_value,0)) as tp_emissions,
+        SUM(IF(pollutant_name_cn='污水流量',avg_value,0)) as volume_avg_flow,
+        SUM(IF(pollutant_name_cn='污水流量',cou_value,0)) as volume_total_flow
+        from ${params.tableName}
+        <where>
+            <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
+            <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and monitor_time &gt;= #{params.beginTime}
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and monitor_time &lt;= #{params.endTime}
+            </if>
+        </where>
+        GROUP BY ent_code,ent_name,out_put_code,out_put_name,monitor_time,update_time
+        order by  monitor_time desc
+    </select>
 </mapper>

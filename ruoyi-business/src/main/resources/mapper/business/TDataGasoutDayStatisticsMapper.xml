@@ -271,10 +271,10 @@
             <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
             <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%') </if>
             <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-                and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+                and monitor_time &gt;= #{params.beginTime}
             </if>
             <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-                and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+                and monitor_time &lt;= #{params.endTime}
             </if>
         </where>
         GROUP BY ent_code,ent_name,out_put_code,out_put_name,monitor_time,update_time

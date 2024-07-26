@@ -87,7 +87,7 @@ public interface ITDataGasoutDayStatisticsService {
     /**
      * 查询废气排口--分钟或实时统计数据列表
      *
-     * @param tDataGasoutDayStatistics 废气排口--分钟或实时统计数据
+     * @param tDataGasoutStatisticsDTO 废气排口--分钟或实时统计数据
      * @return 废气排口--分钟或实时统计数据集合
      */
     List<TDataGasoutDayStatistics> selectTDataGasoutMinuteOrRealStatisticsList(TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO);

@@ -82,4 +82,7 @@ public interface TDataWateroutDayStatisticsMapper {
      * @return 废水排口--年统计数据
      */
     List<TDataWateroutDayStatistics> selectTDataWateroutYearStatisticsList(TDataWateroutDayStatistics tDataWateroutDayStatistics);
+
+    List<TDataWateroutDayStatistics> selectTDataWateroutMinuteOrRealStatisticsList(TDataWateroutDayStatistics tDataWateroutDayStatistics);
+
 }

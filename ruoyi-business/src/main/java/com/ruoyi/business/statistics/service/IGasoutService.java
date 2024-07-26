@@ -3,6 +3,8 @@ package com.ruoyi.business.statistics.service;
 import com.ruoyi.business.onlineMonitoring.dto.GasoutDTO;
 import com.ruoyi.common.core.page.TableDataInfo;
 
+import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * 废气排口--监测数据Service接口
@@ -20,5 +22,6 @@ public interface IGasoutService {
      */
     TableDataInfo selectDataList(GasoutDTO gasoutDTO);
 
+    void export(HttpServletResponse response, GasoutDTO gasoutDTO);
 
 }

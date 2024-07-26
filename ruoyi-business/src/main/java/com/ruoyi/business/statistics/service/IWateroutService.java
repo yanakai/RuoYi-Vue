@@ -3,6 +3,8 @@ package com.ruoyi.business.statistics.service;
 import com.ruoyi.business.onlineMonitoring.dto.WateroutDTO;
 import com.ruoyi.common.core.page.TableDataInfo;
 
+import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * 废水排口--监测数据Service接口
@@ -20,5 +22,5 @@ public interface IWateroutService {
      */
     TableDataInfo selectDataList(WateroutDTO wateroutDTO);
 
-
+    void export(HttpServletResponse response, WateroutDTO wateroutDTO);
 }
