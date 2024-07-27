@@ -6,11 +6,13 @@ import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.ruoyi.business.base.domain.VOutPutInfo;
 import com.ruoyi.business.base.mapper.VOutPutInfoMapper;
+import com.ruoyi.business.statisticsAlarm.domain.VOutPutDayStatistics;
 import com.ruoyi.business.statisticsAlarm.domain.VOutPutHourStatistics;
+import com.ruoyi.business.statisticsAlarm.dto.AlarmEmissionsDto;
 import com.ruoyi.business.statisticsAlarm.dto.DataMissingDto;
+import com.ruoyi.business.statisticsAlarm.mapper.VOutPutDayStatisticsMapper;
 import com.ruoyi.business.statisticsAlarm.mapper.VOutPutHourStatisticsMapper;
 import com.ruoyi.business.statisticsAlarm.service.IVOutPutHourStatisticsService;
-import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,8 @@ public class VOutPutHourStatisticsServiceImpl implements IVOutPutHourStatisticsS
     private VOutPutHourStatisticsMapper vOutPutHourStatisticsMapper;
     @Resource
     private VOutPutInfoMapper vOutPutInfoMapper;
+    @Resource
+    private VOutPutDayStatisticsMapper vOutPutDayStatisticsMapper;
 
 
 
@@ -92,6 +96,11 @@ public class VOutPutHourStatisticsServiceImpl implements IVOutPutHourStatisticsS
             dataMissingDto.setParams(MapUtil.builder("sqlStr", (Object) sqlStr).build());
         }
         return vOutPutHourStatisticsMapper.selectDataMissingList(dataMissingDto);
+    }
+
+    @Override
+    public List<AlarmEmissionsDto> selectAlarmEmissionsDtoList(VOutPutDayStatistics vOutPutDayStatistics) {
+        return vOutPutDayStatisticsMapper.selectAlarmExceptionDtoList(vOutPutDayStatistics);
     }
 
 

@@ -8,6 +8,7 @@ import com.ruoyi.business.statistics.dto.TDataGasoutStatisticsDTO;
 import com.ruoyi.business.statistics.service.ITDataGasoutDayStatisticsService;
 import com.ruoyi.business.statisticsAlarm.domain.TDataGasoutControlHour;
 import com.ruoyi.business.statisticsAlarm.domain.TDataWateroutControlHour;
+import com.ruoyi.business.statisticsAlarm.domain.VOutPutDayStatistics;
 import com.ruoyi.business.statisticsAlarm.domain.VOutPutHourStatistics;
 import com.ruoyi.business.statisticsAlarm.dto.*;
 import com.ruoyi.business.statisticsAlarm.service.IStatisticsAlarmService;
@@ -92,27 +93,26 @@ public class StatisticsAlarmController extends BaseController {
     /**
      * 排放量报警
      */
-    @Deprecated
     @ApiOperation("排放量报警")
     @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/alarm/emissions")
-    public TableDataInfo emissionList(DataEmissionDto dataEmissionDto) {
+    public TableDataInfo emissionList(VOutPutDayStatistics vOutPutDayStatistics) {
         startPage();
-        return getDataTable(new ArrayList<>());
+        List<AlarmEmissionsDto> list = vOutPutHourStatisticsService.selectAlarmEmissionsDtoList(vOutPutDayStatistics);
+        return getDataTable(list);
     }
 
     /**
      * 排放量报警导出
      */
-    @Deprecated
     @ApiOperation("排放量报警导出")
     @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
     @Log(title = "排放量报警导出", businessType = BusinessType.EXPORT)
     @PostMapping("/alarm/emission/export")
-    public void emissionExport(HttpServletResponse response, DataEmissionDto dataEmissionDto) {
-        VOutPutHourStatistics vOutPutHourStatistics = new VOutPutHourStatistics();
-        ExcelUtil<DataEmissionDto> util = new ExcelUtil<>(DataEmissionDto.class);
-        util.exportExcel(response, new ArrayList<>(), "排放量报警导出");
+    public void emissionExport(HttpServletResponse response, VOutPutDayStatistics vOutPutDayStatistics) {
+        List<AlarmEmissionsDto> list = vOutPutHourStatisticsService.selectAlarmEmissionsDtoList(vOutPutDayStatistics);
+        ExcelUtil<AlarmEmissionsDto> util = new ExcelUtil<>(AlarmEmissionsDto.class);
+        util.exportExcel(response, list, "排放量报警导出");
     }
 
     /**

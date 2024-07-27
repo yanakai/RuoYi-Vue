@@ -1,6 +1,8 @@
 package com.ruoyi.business.statisticsAlarm.service;
 
+import com.ruoyi.business.statisticsAlarm.domain.VOutPutDayStatistics;
 import com.ruoyi.business.statisticsAlarm.domain.VOutPutHourStatistics;
+import com.ruoyi.business.statisticsAlarm.dto.AlarmEmissionsDto;
 import com.ruoyi.business.statisticsAlarm.dto.DataMissingDto;
 
 import java.util.List;
@@ -36,4 +38,6 @@ public interface IVOutPutHourStatisticsService {
     List<VOutPutHourStatistics> selectVOutPutHourEmissionsList(VOutPutHourStatistics vOutPutHourStatistics);
 
     List<DataMissingDto> selectDataMissingList(DataMissingDto dataMissingDto);
+
+    List<AlarmEmissionsDto>  selectAlarmEmissionsDtoList(VOutPutDayStatistics vOutPutDayStatistics);
 }
