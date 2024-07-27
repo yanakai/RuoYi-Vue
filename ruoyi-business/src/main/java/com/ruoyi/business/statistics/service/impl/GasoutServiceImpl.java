@@ -3,6 +3,7 @@ package com.ruoyi.business.statistics.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.business.base.domain.VOutPutInfo;
@@ -76,7 +77,11 @@ public class GasoutServiceImpl implements IGasoutService {
             if(StrUtil.isNotBlank(tableNameReal)){
                 TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO = new TDataGasoutStatisticsDTO();
                 BeanUtil.copyProperties(gasoutDTO, tDataGasoutStatisticsDTO);
-                tDataGasoutStatisticsDTO.getParams().put("tableName",tableNameReal);
+                if(ObjUtil.isEmpty(tDataGasoutStatisticsDTO.getParams())){
+                    tDataGasoutStatisticsDTO.setParams(MapUtil.builder("tableName", (Object) tableNameReal).build());
+                }else{
+                    tDataGasoutStatisticsDTO.getParams().put("tableName",tableNameReal);
+                }
                 PageUtils.startPage();
                 List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutMinuteOrRealStatisticsList(tDataGasoutStatisticsDTO);
                 return getDataTable(list);
@@ -86,7 +91,11 @@ public class GasoutServiceImpl implements IGasoutService {
             if(StrUtil.isNotBlank(tableNameMin)){
                 TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO = new TDataGasoutStatisticsDTO();
                 BeanUtil.copyProperties(gasoutDTO, tDataGasoutStatisticsDTO);
-                tDataGasoutStatisticsDTO.getParams().put("tableName",tableNameMin);
+                if(ObjUtil.isEmpty(tDataGasoutStatisticsDTO.getParams())){
+                    tDataGasoutStatisticsDTO.setParams(MapUtil.builder("tableName", (Object) tableNameMin).build());
+                }else{
+                    tDataGasoutStatisticsDTO.getParams().put("tableName",tableNameMin);
+                }
                 PageUtils.startPage();
                 List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutMinuteOrRealStatisticsList(tDataGasoutStatisticsDTO);
                 return getDataTable(list);
@@ -95,7 +104,6 @@ public class GasoutServiceImpl implements IGasoutService {
 
         return getDataTable(new ArrayList<>());
     }
-
     @Override
     public void export(HttpServletResponse response,GasoutDTO gasoutDTO) {
         if (gasoutDTO.getDataEnum().name().equals("hour")) {

@@ -1,7 +1,9 @@
 package com.ruoyi.business.statistics.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.business.base.domain.VOutPutInfo;
@@ -71,8 +73,13 @@ public class WateroutServiceImpl implements IWateroutService {
             String tableNameReal = getTableName("t_data_waterout_real_",wateroutDTO);
             if(StrUtil.isNotBlank(tableNameReal)){
                 TDataWateroutStatisticsDTO tDataWateroutStatisticsDTO = new TDataWateroutStatisticsDTO();
+
                 BeanUtil.copyProperties(wateroutDTO, tDataWateroutStatisticsDTO);
-                tDataWateroutStatisticsDTO.getParams().put("tableName",tableNameReal);
+                if(ObjUtil.isEmpty(tDataWateroutStatisticsDTO.getParams())){
+                    tDataWateroutStatisticsDTO.setParams(MapUtil.builder("tableName", (Object) tableNameReal).build());
+                }else{
+                    tDataWateroutStatisticsDTO.getParams().put("tableName",tableNameReal);
+                }
                 PageUtils.startPage();
                 List<TDataWateroutDayStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutMinuteOrRealStatisticsList(tDataWateroutStatisticsDTO);
                 return getDataTable(list);
@@ -82,7 +89,11 @@ public class WateroutServiceImpl implements IWateroutService {
             if(StrUtil.isNotBlank(tableNameMinute)){
                 TDataWateroutStatisticsDTO tDataWateroutStatisticsDTO = new TDataWateroutStatisticsDTO();
                 BeanUtil.copyProperties(wateroutDTO, tDataWateroutStatisticsDTO);
-                tDataWateroutStatisticsDTO.getParams().put("tableName",tableNameMinute);
+                if(ObjUtil.isEmpty(tDataWateroutStatisticsDTO.getParams())){
+                    tDataWateroutStatisticsDTO.setParams(MapUtil.builder("tableName", (Object) tableNameMinute).build());
+                }else{
+                    tDataWateroutStatisticsDTO.getParams().put("tableName",tableNameMinute);
+                }
                 PageUtils.startPage();
                 List<TDataWateroutDayStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutMinuteOrRealStatisticsList(tDataWateroutStatisticsDTO);
                 return getDataTable(list);
@@ -91,7 +102,6 @@ public class WateroutServiceImpl implements IWateroutService {
 
         return getDataTable(null);
     }
-
     @Override
     public void export(HttpServletResponse response, WateroutDTO wateroutDTO) {
         if (wateroutDTO.getDataEnum().name().equals("hour")) {
