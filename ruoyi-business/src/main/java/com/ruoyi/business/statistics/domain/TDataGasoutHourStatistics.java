@@ -49,8 +49,8 @@ public class TDataGasoutHourStatistics extends BaseEntity {
     /**
      * 数据监测时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "数据监测时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH")
+    @Excel(name = "数据监测时间", width = 30, dateFormat = "yyyy-MM-dd HH")
     private Date monitorTime;
 
     /**

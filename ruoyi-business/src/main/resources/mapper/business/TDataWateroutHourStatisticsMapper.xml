@@ -95,6 +95,7 @@
             <if test="tnEmissions != null  and tnEmissions != ''">and tn_emissions = #{tnEmissions}</if>
             <if test="tnIsAlarm != null  and tnIsAlarm != ''">and tn_is_alarm = #{tnIsAlarm}</if>
         </where>
+        order by monitor_time desc
     </select>
 
     <select id="selectTDataWateroutHourStatisticsById" parameterType="Long"

@@ -78,15 +78,15 @@
                     and date_format(monitor_time,'%y%m%d %H:%i:%s') &gt;= date_format(#{params.beginTime},'%y%m%d %H:%i:%s')
                 </when>
                 <otherwise>
-                    and date_format(monitor_time,'%y%m%d %H:%i:%s') &gt;= date_format(now(),'%y%m%d')
+                    and date_format(monitor_time,'%y%m%d %H:%i:%s') &gt;= date_format(adddate(now(),-1),'%y%m%d')
                 </otherwise>
             </choose>
             <choose>
                 <when test="params.endTime != null and params.endTime != ''">
-                    and date_format(monitor_time,'%y%m%d %H:%i:%s') &gt;= date_format(#{params.endTime},'%y%m%d %H:%i:%s')
+                    and date_format(monitor_time,'%y%m%d %H:%i:%s') &lt;= date_format(#{params.endTime},'%y%m%d %H:%i:%s')
                 </when>
                 <otherwise>
-                    and date_format(monitor_time,'%y%m%d %H:%i:%s') &gt;= date_format(now(),'%y%m%d')
+                    and date_format(monitor_time,'%y%m%d %H:%i:%s') &lt;= date_format(adddate(now(),1),'%y%m%d')
                 </otherwise>
             </choose>
         </where>
@@ -219,6 +219,7 @@
                 and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
             </if>
         </where>
+        order by monitor_time desc
     </select>
 
     <!--废气排口-季度统计数据列表-->
@@ -236,6 +237,7 @@
                 and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
             </if>
         </where>
+        order by monitor_time desc
     </select>
 
     <!--废气排口-年统计数据列表-->
@@ -253,6 +255,7 @@
                 and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
             </if>
         </where>
+        order by monitor_time desc
     </select>
 
     <!--废气排口-分钟统计数据列表-->
