@@ -1,6 +1,7 @@
 package com.ruoyi.business.statistics.dto;
 
 import com.ruoyi.business.common.BaseDto;
+import com.ruoyi.business.onlineMonitoring.dto.DataEnum;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
@@ -26,6 +27,8 @@ public class TDataWateroutStatisticsDTO extends BaseDto {
      */
     @ApiParam(name = "outPutName", value = "排口名称")
     private String outPutName;
+
+    private DataEnum dataEnum;
 
 
 }
