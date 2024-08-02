@@ -3,6 +3,7 @@ package com.ruoyi.business.statistics.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -14,6 +15,7 @@ import java.util.Date;
  * @author lx
  * @date 2024-07-08
  */
+@Data
 public class TDataGasoutMonthStatistics extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -51,7 +53,7 @@ public class TDataGasoutMonthStatistics extends BaseEntity {
      */
     @JsonFormat(pattern = "yyyy-MM")
     @Excel(name = "数据监测时间", width = 30, dateFormat = "yyyy-MM")
-    private Date monitorTime;
+    private String monitorTime;
 
     /**
      * 废气流量均值
@@ -207,195 +209,4 @@ public class TDataGasoutMonthStatistics extends BaseEntity {
         this.outPutName = outPutName;
     }
 
-    public Date getMonitorTime() {
-        return monitorTime;
-    }
-
-    public void setMonitorTime(Date monitorTime) {
-        this.monitorTime = monitorTime;
-    }
-
-    public String getVolumeAvgFlow() {
-        return volumeAvgFlow;
-    }
-
-    public void setVolumeAvgFlow(String volumeAvgFlow) {
-        this.volumeAvgFlow = volumeAvgFlow;
-    }
-
-    public String getVolumeTotalFlow() {
-        return volumeTotalFlow;
-    }
-
-    public void setVolumeTotalFlow(String volumeTotalFlow) {
-        this.volumeTotalFlow = volumeTotalFlow;
-    }
-
-    public String getVelocityFlow() {
-        return velocityFlow;
-    }
-
-    public void setVelocityFlow(String velocityFlow) {
-        this.velocityFlow = velocityFlow;
-    }
-
-    public String getYcAvgValue() {
-        return ycAvgValue;
-    }
-
-    public void setYcAvgValue(String ycAvgValue) {
-        this.ycAvgValue = ycAvgValue;
-    }
-
-    public String getYcZsavgValue() {
-        return ycZsavgValue;
-    }
-
-    public void setYcZsavgValue(String ycZsavgValue) {
-        this.ycZsavgValue = ycZsavgValue;
-    }
-
-    public String getYcEmissions() {
-        return ycEmissions;
-    }
-
-    public void setYcEmissions(String ycEmissions) {
-        this.ycEmissions = ycEmissions;
-    }
-
-    public String getYcIsAlarm() {
-        return ycIsAlarm;
-    }
-
-    public void setYcIsAlarm(String ycIsAlarm) {
-        this.ycIsAlarm = ycIsAlarm;
-    }
-
-    public String getSo2AvgValue() {
-        return so2AvgValue;
-    }
-
-    public void setSo2AvgValue(String so2AvgValue) {
-        this.so2AvgValue = so2AvgValue;
-    }
-
-    public String getSo2ZsavgValue() {
-        return so2ZsavgValue;
-    }
-
-    public void setSo2ZsavgValue(String so2ZsavgValue) {
-        this.so2ZsavgValue = so2ZsavgValue;
-    }
-
-    public String getSo2Emissions() {
-        return so2Emissions;
-    }
-
-    public void setSo2Emissions(String so2Emissions) {
-        this.so2Emissions = so2Emissions;
-    }
-
-    public String getSo2IsAlarm() {
-        return so2IsAlarm;
-    }
-
-    public void setSo2IsAlarm(String so2IsAlarm) {
-        this.so2IsAlarm = so2IsAlarm;
-    }
-
-    public String getNoAvgValue() {
-        return noAvgValue;
-    }
-
-    public void setNoAvgValue(String noAvgValue) {
-        this.noAvgValue = noAvgValue;
-    }
-
-    public String getNoZsavgValue() {
-        return noZsavgValue;
-    }
-
-    public void setNoZsavgValue(String noZsavgValue) {
-        this.noZsavgValue = noZsavgValue;
-    }
-
-    public String getNoEmissions() {
-        return noEmissions;
-    }
-
-    public void setNoEmissions(String noEmissions) {
-        this.noEmissions = noEmissions;
-    }
-
-    public String getNoSiAlarm() {
-        return noSiAlarm;
-    }
-
-    public void setNoSiAlarm(String noSiAlarm) {
-        this.noSiAlarm = noSiAlarm;
-    }
-
-    public String getOxygenContent() {
-        return oxygenContent;
-    }
-
-    public void setOxygenContent(String oxygenContent) {
-        this.oxygenContent = oxygenContent;
-    }
-
-    public String getYqTemperature() {
-        return yqTemperature;
-    }
-
-    public void setYqTemperature(String yqTemperature) {
-        this.yqTemperature = yqTemperature;
-    }
-
-    public String getYqHumidity() {
-        return yqHumidity;
-    }
-
-    public void setYqHumidity(String yqHumidity) {
-        this.yqHumidity = yqHumidity;
-    }
-
-    public String getYqPressure() {
-        return yqPressure;
-    }
-
-    public void setYqPressure(String yqPressure) {
-        this.yqPressure = yqPressure;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("id", getId())
-                .append("entCode", getEntCode())
-                .append("entName", getEntName())
-                .append("outPutCode", getOutPutCode())
-                .append("outPutName", getOutPutName())
-                .append("monitorTime", getMonitorTime())
-                .append("updateTime", getUpdateTime())
-                .append("volumeAvgFlow", getVolumeAvgFlow())
-                .append("volumeTotalFlow", getVolumeTotalFlow())
-                .append("velocityFlow", getVelocityFlow())
-                .append("ycAvgValue", getYcAvgValue())
-                .append("ycZsavgValue", getYcZsavgValue())
-                .append("ycEmissions", getYcEmissions())
-                .append("ycIsAlarm", getYcIsAlarm())
-                .append("so2AvgValue", getSo2AvgValue())
-                .append("so2ZsavgValue", getSo2ZsavgValue())
-                .append("so2Emissions", getSo2Emissions())
-                .append("so2IsAlarm", getSo2IsAlarm())
-                .append("noAvgValue", getNoAvgValue())
-                .append("noZsavgValue", getNoZsavgValue())
-                .append("noEmissions", getNoEmissions())
-                .append("noSiAlarm", getNoSiAlarm())
-                .append("oxygenContent", getOxygenContent())
-                .append("yqTemperature", getYqTemperature())
-                .append("yqHumidity", getYqHumidity())
-                .append("yqPressure", getYqPressure())
-                .toString();
-    }
 }

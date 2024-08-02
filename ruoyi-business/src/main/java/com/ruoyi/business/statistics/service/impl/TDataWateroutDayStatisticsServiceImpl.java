@@ -2,7 +2,10 @@ package com.ruoyi.business.statistics.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.ruoyi.business.statistics.domain.TDataWateroutDayStatistics;
+import com.ruoyi.business.statistics.dto.TDataWateroutMonthStatistics;
+import com.ruoyi.business.statistics.dto.TDataWateroutRealOrMinuteStatistics;
 import com.ruoyi.business.statistics.dto.TDataWateroutStatisticsDTO;
+import com.ruoyi.business.statistics.dto.TDataWateroutYearStatistics;
 import com.ruoyi.business.statistics.mapper.TDataWateroutDayStatisticsMapper;
 import com.ruoyi.business.statistics.service.ITDataWateroutDayStatisticsService;
 import com.ruoyi.common.utils.DateUtils;
@@ -96,7 +99,7 @@ public class TDataWateroutDayStatisticsServiceImpl implements ITDataWateroutDayS
      * @return 废水排口--月统计数据
      */
     @Override
-    public List<TDataWateroutDayStatistics> selectTDataWateroutMonthStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO) {
+    public List<TDataWateroutMonthStatistics> selectTDataWateroutMonthStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO) {
         TDataWateroutDayStatistics tDataWateroutDayStatistics = new TDataWateroutDayStatistics();
         BeanUtil.copyProperties(tDataWateroutDayStatisticsDTO, tDataWateroutDayStatistics);
         return tDataWateroutDayStatisticsMapper.selectTDataWateroutMonthStatisticsList(tDataWateroutDayStatistics);
@@ -122,14 +125,14 @@ public class TDataWateroutDayStatisticsServiceImpl implements ITDataWateroutDayS
      * @return 废水排口--年统计数据
      */
     @Override
-    public List<TDataWateroutDayStatistics> selectTDataWateroutYearStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO) {
+    public List<TDataWateroutYearStatistics> selectTDataWateroutYearStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO) {
         TDataWateroutDayStatistics tDataWateroutDayStatistics = new TDataWateroutDayStatistics();
         BeanUtil.copyProperties(tDataWateroutDayStatisticsDTO, tDataWateroutDayStatistics);
         return tDataWateroutDayStatisticsMapper.selectTDataWateroutYearStatisticsList(tDataWateroutDayStatistics);
     }
 
     @Override
-    public List<TDataWateroutDayStatistics> selectTDataWateroutMinuteOrRealStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO) {
+    public List<TDataWateroutRealOrMinuteStatistics> selectTDataWateroutMinuteOrRealStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO) {
         TDataWateroutDayStatistics tDataWateroutDayStatistics = new TDataWateroutDayStatistics();
         BeanUtil.copyProperties(tDataWateroutDayStatisticsDTO, tDataWateroutDayStatistics);
         return tDataWateroutDayStatisticsMapper.selectTDataWateroutMinuteOrRealStatisticsList(tDataWateroutDayStatistics);

@@ -1,7 +1,9 @@
 package com.ruoyi.business.statistics.controller;
 
 import com.ruoyi.business.statistics.domain.TDataWateroutDayStatistics;
+import com.ruoyi.business.statistics.dto.TDataWateroutMonthStatistics;
 import com.ruoyi.business.statistics.dto.TDataWateroutStatisticsDTO;
+import com.ruoyi.business.statistics.dto.TDataWateroutYearStatistics;
 import com.ruoyi.business.statistics.service.ITDataWateroutDayStatisticsService;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
@@ -43,7 +45,7 @@ public class TDataWateroutStatisticsController extends BaseController {
     @GetMapping("/monthList")
     public TableDataInfo monthList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO) {
         startPage();
-        List<TDataWateroutDayStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutMonthStatisticsList(tDataWateroutDayStatisticsDTO);
+        List<TDataWateroutMonthStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutMonthStatisticsList(tDataWateroutDayStatisticsDTO);
         return getDataTable(list);
     }
 
@@ -55,8 +57,8 @@ public class TDataWateroutStatisticsController extends BaseController {
     @Log(title = "废水排口--日报统计数据", businessType = BusinessType.EXPORT)
     @PostMapping("/month/export")
     public void monthExport(HttpServletResponse response, TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO) {
-        List<TDataWateroutDayStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutMonthStatisticsList(tDataWateroutDayStatisticsDTO);
-        ExcelUtil<TDataWateroutDayStatistics> util = new ExcelUtil<TDataWateroutDayStatistics>(TDataWateroutDayStatistics.class);
+        List<TDataWateroutMonthStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutMonthStatisticsList(tDataWateroutDayStatisticsDTO);
+        ExcelUtil<TDataWateroutMonthStatistics> util = new ExcelUtil<TDataWateroutMonthStatistics>(TDataWateroutMonthStatistics.class);
         util.exportExcel(response, list, "废水排口--日报统计数据数据");
     }
 
@@ -93,7 +95,7 @@ public class TDataWateroutStatisticsController extends BaseController {
     @GetMapping("/yearList")
     public TableDataInfo yearList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO) {
         startPage();
-        List<TDataWateroutDayStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutYearStatisticsList(tDataWateroutDayStatisticsDTO);
+        List<TDataWateroutYearStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutYearStatisticsList(tDataWateroutDayStatisticsDTO);
         return getDataTable(list);
     }
 
@@ -105,8 +107,8 @@ public class TDataWateroutStatisticsController extends BaseController {
     @Log(title = "废水排口--年统计数据", businessType = BusinessType.EXPORT)
     @PostMapping("/year/export")
     public void yearExport(HttpServletResponse response, TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO) {
-        List<TDataWateroutDayStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutYearStatisticsList(tDataWateroutDayStatisticsDTO);
-        ExcelUtil<TDataWateroutDayStatistics> util = new ExcelUtil<TDataWateroutDayStatistics>(TDataWateroutDayStatistics.class);
+        List<TDataWateroutYearStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutYearStatisticsList(tDataWateroutDayStatisticsDTO);
+        ExcelUtil<TDataWateroutYearStatistics> util = new ExcelUtil<TDataWateroutYearStatistics>(TDataWateroutYearStatistics.class);
         util.exportExcel(response, list, "废水排口--年统计数据数据");
     }
 }

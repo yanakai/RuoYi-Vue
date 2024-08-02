@@ -33,6 +33,34 @@
         <result property="tnIsAlarm" column="tn_is_alarm"/>
     </resultMap>
 
+    <resultMap type="com.ruoyi.business.statistics.dto.TDataWateroutMonthStatistics" id="TDataWateroutMonthStatisticsResult">
+        <result property="id" column="id"/>
+        <result property="entCode" column="ent_code"/>
+        <result property="entName" column="ent_name"/>
+        <result property="outPutCode" column="out_put_code"/>
+        <result property="outPutName" column="out_put_name"/>
+        <result property="monitorTime" column="monitor_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="volumeAvgFlow" column="volume_avg_flow"/>
+        <result property="volumeTotalFlow" column="volume_total_flow"/>
+        <result property="phValue" column="ph_value"/>
+        <result property="phIsAlarm" column="ph_is_alarm"/>
+        <result property="anAvgValue" column="an_avg_value"/>
+        <result property="anEmissions" column="an_emissions"/>
+        <result property="anIsAlarm" column="an_is_alarm"/>
+        <result property="codAvgValue" column="cod_avg_value"/>
+        <result property="codEmissions" column="cod_emissions"/>
+        <result property="codIsAlarm" column="cod_is_alarm"/>
+        <result property="noAvgValue" column="no_avg_value"/>
+        <result property="noEmissions" column="no_emissions"/>
+        <result property="noIsAlarm" column="no_is_alarm"/>
+        <result property="tpAvgValue" column="tp_avg_value"/>
+        <result property="tpEmissions" column="tp_emissions"/>
+        <result property="tpIsAlarm" column="tp_is_alarm"/>
+        <result property="tnAvgValue" column="tn_avg_value"/>
+        <result property="tnEmissions" column="tn_emissions"/>
+        <result property="tnIsAlarm" column="tn_is_alarm"/>
+    </resultMap>
     <sql id="selectTDataWateroutDayStatisticsVo">
         select id,
                ent_code,
@@ -67,8 +95,6 @@
             resultMap="TDataWateroutDayStatisticsResult">
         <include refid="selectTDataWateroutDayStatisticsVo"/>
         <where>
-            <!--非预警-->
-            <!-- ph_is_alarm = 0 and an_is_alarm = 0 and cod_is_alarm = 0 and no_is_alarm = 0 and tp_is_alarm = 0 and tn_is_alarm = 0 -->
             <if test="entCode != null  and entCode != ''">and ent_code = #{entCode}</if>
             <if test="entName != null  and entName != ''">and ent_name like concat('%', #{entName}, '%')</if>
             <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
@@ -205,24 +231,83 @@
 
     <!-- 废水排口-月统计数据列表 -->
     <select id="selectTDataWateroutMonthStatisticsList" parameterType="TDataWateroutDayStatistics"
-            resultMap="TDataWateroutDayStatisticsResult">
-        <include refid="selectTDataWateroutDayStatisticsVo"/>
+            resultMap="TDataWateroutMonthStatisticsResult">
+        select  date_format(monitor_time,'%Y-%m') monitor_time,
+        ent_code,
+        ent_name,
+        out_put_code,
+        out_put_name,
+        SUM(volume_avg_flow),
+        SUM(volume_total_flow),
+        SUM(ph_value),
+        SUM(ph_is_alarm),
+        SUM(an_avg_value),
+        SUM(an_emissions),
+        SUM(an_is_alarm),
+        SUM(cod_avg_value),
+        SUM(cod_emissions),
+        SUM(cod_is_alarm),
+        SUM(no_avg_value),
+        SUM(no_emissions),
+        SUM(no_is_alarm),
+        SUM(tp_avg_value),
+        SUM(tp_emissions),
+        SUM(tp_is_alarm),
+        SUM(tn_avg_value),
+        SUM(tn_emissions),
+        SUM(tn_is_alarm)
+        from t_data_waterout_day_statistics
         <where>
             <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
             <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')</if>
-            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-                and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
-            </if>
-            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-                and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
-            </if>
+            <choose>
+                <when test="params.beginTime != null and params.beginTime != ''">
+                    and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+                </when>
+                <otherwise>
+                    and date_format(monitor_time,'%y%m') &gt;= date_format(now(),'%y%m')
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="params.endTime != null and params.endTime != ''">
+                    and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+                </when>
+                <otherwise>
+                    and date_format(monitor_time,'%y%m') &lt;= date_format(now(),'%y%m')
+                </otherwise>
+            </choose>
         </where>
+        GROUP BY date_format(monitor_time,'%Y-%m'),ent_code, ent_name,out_put_code,out_put_name
         order by monitor_time desc
     </select>
     <!-- 废水排口-季度统计数据列表 -->
     <select id="selectTDataWateroutQuarterStatisticsList" parameterType="TDataWateroutDayStatistics"
             resultMap="TDataWateroutDayStatisticsResult">
-        <include refid="selectTDataWateroutDayStatisticsVo"/>
+        select  date_format(monitor_time,'%Y') monitor_time,
+        ent_code,
+        ent_name,
+        out_put_code,
+        out_put_name,
+        SUM(volume_avg_flow),
+        SUM(volume_total_flow),
+        SUM(ph_value),
+        SUM(ph_is_alarm),
+        SUM(an_avg_value),
+        SUM(an_emissions),
+        SUM(an_is_alarm),
+        SUM(cod_avg_value),
+        SUM(cod_emissions),
+        SUM(cod_is_alarm),
+        SUM(no_avg_value),
+        SUM(no_emissions),
+        SUM(no_is_alarm),
+        SUM(tp_avg_value),
+        SUM(tp_emissions),
+        SUM(tp_is_alarm),
+        SUM(tn_avg_value),
+        SUM(tn_emissions),
+        SUM(tn_is_alarm)
+        from t_data_waterout_day_statistics
         <where>
             <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
             <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')</if>
@@ -233,22 +318,58 @@
                 and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
             </if>
         </where>
+        GROUP BY date_format(monitor_time,'%Y'),ent_code, ent_name,out_put_code,out_put_name
         order by monitor_time desc
     </select>
     <!-- 废水排口-年度统计数据列表 -->
     <select id="selectTDataWateroutYearStatisticsList" parameterType="TDataWateroutDayStatistics"
             resultMap="TDataWateroutDayStatisticsResult">
-        <include refid="selectTDataWateroutDayStatisticsVo"/>
+        select  date_format(monitor_time,'%Y') monitor_time,
+        ent_code,
+        ent_name,
+        out_put_code,
+        out_put_name,
+        SUM(volume_avg_flow),
+        SUM(volume_total_flow),
+        SUM(ph_value),
+        SUM(ph_is_alarm),
+        SUM(an_avg_value),
+        SUM(an_emissions),
+        SUM(an_is_alarm),
+        SUM(cod_avg_value),
+        SUM(cod_emissions),
+        SUM(cod_is_alarm),
+        SUM(no_avg_value),
+        SUM(no_emissions),
+        SUM(no_is_alarm),
+        SUM(tp_avg_value),
+        SUM(tp_emissions),
+        SUM(tp_is_alarm),
+        SUM(tn_avg_value),
+        SUM(tn_emissions),
+        SUM(tn_is_alarm)
+        from t_data_waterout_day_statistics
         <where>
             <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
             <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')</if>
-            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-                and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
-            </if>
-            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-                and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
-            </if>
+            <choose>
+                <when test="params.beginTime != null and params.beginTime != ''">
+                    and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+                </when>
+                <otherwise>
+                    and date_format(monitor_time,'%y') &gt;= date_format(now(),'%y')
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="params.endTime != null and params.endTime != ''">
+                    and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+                </when>
+                <otherwise>
+                    and date_format(monitor_time,'%y') &lt;= date_format(now(),'%y')
+                </otherwise>
+            </choose>
         </where>
+        GROUP BY date_format(monitor_time,'%Y'),ent_code, ent_name,out_put_code,out_put_name
         order by monitor_time desc
     </select>
 

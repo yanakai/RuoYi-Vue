@@ -29,7 +29,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -77,12 +79,17 @@ public class GasoutServiceImpl implements IGasoutService {
             List<TDataGasoutYearStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutYearStatisticsList(tDataGasoutStatisticsDTO);
             return getDataTable(list);
         }else if (StrUtil.equalsAny(dataEnumName, true,"real", "minute")){
+            Map<String, Object> params = gasoutDTO.getParams();
             //实时或者分钟数据需要查询原始表
             String tableName = getTableName(gasoutDTO);
             if(StrUtil.isNotBlank(tableName)){
                 TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO = new TDataGasoutStatisticsDTO();
                 BeanUtil.copyProperties(gasoutDTO, tDataGasoutStatisticsDTO);
-                tDataGasoutStatisticsDTO.getParams().put("tableName",tableName);
+                if(MapUtil.isEmpty(params)){
+                    params = new HashMap<>();
+                }
+                params.put("tableName",tableName);
+                tDataGasoutStatisticsDTO.setParams(params);
                 PageUtils.startPage();
                 List<TDataGasoutRealOrMinuteStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutMinuteOrRealStatisticsList(tDataGasoutStatisticsDTO);
                 return getDataTable(list);

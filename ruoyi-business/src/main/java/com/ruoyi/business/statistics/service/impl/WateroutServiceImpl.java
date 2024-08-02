@@ -11,7 +11,7 @@ import com.ruoyi.business.base.mapper.VOutPutInfoMapper;
 import com.ruoyi.business.onlineMonitoring.dto.WateroutDTO;
 import com.ruoyi.business.statistics.domain.TDataWateroutDayStatistics;
 import com.ruoyi.business.statistics.domain.TDataWateroutHourStatistics;
-import com.ruoyi.business.statistics.dto.TDataWateroutStatisticsDTO;
+import com.ruoyi.business.statistics.dto.*;
 import com.ruoyi.business.statistics.service.ITDataWateroutDayStatisticsService;
 import com.ruoyi.business.statistics.service.ITDataWateroutHourStatisticsService;
 import com.ruoyi.business.statistics.service.IWateroutService;
@@ -25,7 +25,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -45,57 +47,45 @@ public class WateroutServiceImpl implements IWateroutService {
     @Override
     public TableDataInfo selectDataList(WateroutDTO wateroutDTO) {
         log.info("查询废水排口--在线监测数据列表:{}", wateroutDTO);
-        if (wateroutDTO.getDataEnum().name().equals("hour")) {
+        String dataEnumName = wateroutDTO.getDataEnum().name();
+        if (StrUtil.equals(dataEnumName,"hour")) {
             TDataWateroutHourStatistics tDataWateroutHourStatistics = new TDataWateroutHourStatistics();
             BeanUtil.copyProperties(wateroutDTO, tDataWateroutHourStatistics);
             PageUtils.startPage();
             List<TDataWateroutHourStatistics> list = tDataWateroutHourStatisticsService.selectTDataWateroutHourStatisticsList(tDataWateroutHourStatistics);
             return getDataTable(list);
-        } else if (wateroutDTO.getDataEnum().name().equals("day")) {
+        } else if (StrUtil.equals(dataEnumName,"day")) {
             TDataWateroutDayStatistics tDataWateroutDayStatistics = new TDataWateroutDayStatistics();
             BeanUtil.copyProperties(wateroutDTO, tDataWateroutDayStatistics);
             PageUtils.startPage();
             List<TDataWateroutDayStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutDayStatisticsList(tDataWateroutDayStatistics);
             return getDataTable(list);
-        } else if (wateroutDTO.getDataEnum().name().equals("month")) {
+        } else if (StrUtil.equals(dataEnumName,"month")) {
             TDataWateroutStatisticsDTO tDataWateroutStatisticsDTO = new TDataWateroutStatisticsDTO();
             BeanUtil.copyProperties(wateroutDTO, tDataWateroutStatisticsDTO);
             PageUtils.startPage();
-            List<TDataWateroutDayStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutMonthStatisticsList(tDataWateroutStatisticsDTO);
+            List<TDataWateroutMonthStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutMonthStatisticsList(tDataWateroutStatisticsDTO);
             return getDataTable(list);
-        } else if (wateroutDTO.getDataEnum().name().equals("year")) {
+        } else if (StrUtil.equals(dataEnumName,"year")) {
             TDataWateroutStatisticsDTO tDataWateroutStatisticsDTO = new TDataWateroutStatisticsDTO();
             BeanUtil.copyProperties(wateroutDTO, tDataWateroutStatisticsDTO);
             PageUtils.startPage();
-            List<TDataWateroutDayStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutYearStatisticsList(tDataWateroutStatisticsDTO);
+            List<TDataWateroutYearStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutYearStatisticsList(tDataWateroutStatisticsDTO);
             return getDataTable(list);
-        } else if (wateroutDTO.getDataEnum().name().equals("real")) {
-            String tableNameReal = getTableName("t_data_waterout_real_",wateroutDTO);
-            if(StrUtil.isNotBlank(tableNameReal)){
-                TDataWateroutStatisticsDTO tDataWateroutStatisticsDTO = new TDataWateroutStatisticsDTO();
-
-                BeanUtil.copyProperties(wateroutDTO, tDataWateroutStatisticsDTO);
-                if(ObjUtil.isEmpty(tDataWateroutStatisticsDTO.getParams())){
-                    tDataWateroutStatisticsDTO.setParams(MapUtil.builder("tableName", (Object) tableNameReal).build());
-                }else{
-                    tDataWateroutStatisticsDTO.getParams().put("tableName",tableNameReal);
-                }
-                PageUtils.startPage();
-                List<TDataWateroutDayStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutMinuteOrRealStatisticsList(tDataWateroutStatisticsDTO);
-                return getDataTable(list);
-            }
-        } else if (wateroutDTO.getDataEnum().name().equals("minute")) {
-            String tableNameMinute = getTableName("t_data_waterout_minute_",wateroutDTO);
-            if(StrUtil.isNotBlank(tableNameMinute)){
+        }else if (StrUtil.equalsAny(dataEnumName, true,"real", "minute")){
+            Map<String, Object> params = wateroutDTO.getParams();
+            //实时或者分钟数据需要查询原始表
+            String tableName = getTableName(wateroutDTO);
+            if(StrUtil.isNotBlank(tableName)){
                 TDataWateroutStatisticsDTO tDataWateroutStatisticsDTO = new TDataWateroutStatisticsDTO();
                 BeanUtil.copyProperties(wateroutDTO, tDataWateroutStatisticsDTO);
-                if(ObjUtil.isEmpty(tDataWateroutStatisticsDTO.getParams())){
-                    tDataWateroutStatisticsDTO.setParams(MapUtil.builder("tableName", (Object) tableNameMinute).build());
-                }else{
-                    tDataWateroutStatisticsDTO.getParams().put("tableName",tableNameMinute);
-                }
                 PageUtils.startPage();
-                List<TDataWateroutDayStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutMinuteOrRealStatisticsList(tDataWateroutStatisticsDTO);
+                if(MapUtil.isEmpty(params)){
+                    params = new HashMap<>();
+                }
+                params.put("tableName",tableName);
+                tDataWateroutStatisticsDTO.setParams(params);
+                List<TDataWateroutRealOrMinuteStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutMinuteOrRealStatisticsList(tDataWateroutStatisticsDTO);
                 return getDataTable(list);
             }
         }
@@ -104,53 +94,73 @@ public class WateroutServiceImpl implements IWateroutService {
     }
     @Override
     public void export(HttpServletResponse response, WateroutDTO wateroutDTO) {
-        if (wateroutDTO.getDataEnum().name().equals("hour")) {
+        String dataEnumName = wateroutDTO.getDataEnum().name();
+        if (StrUtil.equals(dataEnumName,"hour")) {
             TDataWateroutHourStatistics tDataWateroutHourStatistics = new TDataWateroutHourStatistics();
             BeanUtil.copyProperties(wateroutDTO, tDataWateroutHourStatistics);
+            PageUtils.startPage();
             List<TDataWateroutHourStatistics> list = tDataWateroutHourStatisticsService.selectTDataWateroutHourStatisticsList(tDataWateroutHourStatistics);
             ExcelUtil<TDataWateroutHourStatistics> util = new ExcelUtil<>(TDataWateroutHourStatistics.class);
             util.exportExcel(response, list, "废水排口在线监测导出");
-        } else if (wateroutDTO.getDataEnum().name().equals("day")) {
+        } else if (StrUtil.equals(dataEnumName,"day")) {
             TDataWateroutDayStatistics tDataWateroutDayStatistics = new TDataWateroutDayStatistics();
             BeanUtil.copyProperties(wateroutDTO, tDataWateroutDayStatistics);
+            PageUtils.startPage();
             List<TDataWateroutDayStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutDayStatisticsList(tDataWateroutDayStatistics);
             ExcelUtil<TDataWateroutDayStatistics> util = new ExcelUtil<>(TDataWateroutDayStatistics.class);
             util.exportExcel(response, list, "废水排口在线监测导出");
-        } else if (wateroutDTO.getDataEnum().name().equals("month")) {
+        } else if (StrUtil.equals(dataEnumName,"month")) {
             TDataWateroutStatisticsDTO tDataWateroutStatisticsDTO = new TDataWateroutStatisticsDTO();
             BeanUtil.copyProperties(wateroutDTO, tDataWateroutStatisticsDTO);
-            List<TDataWateroutDayStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutMonthStatisticsList(tDataWateroutStatisticsDTO);
-            ExcelUtil<TDataWateroutDayStatistics> util = new ExcelUtil<>(TDataWateroutDayStatistics.class);
+            PageUtils.startPage();
+            List<TDataWateroutMonthStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutMonthStatisticsList(tDataWateroutStatisticsDTO);
+            ExcelUtil<TDataWateroutMonthStatistics> util = new ExcelUtil<>(TDataWateroutMonthStatistics.class);
             util.exportExcel(response, list, "废水排口在线监测导出");
-        } else if (wateroutDTO.getDataEnum().name().equals("year")) {
+        } else if (StrUtil.equals(dataEnumName,"year")) {
             TDataWateroutStatisticsDTO tDataWateroutStatisticsDTO = new TDataWateroutStatisticsDTO();
             BeanUtil.copyProperties(wateroutDTO, tDataWateroutStatisticsDTO);
-            List<TDataWateroutDayStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutYearStatisticsList(tDataWateroutStatisticsDTO);
-            ExcelUtil<TDataWateroutDayStatistics> util = new ExcelUtil<>(TDataWateroutDayStatistics.class);
+            PageUtils.startPage();
+            List<TDataWateroutYearStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutYearStatisticsList(tDataWateroutStatisticsDTO);
+            ExcelUtil<TDataWateroutYearStatistics> util = new ExcelUtil<>(TDataWateroutYearStatistics.class);
             util.exportExcel(response, list, "废水排口在线监测导出");
-        } else if (wateroutDTO.getDataEnum().name().equals("real")) {
-            String tableNameReal = getTableName("t_data_waterout_real_",wateroutDTO);
-            if(StrUtil.isNotBlank(tableNameReal)){
+        }else if (StrUtil.equalsAny(dataEnumName, true,"real", "minute")){
+            //实时或者分钟数据需要查询原始表
+            String tableName = getTableName(wateroutDTO);
+            if(StrUtil.isNotBlank(tableName)){
                 TDataWateroutStatisticsDTO tDataWateroutStatisticsDTO = new TDataWateroutStatisticsDTO();
                 BeanUtil.copyProperties(wateroutDTO, tDataWateroutStatisticsDTO);
-                tDataWateroutStatisticsDTO.getParams().put("tableName",tableNameReal);
-                List<TDataWateroutDayStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutMinuteOrRealStatisticsList(tDataWateroutStatisticsDTO);
-                ExcelUtil<TDataWateroutDayStatistics> util = new ExcelUtil<>(TDataWateroutDayStatistics.class);
-                util.exportExcel(response, list, "废水排口在线监测导出");
-            }
-        } else if (wateroutDTO.getDataEnum().name().equals("minute")) {
-            String tableNameMinute = getTableName("t_data_waterout_minute_",wateroutDTO);
-            if(StrUtil.isNotBlank(tableNameMinute)){
-                TDataWateroutStatisticsDTO tDataWateroutStatisticsDTO = new TDataWateroutStatisticsDTO();
-                BeanUtil.copyProperties(wateroutDTO, tDataWateroutStatisticsDTO);
-                tDataWateroutStatisticsDTO.getParams().put("tableName",tableNameMinute);
-                List<TDataWateroutDayStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutMinuteOrRealStatisticsList(tDataWateroutStatisticsDTO);
-                ExcelUtil<TDataWateroutDayStatistics> util = new ExcelUtil<>(TDataWateroutDayStatistics.class);
+                PageUtils.startPage();
+                tDataWateroutStatisticsDTO.getParams().put("tableName",tableName);
+                List<TDataWateroutRealOrMinuteStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutMinuteOrRealStatisticsList(tDataWateroutStatisticsDTO);
+                ExcelUtil<TDataWateroutRealOrMinuteStatistics> util = new ExcelUtil<>(TDataWateroutRealOrMinuteStatistics.class);
                 util.exportExcel(response, list, "废水排口在线监测导出");
             }
         }
     }
 
+
+    private String getTableName(WateroutDTO wateroutDTO){
+        if(StrUtil.isNotBlank(wateroutDTO.getOutPutCode())){
+            String dataEnumName = wateroutDTO.getDataEnum().name();
+            String tableName = "";
+            if(StrUtil.equals(dataEnumName,"real")){
+                tableName = "t_data_waterout_real_";
+            }else if (StrUtil.equals(dataEnumName,"minute")){
+                tableName = "t_data_waterout_minute_";
+            }
+            //获取排口信息
+            VOutPutInfo vOutPutInfo = new VOutPutInfo();
+            vOutPutInfo.setOutPutCode(wateroutDTO.getOutPutCode());
+            List<VOutPutInfo> list = vOutPutInfoMapper.selectVOutPutInfoList(vOutPutInfo);
+            if(ArrayUtil.isNotEmpty(list)){
+                vOutPutInfo = list.get(0);
+                tableName = tableName+vOutPutInfo.getMnNum();
+            }
+            return tableName;
+        }else{
+            return null;
+        }
+    }
     private String getTableName(String tableName, WateroutDTO wateroutDTO){
         if(StrUtil.isNotBlank(wateroutDTO.getOutPutCode())){
             //获取排口信息

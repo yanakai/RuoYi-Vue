@@ -1,7 +1,10 @@
 package com.ruoyi.business.statistics.service;
 
 import com.ruoyi.business.statistics.domain.TDataWateroutDayStatistics;
+import com.ruoyi.business.statistics.dto.TDataWateroutMonthStatistics;
+import com.ruoyi.business.statistics.dto.TDataWateroutRealOrMinuteStatistics;
 import com.ruoyi.business.statistics.dto.TDataWateroutStatisticsDTO;
+import com.ruoyi.business.statistics.dto.TDataWateroutYearStatistics;
 
 import java.util.List;
 
@@ -66,7 +69,7 @@ public interface ITDataWateroutDayStatisticsService {
      * @param tDataWateroutDayStatisticsDTO 废水排口--月统计数据
      * @return 废水排口--月统计数据
      */
-    List<TDataWateroutDayStatistics> selectTDataWateroutMonthStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO);
+    List<TDataWateroutMonthStatistics> selectTDataWateroutMonthStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO);
 
     /**
      * 查询废水排口--季度统计数据
@@ -82,9 +85,9 @@ public interface ITDataWateroutDayStatisticsService {
      * @param tDataWateroutDayStatisticsDTO 废水排口--年统计数据
      * @return 废水排口--年统计数据
      */
-    List<TDataWateroutDayStatistics> selectTDataWateroutYearStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO);
+    List<TDataWateroutYearStatistics> selectTDataWateroutYearStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO);
 
 
-    List<TDataWateroutDayStatistics> selectTDataWateroutMinuteOrRealStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO);
+    List<TDataWateroutRealOrMinuteStatistics> selectTDataWateroutMinuteOrRealStatisticsList(TDataWateroutStatisticsDTO tDataWateroutDayStatisticsDTO);
 
 }

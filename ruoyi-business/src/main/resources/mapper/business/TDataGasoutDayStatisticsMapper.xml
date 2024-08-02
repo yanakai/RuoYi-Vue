@@ -33,6 +33,35 @@
         <result property="yqPressure" column="yq_pressure"/>
     </resultMap>
 
+    <resultMap type="com.ruoyi.business.statistics.dto.TDataGasoutMonthStatistics" id="TDataGasoutMonthStatisticsResult">
+        <result property="id" column="id"/>
+        <result property="entCode" column="ent_code"/>
+        <result property="entName" column="ent_name"/>
+        <result property="outPutCode" column="out_put_code"/>
+        <result property="outPutName" column="out_put_name"/>
+        <result property="monitorTime" column="monitor_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="volumeAvgFlow" column="volume_avg_flow"/>
+        <result property="volumeTotalFlow" column="volume_total_flow"/>
+        <result property="velocityFlow" column="velocity_flow"/>
+        <result property="ycAvgValue" column="yc_avg_value"/>
+        <result property="ycZsavgValue" column="yc_zsavg_value"/>
+        <result property="ycEmissions" column="yc_emissions"/>
+        <result property="ycIsAlarm" column="yc_is_alarm"/>
+        <result property="so2AvgValue" column="so2_avg_value"/>
+        <result property="so2ZsavgValue" column="so2_zsavg_value"/>
+        <result property="so2Emissions" column="so2_emissions"/>
+        <result property="so2IsAlarm" column="so2_is_alarm"/>
+        <result property="noAvgValue" column="no_avg_value"/>
+        <result property="noZsavgValue" column="no_zsavg_value"/>
+        <result property="noEmissions" column="no_emissions"/>
+        <result property="noSiAlarm" column="no_si_alarm"/>
+        <result property="oxygenContent" column="oxygen_content"/>
+        <result property="yqTemperature" column="yq_temperature"/>
+        <result property="yqHumidity" column="yq_humidity"/>
+        <result property="yqPressure" column="yq_pressure"/>
+    </resultMap>
+
     <sql id="selectTDataGasoutDayStatisticsVo">
         select id,
                ent_code,
@@ -205,7 +234,7 @@
 
     <!--废气排口-月统计数据列表-->
     <select id="selectTDataGasoutMonthStatisticsList" parameterType="TDataGasoutDayStatistics"
-            resultMap="TDataGasoutDayStatisticsResult">
+            resultMap="TDataGasoutMonthStatisticsResult">
         select date_format(monitor_time,'%Y-%m') monitor_time,
         ent_code,
         ent_name,
@@ -276,7 +305,7 @@
 
     <!--废气排口-年统计数据列表-->
     <select id="selectTDataGasoutYearStatisticsList" parameterType="TDataGasoutDayStatistics"
-            resultMap="TDataGasoutDayStatisticsResult">
+            resultMap="TDataGasoutMonthStatisticsResult">
         select date_format(monitor_time,'%Y') monitor_time,
         ent_code,
         ent_name,
@@ -329,24 +358,44 @@
 
     <!--废气排口-分钟统计数据列表-->
     <select id="selectTDataGasoutMinuteOrRealStatisticsList" parameterType="TDataGasoutDayStatistics"
-            resultMap="TDataGasoutDayStatisticsResult">
+            resultMap="TDataGasoutMonthStatisticsResult">
         SELECT ent_code,ent_name,out_put_code,out_put_name,monitor_time,update_time,
-        SUM(IF(pollutant_name_cn='烟尘',rtd_value,0)) as yc_avg_value,
-        SUM(IF(pollutant_name_cn='烟尘',zs_avg_value,0)) as yc_zsavg_value,
-        SUM(IF(pollutant_name_cn='烟尘',cou_value,0)) as yc_emissions,
-        SUM(IF(pollutant_name_cn='二氧化硫',rtd_value,0)) as so2_avg_value,
-        SUM(IF(pollutant_name_cn='二氧化硫',zs_avg_value,0)) as so2_zsavg_value,
-        SUM(IF(pollutant_name_cn='二氧化硫',cou_value,0)) as so2_emissions,
-        SUM(IF(pollutant_name_cn='氮氧化物',rtd_value,0)) as no_avg_value,
-        SUM(IF(pollutant_name_cn='氮氧化物',zs_avg_value,0)) as no_zsavg_value,
-        SUM(IF(pollutant_name_cn='氮氧化物',cou_value,0)) as no_emissions,
-        SUM(IF(pollutant_name_cn='氧气含量',rtd_value,0)) as oxygen_content,
-        SUM(IF(pollutant_name_cn='烟气温度',rtd_value,0)) as yq_temperature,
-        SUM(IF(pollutant_name_cn='烟气湿度',rtd_value,0)) as yq_humidity,
-        SUM(IF(pollutant_name_cn='烟气压力',rtd_value,0)) as yq_pressure,
-        SUM(IF(pollutant_name_cn='废气流量',avg_value,0)) as volume_avg_flow,
-        SUM(IF(pollutant_name_cn='废气流量',cou_value,0)) as volume_total_flow,
-        SUM(IF(pollutant_name_cn='烟气流速',rtd_value,0)) as velocity_flow
+        <if test="dataEnum.name == 'real'">
+            SUM(IF(pollutant_name_cn='烟尘',rtd_value,0)) as yc_avg_value,
+            SUM(IF(pollutant_name_cn='烟尘',zs_avg_value,0)) as yc_zsavg_value,
+            SUM(IF(pollutant_name_cn='烟尘',cou_value,0)) as yc_emissions,
+            SUM(IF(pollutant_name_cn='二氧化硫',rtd_value,0)) as so2_avg_value,
+            SUM(IF(pollutant_name_cn='二氧化硫',zs_avg_value,0)) as so2_zsavg_value,
+            SUM(IF(pollutant_name_cn='二氧化硫',cou_value,0)) as so2_emissions,
+            SUM(IF(pollutant_name_cn='氮氧化物',rtd_value,0)) as no_avg_value,
+            SUM(IF(pollutant_name_cn='氮氧化物',zs_avg_value,0)) as no_zsavg_value,
+            SUM(IF(pollutant_name_cn='氮氧化物',cou_value,0)) as no_emissions,
+            SUM(IF(pollutant_name_cn='氧气含量',rtd_value,0)) as oxygen_content,
+            SUM(IF(pollutant_name_cn='烟气温度',rtd_value,0)) as yq_temperature,
+            SUM(IF(pollutant_name_cn='烟气湿度',rtd_value,0)) as yq_humidity,
+            SUM(IF(pollutant_name_cn='烟气压力',rtd_value,0)) as yq_pressure,
+            SUM(IF(pollutant_name_cn='废气流量',avg_value,0)) as volume_avg_flow,
+            SUM(IF(pollutant_name_cn='废气流量',cou_value,0)) as volume_total_flow,
+            SUM(IF(pollutant_name_cn='烟气流速',rtd_value,0)) as velocity_flow
+        </if>
+        <if test="dataEnum.name == 'minute'">
+            SUM(IF(pollutant_name_cn='烟尘',avg_value,0)) as yc_avg_value,
+            SUM(IF(pollutant_name_cn='烟尘',zs_avg_value,0)) as yc_zsavg_value,
+            SUM(IF(pollutant_name_cn='烟尘',cou_value,0)) as yc_emissions,
+            SUM(IF(pollutant_name_cn='二氧化硫',avg_value,0)) as so2_avg_value,
+            SUM(IF(pollutant_name_cn='二氧化硫',zs_avg_value,0)) as so2_zsavg_value,
+            SUM(IF(pollutant_name_cn='二氧化硫',cou_value,0)) as so2_emissions,
+            SUM(IF(pollutant_name_cn='氮氧化物',avg_value,0)) as no_avg_value,
+            SUM(IF(pollutant_name_cn='氮氧化物',zs_avg_value,0)) as no_zsavg_value,
+            SUM(IF(pollutant_name_cn='氮氧化物',cou_value,0)) as no_emissions,
+            SUM(IF(pollutant_name_cn='氧气含量',avg_value,0)) as oxygen_content,
+            SUM(IF(pollutant_name_cn='烟气温度',avg_value,0)) as yq_temperature,
+            SUM(IF(pollutant_name_cn='烟气湿度',avg_value,0)) as yq_humidity,
+            SUM(IF(pollutant_name_cn='烟气压力',avg_value,0)) as yq_pressure,
+            SUM(IF(pollutant_name_cn='废气流量',avg_value,0)) as volume_avg_flow,
+            SUM(IF(pollutant_name_cn='废气流量',cou_value,0)) as volume_total_flow,
+            SUM(IF(pollutant_name_cn='烟气流速',avg_value,0)) as velocity_flow
+        </if>
         from ${params.tableName}
         <where>
             <!-- 非预警状态 -->
