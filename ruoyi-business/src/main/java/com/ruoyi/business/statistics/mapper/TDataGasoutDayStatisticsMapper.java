@@ -1,6 +1,9 @@
 package com.ruoyi.business.statistics.mapper;
 
 import com.ruoyi.business.statistics.domain.TDataGasoutDayStatistics;
+import com.ruoyi.business.statistics.dto.TDataGasoutMonthStatistics;
+import com.ruoyi.business.statistics.dto.TDataGasoutRealOrMinuteStatistics;
+import com.ruoyi.business.statistics.dto.TDataGasoutYearStatistics;
 
 import java.util.List;
 
@@ -66,7 +69,7 @@ public interface TDataGasoutDayStatisticsMapper {
      * @param tDataGasoutDayStatistics 废气排口--月度统计数据
      * @return 废气排口--月度统计数据集合
      */
-    List<TDataGasoutDayStatistics> selectTDataGasoutMonthStatisticsList(TDataGasoutDayStatistics tDataGasoutDayStatistics);
+    List<TDataGasoutMonthStatistics> selectTDataGasoutMonthStatisticsList(TDataGasoutDayStatistics tDataGasoutDayStatistics);
 
     /**
      * 查询废气排口--季度统计数据列表
@@ -82,7 +85,7 @@ public interface TDataGasoutDayStatisticsMapper {
      * @param tDataGasoutDayStatistics 废气排口--年度统计数据
      * @return 废气排口--年度统计数据集合
      */
-    List<TDataGasoutDayStatistics> selectTDataGasoutYearStatisticsList(TDataGasoutDayStatistics tDataGasoutDayStatistics);
+    List<TDataGasoutYearStatistics> selectTDataGasoutYearStatisticsList(TDataGasoutDayStatistics tDataGasoutDayStatistics);
 
     /**
      * 查询废气排口--实时或者分钟数据列表
@@ -90,6 +93,6 @@ public interface TDataGasoutDayStatisticsMapper {
      * @param tDataGasoutDayStatistics 废气排口--实时或者分钟数据列表
      * @return 废气排口--实时或者分钟数据列表
      */
-    List<TDataGasoutDayStatistics> selectTDataGasoutMinuteOrRealStatisticsList(TDataGasoutDayStatistics tDataGasoutDayStatistics);
+    List<TDataGasoutRealOrMinuteStatistics> selectTDataGasoutMinuteOrRealStatisticsList(TDataGasoutDayStatistics tDataGasoutDayStatistics);
 
 }

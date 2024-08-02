@@ -1,4 +1,4 @@
-package com.ruoyi.business.statistics.domain;
+package com.ruoyi.business.statistics.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.annotation.Excel;
@@ -14,7 +14,7 @@ import java.util.Date;
  * @author lx
  * @date 2024-07-08
  */
-public class TDataGasoutDayStatistics extends BaseEntity {
+public class TDataGasoutYearStatistics extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -49,8 +49,8 @@ public class TDataGasoutDayStatistics extends BaseEntity {
     /**
      * 数据监测时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "数据监测时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy")
+    @Excel(name = "数据监测时间", width = 30, dateFormat = "yyyy")
     private Date monitorTime;
 
     /**

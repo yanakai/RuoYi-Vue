@@ -206,19 +206,53 @@
     <!--废气排口-月统计数据列表-->
     <select id="selectTDataGasoutMonthStatisticsList" parameterType="TDataGasoutDayStatistics"
             resultMap="TDataGasoutDayStatisticsResult">
-        <include refid="selectTDataGasoutDayStatisticsVo"/>
+        select date_format(monitor_time,'%Y-%m') monitor_time,
+        ent_code,
+        ent_name,
+        out_put_code,
+        out_put_name,
+        SUM(volume_avg_flow),
+        SUM(volume_total_flow),
+        SUM(velocity_flow),
+        SUM(yc_avg_value),
+        SUM(yc_zsavg_value),
+        SUM(yc_emissions),
+        SUM(yc_is_alarm),
+        SUM(so2_avg_value),
+        SUM(so2_zsavg_value),
+        SUM(so2_emissions),
+        SUM(so2_is_alarm),
+        SUM(no_avg_value),
+        SUM(no_zsavg_value),
+        SUM(no_emissions),
+        SUM(no_si_alarm),
+        SUM(oxygen_content),
+        SUM(yq_temperature),
+        SUM(yq_humidity),
+        SUM(yq_pressure)
+        from t_data_gasout_day_statistics
         <where>
             <!-- 非预警状态 -->
             <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
             <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%') </if>
-           <!-- <if test="params != null ">and monitor_time = #{monitorTime}</if>-->
-            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-                and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
-            </if>
-            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-                and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
-            </if>
+            <choose>
+                <when test="params.beginTime != null and params.beginTime != ''">
+                    and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+                </when>
+                <otherwise>
+                    and date_format(monitor_time,'%y%m') &gt;= date_format(now(),'%y%m')
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="params.endTime != null and params.endTime != ''">
+                    and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+                </when>
+                <otherwise>
+                    and date_format(monitor_time,'%y%m') &lt;= date_format(now(),'%y%m')
+                </otherwise>
+            </choose>
         </where>
+        GROUP BY date_format(monitor_time,'%Y-%m'),ent_code, ent_name,out_put_code,out_put_name
         order by monitor_time desc
     </select>
 
@@ -243,18 +277,53 @@
     <!--废气排口-年统计数据列表-->
     <select id="selectTDataGasoutYearStatisticsList" parameterType="TDataGasoutDayStatistics"
             resultMap="TDataGasoutDayStatisticsResult">
-        <include refid="selectTDataGasoutDayStatisticsVo"/>
+        select date_format(monitor_time,'%Y') monitor_time,
+        ent_code,
+        ent_name,
+        out_put_code,
+        out_put_name,
+        SUM(volume_avg_flow),
+        SUM(volume_total_flow),
+        SUM(velocity_flow),
+        SUM(yc_avg_value),
+        SUM(yc_zsavg_value),
+        SUM(yc_emissions),
+        SUM(yc_is_alarm),
+        SUM(so2_avg_value),
+        SUM(so2_zsavg_value),
+        SUM(so2_emissions),
+        SUM(so2_is_alarm),
+        SUM(no_avg_value),
+        SUM(no_zsavg_value),
+        SUM(no_emissions),
+        SUM(no_si_alarm),
+        SUM(oxygen_content),
+        SUM(yq_temperature),
+        SUM(yq_humidity),
+        SUM(yq_pressure)
+        from t_data_gasout_day_statistics
         <where>
             <!-- 非预警状态 -->
             <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
             <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%') </if>
-            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-                and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
-            </if>
-            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-                and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
-            </if>
+            <choose>
+                <when test="params.beginTime != null and params.beginTime != ''">
+                    and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+                </when>
+                <otherwise>
+                    and date_format(monitor_time,'%y') &gt;= date_format(now(),'%y')
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="params.endTime != null and params.endTime != ''">
+                    and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+                </when>
+                <otherwise>
+                    and date_format(monitor_time,'%y') &lt;= date_format(now(),'%y')
+                </otherwise>
+            </choose>
         </where>
+        GROUP BY date_format(monitor_time,'%Y'),ent_code, ent_name,out_put_code,out_put_name
         order by monitor_time desc
     </select>
 

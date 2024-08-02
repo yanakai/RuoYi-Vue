@@ -2,7 +2,10 @@ package com.ruoyi.business.statistics.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.ruoyi.business.statistics.domain.TDataGasoutDayStatistics;
+import com.ruoyi.business.statistics.dto.TDataGasoutMonthStatistics;
+import com.ruoyi.business.statistics.dto.TDataGasoutRealOrMinuteStatistics;
 import com.ruoyi.business.statistics.dto.TDataGasoutStatisticsDTO;
+import com.ruoyi.business.statistics.dto.TDataGasoutYearStatistics;
 import com.ruoyi.business.statistics.mapper.TDataGasoutDayStatisticsMapper;
 import com.ruoyi.business.statistics.service.ITDataGasoutDayStatisticsService;
 import com.ruoyi.common.utils.DateUtils;
@@ -96,7 +99,7 @@ public class TDataGasoutDayStatisticsServiceImpl implements ITDataGasoutDayStati
      * @return 废气排口--月度统计数据集合
      */
     @Override
-    public List<TDataGasoutDayStatistics> selectTDataGasoutMonthStatisticsList(TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
+    public List<TDataGasoutMonthStatistics> selectTDataGasoutMonthStatisticsList(TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
         TDataGasoutDayStatistics tDataGasoutDayStatistics = new TDataGasoutDayStatistics();
         BeanUtil.copyProperties(tDataGasoutStatisticsDTO, tDataGasoutDayStatistics);
         return tDataGasoutDayStatisticsMapper.selectTDataGasoutMonthStatisticsList(tDataGasoutDayStatistics);
@@ -122,7 +125,7 @@ public class TDataGasoutDayStatisticsServiceImpl implements ITDataGasoutDayStati
      * @return 废气排口--年度统计数据集合
      */
     @Override
-    public List<TDataGasoutDayStatistics> selectTDataGasoutYearStatisticsList(TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
+    public List<TDataGasoutYearStatistics> selectTDataGasoutYearStatisticsList(TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
         TDataGasoutDayStatistics tDataGasoutDayStatistics = new TDataGasoutDayStatistics();
         BeanUtil.copyProperties(tDataGasoutStatisticsDTO, tDataGasoutDayStatistics);
         return tDataGasoutDayStatisticsMapper.selectTDataGasoutYearStatisticsList(tDataGasoutDayStatistics);
@@ -131,11 +134,11 @@ public class TDataGasoutDayStatisticsServiceImpl implements ITDataGasoutDayStati
     /**
      * 查询废气排口--分钟或实时统计数据列表
      *
-     * @param tDataGasoutDayStatistics 废气排口--分钟或实时统计数据
+     * @param tDataGasoutStatisticsDTO 废气排口--分钟或实时统计数据
      * @return 废气排口--分钟或实时统计数据集合
      */
     @Override
-    public List<TDataGasoutDayStatistics> selectTDataGasoutMinuteOrRealStatisticsList(TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
+    public List<TDataGasoutRealOrMinuteStatistics> selectTDataGasoutMinuteOrRealStatisticsList(TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
         TDataGasoutDayStatistics tDataGasoutDayStatistics = new TDataGasoutDayStatistics();
         BeanUtil.copyProperties(tDataGasoutStatisticsDTO, tDataGasoutDayStatistics);
         return tDataGasoutDayStatisticsMapper.selectTDataGasoutMinuteOrRealStatisticsList(tDataGasoutDayStatistics);
