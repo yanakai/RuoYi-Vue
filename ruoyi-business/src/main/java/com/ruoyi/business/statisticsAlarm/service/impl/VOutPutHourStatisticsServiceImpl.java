@@ -105,9 +105,19 @@ public class VOutPutHourStatisticsServiceImpl implements IVOutPutHourStatisticsS
 
 
     private String getSqlStr(List<String> outPutNames, Date beginTime, Date endTime) {
+        String endTimeStr = "", beginTimeStr = "";
+        if (beginTime.after(new Date())) {
+            beginTimeStr = DateUtil.format(new Date(), "yyyy-MM-dd 00"); //开始时间大于结束时间
+        }else {
+            beginTimeStr = DateUtil.format(beginTime, "yyyy-MM-dd 00");
+        }
 
-        List<String> betweenHour = getBetweenHour(DateUtil.format(beginTime, "yyyy-MM-dd")+" 00",
-                DateUtil.format(endTime, "yyyy-MM-dd")+" 23");
+        if(endTime.before(new Date())){
+            endTimeStr = DateUtil.format(endTime, "yyyy-MM-dd 23"); //结束时间小于当前时间
+        }else {
+            endTimeStr = DateUtil.format(new Date(), "yyyy-MM-dd HH");
+        }
+        List<String> betweenHour = getBetweenHour(beginTimeStr, endTimeStr);
         String sqlStr = "";
         for (String s : betweenHour) {
             for (String str:outPutNames ) {

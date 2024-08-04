@@ -84,7 +84,7 @@
 
     <select id="selectDataMissingList" parameterType="com.ruoyi.business.statisticsAlarm.dto.DataMissingDto"
             resultMap="DataMissingDtoResult">
-        select tmp.out_put_name,date_format(tmp.tday, '%Y-%m-%d' ) monitorTime,group_concat( date_format( tmp.tday, '%H' ) SEPARATOR '时、' ) missingTime
+        select tmp.out_put_name,date_format(tmp.tday, '%Y-%m-%d' ) monitorTime,concat(group_concat( date_format( tmp.tday, '%H' ) order by date_format( tmp.tday, '%H' ) SEPARATOR '时、' ),'时')  missingTime
         from ( select a.out_put_name,a.tday, ifnull(b.num, -1) as num from ( ${params.sqlStr} ) as a
         LEFT JOIN
         (
