@@ -266,18 +266,18 @@
             <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%') </if>
             <choose>
                 <when test="params.beginTime != null and params.beginTime != ''">
-                    and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+                    and date_format(monitor_time,'%Y%m') &gt;= date_format(CONCAT(#{params.beginTime},'-01'),'%Y%m')
                 </when>
                 <otherwise>
-                    and date_format(monitor_time,'%y%m') &gt;= date_format(now(),'%y%m')
+                    and date_format(monitor_time,'%Y%m') &gt;= date_format( DATE_SUB(now(),INTERVAL 1 MONTH) , '%y%m' )
                 </otherwise>
             </choose>
             <choose>
                 <when test="params.endTime != null and params.endTime != ''">
-                    and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+                    and date_format(monitor_time,'%Y%m') &lt;= date_format(CONCAT(#{params.endTime},'-01'),'%Y%m')
                 </when>
                 <otherwise>
-                    and date_format(monitor_time,'%y%m') &lt;= date_format(now(),'%y%m')
+                    and date_format(monitor_time,'%Y%m') &lt;= date_format( DATE_SUB(now(),INTERVAL 1 MONTH) , '%y%m' )
                 </otherwise>
             </choose>
         </where>
@@ -337,18 +337,18 @@
             <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%') </if>
             <choose>
                 <when test="params.beginTime != null and params.beginTime != ''">
-                    and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+                    and date_format(monitor_time,'%Y') &gt;= date_format(CONCAT(#{params.beginTime},'-01-01'),'%Y')
                 </when>
                 <otherwise>
-                    and date_format(monitor_time,'%y') &gt;= date_format(now(),'%y')
+                    and date_format(monitor_time,'%Y') &gt;= date_format(now(),'%Y')
                 </otherwise>
             </choose>
             <choose>
                 <when test="params.endTime != null and params.endTime != ''">
-                    and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+                    and date_format(monitor_time,'%Y') &lt;= date_format(CONCAT(#{params.endTime},'-01-01'),'%Y')
                 </when>
                 <otherwise>
-                    and date_format(monitor_time,'%y') &lt;= date_format(now(),'%y')
+                    and date_format(monitor_time,'%Y') &lt;= date_format(now(),'%Y')
                 </otherwise>
             </choose>
         </where>
