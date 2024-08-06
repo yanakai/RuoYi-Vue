@@ -269,7 +269,7 @@
                     and date_format(monitor_time,'%Y%m') &gt;= date_format(CONCAT(#{params.beginTime},'-01'),'%Y%m')
                 </when>
                 <otherwise>
-                    and date_format(monitor_time,'%Y%m') &gt;= date_format( DATE_SUB(now(),INTERVAL 1 MONTH) , '%y%m' )
+                    and date_format(monitor_time,'%Y%m') &gt;= date_format( DATE_SUB(now(),INTERVAL 1 MONTH) , '%Y%m' )
                 </otherwise>
             </choose>
             <choose>
@@ -277,7 +277,7 @@
                     and date_format(monitor_time,'%Y%m') &lt;= date_format(CONCAT(#{params.endTime},'-01'),'%Y%m')
                 </when>
                 <otherwise>
-                    and date_format(monitor_time,'%Y%m') &lt;= date_format( DATE_SUB(now(),INTERVAL 1 MONTH) , '%y%m' )
+                    and date_format(monitor_time,'%Y%m') &lt;= date_format( DATE_SUB(now(),INTERVAL 1 MONTH) , '%Y%m' )
                 </otherwise>
             </choose>
         </where>
@@ -403,18 +403,18 @@
             <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%') </if>
             <choose>
                 <when test="params.beginTime != null and params.beginTime != ''">
-                    and date_format(monitor_time,'%y%m%d %H:%i:%s') &gt;= date_format(#{params.beginTime},'%y%m%d %H:%i:%s')
+                    and date_format(monitor_time,'%Y%m%d %H:%i:%s') &gt;= date_format(#{params.beginTime},'%Y%m%d %H:%i:%s')
                 </when>
                 <otherwise>
-                    and date_format(monitor_time,'%y%m%d %H:%i:%s') &gt;= date_format(now(),'%y%m%d')
+                    and date_format(monitor_time,'%Y%m%d %H:%i:%s') &gt;= date_format(now(),'%Y%m%d')
                 </otherwise>
             </choose>
             <choose>
                 <when test="params.endTime != null and params.endTime != ''">
-                    and date_format(monitor_time,'%y%m%d %H:%i:%s') &lt;= date_format(#{params.endTime},'%y%m%d %H:%i:%s')
+                    and date_format(monitor_time,'%Y%m%d %H:%i:%s') &lt;= date_format(#{params.endTime},'%Y%m%d %H:%i:%s')
                 </when>
                 <otherwise>
-                    and date_format(monitor_time,'%y%m%d %H:%i:%s') &lt;= date_format(adddate(now(),1),'%y%m%d')
+                    and date_format(monitor_time,'%Y%m%d %H:%i:%s') &lt;= date_format(adddate(now(),1),'%Y%m%d')
                 </otherwise>
             </choose>
         </where>
