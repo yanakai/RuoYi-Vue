@@ -1,6 +1,7 @@
 package com.ruoyi.business.base.service.impl;
 
 import com.ruoyi.business.base.domain.TBasEnterprise;
+import com.ruoyi.business.base.dto.TBasEnterpriseBaseInfoDto;
 import com.ruoyi.business.base.mapper.TBasEnterpriseMapper;
 import com.ruoyi.business.base.service.ITBasEnterpriseService;
 import com.ruoyi.common.utils.DateUtils;
@@ -86,5 +87,10 @@ public class TBasEnterpriseServiceImpl implements ITBasEnterpriseService {
     @Override
     public int deleteTBasEnterpriseById(Long id) {
         return tBasEnterpriseMapper.deleteTBasEnterpriseById(id);
+    }
+
+    @Override
+    public List<TBasEnterpriseBaseInfoDto> selectTBasEnterpriseBaseList(TBasEnterpriseBaseInfoDto tBasEnterpriseBaseInfoDto) {
+        return tBasEnterpriseMapper.selectTBasEnterpriseBaseList(tBasEnterpriseBaseInfoDto);
     }
 }

@@ -1,6 +1,7 @@
 package com.ruoyi.business.base.service;
 
 import com.ruoyi.business.base.domain.TBasEnterprise;
+import com.ruoyi.business.base.dto.TBasEnterpriseBaseInfoDto;
 
 import java.util.List;
 
@@ -58,4 +59,6 @@ public interface ITBasEnterpriseService {
      * @return 结果
      */
     int deleteTBasEnterpriseById(Long id);
+
+    List<TBasEnterpriseBaseInfoDto> selectTBasEnterpriseBaseList(TBasEnterpriseBaseInfoDto tBasEnterpriseBaseInfoDto);
 }

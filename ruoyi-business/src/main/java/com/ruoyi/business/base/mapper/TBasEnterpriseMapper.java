@@ -1,6 +1,7 @@
 package com.ruoyi.business.base.mapper;
 
 import com.ruoyi.business.base.domain.TBasEnterprise;
+import com.ruoyi.business.base.dto.TBasEnterpriseBaseInfoDto;
 
 import java.util.List;
 
@@ -58,4 +59,6 @@ public interface TBasEnterpriseMapper {
      * @return 结果
      */
     int deleteTBasEnterpriseByIds(Long[] ids);
+
+    List<TBasEnterpriseBaseInfoDto> selectTBasEnterpriseBaseList(TBasEnterpriseBaseInfoDto tBasEnterpriseBaseInfoDto);
 }

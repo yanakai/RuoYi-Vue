@@ -55,6 +55,34 @@
         from t_bas_enterprise
     </sql>
 
+    <resultMap type="com.ruoyi.business.base.dto.TBasEnterpriseBaseInfoDto" id="TBasEnterpriseBaseInfoResult">
+        <result property="id" column="id"/>
+        <result property="entCode" column="ent_code"/>
+        <result property="entName" column="ent_name"/>
+        <result property="socialCreditCode" column="social_credit_code"/>
+        <result property="shorterName" column="shorter_name"/>
+    </resultMap>
+
+    <sql id="TBasEnterpriseBaseVo">
+        select id,
+               ent_code,
+               ent_name,
+               social_credit_code,
+               shorter_name
+        from t_bas_enterprise
+    </sql>
+
+
+    <select id="selectTBasEnterpriseBaseList" parameterType="com.ruoyi.business.base.dto.TBasEnterpriseBaseInfoDto" resultMap="TBasEnterpriseBaseInfoResult">
+        <include refid="TBasEnterpriseBaseVo"/>
+        <where>
+            <if test="entCode != null  and entCode != ''">and ent_code = #{entCode}</if>
+            <if test="entName != null  and entName != ''">and ent_name like concat('%', #{entName}, '%')</if>
+            <if test="socialCreditCode != null  and socialCreditCode != ''">and social_credit_code =#{socialCreditCode}</if>
+            <if test="shorterName != null  and shorterName != ''">and shorter_name like concat('%', #{shorterName},'%')</if>
+        </where>
+    </select>
+
     <select id="selectTBasEnterpriseList" parameterType="TBasEnterprise" resultMap="TBasEnterpriseResult">
         <include refid="selectTBasEnterpriseVo"/>
         <where>

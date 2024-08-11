@@ -3,6 +3,8 @@ package com.ruoyi.common.core.domain.entity;
 import java.util.Date;
 import java.util.List;
 import javax.validation.constraints.*;
+
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -69,6 +71,27 @@ public class SysUser extends BaseEntity
     /** 最后登录时间 */
     @Excel(name = "最后登录时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Type.EXPORT)
     private Date loginDate;
+
+    /**
+     * 企业编码
+     */
+    @ApiModelProperty(value = "企业编码")
+    @Excel(name = "企业编码")
+    private String entCode;
+
+    /**
+     * 企业名称
+     */
+    @ApiModelProperty(value = "企业名称")
+    @Excel(name = "企业名称")
+    private String entName;
+
+    /**
+     * 社会统一信用代码
+     */
+    @ApiModelProperty(value = "社会统一信用代码")
+    @Excel(name = "社会统一信用代码")
+    private String socialCreditCode;
 
     /** 部门对象 */
     @Excels({
@@ -295,6 +318,30 @@ public class SysUser extends BaseEntity
     public void setRoleId(Long roleId)
     {
         this.roleId = roleId;
+    }
+
+    public String getEntCode() {
+        return entCode;
+    }
+
+    public void setEntCode(String entCode) {
+        this.entCode = entCode;
+    }
+
+    public String getEntName() {
+        return entName;
+    }
+
+    public void setEntName(String entName) {
+        this.entName = entName;
+    }
+
+    public String getSocialCreditCode() {
+        return socialCreditCode;
+    }
+
+    public void setSocialCreditCode(String socialCreditCode) {
+        this.socialCreditCode = socialCreditCode;
     }
 
     @Override

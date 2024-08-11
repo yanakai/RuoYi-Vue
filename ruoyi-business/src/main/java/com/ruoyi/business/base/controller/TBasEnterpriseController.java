@@ -1,6 +1,7 @@
 package com.ruoyi.business.base.controller;
 
 import com.ruoyi.business.base.domain.TBasEnterprise;
+import com.ruoyi.business.base.dto.TBasEnterpriseBaseInfoDto;
 import com.ruoyi.business.base.service.ITBasEnterpriseService;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
@@ -29,6 +30,20 @@ import java.util.List;
 public class TBasEnterpriseController extends BaseController {
     @Autowired
     private ITBasEnterpriseService tBasEnterpriseService;
+
+
+    /**
+     * 查询基础信息---企业基础列表
+     */
+    @ApiOperation("获取企业信息列表-下拉列表")
+    @PreAuthorize("@ss.hasPermi('business:enterprise:list')")
+    @GetMapping("/listBaseInfos")
+    public TableDataInfo listAll(TBasEnterpriseBaseInfoDto tBasEnterprise) {
+        List<TBasEnterpriseBaseInfoDto> list = tBasEnterpriseService.selectTBasEnterpriseBaseList(tBasEnterprise);
+        return getDataTable(list);
+    }
+
+
 
     /**
      * 查询基础信息---企业基础列表
