@@ -1,12 +1,17 @@
 package com.ruoyi.business.base.service.impl;
 
+import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.util.ArrayUtil;
+import com.ruoyi.business.base.domain.TBasWateroutPutInfo;
 import com.ruoyi.business.base.domain.TBasWateroutputPollutant;
+import com.ruoyi.business.base.mapper.TBasWateroutPutInfoMapper;
 import com.ruoyi.business.base.mapper.TBasWateroutputPollutantMapper;
 import com.ruoyi.business.base.service.ITBasWateroutputPollutantService;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,6 +24,9 @@ import java.util.List;
 public class TBasWateroutputPollutantServiceImpl implements ITBasWateroutputPollutantService {
     @Autowired
     private TBasWateroutputPollutantMapper tBasWateroutputPollutantMapper;
+
+    @Resource
+    private TBasWateroutPutInfoMapper waterOutputPollutantMapper;
 
     /**
      * 查询基础信息--企业--废水排口污染物基本信息
@@ -51,7 +59,18 @@ public class TBasWateroutputPollutantServiceImpl implements ITBasWateroutputPoll
     @Override
     public int insertTBasWateroutputPollutant(TBasWateroutputPollutant tBasWateroutputPollutant) {
         tBasWateroutputPollutant.setCreateTime(DateUtils.getNowDate());
-        return tBasWateroutputPollutantMapper.insertTBasWateroutputPollutant(tBasWateroutputPollutant);
+        //获取排口信息
+        TBasWateroutPutInfo tBasWateroutPutInfo = new TBasWateroutPutInfo();
+        tBasWateroutPutInfo.setOutPutCode(tBasWateroutputPollutant.getOutPutCode());
+        List<TBasWateroutPutInfo> list = waterOutputPollutantMapper.selectTBasWateroutPutInfoList(tBasWateroutPutInfo);
+        if(ArrayUtil.isNotEmpty(list)){
+            tBasWateroutputPollutant.setOutPutName(list.get(0).getOutPutName());
+            tBasWateroutputPollutant.setEntCode(list.get(0).getEntCode());
+            tBasWateroutputPollutant.setEntName(list.get(0).getEntName());
+            tBasWateroutputPollutant.setMnNum(list.get(0).getMnNum());
+            return tBasWateroutputPollutantMapper.insertTBasWateroutputPollutant(tBasWateroutputPollutant);
+        }
+        return 0;
     }
 
     /**

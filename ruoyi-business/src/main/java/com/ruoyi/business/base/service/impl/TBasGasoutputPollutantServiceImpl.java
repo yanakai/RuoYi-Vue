@@ -1,12 +1,16 @@
 package com.ruoyi.business.base.service.impl;
 
+import cn.hutool.core.util.ArrayUtil;
+import com.ruoyi.business.base.domain.TBasGasoutPutInfo;
 import com.ruoyi.business.base.domain.TBasGasoutputPollutant;
+import com.ruoyi.business.base.mapper.TBasGasoutPutInfoMapper;
 import com.ruoyi.business.base.mapper.TBasGasoutputPollutantMapper;
 import com.ruoyi.business.base.service.ITBasGasoutputPollutantService;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,6 +23,9 @@ import java.util.List;
 public class TBasGasoutputPollutantServiceImpl implements ITBasGasoutputPollutantService {
     @Autowired
     private TBasGasoutputPollutantMapper tBasGasoutputPollutantMapper;
+
+    @Resource
+    private TBasGasoutPutInfoMapper gasoutputPollutantMapper;
 
     /**
      * 查询基础信息--企业--废气排口污染物基本信息
@@ -51,7 +58,20 @@ public class TBasGasoutputPollutantServiceImpl implements ITBasGasoutputPollutan
     @Override
     public int insertTBasGasoutputPollutant(TBasGasoutputPollutant tBasGasoutputPollutant) {
         tBasGasoutputPollutant.setCreateTime(DateUtils.getNowDate());
-        return tBasGasoutputPollutantMapper.insertTBasGasoutputPollutant(tBasGasoutputPollutant);
+
+        //获取排口信息
+        TBasGasoutPutInfo tBasGasoutPutInfo = new TBasGasoutPutInfo();
+        tBasGasoutPutInfo.setOutPutCode(tBasGasoutputPollutant.getOutPutCode());
+        List<TBasGasoutPutInfo> tBasGasoutPutInfos = gasoutputPollutantMapper.selectTBasGasoutPutInfoList(tBasGasoutPutInfo);
+        if(ArrayUtil.isNotEmpty(tBasGasoutPutInfos)){
+            tBasGasoutputPollutant.setOutPutName(tBasGasoutPutInfos.get(0).getOutPutName());
+            tBasGasoutputPollutant.setEntCode(tBasGasoutPutInfos.get(0).getEntCode());
+            tBasGasoutputPollutant.setEntName(tBasGasoutPutInfos.get(0).getEntName());
+            tBasGasoutputPollutant.setMnNum(tBasGasoutPutInfos.get(0).getMnNum());
+            return tBasGasoutputPollutantMapper.insertTBasGasoutputPollutant(tBasGasoutputPollutant);
+        }
+
+        return 0;
     }
 
     /**

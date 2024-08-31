@@ -1,5 +1,6 @@
 package com.ruoyi.business.base.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.ruoyi.business.base.domain.TBasWateroutputPollutant;
 import com.ruoyi.business.base.service.ITBasWateroutputPollutantService;
 import com.ruoyi.common.annotation.Log;
@@ -75,6 +76,9 @@ public class TBasWateroutputPollutantController extends BaseController {
     public AjaxResult add(@RequestBody TBasWateroutputPollutant tBasWateroutputPollutant) {
         tBasWateroutputPollutant.setCreateBy(getUsername());
         tBasWateroutputPollutant.setCreateName(getUsername());
+        if(StrUtil.isEmpty(tBasWateroutputPollutant.getOutPutCode())){
+            return AjaxResult.error("废水排放口编码不能为空");
+        }
         return toAjax(tBasWateroutputPollutantService.insertTBasWateroutputPollutant(tBasWateroutputPollutant));
     }
 

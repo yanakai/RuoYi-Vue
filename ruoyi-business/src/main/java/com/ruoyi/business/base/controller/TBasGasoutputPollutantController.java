@@ -77,6 +77,10 @@ public class TBasGasoutputPollutantController extends BaseController {
     public AjaxResult add(@RequestBody TBasGasoutputPollutant tBasGasoutputPollutant) {
         tBasGasoutputPollutant.setCreateBy(getUsername());
         tBasGasoutputPollutant.setCreateName(getUsername());
+        if (tBasGasoutputPollutant.getOutPutCode() == null) {
+            return AjaxResult.error("排口编号不能为空");
+        }
+
         return toAjax(tBasGasoutputPollutantService.insertTBasGasoutputPollutant(tBasGasoutputPollutant));
     }
 
