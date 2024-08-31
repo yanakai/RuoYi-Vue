@@ -1,6 +1,8 @@
 package com.ruoyi.business.base.service.impl;
 
+import com.ruoyi.business.base.domain.TBasUploadFiles;
 import com.ruoyi.business.base.domain.TBasWateroutPutInfo;
+import com.ruoyi.business.base.mapper.TBasUploadFilesMapper;
 import com.ruoyi.business.base.mapper.TBasWateroutPutInfoMapper;
 import com.ruoyi.business.base.mapper.TBasWateroutputPollutantMapper;
 import com.ruoyi.business.base.service.ITBasWateroutPutInfoService;
@@ -24,6 +26,9 @@ public class TBasWateroutPutInfoServiceImpl implements ITBasWateroutPutInfoServi
     @Resource
     private TBasWateroutputPollutantMapper tBasWateroutputPollutantMapper;
 
+    @Resource
+    private TBasUploadFilesMapper basUploadFilesMapper;
+
     /**
      * 查询基础信息--企业--废水排口
      *
@@ -32,6 +37,12 @@ public class TBasWateroutPutInfoServiceImpl implements ITBasWateroutPutInfoServi
      */
     @Override
     public TBasWateroutPutInfo selectTBasWateroutPutInfoById(Long id) {
+        TBasWateroutPutInfo tBasWateroutPutInfo = tBasWateroutPutInfoMapper.selectTBasWateroutPutInfoById(id);
+        //查询附件信息
+        TBasUploadFiles basUploadFiles = new TBasUploadFiles();
+        basUploadFiles.setBusinessModuleId(tBasWateroutPutInfo.getId().toString());
+        tBasWateroutPutInfo.setUploadFilesList(basUploadFilesMapper.selectTBasUploadFilesList(basUploadFiles));
+
         return tBasWateroutPutInfoMapper.selectTBasWateroutPutInfoById(id);
     }
 

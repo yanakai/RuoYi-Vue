@@ -1,8 +1,10 @@
 package com.ruoyi.business.base.service.impl;
 
 import com.ruoyi.business.base.domain.TBasGasoutPutInfo;
+import com.ruoyi.business.base.domain.TBasUploadFiles;
 import com.ruoyi.business.base.mapper.TBasGasoutPutInfoMapper;
 import com.ruoyi.business.base.mapper.TBasGasoutputPollutantMapper;
+import com.ruoyi.business.base.mapper.TBasUploadFilesMapper;
 import com.ruoyi.business.base.service.ITBasGasoutPutInfoService;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class TBasGasoutPutInfoServiceImpl implements ITBasGasoutPutInfoService {
     @Resource
     private TBasGasoutputPollutantMapper tBasGasoutputPollutantMapper;
 
+    @Resource
+    private TBasUploadFilesMapper basUploadFilesMapper;
+
     /**
      * 查询基础信息--企业--废气排口
      *
@@ -32,7 +37,13 @@ public class TBasGasoutPutInfoServiceImpl implements ITBasGasoutPutInfoService {
      */
     @Override
     public TBasGasoutPutInfo selectTBasGasoutPutInfoById(Long id) {
-        return tBasGasoutPutInfoMapper.selectTBasGasoutPutInfoById(id);
+        TBasGasoutPutInfo tBasGasoutPutInfo = tBasGasoutPutInfoMapper.selectTBasGasoutPutInfoById(id);
+        //查询附件信息
+        TBasUploadFiles basUploadFiles = new TBasUploadFiles();
+        basUploadFiles.setBusinessModuleId(tBasGasoutPutInfo.getId().toString());
+        tBasGasoutPutInfo.setUploadFilesList(basUploadFilesMapper.selectTBasUploadFilesList(basUploadFiles));
+
+        return tBasGasoutPutInfo;
     }
 
     /**

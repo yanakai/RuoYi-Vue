@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.base.mapper.TBasUploadFilesMapper">
+
+    <resultMap type="TBasUploadFiles" id="BasUploadFilesResult">
+        <result property="id"    column="id"    />
+        <result property="businessModuleType"    column="business_module_type"    />
+        <result property="businessModuleId"    column="business_module_id"    />
+        <result property="fileType"    column="file_type"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="fileStoragePath"    column="file_storage_path"    />
+        <result property="fileSize"    column="file_size"    />
+        <result property="fileDescription"    column="file_description"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createName"    column="create_name"    />
+    </resultMap>
+
+    <sql id="selectBasUploadFilesVo">
+        select id, business_module_type, business_module_id, file_type, file_name, file_storage_path, file_size, file_description, create_time, create_name from bas_upload_files
+    </sql>
+
+    <select id="selectTBasUploadFilesList" parameterType="TBasUploadFiles" resultMap="BasUploadFilesResult">
+        <include refid="selectBasUploadFilesVo"/>
+        <where>
+            <if test="businessModuleType != null  and businessModuleType != ''"> and business_module_type = #{businessModuleType}</if>
+            <if test="businessModuleId != null  and businessModuleId != ''"> and business_module_id = #{businessModuleId}</if>
+            <if test="fileType != null  and fileType != ''"> and file_type = #{fileType}</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="fileStoragePath != null  and fileStoragePath != ''"> and file_storage_path = #{fileStoragePath}</if>
+            <if test="fileSize != null "> and file_size = #{fileSize}</if>
+            <if test="fileDescription != null  and fileDescription != ''"> and file_description = #{fileDescription}</if>
+            <if test="createName != null  and createName != ''"> and create_name like concat('%', #{createName}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectTBasUploadFilesById" parameterType="Long" resultMap="BasUploadFilesResult">
+        <include refid="selectBasUploadFilesVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTBasUploadFiles" parameterType="TBasUploadFiles" useGeneratedKeys="true" keyProperty="id">
+        insert into bas_upload_files
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="businessModuleType != null">business_module_type,</if>
+            <if test="businessModuleId != null">business_module_id,</if>
+            <if test="fileType != null">file_type,</if>
+            <if test="fileName != null">file_name,</if>
+            <if test="fileStoragePath != null">file_storage_path,</if>
+            <if test="fileSize != null">file_size,</if>
+            <if test="fileDescription != null">file_description,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createName != null">create_name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="businessModuleType != null">#{businessModuleType},</if>
+            <if test="businessModuleId != null">#{businessModuleId},</if>
+            <if test="fileType != null">#{fileType},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="fileStoragePath != null">#{fileStoragePath},</if>
+            <if test="fileSize != null">#{fileSize},</if>
+            <if test="fileDescription != null">#{fileDescription},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createName != null">#{createName},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTBasUploadFiles" parameterType="TBasUploadFiles">
+        update bas_upload_files
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="businessModuleType != null">business_module_type = #{businessModuleType},</if>
+            <if test="businessModuleId != null">business_module_id = #{businessModuleId},</if>
+            <if test="fileType != null">file_type = #{fileType},</if>
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="fileStoragePath != null">file_storage_path = #{fileStoragePath},</if>
+            <if test="fileSize != null">file_size = #{fileSize},</if>
+            <if test="fileDescription != null">file_description = #{fileDescription},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTBasUploadFilesById" parameterType="Long">
+        delete from bas_upload_files where id = #{id}
+    </delete>
+
+    <delete id="deleteTBasUploadFilesByIds" parameterType="String">
+        delete from bas_upload_files where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
