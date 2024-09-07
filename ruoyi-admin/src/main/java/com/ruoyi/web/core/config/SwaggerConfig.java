@@ -16,6 +16,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Swagger2的接口配置
@@ -133,7 +134,8 @@ public class SwaggerConfig {
                 .apiInfo(api_system_info())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.ruoyi.web.controller.system"))
-                .paths(PathSelectors.ant("/system/**"))
+//                .paths(PathSelectors.ant("/system/**"))
+                .paths(PathSelectors.ant("/**"))
                 .build()
                 .groupName("系统管理")
                 /* 设置安全模式，swagger可以设置访问token */

@@ -6,14 +6,18 @@ import com.ruoyi.common.core.domain.TreeSelect;
 import com.ruoyi.common.core.domain.entity.SysMenu;
 import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.vo.MetaVo;
 import com.ruoyi.system.domain.vo.RouterVo;
+import com.ruoyi.system.domain.vo.VOutPutInfoMenu;
 import com.ruoyi.system.mapper.SysMenuMapper;
 import com.ruoyi.system.mapper.SysRoleMapper;
 import com.ruoyi.system.mapper.SysRoleMenuMapper;
 import com.ruoyi.system.service.ISysMenuService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +31,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class SysMenuServiceImpl implements ISysMenuService {
+    public static final Logger log = LoggerFactory.getLogger(SysMenuServiceImpl.class);
     public static final String PREMISSION_STRING = "perms[\"{0}\"]";
 
     @Autowired
@@ -120,6 +125,66 @@ public class SysMenuServiceImpl implements ISysMenuService {
         }
         return getChildPerms(menus, 0);
     }
+
+
+    @Override
+    public List<SysMenu> selectMenuTreeByUserIdV2(LoginUser loginUser) {
+        List<SysMenu> menus = null;
+        boolean isAdmin = SecurityUtils.isAdmin(loginUser.getUserId());
+        if (isAdmin) {
+            menus = menuMapper.selectMenuTreeAll();
+        } else {
+            menus = menuMapper.selectMenuTreeByUserId(loginUser.getUserId());
+        }
+        List<SysMenu> addList = new ArrayList<>();
+        List<SysMenu> tmps = menus;
+        for (SysMenu menu:tmps) {
+            if(StringUtils.equals(menu.getPath(),"gasOutletOnline")){
+                VOutPutInfoMenu vOutPutInfo = new VOutPutInfoMenu();
+                vOutPutInfo.setMonitoringPointType("1");
+                //废气排口 获取当前用户所属企业的废气排口
+                if(!isAdmin){
+                    vOutPutInfo.setEntCode(loginUser.getUser().getEntCode());
+                }
+                //管理员查询所有
+                List<VOutPutInfoMenu> list = menuMapper.selectVOutPutInfoList(vOutPutInfo);
+                addListMenu(menu,addList, list);
+            } else if (StringUtils.equals(menu.getPath(), "waterOutletOnline")) {
+                //废水排口 获取当前用户所属企业的废水排口
+                VOutPutInfoMenu vOutPutInfo = new VOutPutInfoMenu();
+                vOutPutInfo.setMonitoringPointType("2");
+                //废气排口 获取当前用户所属企业的废气排口
+                if(!isAdmin){
+                    vOutPutInfo.setEntCode(loginUser.getUser().getEntCode());
+                }
+                //管理员查询所有
+                List<VOutPutInfoMenu> list = menuMapper.selectVOutPutInfoList(vOutPutInfo);
+                addListMenu(menu,addList, list);
+            }
+        }
+        menus.addAll(addList);
+        menus = getChildPerms(menus, 0);
+        return menus;
+    }
+
+    private void addListMenu(SysMenu menu,List<SysMenu> menus, List<VOutPutInfoMenu> list) {
+        for (VOutPutInfoMenu  vOutPut: list) {
+            SysMenu sysMenu = new SysMenu();
+            sysMenu.setMenuId(vOutPut.getId());
+            sysMenu.setMenuName(vOutPut.getOutPutName());
+            sysMenu.setPath(menu.getPath());
+            sysMenu.setComponent(menu.getComponent()+"?id="+vOutPut.getId());
+            sysMenu.setIsFrame("0");
+            sysMenu.setMenuType("C");
+            sysMenu.setOrderNum(1);
+            sysMenu.setVisible("0");
+            sysMenu.setParentId(menu.getMenuId());
+            sysMenu.setPerms("monitoring:gasOutletOnline:view");
+            sysMenu.setChildren(new ArrayList<>());
+            menus.add(sysMenu);
+        }
+    }
+
 
     /**
      * 根据角色ID查询菜单树信息

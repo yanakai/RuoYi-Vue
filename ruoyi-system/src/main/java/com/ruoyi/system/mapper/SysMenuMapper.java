@@ -1,6 +1,7 @@
 package com.ruoyi.system.mapper;
 
 import com.ruoyi.common.core.domain.entity.SysMenu;
+import com.ruoyi.system.domain.vo.VOutPutInfoMenu;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -122,4 +123,13 @@ public interface SysMenuMapper {
      * @return 结果
      */
     public SysMenu checkMenuNameUnique(@Param("menuName") String menuName, @Param("parentId") Long parentId);
+
+
+    /**
+     * 查询污染排口信息列表
+     *
+     * @param vOutPutInfo 污染排口信息
+     * @return 污染排口信息集合
+     */
+    List<VOutPutInfoMenu> selectVOutPutInfoList(VOutPutInfoMenu vOutPutInfo);
 }
