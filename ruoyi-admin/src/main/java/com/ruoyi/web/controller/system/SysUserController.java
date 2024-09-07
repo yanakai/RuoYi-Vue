@@ -15,6 +15,7 @@ import com.ruoyi.system.service.ISysDeptService;
 import com.ruoyi.system.service.ISysPostService;
 import com.ruoyi.system.service.ISysRoleService;
 import com.ruoyi.system.service.ISysUserService;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
  *
  * @author ruoyi
  */
+@Api(value = "系统管理-用户管理", tags = "系统管理-用户管理")
 @RestController
 @RequestMapping("/system/user")
 public class SysUserController extends BaseController {

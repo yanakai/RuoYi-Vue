@@ -126,6 +126,21 @@ public class SwaggerConfig {
                 .securityContexts(securityContexts())
                 .pathMapping(pathMapping);
     }
+    //api_system_info
+    @Bean
+    public Docket api_system_info_api() {
+        return new Docket(DocumentationType.OAS_30)
+                .apiInfo(api_system_info())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.ruoyi.web.controller.system"))
+                .paths(PathSelectors.ant("/system/**"))
+                .build()
+                .groupName("系统管理")
+                /* 设置安全模式，swagger可以设置访问token */
+                .securitySchemes(securitySchemes())
+                .securityContexts(securityContexts())
+                .pathMapping(pathMapping);
+    }
 
     /**
      * 安全模式，这里指定token通过Authorization头请求头传递
@@ -215,6 +230,21 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("排口在线监测")
                 .description("排口在线监测：XXX模块等")
+                // 作者信息
+                .contact(new Contact(ruoyiConfig.getName(), null, null))
+//                .termsOfServiceUrl("")//这里可以是项目地址
+                .version("版本号:" + ruoyiConfig.getVersion())
+                .build();
+    }
+
+    /**
+     * 系统管理
+     * @return
+     */
+    public ApiInfo api_system_info() {
+        return new ApiInfoBuilder()
+                .title("系统管理")
+                .description("系统管理：用户管理、菜单管理等")
                 // 作者信息
                 .contact(new Contact(ruoyiConfig.getName(), null, null))
 //                .termsOfServiceUrl("")//这里可以是项目地址
