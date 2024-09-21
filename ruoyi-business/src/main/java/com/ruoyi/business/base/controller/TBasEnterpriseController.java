@@ -11,6 +11,8 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,7 @@ import java.util.List;
  * @author ruoyi
  * @date 2024-06-26
  */
+@Slf4j
 @Api(value = "业务模块-企业信息", tags = "企业档案-企业基础信息")
 @RestController
 @RequestMapping("/business/base/enterprise")
@@ -54,6 +57,7 @@ public class TBasEnterpriseController extends BaseController {
     public TableDataInfo list(TBasEnterprise tBasEnterprise) {
         startPage();
         List<TBasEnterprise> list = tBasEnterpriseService.selectTBasEnterpriseList(tBasEnterprise);
+        log.info("企业信息列表：{}", list);
         return getDataTable(list);
     }
 

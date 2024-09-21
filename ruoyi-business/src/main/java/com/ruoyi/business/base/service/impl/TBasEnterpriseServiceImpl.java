@@ -4,6 +4,7 @@ import com.ruoyi.business.base.domain.TBasEnterprise;
 import com.ruoyi.business.base.dto.TBasEnterpriseBaseInfoDto;
 import com.ruoyi.business.base.mapper.TBasEnterpriseMapper;
 import com.ruoyi.business.base.service.ITBasEnterpriseService;
+import com.ruoyi.common.annotation.DataEntScope;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,7 @@ public class TBasEnterpriseServiceImpl implements ITBasEnterpriseService {
      * @return 基础信息---企业基础
      */
     @Override
+    @DataEntScope
     public List<TBasEnterprise> selectTBasEnterpriseList(TBasEnterprise tBasEnterprise) {
         return tBasEnterpriseMapper.selectTBasEnterpriseList(tBasEnterprise);
     }

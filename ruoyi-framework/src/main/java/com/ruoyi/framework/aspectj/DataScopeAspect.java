@@ -56,6 +56,11 @@ public class DataScopeAspect {
     public static final String DATA_SCOPE = "dataScope";
 
     /**
+     * 根据用户所属企业过滤权限
+     */
+    public static final String DATA_ENT_SCOPE = "dataEntScope";
+
+    /**
      * 数据范围过滤
      *
      * @param joinPoint  切点
@@ -122,6 +127,27 @@ public class DataScopeAspect {
         }
     }
 
+    public static void entDataScopeFilter(JoinPoint joinPoint, SysUser user) {
+        StringBuilder sqlString = new StringBuilder();
+        String entCode = user.getEntCode();
+        if(StringUtils.isNotEmpty(entCode)){
+            sqlString.append(StringUtils.format(" and  ent_code = '{}' ", entCode));
+        }
+        String entName = user.getEntName();
+        if(StringUtils.isNotEmpty(entName)){
+            sqlString.append(StringUtils.format(" and  ent_name = '{}' ", entName));
+        }
+
+        Object params = joinPoint.getArgs()[0];
+        if (StringUtils.isNotNull(params) && params instanceof BaseEntity) {
+            BaseEntity baseEntity = (BaseEntity) params;
+            baseEntity.getParams().put(DATA_ENT_SCOPE, " AND (" + sqlString.substring(5) + ")");
+        }
+    }
+
+
+
+
     @Before("@annotation(controllerDataScope)")
     public void doBefore(JoinPoint point, DataScope controllerDataScope) throws Throwable {
         clearDataScope(point);
@@ -138,6 +164,11 @@ public class DataScopeAspect {
                 String permission = StringUtils.defaultIfEmpty(controllerDataScope.permission(), PermissionContextHolder.getContext());
                 dataScopeFilter(joinPoint, currentUser, controllerDataScope.deptAlias(),
                         controllerDataScope.userAlias(), permission);
+            }
+
+            //用户只能查看当前企业数据权限过滤，超级管理员 不过滤
+            if (StringUtils.isNotNull(currentUser) && !currentUser.isAdmin()) {
+                entDataScopeFilter(joinPoint, currentUser);
             }
         }
     }
