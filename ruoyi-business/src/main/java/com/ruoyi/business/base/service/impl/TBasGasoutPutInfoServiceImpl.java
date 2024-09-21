@@ -66,7 +66,16 @@ public class TBasGasoutPutInfoServiceImpl implements ITBasGasoutPutInfoService {
     @Override
     public int insertTBasGasoutPutInfo(TBasGasoutPutInfo tBasGasoutPutInfo) {
         tBasGasoutPutInfo.setCreateTime(DateUtils.getNowDate());
-        return tBasGasoutPutInfoMapper.insertTBasGasoutPutInfo(tBasGasoutPutInfo);
+        int result = tBasGasoutPutInfoMapper.insertTBasGasoutPutInfo(tBasGasoutPutInfo);
+        //新增附件信息
+        List<TBasUploadFiles> uploadFilesList = tBasGasoutPutInfo.getUploadFilesList();
+        if (uploadFilesList != null && uploadFilesList.size() > 0) {
+            for (TBasUploadFiles uploadFiles : uploadFilesList) {
+                uploadFiles.setBusinessModuleId(tBasGasoutPutInfo.getId().toString());
+                basUploadFilesMapper.updateTBasUploadFiles(uploadFiles);
+            }
+        }
+        return result;
     }
 
     /**
@@ -78,7 +87,26 @@ public class TBasGasoutPutInfoServiceImpl implements ITBasGasoutPutInfoService {
     @Override
     public int updateTBasGasoutPutInfo(TBasGasoutPutInfo tBasGasoutPutInfo) {
         tBasGasoutPutInfo.setUpdateTime(DateUtils.getNowDate());
-        return tBasGasoutPutInfoMapper.updateTBasGasoutPutInfo(tBasGasoutPutInfo);
+        int result = tBasGasoutPutInfoMapper.updateTBasGasoutPutInfo(tBasGasoutPutInfo);
+        //重置附件信息业务id
+        TBasUploadFiles basUploadFiles = new TBasUploadFiles();
+        basUploadFiles.setBusinessModuleId(tBasGasoutPutInfo.getId().toString());
+        List<TBasUploadFiles> files = basUploadFilesMapper.selectTBasUploadFilesList(basUploadFiles);
+        if (files != null && files.size() > 0) {
+            for (TBasUploadFiles file : files) {
+                file.setBusinessModuleId(null);
+                basUploadFilesMapper.updateTBasUploadFiles(file);
+            }
+        }
+        //新增附件信息
+        List<TBasUploadFiles> uploadFilesList = tBasGasoutPutInfo.getUploadFilesList();
+        if (uploadFilesList != null && uploadFilesList.size() > 0) {
+            for (TBasUploadFiles uploadFiles : uploadFilesList) {
+                uploadFiles.setBusinessModuleId(tBasGasoutPutInfo.getId().toString());
+                basUploadFilesMapper.updateTBasUploadFiles(uploadFiles);
+            }
+        }
+        return result;
     }
 
     /**

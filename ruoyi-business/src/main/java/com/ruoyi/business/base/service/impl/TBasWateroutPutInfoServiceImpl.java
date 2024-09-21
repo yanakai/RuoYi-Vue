@@ -66,7 +66,15 @@ public class TBasWateroutPutInfoServiceImpl implements ITBasWateroutPutInfoServi
     @Override
     public int insertTBasWateroutPutInfo(TBasWateroutPutInfo tBasWateroutPutInfo) {
         tBasWateroutPutInfo.setCreateTime(DateUtils.getNowDate());
-        return tBasWateroutPutInfoMapper.insertTBasWateroutPutInfo(tBasWateroutPutInfo);
+        int result = tBasWateroutPutInfoMapper.insertTBasWateroutPutInfo(tBasWateroutPutInfo);
+        if (tBasWateroutPutInfo.getUploadFilesList() != null && tBasWateroutPutInfo.getUploadFilesList().size() > 0) {
+            for (TBasUploadFiles uploadFiles : tBasWateroutPutInfo.getUploadFilesList()) {
+                uploadFiles.setBusinessModuleId(tBasWateroutPutInfo.getId().toString());
+                basUploadFilesMapper.updateTBasUploadFiles(uploadFiles);
+            }
+        }
+
+        return result;
     }
 
     /**
@@ -78,7 +86,26 @@ public class TBasWateroutPutInfoServiceImpl implements ITBasWateroutPutInfoServi
     @Override
     public int updateTBasWateroutPutInfo(TBasWateroutPutInfo tBasWateroutPutInfo) {
         tBasWateroutPutInfo.setUpdateTime(DateUtils.getNowDate());
-        return tBasWateroutPutInfoMapper.updateTBasWateroutPutInfo(tBasWateroutPutInfo);
+        int result = tBasWateroutPutInfoMapper.updateTBasWateroutPutInfo(tBasWateroutPutInfo);
+        //重置附件信息
+        TBasUploadFiles basUploadFiles = new TBasUploadFiles();
+        basUploadFiles.setBusinessModuleId(tBasWateroutPutInfo.getId().toString());
+        List<TBasUploadFiles> uploadFilesList = basUploadFilesMapper.selectTBasUploadFilesList(basUploadFiles);
+        if (uploadFilesList != null && uploadFilesList.size() > 0) {
+            for (TBasUploadFiles uploadFiles : uploadFilesList) {
+                uploadFiles.setBusinessModuleId(null);
+                basUploadFilesMapper.updateTBasUploadFiles(uploadFiles);
+            }
+        }
+
+        //新增附件
+        if (tBasWateroutPutInfo.getUploadFilesList() != null && tBasWateroutPutInfo.getUploadFilesList().size() > 0) {
+            for (TBasUploadFiles uploadFiles : tBasWateroutPutInfo.getUploadFilesList()) {
+                uploadFiles.setBusinessModuleId(tBasWateroutPutInfo.getId().toString());
+                basUploadFilesMapper.updateTBasUploadFiles(uploadFiles);
+            }
+        }
+        return result;
     }
 
     /**

@@ -51,8 +51,10 @@ public class TDataWateroutYearStatistics extends BaseEntity {
      * 监测时间
      */
     @JsonFormat(pattern = "yyyy")
-    @Excel(name = "监测时间", width = 30, dateFormat = "yyyy")
+    @Excel(name = "数据监测时间", width = 30, dateFormat = "yyyy")
     private Date monitorTime;
+
+    private String monitorTimeStr;
 
     /**
      * 废水流量均值

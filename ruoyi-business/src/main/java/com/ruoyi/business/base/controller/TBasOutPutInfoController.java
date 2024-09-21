@@ -75,7 +75,7 @@ public class TBasOutPutInfoController extends BaseController {
     @ApiOperation("上传图片")
     @Log(title = "企业档案--污染排放口信息", businessType = BusinessType.UPLOAD)
     @PostMapping(name = "/img/upload")
-    public AjaxResult upload(@RequestParam("businessModuleId") @NotBlank String businessModuleId, @RequestParam("file") MultipartFile file) throws IOException, InvalidExtensionException {
+    public AjaxResult upload(@RequestParam("file") MultipartFile file) throws IOException, InvalidExtensionException {
         if (!file.isEmpty()) {
             LoginUser loginUser = getLoginUser();
             //上传文件
@@ -88,10 +88,10 @@ public class TBasOutPutInfoController extends BaseController {
             uploadFiles.setFileStoragePath(imageUrl);
             uploadFiles.setFileSize(file.getSize());
             uploadFiles.setCreateName(loginUser.getUsername());
-            uploadFiles.setBusinessModuleId(businessModuleId);
-
+            //uploadFiles.setBusinessModuleId(businessModuleId);
+            uploadFilesService.insertBasUploadFiles(uploadFiles);
             AjaxResult ajax = AjaxResult.success();
-            ajax.put("imgUrl", imageUrl);
+            ajax.put("uploadFiles", uploadFiles);
             return ajax;
         }
         return error("上传图片异常，请联系管理员");
