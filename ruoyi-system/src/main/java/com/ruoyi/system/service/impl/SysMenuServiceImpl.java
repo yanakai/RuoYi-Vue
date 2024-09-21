@@ -173,7 +173,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
             sysMenu.setMenuId(vOutPut.getId());
             sysMenu.setMenuName(vOutPut.getOutPutName()+"("+vOutPut.getOutPutCode()+")");
             sysMenu.setPath(menu.getPath()+"_"+vOutPut.getEntCode()+"_"+vOutPut.getOutPutCode()+"_"+vOutPut.getMnNum()+"?outPutCode="+vOutPut.getOutPutCode());
-            sysMenu.setComponent(menu.getComponent()+"?id="+vOutPut.getId());
+            sysMenu.setComponent(menu.getComponent());
             sysMenu.setIsFrame("0");
             sysMenu.setMenuType("C");
             sysMenu.setOrderNum(1);
