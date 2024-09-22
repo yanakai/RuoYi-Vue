@@ -18,7 +18,9 @@ public class Test {
 //            System.out.println(s);
 //        }
 
-        System.out.println(DateUtil.format(DateUtil.parse("2024-07-16"), "yyyy-MM-dd HH:mm:ss"));
+        System.out.println(DateUtil.parse("2024-05-01"));
+
+//        System.out.println(DateUtil.format(DateUtil.parse("2024-07-16"), "yyyy-MM-dd HH:mm:ss"));
 
 
 //        List<String> betweenHour = getBetweenHour("2024-07-14 00", "2024-07-16 23");

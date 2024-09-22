@@ -50,7 +50,7 @@ public class TBasOutPutInfoController extends BaseController {
      * 查询基础信息--企业--废气排口列表
      */
     @ApiOperation("获取污染排放口信息列表")
-    @PreAuthorize("@ss.hasPermi('business:gasoutPutInfo:list')")
+    @PreAuthorize("@ss.hasPermi('business:outPutInfo:list')")
     @GetMapping("/list")
     public TableDataInfo list(VOutPutInfo vOutPutInfo) {
         startPage();
@@ -62,7 +62,7 @@ public class TBasOutPutInfoController extends BaseController {
      * 导出基础信息--企业--废气排口列表
      */
     @ApiOperation("导出污染排放口信息列表")
-    @PreAuthorize("@ss.hasPermi('business:gasoutPutInfo:export')")
+    @PreAuthorize("@ss.hasPermi('business:outPutInfo:export')")
     @Log(title = "企业档案--污染排放口信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, VOutPutInfo vOutPutInfo) {

@@ -18,6 +18,7 @@ import com.ruoyi.business.statistics.dto.TDataGasoutYearStatistics;
 import com.ruoyi.business.statistics.service.IGasoutService;
 import com.ruoyi.business.statistics.service.ITDataGasoutDayStatisticsService;
 import com.ruoyi.business.statistics.service.ITDataGasoutHourStatisticsService;
+import com.ruoyi.common.annotation.DataEntScope;
 import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.PageUtils;
@@ -51,6 +52,7 @@ public class GasoutServiceImpl implements IGasoutService {
      * @return 废气排口--数据集合
      */
     @Override
+    @DataEntScope
     public TableDataInfo selectDataList(GasoutDTO gasoutDTO) {
         log.info("查询废气排口--在线监测数据列表:{}", gasoutDTO);
         String dataEnumName = gasoutDTO.getDataEnum().name();

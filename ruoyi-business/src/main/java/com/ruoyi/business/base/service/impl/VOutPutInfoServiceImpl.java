@@ -3,6 +3,7 @@ package com.ruoyi.business.base.service.impl;
 import com.ruoyi.business.base.domain.VOutPutInfo;
 import com.ruoyi.business.base.mapper.VOutPutInfoMapper;
 import com.ruoyi.business.base.service.IVOutPutInfoService;
+import com.ruoyi.common.annotation.DataEntScope;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ public class VOutPutInfoServiceImpl implements IVOutPutInfoService {
      * @return 污染排口信息
      */
     @Override
+    @DataEntScope
     public List<VOutPutInfo> selectVOutPutInfoList(VOutPutInfo vOutPutInfo) {
         return vOutPutInfoMapper.selectVOutPutInfoList(vOutPutInfo);
     }

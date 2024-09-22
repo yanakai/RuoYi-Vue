@@ -13,6 +13,7 @@ import com.ruoyi.business.statisticsAlarm.dto.DataMissingDto;
 import com.ruoyi.business.statisticsAlarm.mapper.VOutPutDayStatisticsMapper;
 import com.ruoyi.business.statisticsAlarm.mapper.VOutPutHourStatisticsMapper;
 import com.ruoyi.business.statisticsAlarm.service.IVOutPutHourStatisticsService;
+import com.ruoyi.common.annotation.DataEntScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +57,7 @@ public class VOutPutHourStatisticsServiceImpl implements IVOutPutHourStatisticsS
      * @return 排口小时报警统计视图
      */
     @Override
+    @DataEntScope
     public List<VOutPutHourStatistics> selectVOutPutHourStatisticsList(VOutPutHourStatistics vOutPutHourStatistics) {
         return vOutPutHourStatisticsMapper.selectVOutPutHourStatisticsList(vOutPutHourStatistics);
     }
@@ -68,11 +70,13 @@ public class VOutPutHourStatisticsServiceImpl implements IVOutPutHourStatisticsS
      * @return
      */
     @Override
+    @DataEntScope
     public List<VOutPutHourStatistics> selectVOutPutHourEmissionsList(VOutPutHourStatistics vOutPutHourStatistics) {
         return vOutPutHourStatisticsMapper.selectVOutPutHourEmissionsList(vOutPutHourStatistics);
     }
 
     @Override
+    @DataEntScope
     public List<DataMissingDto> selectDataMissingList(DataMissingDto dataMissingDto) {
         Map<String, Object> params = dataMissingDto.getParams();
         List<String> outPutNames = new ArrayList<>();
@@ -99,6 +103,7 @@ public class VOutPutHourStatisticsServiceImpl implements IVOutPutHourStatisticsS
     }
 
     @Override
+    @DataEntScope
     public List<AlarmEmissionsDto> selectAlarmEmissionsDtoList(VOutPutDayStatistics vOutPutDayStatistics) {
         return vOutPutDayStatisticsMapper.selectAlarmExceptionDtoList(vOutPutDayStatistics);
     }

@@ -34,6 +34,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="longitude != null  and longitude != ''"> and longitude = #{longitude}</if>
             <if test="monitoringPointType != null  and monitoringPointType != ''"> and monitoring_point_type = #{monitoringPointType}</if>
             <if test="pollutantName != null  and pollutantName != ''"> and pollutant_name like concat('%', #{pollutantName}, '%')</if>
+            <!-- 根据所属企业数据范围过滤 -->
+            <if test="params.dataEntScope != null and params.dataEntScope != ''">
+                ${params.dataEntScope}
+            </if>
         </where>
     </select>
     

@@ -51,6 +51,11 @@
             <if test="outPutType != null  and outPutType != ''">and out_put_type = #{outPutType}</if>
             <if test="pollutantNameCn != null  and pollutantNameCn != ''">and pollutant_name_cn = #{pollutantNameCn}
             </if>
+            <!-- 根据所属企业数据范围过滤 -->
+            <if test="params.dataEntScope != null and params.dataEntScope != ''">
+                ${params.dataEntScope}
+            </if>
+
             and alarm in (1, 2, 3)
         </where>
     </select>
@@ -73,6 +78,11 @@
             <if test="outPutType != null  and outPutType != ''">and out_put_type = #{outPutType}</if>
             <if test="pollutantNameCn != null  and pollutantNameCn != ''">and pollutant_name_cn = #{pollutantNameCn}
             </if>
+            <!-- 根据所属企业数据范围过滤 -->
+            <if test="params.dataEntScope != null and params.dataEntScope != ''">
+                ${params.dataEntScope}
+            </if>
+
             and alarm in (4, 5, 6)
         </where>
     </select>

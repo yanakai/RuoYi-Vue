@@ -140,23 +140,13 @@ public class SysMenuServiceImpl implements ISysMenuService {
         List<SysMenu> tmps = menus;
         for (SysMenu menu:tmps) {
             if(StringUtils.equals(menu.getPath(),"gasOutletOnline")){
-                VOutPutInfoMenu vOutPutInfo = new VOutPutInfoMenu();
-                vOutPutInfo.setMonitoringPointType("1");
-                //废气排口 获取当前用户所属企业的废气排口
-                if(!isAdmin){
-                    vOutPutInfo.setEntCode(loginUser.getUser().getEntCode());
-                }
+                VOutPutInfoMenu vOutPutInfo = getVOutPutInfoMenu("1",isAdmin,loginUser);
                 //管理员查询所有
                 List<VOutPutInfoMenu> list = menuMapper.selectVOutPutInfoList(vOutPutInfo);
                 addListMenu(menu,addList, list);
             } else if (StringUtils.equals(menu.getPath(), "waterOutletOnline")) {
                 //废水排口 获取当前用户所属企业的废水排口
-                VOutPutInfoMenu vOutPutInfo = new VOutPutInfoMenu();
-                vOutPutInfo.setMonitoringPointType("2");
-                //废气排口 获取当前用户所属企业的废气排口
-                if(!isAdmin){
-                    vOutPutInfo.setEntCode(loginUser.getUser().getEntCode());
-                }
+                VOutPutInfoMenu vOutPutInfo = getVOutPutInfoMenu("2",isAdmin,loginUser);
                 //管理员查询所有
                 List<VOutPutInfoMenu> list = menuMapper.selectVOutPutInfoList(vOutPutInfo);
                 addListMenu(menu,addList, list);
@@ -167,6 +157,15 @@ public class SysMenuServiceImpl implements ISysMenuService {
         return menus;
     }
 
+    private VOutPutInfoMenu getVOutPutInfoMenu(String type,boolean isAdmin,LoginUser loginUser){
+        VOutPutInfoMenu vOutPutInfo = new VOutPutInfoMenu();
+        vOutPutInfo.setMonitoringPointType(type);
+        if(!isAdmin){
+            vOutPutInfo.setEntCode(loginUser.getUser().getEntCode());
+            vOutPutInfo.setEntName(loginUser.getUser().getEntName());
+        }
+        return vOutPutInfo;
+    }
     private void addListMenu(SysMenu menu,List<SysMenu> menus, List<VOutPutInfoMenu> list) {
         for (VOutPutInfoMenu  vOutPut: list) {
             SysMenu sysMenu = new SysMenu();

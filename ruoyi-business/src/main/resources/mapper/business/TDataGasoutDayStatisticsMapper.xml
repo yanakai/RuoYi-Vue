@@ -118,6 +118,10 @@
                     and date_format(monitor_time,'%y%m%d %H:%i:%s') &lt;= date_format(adddate(now(),1),'%y%m%d')
                 </otherwise>
             </choose>
+            <!-- 根据所属企业数据范围过滤 -->
+            <if test="params.dataEntScope != null and params.dataEntScope != ''">
+                ${params.dataEntScope}
+            </if>
         </where>
         order by monitor_time desc
     </select>
@@ -280,6 +284,11 @@
                     and date_format(monitor_time,'%Y%m') &lt;= date_format( DATE_SUB(now(),INTERVAL 1 MONTH) , '%Y%m' )
                 </otherwise>
             </choose>
+
+            <!-- 根据所属企业数据范围过滤 -->
+            <if test="params.dataEntScope != null and params.dataEntScope != ''">
+                ${params.dataEntScope}
+            </if>
         </where>
         GROUP BY date_format(monitor_time,'%Y-%m'),ent_code, ent_name,out_put_code,out_put_name
         order by monitor_time desc
@@ -351,6 +360,10 @@
                     and date_format(monitor_time,'%Y') &lt;= date_format(now(),'%Y')
                 </otherwise>
             </choose>
+            <!-- 根据所属企业数据范围过滤 -->
+            <if test="params.dataEntScope != null and params.dataEntScope != ''">
+                ${params.dataEntScope}
+            </if>
         </where>
         GROUP BY date_format(monitor_time,'%Y'),ent_code, ent_name,out_put_code,out_put_name
         order by monitor_time desc
@@ -417,6 +430,11 @@
                     and date_format(monitor_time,'%Y%m%d %H:%i:%s') &lt;= date_format(adddate(now(),1),'%Y%m%d')
                 </otherwise>
             </choose>
+
+            <!-- 根据所属企业数据范围过滤 -->
+            <if test="params.dataEntScope != null and params.dataEntScope != ''">
+                ${params.dataEntScope}
+            </if>
         </where>
         GROUP BY ent_code,ent_name,out_put_code,out_put_name,monitor_time,update_time
         order by monitor_time desc

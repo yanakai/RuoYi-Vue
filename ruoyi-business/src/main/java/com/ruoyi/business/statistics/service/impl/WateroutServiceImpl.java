@@ -15,6 +15,7 @@ import com.ruoyi.business.statistics.dto.*;
 import com.ruoyi.business.statistics.service.ITDataWateroutDayStatisticsService;
 import com.ruoyi.business.statistics.service.ITDataWateroutHourStatisticsService;
 import com.ruoyi.business.statistics.service.IWateroutService;
+import com.ruoyi.common.annotation.DataEntScope;
 import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.PageUtils;
@@ -45,6 +46,7 @@ public class WateroutServiceImpl implements IWateroutService {
      * @return 废水排口--数据集合
      */
     @Override
+    @DataEntScope
     public TableDataInfo selectDataList(WateroutDTO wateroutDTO) {
         log.info("查询废水排口--在线监测数据列表:{}", wateroutDTO);
         String dataEnumName = wateroutDTO.getDataEnum().name();

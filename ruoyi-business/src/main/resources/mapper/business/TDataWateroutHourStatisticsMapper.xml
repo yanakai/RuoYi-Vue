@@ -94,6 +94,10 @@
             <if test="tnAvgValue != null  and tnAvgValue != ''">and tn_avg_value = #{tnAvgValue}</if>
             <if test="tnEmissions != null  and tnEmissions != ''">and tn_emissions = #{tnEmissions}</if>
             <if test="tnIsAlarm != null  and tnIsAlarm != ''">and tn_is_alarm = #{tnIsAlarm}</if>
+            <!-- 根据所属企业数据范围过滤 -->
+            <if test="params.dataEntScope != null and params.dataEntScope != ''">
+                ${params.dataEntScope}
+            </if>
         </where>
         order by monitor_time desc
     </select>
