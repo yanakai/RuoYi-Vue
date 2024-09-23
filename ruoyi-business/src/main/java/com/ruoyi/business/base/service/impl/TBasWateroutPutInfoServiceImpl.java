@@ -43,7 +43,7 @@ public class TBasWateroutPutInfoServiceImpl implements ITBasWateroutPutInfoServi
         basUploadFiles.setBusinessModuleId(tBasWateroutPutInfo.getId().toString());
         tBasWateroutPutInfo.setUploadFilesList(basUploadFilesMapper.selectTBasUploadFilesList(basUploadFiles));
 
-        return tBasWateroutPutInfoMapper.selectTBasWateroutPutInfoById(id);
+        return tBasWateroutPutInfo;
     }
 
     /**
