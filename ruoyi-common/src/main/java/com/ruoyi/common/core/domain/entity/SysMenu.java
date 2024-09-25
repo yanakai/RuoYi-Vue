@@ -93,6 +93,9 @@ public class SysMenu extends BaseEntity {
      */
     private String icon;
 
+
+    private String outPutCode;
+
     /**
      * 子菜单
      */

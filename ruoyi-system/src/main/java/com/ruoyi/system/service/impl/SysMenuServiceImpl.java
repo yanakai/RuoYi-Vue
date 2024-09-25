@@ -166,12 +166,21 @@ public class SysMenuServiceImpl implements ISysMenuService {
         }
         return vOutPutInfo;
     }
+
+    /**
+     * 动态增加排口菜单
+     * @param menu
+     * @param menus
+     * @param list
+     */
     private void addListMenu(SysMenu menu,List<SysMenu> menus, List<VOutPutInfoMenu> list) {
         for (VOutPutInfoMenu  vOutPut: list) {
             SysMenu sysMenu = new SysMenu();
             sysMenu.setMenuId(vOutPut.getId());
-            sysMenu.setMenuName(vOutPut.getOutPutName()+"("+vOutPut.getOutPutCode()+")");
-            sysMenu.setPath(menu.getPath()+"_"+vOutPut.getEntCode()+"_"+vOutPut.getOutPutCode()+"_"+vOutPut.getMnNum()+"?outPutCode="+vOutPut.getOutPutCode());
+//            sysMenu.setMenuName(vOutPut.getOutPutName()+"("+vOutPut.getOutPutCode()+")");
+//            sysMenu.setPath(menu.getPath()+"_"+vOutPut.getEntCode()+"_"+vOutPut.getOutPutCode()+"_"+vOutPut.getMnNum()+"?outPutCode="+vOutPut.getOutPutCode());
+            sysMenu.setMenuName("outPutCode-"+vOutPut.getOutPutCode());
+            sysMenu.setPath("outPutCode-"+vOutPut.getOutPutCode());
             sysMenu.setComponent(menu.getComponent());
             sysMenu.setIsFrame("0");
             sysMenu.setMenuType("C");

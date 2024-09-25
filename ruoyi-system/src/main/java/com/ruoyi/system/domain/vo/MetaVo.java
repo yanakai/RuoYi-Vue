@@ -28,24 +28,29 @@ public class MetaVo {
      */
     private String link;
 
+    private String outPutCode;
+
     public MetaVo() {
     }
 
     public MetaVo(String title, String icon) {
         this.title = title;
         this.icon = icon;
+        setOutPutCodeByTitle(title);
     }
 
     public MetaVo(String title, String icon, boolean noCache) {
         this.title = title;
         this.icon = icon;
         this.noCache = noCache;
+        setOutPutCodeByTitle(title);
     }
 
     public MetaVo(String title, String icon, String link) {
         this.title = title;
         this.icon = icon;
         this.link = link;
+        setOutPutCodeByTitle(title);
     }
 
     public MetaVo(String title, String icon, boolean noCache, String link) {
@@ -55,6 +60,24 @@ public class MetaVo {
         if (StringUtils.ishttp(link)) {
             this.link = link;
         }
+        setOutPutCodeByTitle(title);
+    }
+
+    private void setOutPutCodeByTitle(String title) {
+        if(StringUtils.startsWith(title,"outPutCode")){
+            String [] split = title.split("-");
+            if(split.length>1 && StringUtils.isNotEmpty(split[1])){
+                this.outPutCode = split[1];
+            }
+        }
+    }
+
+    public String getOutPutCode() {
+        return outPutCode;
+    }
+
+    public void setOutPutCode(String outPutCode) {
+        this.outPutCode = outPutCode;
     }
 
     public boolean isNoCache() {
