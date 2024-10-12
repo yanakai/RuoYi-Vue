@@ -140,13 +140,13 @@ public class SysMenuServiceImpl implements ISysMenuService {
         List<SysMenu> tmps = menus;
         for (SysMenu menu:tmps) {
             if(StringUtils.equals(menu.getPath(),"gasOutletOnline")){
-                VOutPutInfoMenu vOutPutInfo = getVOutPutInfoMenu("1",isAdmin,loginUser);
+                VOutPutInfoMenu vOutPutInfo = getVOutPutInfoMenu("2",isAdmin,loginUser);
                 //管理员查询所有
                 List<VOutPutInfoMenu> list = menuMapper.selectVOutPutInfoList(vOutPutInfo);
                 addListMenu(menu,addList, list);
             } else if (StringUtils.equals(menu.getPath(), "waterOutletOnline")) {
                 //废水排口 获取当前用户所属企业的废水排口
-                VOutPutInfoMenu vOutPutInfo = getVOutPutInfoMenu("2",isAdmin,loginUser);
+                VOutPutInfoMenu vOutPutInfo = getVOutPutInfoMenu("1",isAdmin,loginUser);
                 //管理员查询所有
                 List<VOutPutInfoMenu> list = menuMapper.selectVOutPutInfoList(vOutPutInfo);
                 addListMenu(menu,addList, list);
@@ -179,7 +179,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
             sysMenu.setMenuId(vOutPut.getId());
 //            sysMenu.setMenuName(vOutPut.getOutPutName()+"("+vOutPut.getOutPutCode()+")");
 //            sysMenu.setPath(menu.getPath()+"_"+vOutPut.getEntCode()+"_"+vOutPut.getOutPutCode()+"_"+vOutPut.getMnNum()+"?outPutCode="+vOutPut.getOutPutCode());
-            sysMenu.setMenuName("outPutCode-"+vOutPut.getOutPutCode());
+            sysMenu.setMenuName("outPutCode-"+vOutPut.getOutPutCode()+"-"+vOutPut.getOutPutName());
             sysMenu.setPath("outPutCode-"+vOutPut.getOutPutCode());
             sysMenu.setComponent(menu.getComponent());
             sysMenu.setIsFrame("0");

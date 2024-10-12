@@ -69,6 +69,9 @@ public class MetaVo {
             if(split.length>1 && StringUtils.isNotEmpty(split[1])){
                 this.outPutCode = split[1];
             }
+            if(split.length>2 && StringUtils.isNotEmpty(split[2])){
+                this.title = split[2];
+            }
         }
     }
 
