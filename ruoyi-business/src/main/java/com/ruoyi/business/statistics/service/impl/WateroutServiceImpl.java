@@ -1,6 +1,8 @@
 package com.ruoyi.business.statistics.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjUtil;
@@ -71,6 +73,14 @@ public class WateroutServiceImpl implements IWateroutService {
         } else if (StrUtil.equals(dataEnumName,"year")) {
             TDataWateroutStatisticsDTO tDataWateroutStatisticsDTO = new TDataWateroutStatisticsDTO();
             BeanUtil.copyProperties(wateroutDTO, tDataWateroutStatisticsDTO);
+            if (ObjUtil.isNull(tDataWateroutStatisticsDTO.getParams())){
+                Map<String, Object> params = new HashMap<>();
+                params.put("beginTime", DateUtil.year(DateUtil.date()));
+                params.put("endTime", DateUtil.year(DateUtil.date()));
+                tDataWateroutStatisticsDTO.setParams(params);
+            }
+
+
             PageUtils.startPage();
             List<TDataWateroutYearStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutYearStatisticsList(tDataWateroutStatisticsDTO);
             return getDataTable(list);

@@ -1,5 +1,9 @@
 package com.ruoyi.web.controller.system;
 
+import cn.hutool.core.util.ObjectUtil;
+import com.ruoyi.business.base.domain.TBasEnterprise;
+import com.ruoyi.business.base.dto.TBasEnterpriseBaseInfoDto;
+import com.ruoyi.business.base.service.ITBasEnterpriseService;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -23,6 +27,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,6 +52,9 @@ public class SysUserController extends BaseController {
 
     @Autowired
     private ISysPostService postService;
+
+    @Resource
+    private ITBasEnterpriseService tBasEnterpriseService;
 
     /**
      * 获取用户列表
@@ -123,6 +131,19 @@ public class SysUserController extends BaseController {
         }
         user.setCreateBy(getUsername());
         user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
+//        //获取企业信息
+//        TBasEnterpriseBaseInfoDto tBasEnterprise = new TBasEnterpriseBaseInfoDto();
+//        tBasEnterprise.setEntCode(user.getEntCode());
+//        tBasEnterprise.setEntName(user.getEntName());
+//        tBasEnterprise.setSocialCreditCode(user.getSocialCreditCode());
+//        List<TBasEnterpriseBaseInfoDto> tBasEnterpriseBaseList = tBasEnterpriseService.selectTBasEnterpriseBaseList(tBasEnterprise);
+//        if(ObjectUtil.isNotEmpty(tBasEnterpriseBaseList)){
+//            TBasEnterpriseBaseInfoDto tBasEnterpriseBaseInfoDto = tBasEnterpriseBaseList.get(0);
+//            user.setEntCode(tBasEnterpriseBaseInfoDto.getEntCode());
+//            user.setEntName(tBasEnterpriseBaseInfoDto.getEntName());
+//            user.setSocialCreditCode(tBasEnterpriseBaseInfoDto.getSocialCreditCode());
+//        }
+
         return toAjax(userService.insertUser(user));
     }
 

@@ -35,7 +35,7 @@ public class TBasGasoutPutInfoController extends BaseController {
      */
     @Deprecated
     @ApiOperation("获取废气排口列表")
-    @PreAuthorize("@ss.hasPermi('business:gasoutPutInfo:list')")
+//    @PreAuthorize("@ss.hasPermi('business:gasoutPutInfo:list')")
     @GetMapping("/list")
     public TableDataInfo list(TBasGasoutPutInfo tBasGasoutPutInfo) {
         startPage();
@@ -48,7 +48,7 @@ public class TBasGasoutPutInfoController extends BaseController {
      */
     @Deprecated
     @ApiOperation("导出废气排口列表")
-    @PreAuthorize("@ss.hasPermi('business:gasoutPutInfo:export')")
+//    @PreAuthorize("@ss.hasPermi('business:gasoutPutInfo:export')")
     @Log(title = "基础信息--企业--废气排口", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, TBasGasoutPutInfo tBasGasoutPutInfo) {
@@ -61,7 +61,7 @@ public class TBasGasoutPutInfoController extends BaseController {
      * 获取基础信息--企业--废气排口详细信息
      */
     @ApiOperation("获取废气排口详细信息")
-    @PreAuthorize("@ss.hasPermi('business:gasoutPutInfo:query')")
+//    @PreAuthorize("@ss.hasPermi('business:gasoutPutInfo:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(tBasGasoutPutInfoService.selectTBasGasoutPutInfoById(id));
@@ -71,7 +71,7 @@ public class TBasGasoutPutInfoController extends BaseController {
      * 新增基础信息--企业--废气排口
      */
     @ApiOperation("新增废气排口")
-    @PreAuthorize("@ss.hasPermi('business:gasoutPutInfo:add')")
+//    @PreAuthorize("@ss.hasPermi('business:gasoutPutInfo:add')")
     @Log(title = "基础信息--企业--废气排口", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TBasGasoutPutInfo tBasGasoutPutInfo) {
@@ -84,7 +84,7 @@ public class TBasGasoutPutInfoController extends BaseController {
      * 修改基础信息--企业--废气排口
      */
     @ApiOperation("修改废气排口")
-    @PreAuthorize("@ss.hasPermi('business:gasoutPutInfo:edit')")
+//    @PreAuthorize("@ss.hasPermi('business:gasoutPutInfo:edit')")
     @Log(title = "基础信息--企业--废气排口", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TBasGasoutPutInfo tBasGasoutPutInfo) {
@@ -97,7 +97,7 @@ public class TBasGasoutPutInfoController extends BaseController {
      * 删除基础信息--企业--废气排口
      */
     @ApiOperation("删除废气排口")
-    @PreAuthorize("@ss.hasPermi('business:gasoutPutInfo:remove')")
+//    @PreAuthorize("@ss.hasPermi('business:gasoutPutInfo:remove')")
     @Log(title = "基础信息--企业--废气排口", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {

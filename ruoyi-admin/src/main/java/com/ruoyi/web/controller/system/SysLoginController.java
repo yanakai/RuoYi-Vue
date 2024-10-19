@@ -33,6 +33,12 @@ public class SysLoginController {
     @Resource
     private SysPermissionService permissionService;
 
+    @GetMapping("/version")
+    public AjaxResult getVersion() {
+        return AjaxResult.success("hello world,version:1.0.0.20241019");
+    }
+
+
     /**
      * 登录方法
      *

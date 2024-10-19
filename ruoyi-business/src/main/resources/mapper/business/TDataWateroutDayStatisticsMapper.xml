@@ -33,6 +33,35 @@
         <result property="tnIsAlarm" column="tn_is_alarm"/>
     </resultMap>
 
+    <resultMap type="com.ruoyi.business.statistics.domain.TDataWateroutDayStatisticsVO" id="TDataWateroutDayStatisticsVoResult">
+        <result property="id" column="id"/>
+        <result property="entCode" column="ent_code"/>
+        <result property="entName" column="ent_name"/>
+        <result property="outPutCode" column="out_put_code"/>
+        <result property="outPutName" column="out_put_name"/>
+        <result property="monitorTime" column="monitor_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="volumeAvgFlow" column="volume_avg_flow"/>
+        <result property="volumeTotalFlow" column="volume_total_flow"/>
+        <result property="phValue" column="ph_value"/>
+        <result property="phIsAlarm" column="ph_is_alarm"/>
+        <result property="anAvgValue" column="an_avg_value"/>
+        <result property="anEmissions" column="an_emissions"/>
+        <result property="anIsAlarm" column="an_is_alarm"/>
+        <result property="codAvgValue" column="cod_avg_value"/>
+        <result property="codEmissions" column="cod_emissions"/>
+        <result property="codIsAlarm" column="cod_is_alarm"/>
+        <result property="noAvgValue" column="no_avg_value"/>
+        <result property="noEmissions" column="no_emissions"/>
+        <result property="noIsAlarm" column="no_is_alarm"/>
+        <result property="tpAvgValue" column="tp_avg_value"/>
+        <result property="tpEmissions" column="tp_emissions"/>
+        <result property="tpIsAlarm" column="tp_is_alarm"/>
+        <result property="tnAvgValue" column="tn_avg_value"/>
+        <result property="tnEmissions" column="tn_emissions"/>
+        <result property="tnIsAlarm" column="tn_is_alarm"/>
+    </resultMap>
+
     <resultMap type="com.ruoyi.business.statistics.dto.TDataWateroutMonthStatistics" id="TDataWateroutMonthStatisticsResult">
         <result property="id" column="id"/>
         <result property="entCode" column="ent_code"/>
@@ -332,7 +361,7 @@
     </select>
     <!-- 废水排口-年度统计数据列表 -->
     <select id="selectTDataWateroutYearStatisticsList" parameterType="TDataWateroutDayStatistics"
-            resultMap="TDataWateroutDayStatisticsResult">
+            resultMap="TDataWateroutDayStatisticsVoResult">
         select  date_format(monitor_time,'%Y') monitor_time,
         ent_code,
         ent_name,

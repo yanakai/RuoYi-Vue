@@ -39,7 +39,7 @@ public class GasoutController extends BaseController {
      * 废气排口在线监测
      */
     @ApiOperation("废气排口在线监测")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
+//    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/list")
     public TableDataInfo list(GasoutDTO gasoutDTO) {
         return gasoutService.selectDataList(gasoutDTO);
@@ -49,7 +49,7 @@ public class GasoutController extends BaseController {
      * 废气排口在线监测导出
      */
     @ApiOperation("废气排口在线监测导出")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
+//    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
     @Log(title = "废气排口在线监测导出", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, GasoutDTO gasoutDTO) {

@@ -40,7 +40,7 @@ public class WateroutController extends BaseController {
      * 小时数据报警
      */
     @ApiOperation("废水在线监测")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
+//    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/list")
     public TableDataInfo list(WateroutDTO wateroutDTO) {
         return wateroutService.selectDataList(wateroutDTO);
@@ -50,7 +50,7 @@ public class WateroutController extends BaseController {
      * 小时数据报警导出
      */
     @ApiOperation("废水在线监测导出")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
+//    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
     @Log(title = "废水在线监测导出", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {

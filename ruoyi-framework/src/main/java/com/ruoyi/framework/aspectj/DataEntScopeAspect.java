@@ -27,20 +27,23 @@ public class DataEntScopeAspect {
     public static final String DATA_ENT_SCOPE = "dataEntScope";
 
     public static void entDataScopeFilter(JoinPoint joinPoint, SysUser user) {
-        StringBuilder sqlString = new StringBuilder();
+        StringBuilder dataScopSqlString = new StringBuilder();
         String entCode = user.getEntCode();
         if(StringUtils.isNotEmpty(entCode)){
-            sqlString.append(StringUtils.format(" and  ent_code = '{}' ", entCode));
+            dataScopSqlString.append(StringUtils.format(" and  ent_code = '{}' ", entCode));
         }
         String entName = user.getEntName();
         if(StringUtils.isNotEmpty(entName)){
-            sqlString.append(StringUtils.format(" and  ent_name = '{}' ", entName));
+            dataScopSqlString.append(StringUtils.format(" and  ent_name = '{}' ", entName));
         }
 
         Object params = joinPoint.getArgs()[0];
-        if (StringUtils.isNotNull(params) && params instanceof BaseEntity) {
+        if (StringUtils.isNotNull(params) && params instanceof BaseEntity && StringUtils.isNotEmpty(dataScopSqlString.toString())) {
             BaseEntity baseEntity = (BaseEntity) params;
-            baseEntity.getParams().put(DATA_ENT_SCOPE, " AND (" + sqlString.substring(5) + ")");
+            baseEntity.getParams().put(DATA_ENT_SCOPE, " AND (" + dataScopSqlString.substring(5) + ")");
+        }else if(StringUtils.isNotNull(params) && params instanceof BaseEntity && StringUtils.isEmpty(dataScopSqlString.toString())){
+            BaseEntity baseEntity = (BaseEntity) params;
+            baseEntity.getParams().put(DATA_ENT_SCOPE, " AND (1=2)");//没有关联企业的用户且非管理员 不能查看数据
         }
     }
 

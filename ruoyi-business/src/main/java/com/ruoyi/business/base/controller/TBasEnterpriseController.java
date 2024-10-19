@@ -39,7 +39,7 @@ public class TBasEnterpriseController extends BaseController {
      * 查询基础信息---企业基础列表
      */
     @ApiOperation("获取企业信息列表-下拉列表")
-    @PreAuthorize("@ss.hasPermi('business:enterprise:list')")
+//    @PreAuthorize("@ss.hasPermi('business:enterprise:list')")
     @GetMapping("/listBaseInfos")
     public TableDataInfo listAll(TBasEnterpriseBaseInfoDto tBasEnterprise) {
         List<TBasEnterpriseBaseInfoDto> list = tBasEnterpriseService.selectTBasEnterpriseBaseList(tBasEnterprise);
@@ -52,7 +52,7 @@ public class TBasEnterpriseController extends BaseController {
      * 查询基础信息---企业基础列表
      */
     @ApiOperation("获取企业信息列表")
-    @PreAuthorize("@ss.hasPermi('business:enterprise:list')")
+//    @PreAuthorize("@ss.hasPermi('business:enterprise:list')")
     @GetMapping("/list")
     public TableDataInfo list(TBasEnterprise tBasEnterprise) {
         startPage();
@@ -65,7 +65,7 @@ public class TBasEnterpriseController extends BaseController {
      * 导出基础信息---企业基础列表
      */
     @ApiOperation("导出基础信息---企业基础列表")
-    @PreAuthorize("@ss.hasPermi('business:enterprise:export')")
+//    @PreAuthorize("@ss.hasPermi('business:enterprise:export')")
     @Log(title = "基础信息---企业基础", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, TBasEnterprise tBasEnterprise) {
@@ -78,7 +78,7 @@ public class TBasEnterpriseController extends BaseController {
      * 获取基础信息---企业基础详细信息
      */
     @ApiOperation("获取基础信息---企业基础详细信息")
-    @PreAuthorize("@ss.hasPermi('business:enterprise:query')")
+//    @PreAuthorize("@ss.hasPermi('business:enterprise:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(tBasEnterpriseService.selectTBasEnterpriseById(id));
@@ -88,7 +88,7 @@ public class TBasEnterpriseController extends BaseController {
      * 新增基础信息---企业基础
      */
     @ApiOperation("新增基础信息---企业基础")
-    @PreAuthorize("@ss.hasPermi('business:enterprise:add')")
+//    @PreAuthorize("@ss.hasPermi('business:enterprise:add')")
     @Log(title = "基础信息---企业基础", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TBasEnterprise tBasEnterprise) {
@@ -101,7 +101,7 @@ public class TBasEnterpriseController extends BaseController {
      * 修改基础信息---企业基础
      */
     @ApiOperation("修改基础信息---企业基础")
-    @PreAuthorize("@ss.hasPermi('business:enterprise:edit')")
+//    @PreAuthorize("@ss.hasPermi('business:enterprise:edit')")
     @Log(title = "基础信息---企业基础", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TBasEnterprise tBasEnterprise) {
@@ -114,7 +114,7 @@ public class TBasEnterpriseController extends BaseController {
      * 删除基础信息---企业基础
      */
     @ApiOperation("删除基础信息---企业基础")
-    @PreAuthorize("@ss.hasPermi('business:enterprise:remove')")
+//    @PreAuthorize("@ss.hasPermi('business:enterprise:remove')")
     @Log(title = "基础信息---企业基础", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {
