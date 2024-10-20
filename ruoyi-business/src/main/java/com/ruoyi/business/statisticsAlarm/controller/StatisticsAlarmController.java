@@ -59,7 +59,7 @@ public class StatisticsAlarmController extends BaseController {
      * 小时数据报警
      */
     @ApiOperation("小时数据报警")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
+    //@PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/alarm/hour")
     public TableDataInfo hourList(AlarmHourDto alarmHourDto) {
         startPage();
@@ -94,7 +94,7 @@ public class StatisticsAlarmController extends BaseController {
      * 排放量报警
      */
     @ApiOperation("排放量报警")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
+    //@PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/alarm/emissions")
     public TableDataInfo emissionList(VOutPutDayStatistics vOutPutDayStatistics) {
         startPage();
@@ -119,7 +119,7 @@ public class StatisticsAlarmController extends BaseController {
      * 异常报警
      */
     @ApiOperation("异常报警")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
+    //@PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/alarm/exception")
     public TableDataInfo exceptionList(AlarmHourDto alarmHourDto) {
         startPage();
@@ -154,7 +154,7 @@ public class StatisticsAlarmController extends BaseController {
      * 数据缺失报警
      */
     @ApiOperation("小时数据缺失预警")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
+    //@PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/alarm/DataMissing")
     public TableDataInfo dataMissing(DataMissingDto dataMissingDto) {
         startPage();
@@ -182,7 +182,7 @@ public class StatisticsAlarmController extends BaseController {
      */
     @Deprecated
     @ApiOperation("传输有效率预警")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
+    //@PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/alarm/transmissionEfficiency")
     public TableDataInfo transmissionEfficiency(DataEfficiencyDto dataEfficiencyDto) {
         startPage();
@@ -208,7 +208,7 @@ public class StatisticsAlarmController extends BaseController {
      * 小时数据预警
      */
     @ApiOperation("小时数据预警")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
+    //@PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/warning/hour")
     public TableDataInfo warningHourList(OutControlHourDto outControlHourDto) {
         startPage();

@@ -141,14 +141,20 @@ public class SysMenuServiceImpl implements ISysMenuService {
         for (SysMenu menu:tmps) {
             if(StringUtils.equals(menu.getPath(),"gasOutletOnline")){
                 VOutPutInfoMenu vOutPutInfo = getVOutPutInfoMenu("2",isAdmin,loginUser);
-                //管理员查询所有
-                List<VOutPutInfoMenu> list = menuMapper.selectVOutPutInfoList(vOutPutInfo);
+                //管理员查询所有 如果用户没有设置企业则为空
+                List<VOutPutInfoMenu> list = new ArrayList<>();
+                if(StringUtils.isNotNull(vOutPutInfo.getEntCode())){
+                    list = menuMapper.selectVOutPutInfoList(vOutPutInfo);
+                }
                 addListMenu(menu,addList, list);
             } else if (StringUtils.equals(menu.getPath(), "waterOutletOnline")) {
                 //废水排口 获取当前用户所属企业的废水排口
                 VOutPutInfoMenu vOutPutInfo = getVOutPutInfoMenu("1",isAdmin,loginUser);
                 //管理员查询所有
-                List<VOutPutInfoMenu> list = menuMapper.selectVOutPutInfoList(vOutPutInfo);
+                List<VOutPutInfoMenu> list = new ArrayList<>();
+                if(StringUtils.isNotNull(vOutPutInfo.getEntCode())){
+                    list = menuMapper.selectVOutPutInfoList(vOutPutInfo);
+                }
                 addListMenu(menu,addList, list);
             }
         }
@@ -252,7 +258,15 @@ public class SysMenuServiceImpl implements ISysMenuService {
                 childrenList.add(children);
                 router.setChildren(childrenList);
             }
-            routers.add(router);
+
+            //如果 废气|废水 &&子菜单不为空
+            if(StringUtils.equals(router.getPath(),"gasOutletOnline") || StringUtils.equals(router.getPath(), "waterOutletOnline")){
+                if(router.getChildren()!=null){
+                    routers.add(router);
+                }
+            }else{
+                routers.add(router);
+            }
         }
         return routers;
     }
