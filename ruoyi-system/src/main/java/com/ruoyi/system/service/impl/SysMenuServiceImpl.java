@@ -143,7 +143,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
                 VOutPutInfoMenu vOutPutInfo = getVOutPutInfoMenu("2",isAdmin,loginUser);
                 //管理员查询所有 如果用户没有设置企业则为空
                 List<VOutPutInfoMenu> list = new ArrayList<>();
-                if(StringUtils.isNotNull(vOutPutInfo.getEntCode())){
+                if(isAdmin || StringUtils.isNotNull(vOutPutInfo.getEntCode())){
                     list = menuMapper.selectVOutPutInfoList(vOutPutInfo);
                 }
                 addListMenu(menu,addList, list);
@@ -152,7 +152,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
                 VOutPutInfoMenu vOutPutInfo = getVOutPutInfoMenu("1",isAdmin,loginUser);
                 //管理员查询所有
                 List<VOutPutInfoMenu> list = new ArrayList<>();
-                if(StringUtils.isNotNull(vOutPutInfo.getEntCode())){
+                if(isAdmin || StringUtils.isNotNull(vOutPutInfo.getEntCode())){
                     list = menuMapper.selectVOutPutInfoList(vOutPutInfo);
                 }
                 addListMenu(menu,addList, list);
