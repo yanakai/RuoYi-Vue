@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.statisticsAlarm.mapper.TDataMonitorFaultHourMapper">
+    
+    <resultMap type="TDataMonitorFaultHour" id="TDataMonitorFaultHourResult">
+        <result property="alarmId"    column="alarm_id"    />
+        <result property="entCode"    column="ent_code"    />
+        <result property="entName"    column="ent_name"    />
+        <result property="outPutCode"    column="out_put_code"    />
+        <result property="outPutName"    column="out_put_name"    />
+        <result property="pollutantCode"    column="pollutant_code"    />
+        <result property="pollutantName"    column="pollutant_name"    />
+        <result property="dataType"    column="data_type"    />
+        <result property="alarmTime"    column="alarm_time"    />
+        <result property="faultTime"    column="fault_time"    />
+        <result property="alarmType"    column="alarm_type"    />
+    </resultMap>
+
+    <sql id="selectTDataMonitorFaultHourVo">
+        select alarm_id, ent_code, ent_name, out_put_code, out_put_name, pollutant_code, pollutant_name, data_type, alarm_time, fault_time, alarm_type from t_data_monitor_fault_hour
+    </sql>
+
+    <select id="selectTDataMonitorFaultHourList" parameterType="TDataMonitorFaultHour" resultMap="TDataMonitorFaultHourResult">
+        <include refid="selectTDataMonitorFaultHourVo"/>
+        <where>  
+            <if test="entCode != null  and entCode != ''"> and ent_code = #{entCode}</if>
+            <if test="entName != null  and entName != ''"> and ent_name like concat('%', #{entName}, '%')</if>
+            <if test="outPutCode != null  and outPutCode != ''"> and out_put_code = #{outPutCode}</if>
+            <if test="outPutName != null  and outPutName != ''"> and out_put_name like concat('%', #{outPutName}, '%')</if>
+            <if test="pollutantCode != null  and pollutantCode != ''"> and pollutant_code = #{pollutantCode}</if>
+            <if test="pollutantName != null  and pollutantName != ''"> and pollutant_name like concat('%', #{pollutantName}, '%')</if>
+            <if test="dataType != null  and dataType != ''"> and data_type = #{dataType}</if>
+            <if test="alarmTime != null "> and alarm_time = #{alarmTime}</if>
+            <if test="faultTime != null "> and fault_time = #{faultTime}</if>
+            <if test="alarmType != null  and alarmType != ''"> and alarm_type = #{alarmType}</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(fault_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(fault_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+            <!-- 根据所属企业数据范围过滤 -->
+            <if test="params.dataEntScope != null and params.dataEntScope != ''">
+                ${params.dataEntScope}
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectTDataMonitorFaultHourByAlarmId" parameterType="Long" resultMap="TDataMonitorFaultHourResult">
+        <include refid="selectTDataMonitorFaultHourVo"/>
+        where alarm_id = #{alarmId}
+    </select>
+
+    <insert id="insertTDataMonitorFaultHour" parameterType="TDataMonitorFaultHour" useGeneratedKeys="true" keyProperty="alarmId">
+        insert into t_data_monitor_fault_hour
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="entCode != null">ent_code,</if>
+            <if test="entName != null">ent_name,</if>
+            <if test="outPutCode != null">out_put_code,</if>
+            <if test="outPutName != null">out_put_name,</if>
+            <if test="pollutantCode != null">pollutant_code,</if>
+            <if test="pollutantName != null">pollutant_name,</if>
+            <if test="dataType != null">data_type,</if>
+            <if test="alarmTime != null">alarm_time,</if>
+            <if test="faultTime != null">fault_time,</if>
+            <if test="alarmType != null">alarm_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="entCode != null">#{entCode},</if>
+            <if test="entName != null">#{entName},</if>
+            <if test="outPutCode != null">#{outPutCode},</if>
+            <if test="outPutName != null">#{outPutName},</if>
+            <if test="pollutantCode != null">#{pollutantCode},</if>
+            <if test="pollutantName != null">#{pollutantName},</if>
+            <if test="dataType != null">#{dataType},</if>
+            <if test="alarmTime != null">#{alarmTime},</if>
+            <if test="faultTime != null">#{faultTime},</if>
+            <if test="alarmType != null">#{alarmType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTDataMonitorFaultHour" parameterType="TDataMonitorFaultHour">
+        update t_data_monitor_fault_hour
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="entCode != null">ent_code = #{entCode},</if>
+            <if test="entName != null">ent_name = #{entName},</if>
+            <if test="outPutCode != null">out_put_code = #{outPutCode},</if>
+            <if test="outPutName != null">out_put_name = #{outPutName},</if>
+            <if test="pollutantCode != null">pollutant_code = #{pollutantCode},</if>
+            <if test="pollutantName != null">pollutant_name = #{pollutantName},</if>
+            <if test="dataType != null">data_type = #{dataType},</if>
+            <if test="alarmTime != null">alarm_time = #{alarmTime},</if>
+            <if test="faultTime != null">fault_time = #{faultTime},</if>
+            <if test="alarmType != null">alarm_type = #{alarmType},</if>
+        </trim>
+        where alarm_id = #{alarmId}
+    </update>
+
+    <delete id="deleteTDataMonitorFaultHourByAlarmId" parameterType="Long">
+        delete from t_data_monitor_fault_hour where alarm_id = #{alarmId}
+    </delete>
+
+    <delete id="deleteTDataMonitorFaultHourByAlarmIds" parameterType="String">
+        delete from t_data_monitor_fault_hour where alarm_id in 
+        <foreach item="alarmId" collection="array" open="(" separator="," close=")">
+            #{alarmId}
+        </foreach>
+    </delete>
+</mapper>

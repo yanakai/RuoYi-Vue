@@ -2,19 +2,14 @@ package com.ruoyi.business.statisticsAlarm.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.ruoyi.business.statistics.domain.TDataGasoutDayStatistics;
 import com.ruoyi.business.statistics.dto.TDataGasoutStatisticsDTO;
 import com.ruoyi.business.statistics.service.ITDataGasoutDayStatisticsService;
-import com.ruoyi.business.statisticsAlarm.domain.TDataGasoutControlHour;
-import com.ruoyi.business.statisticsAlarm.domain.TDataWateroutControlHour;
-import com.ruoyi.business.statisticsAlarm.domain.VOutPutDayStatistics;
-import com.ruoyi.business.statisticsAlarm.domain.VOutPutHourStatistics;
+import com.ruoyi.business.statisticsAlarm.domain.*;
 import com.ruoyi.business.statisticsAlarm.dto.*;
-import com.ruoyi.business.statisticsAlarm.service.IStatisticsAlarmService;
-import com.ruoyi.business.statisticsAlarm.service.ITDataGasoutControlHourService;
-import com.ruoyi.business.statisticsAlarm.service.ITDataWateroutControlHourService;
-import com.ruoyi.business.statisticsAlarm.service.IVOutPutHourStatisticsService;
+import com.ruoyi.business.statisticsAlarm.service.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -30,9 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * 分级预警报警 Controller
@@ -54,6 +47,9 @@ public class StatisticsAlarmController extends BaseController {
     private IStatisticsAlarmService iStatisticsAlarmService;
     @Resource
     private IVOutPutHourStatisticsService vOutPutHourStatisticsService;
+
+    @Resource
+    private ITDataMonitorFaultHourService tDataMonitorFaultHourService;
 
     /**
      * 小时数据报警
@@ -152,15 +148,17 @@ public class StatisticsAlarmController extends BaseController {
 
     /**
      * 数据缺失报警
+     *
+     * http://182.92.7.39:9527/prod-api/business/statisticsAlarm/alarm/DataMissing?pageNum=1&pageSize=10&outPutEnum=GASOUT&params%5BbeginTime%5D=2024-10-26&params%5BendTime%5D=2024-10-26
      */
     @ApiOperation("小时数据缺失预警")
     //@PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/alarm/DataMissing")
     public TableDataInfo dataMissing(DataMissingDto dataMissingDto) {
         startPage();
-        List<DataMissingDto> list = vOutPutHourStatisticsService.selectDataMissingList(dataMissingDto);
-        // lambda按对象某个字段倒序
-        //list = (List<DataMissingDto>) list.stream().sorted(Comparator.comparing(DataMissingDto::getMonitorTime).reversed());
+        //
+        TDataMonitorFaultHour tDataMonitorFaultHour = getDataMonitorFaultHourByDataMissingDto(dataMissingDto);
+        List<TDataMonitorFaultHour> list = tDataMonitorFaultHourService.selectTDataMonitorFaultHourList(tDataMonitorFaultHour);
         return getDataTable(list);
     }
 
@@ -168,13 +166,32 @@ public class StatisticsAlarmController extends BaseController {
      * 数据缺失报警导出
      */
     @ApiOperation("小时数据缺失预警导出")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
-    @Log(title = "数据缺失报警导出", businessType = BusinessType.EXPORT)
+//    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
+    @Log(title = "小时数据缺失预警导出", businessType = BusinessType.EXPORT)
     @PostMapping("/alarm/DataMissing/export")
     public void dataMissingExport(HttpServletResponse response,DataMissingDto dataMissingDto) {
-        List<DataMissingDto> list = vOutPutHourStatisticsService.selectDataMissingList(dataMissingDto);
-        ExcelUtil<DataMissingDto> util = new ExcelUtil<>(DataMissingDto.class);
-        util.exportExcel(response, list, "数据缺失报警");
+        TDataMonitorFaultHour tDataMonitorFaultHour = getDataMonitorFaultHourByDataMissingDto(dataMissingDto);
+        List<TDataMonitorFaultHour> list = tDataMonitorFaultHourService.selectTDataMonitorFaultHourList(tDataMonitorFaultHour);
+//        List<DataMissingDto> list = vOutPutHourStatisticsService.selectDataMissingList(dataMissingDto);
+        ExcelUtil<TDataMonitorFaultHour> util = new ExcelUtil<>(TDataMonitorFaultHour.class);
+        util.exportExcel(response, list, "小时数据缺失预警导出");
+    }
+
+    private TDataMonitorFaultHour getDataMonitorFaultHourByDataMissingDto(DataMissingDto dataMissingDto) {
+        TDataMonitorFaultHour tDataMonitorFaultHour = new TDataMonitorFaultHour();
+        //数据类型；1：废气；2：废水
+        //报警类型：1：小时数据整体缺失；2：小时数据单个污染因子缺失
+        tDataMonitorFaultHour.setAlarmType("1");
+        tDataMonitorFaultHour.setFaultTime(dataMissingDto.getMonitorTime());
+        tDataMonitorFaultHour.setParams(dataMissingDto.getParams());
+        String dataType = "1";
+        if(dataMissingDto.getOutPutEnum().equals(OutPutEnum.GASOUT)){
+            dataType = "1";
+        }else if(dataMissingDto.getOutPutEnum().equals(OutPutEnum.WATEROUT)){
+            dataType = "2";
+        }
+        tDataMonitorFaultHour.setDataType(dataType);
+        return tDataMonitorFaultHour;
     }
 
     /**

@@ -149,6 +149,18 @@ public class SysUser extends BaseEntity {
      */
     private Long roleId;
 
+    private String entAdminFlag;
+
+    //生成set get
+
+    public String getEntAdminFlag() {
+        return entAdminFlag;
+    }
+
+    public void setEntAdminFlag(String entAdminFlag) {
+        this.entAdminFlag = entAdminFlag;
+    }
+
     public SysUser() {
 
     }
