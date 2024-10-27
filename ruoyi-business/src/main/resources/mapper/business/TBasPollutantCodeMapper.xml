@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="code2005 != null  and code2005 != ''"> and 2005_code = #{code2005}</if>
             <if test="pollutantCode != null  and pollutantCode != ''"> and pollutant_code = #{pollutantCode}</if>
             <if test="pollutantNameEn != null  and pollutantNameEn != ''"> and pollutant_name_en = #{pollutantNameEn}</if>
-            <if test="pollutantNameCn != null  and pollutantNameCn != ''"> and pollutant_name_cn =  like concat('%', #{pollutantNameCn}, '%') </if>
+            <if test="pollutantNameCn != null  and pollutantNameCn != ''"> and pollutant_name_cn like concat('%', #{pollutantNameCn}, '%') </if>
             <if test="pollutantType != null "> and pollutant_type = #{pollutantType}</if>
             <if test="pollutantUnitEn != null  and pollutantUnitEn != ''"> and pollutant_unit_en = #{pollutantUnitEn}</if>
             <if test="pollutantUnitCn != null  and pollutantUnitCn != ''"> and pollutant_unit_cn = #{pollutantUnitCn}</if>

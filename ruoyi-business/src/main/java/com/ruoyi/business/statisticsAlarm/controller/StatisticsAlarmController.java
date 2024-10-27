@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 分级预警报警 Controller
@@ -159,7 +160,20 @@ public class StatisticsAlarmController extends BaseController {
         //
         TDataMonitorFaultHour tDataMonitorFaultHour = getDataMonitorFaultHourByDataMissingDto(dataMissingDto);
         List<TDataMonitorFaultHour> list = tDataMonitorFaultHourService.selectTDataMonitorFaultHourList(tDataMonitorFaultHour);
-        return getDataTable(list);
+        List<DataMissingDto> result = new ArrayList<>();
+        result = list.stream().map(
+                tDataMonitorFaultHour1 -> {
+                    DataMissingDto dataMissingDto1 = new DataMissingDto();
+                    dataMissingDto1.setOutPutName(tDataMonitorFaultHour1.getOutPutName());
+                    dataMissingDto1.setOutPutCode(tDataMonitorFaultHour1.getOutPutCode());
+                   // dataMissingDto1.setOutPutEnum(OutPutEnum.valueOf(tDataMonitorFaultHour1.getDataType()));
+                    dataMissingDto1.setMonitorTime(tDataMonitorFaultHour1.getFaultTime());
+                    dataMissingDto1.setMissingTime(tDataMonitorFaultHour1.getFaultTimeDesc());
+                    return dataMissingDto1;
+                }
+        ).collect(Collectors.toList());
+
+        return getDataTable(result);
     }
 
     /**

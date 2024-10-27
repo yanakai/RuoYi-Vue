@@ -49,14 +49,24 @@ public class TDataMonitorFaultHour extends BaseEntity
     private String dataType;
 
     /** 报警时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "报警时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date alarmTime;
 
     /** 数据缺失时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "数据缺失时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date faultTime;
+
+    private String faultTimeDesc;
+
+    public String getFaultTimeDesc() {
+        return faultTimeDesc;
+    }
+
+    public void setFaultTimeDesc(String faultTimeDesc) {
+        this.faultTimeDesc = faultTimeDesc;
+    }
 
     /** 报警类型：1：小时数据整体缺失；2：小时数据单个污染因子缺失 */
     @Excel(name = "报警类型：1：小时数据整体缺失；2：小时数据单个污染因子缺失")

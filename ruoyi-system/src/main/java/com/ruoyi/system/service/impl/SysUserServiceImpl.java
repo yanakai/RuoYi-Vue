@@ -1,5 +1,6 @@
 package com.ruoyi.system.service.impl;
 
+import com.ruoyi.common.annotation.DataEntScope;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.entity.SysRole;
@@ -61,6 +62,7 @@ public class SysUserServiceImpl implements ISysUserService {
      */
     @Override
     @DataScope(deptAlias = "d", userAlias = "u")
+    @DataEntScope
     public List<SysUser> selectUserList(SysUser user) {
         return userMapper.selectUserList(user);
     }

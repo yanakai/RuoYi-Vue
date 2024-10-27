@@ -27,6 +27,7 @@
         <result property="entCode" column="ent_code"/>
         <result property="socialCreditCode" column="social_credit_code"/>
 
+        <result property="entAdminFlag" column="entAdminFlag"/>
         <association property="dept" javaType="SysDept" resultMap="deptResult"/>
         <collection property="roles" javaType="java.util.List" resultMap="RoleResult"/>
     </resultMap>
@@ -82,11 +83,13 @@
                r.status as role_status,
                u.social_credit_code,
                u.ent_name,
-               u.ent_code
+               u.ent_code,
+               IF(ent.env_manager_persion IS NOT NULL, TRUE, FALSE) AS entAdminFlag
         from sys_user u
                  left join sys_dept d on u.dept_id = d.dept_id
                  left join sys_user_role ur on u.user_id = ur.user_id
                  left join sys_role r on r.role_id = ur.role_id
+                 LEFT JOIN t_bas_enterprise ent on ent.env_manager_persion = u.user_name
     </sql>
 
     <select id="selectUserList" parameterType="SysUser" resultMap="SysUserResult">
@@ -119,6 +122,10 @@
         </if>
         <!-- 数据范围过滤 -->
         ${params.dataScope}
+        <!-- 根据所属企业数据范围过滤 -->
+        <if test="params.dataEntScope != null and params.dataEntScope != ''">
+            ${params.dataEntScope}
+        </if>
     </select>
 
     <select id="selectAllocatedList" parameterType="SysUser" resultMap="SysUserResult">

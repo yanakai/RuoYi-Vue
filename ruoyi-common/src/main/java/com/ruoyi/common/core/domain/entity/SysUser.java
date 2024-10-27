@@ -149,6 +149,9 @@ public class SysUser extends BaseEntity {
      */
     private Long roleId;
 
+    /**
+     * 是否企业管理员
+     */
     private String entAdminFlag;
 
     //生成set get

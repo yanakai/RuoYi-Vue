@@ -19,11 +19,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTDataMonitorFaultHourVo">
-        select alarm_id, ent_code, ent_name, out_put_code, out_put_name, pollutant_code, pollutant_name, data_type, alarm_time, fault_time, alarm_type from t_data_monitor_fault_hour
+        select alarm_id, ent_code, ent_name, out_put_code, out_put_name, pollutant_code, pollutant_name, data_type,
+               alarm_time, fault_time, alarm_type
+        from t_data_monitor_fault_hour
     </sql>
 
     <select id="selectTDataMonitorFaultHourList" parameterType="TDataMonitorFaultHour" resultMap="TDataMonitorFaultHourResult">
-        <include refid="selectTDataMonitorFaultHourVo"/>
+        select ent_code, ent_name, out_put_code, out_put_name, pollutant_code, data_type, alarm_type,
+               date_format(fault_time,'%Y-%m-%d') fault_time,
+               GROUP_CONCAT(date_format(fault_time,'%H') ORDER BY date_format(fault_time,'%H'),'、') faultTimeDesc from t_data_monitor_fault_hour
         <where>  
             <if test="entCode != null  and entCode != ''"> and ent_code = #{entCode}</if>
             <if test="entName != null  and entName != ''"> and ent_name like concat('%', #{entName}, '%')</if>
@@ -45,6 +49,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="params.dataEntScope != null and params.dataEntScope != ''">
                 ${params.dataEntScope}
             </if>
+            GROUP BY ent_code, ent_name, out_put_code, out_put_name, pollutant_code, data_type, alarm_type, date_format(fault_time,'%Y-%m-%d')
+            ORDER BY out_put_code,date_format( fault_time, '%Y-%m-%d' ) desc
         </where>
     </select>
     
