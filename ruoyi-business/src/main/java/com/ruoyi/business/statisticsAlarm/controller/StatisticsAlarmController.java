@@ -198,6 +198,7 @@ public class StatisticsAlarmController extends BaseController {
         tDataMonitorFaultHour.setAlarmType("1");
         tDataMonitorFaultHour.setFaultTime(dataMissingDto.getMonitorTime());
         tDataMonitorFaultHour.setParams(dataMissingDto.getParams());
+        tDataMonitorFaultHour.setOutPutCode(dataMissingDto.getOutPutCode());
         String dataType = "1";
         if(dataMissingDto.getOutPutEnum().equals(OutPutEnum.GASOUT)){
             dataType = "1";
