@@ -34,4 +34,6 @@ public class DataMissingDto extends BaseDto {
     private String missingTime;
 
     private String entCode;
+
+    private String alarmType;
 }

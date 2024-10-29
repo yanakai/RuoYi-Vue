@@ -124,7 +124,8 @@
         ${params.dataScope}
         <!-- 根据所属企业数据范围过滤 -->
         <if test="params.dataEntScope != null and params.dataEntScope != ''">
-            ${params.dataEntScope}
+            <!-- ${params.dataEntScope}-->
+            AND (u.ent_code = #{entCode} AND u.ent_name = #{entName})
         </if>
     </select>
 

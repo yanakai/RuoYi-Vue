@@ -10,6 +10,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.SecurityUtils;
@@ -63,6 +64,9 @@ public class SysUserController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(SysUser user) {
         startPage();
+        LoginUser loginUser = getLoginUser();
+        user.setEntCode(loginUser.getUser().getEntCode());
+        user.setEntName(loginUser.getUser().getEntName());
         List<SysUser> list = userService.selectUserList(user);
         return getDataTable(list);
     }
@@ -131,6 +135,14 @@ public class SysUserController extends BaseController {
         }
         user.setCreateBy(getUsername());
         user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
+
+        if(StringUtils.isNull(user.getEntCode()) && StringUtils.isNull(user.getEntName())){
+            LoginUser loginUser = getLoginUser();
+            user.setEntCode(loginUser.getUser().getEntCode());
+            user.setEntName(loginUser.getUser().getEntName());
+            user.setSocialCreditCode(loginUser.getUser().getSocialCreditCode());
+        }
+
 //        //获取企业信息
 //        TBasEnterpriseBaseInfoDto tBasEnterprise = new TBasEnterpriseBaseInfoDto();
 //        tBasEnterprise.setEntCode(user.getEntCode());

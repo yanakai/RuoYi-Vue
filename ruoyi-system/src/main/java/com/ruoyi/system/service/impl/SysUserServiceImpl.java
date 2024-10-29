@@ -212,7 +212,12 @@ public class SysUserServiceImpl implements ISysUserService {
     public void checkUserDataScope(Long userId) {
         if (!SysUser.isAdmin(SecurityUtils.getUserId())) {
             SysUser user = new SysUser();
-            user.setUserId(userId);
+            if(userId == null){
+                userId = SecurityUtils.getUserId();
+            }
+//            user.setUserId(userId);
+            user = userMapper.selectUserById(userId);
+            user.setParams(null);
             List<SysUser> users = SpringUtils.getAopProxy(this).selectUserList(user);
             if (StringUtils.isEmpty(users)) {
                 throw new ServiceException("没有权限访问用户数据！");

@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ObjUtil;
+import cn.hutool.core.util.StrUtil;
 import com.ruoyi.business.statistics.domain.TDataGasoutDayStatistics;
 import com.ruoyi.business.statistics.dto.TDataGasoutStatisticsDTO;
 import com.ruoyi.business.statistics.service.ITDataGasoutDayStatisticsService;
@@ -195,7 +196,7 @@ public class StatisticsAlarmController extends BaseController {
         TDataMonitorFaultHour tDataMonitorFaultHour = new TDataMonitorFaultHour();
         //数据类型；1：废气；2：废水
         //报警类型：1：小时数据整体缺失；2：小时数据单个污染因子缺失
-        tDataMonitorFaultHour.setAlarmType("1");
+        tDataMonitorFaultHour.setAlarmType(StrUtil.emptyToDefault(dataMissingDto.getAlarmType(),"1"));
         tDataMonitorFaultHour.setFaultTime(dataMissingDto.getMonitorTime());
         tDataMonitorFaultHour.setParams(dataMissingDto.getParams());
         tDataMonitorFaultHour.setOutPutCode(dataMissingDto.getOutPutCode());

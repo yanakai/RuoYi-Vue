@@ -1,5 +1,6 @@
 package com.ruoyi.system.service.impl;
 
+import com.ruoyi.common.annotation.DataEntScope;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.TreeSelect;
@@ -43,6 +44,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
      */
     @Override
     @DataScope(deptAlias = "d")
+    @DataEntScope
     public List<SysDept> selectDeptList(SysDept dept) {
         return deptMapper.selectDeptList(dept);
     }
@@ -199,6 +201,9 @@ public class SysDeptServiceImpl implements ISysDeptService {
             throw new ServiceException("部门停用，不允许新增");
         }
         dept.setAncestors(info.getAncestors() + "," + dept.getParentId());
+        dept.setEntCode(info.getEntCode());
+        dept.setEntName(info.getEntName());
+        dept.setSocialCreditCode(info.getSocialCreditCode());
         return deptMapper.insertDept(dept);
     }
 

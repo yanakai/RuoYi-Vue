@@ -1,6 +1,8 @@
 package com.ruoyi.common.core.domain.entity;
 
+import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -73,6 +75,27 @@ public class SysDept extends BaseEntity {
      * 父部门名称
      */
     private String parentName;
+
+    /**
+     * 企业编码
+     */
+    @ApiModelProperty(value = "企业编码")
+    @Excel(name = "企业编码")
+    private String entCode;
+
+    /**
+     * 企业名称
+     */
+    @ApiModelProperty(value = "企业名称")
+    @Excel(name = "企业名称")
+    private String entName;
+
+    /**
+     * 社会统一信用代码
+     */
+    @ApiModelProperty(value = "社会统一信用代码")
+    @Excel(name = "社会统一信用代码")
+    private String socialCreditCode;
 
     /**
      * 子部门
@@ -179,6 +202,30 @@ public class SysDept extends BaseEntity {
 
     public void setChildren(List<SysDept> children) {
         this.children = children;
+    }
+
+    public String getEntCode() {
+        return entCode;
+    }
+
+    public void setEntCode(String entCode) {
+        this.entCode = entCode;
+    }
+
+    public String getEntName() {
+        return entName;
+    }
+
+    public void setEntName(String entName) {
+        this.entName = entName;
+    }
+
+    public String getSocialCreditCode() {
+        return socialCreditCode;
+    }
+
+    public void setSocialCreditCode(String socialCreditCode) {
+        this.socialCreditCode = socialCreditCode;
     }
 
     @Override
