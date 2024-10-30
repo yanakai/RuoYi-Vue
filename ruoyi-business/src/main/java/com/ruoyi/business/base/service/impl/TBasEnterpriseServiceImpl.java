@@ -92,6 +92,7 @@ public class TBasEnterpriseServiceImpl implements ITBasEnterpriseService {
     }
 
     @Override
+    @DataEntScope
     public List<TBasEnterpriseBaseInfoDto> selectTBasEnterpriseBaseList(TBasEnterpriseBaseInfoDto tBasEnterpriseBaseInfoDto) {
         return tBasEnterpriseMapper.selectTBasEnterpriseBaseList(tBasEnterpriseBaseInfoDto);
     }
