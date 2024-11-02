@@ -34,7 +34,7 @@ public class TDataWateroutHourStatisticsController extends BaseController {
      * 查询废水排口--小时报统计数据列表
      */
     @ApiOperation("获取废水排口--小时报统计数据列表")
-    @PreAuthorize("@ss.hasPermi('business:dataWateroutHourStatistics:list')")
+    //@PreAuthorize("@ss.hasPermi('business:dataWateroutHourStatistics:list')")
     @GetMapping("/list")
     public TableDataInfo list(TDataWateroutHourStatistics tDataWateroutHourStatistics) {
         startPage();
@@ -46,7 +46,7 @@ public class TDataWateroutHourStatisticsController extends BaseController {
      * 导出废水排口--小时报统计数据列表
      */
     @ApiOperation("导出废水排口--小时报统计数据列表")
-    @PreAuthorize("@ss.hasPermi('business:dataWateroutHourStatistics:export')")
+    //@PreAuthorize("@ss.hasPermi('business:dataWateroutHourStatistics:export')")
     @Log(title = "废水排口--小时报统计数据", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, TDataWateroutHourStatistics tDataWateroutHourStatistics) {

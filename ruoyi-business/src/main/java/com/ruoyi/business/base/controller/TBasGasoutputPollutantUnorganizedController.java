@@ -34,7 +34,7 @@ public class TBasGasoutputPollutantUnorganizedController extends BaseController 
      * 查询基础信息--企业--废气无组织排口污染物信息列表
      */
     @ApiOperation("获取废气无组织排口污染物信息列表")
-    @PreAuthorize("@ss.hasPermi('business:gasoutputPollutantUnorganized:list')")
+//    @PreAuthorize("@ss.hasPermi('business:gasoutputPollutantUnorganized:list')")
     @GetMapping("/list")
     public TableDataInfo list(TBasGasoutputPollutantUnorganized tBasGasoutputPollutantUnorganized) {
         startPage();
@@ -46,7 +46,7 @@ public class TBasGasoutputPollutantUnorganizedController extends BaseController 
      * 导出基础信息--企业--废气无组织排口污染物信息列表
      */
     @ApiOperation("导出废气无组织排口污染物信息列表")
-    @PreAuthorize("@ss.hasPermi('business:gasoutputPollutantUnorganized:export')")
+//    @PreAuthorize("@ss.hasPermi('business:gasoutputPollutantUnorganized:export')")
     @Log(title = "基础信息--企业--废气无组织排口污染物信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, TBasGasoutputPollutantUnorganized tBasGasoutputPollutantUnorganized) {
@@ -59,7 +59,7 @@ public class TBasGasoutputPollutantUnorganizedController extends BaseController 
      * 获取基础信息--企业--废气无组织排口污染物信息详细信息
      */
     @ApiOperation("获取废气无组织排口污染物信息详细信息")
-    @PreAuthorize("@ss.hasPermi('business:gasoutputPollutantUnorganized:query')")
+//    @PreAuthorize("@ss.hasPermi('business:gasoutputPollutantUnorganized:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(tBasGasoutputPollutantUnorganizedService.selectTBasGasoutputPollutantUnorganizedById(id));
@@ -69,7 +69,7 @@ public class TBasGasoutputPollutantUnorganizedController extends BaseController 
      * 新增基础信息--企业--废气无组织排口污染物信息
      */
     @ApiOperation("新增废气无组织排口污染物信息")
-    @PreAuthorize("@ss.hasPermi('business:gasoutputPollutantUnorganized:add')")
+//    @PreAuthorize("@ss.hasPermi('business:gasoutputPollutantUnorganized:add')")
     @Log(title = "基础信息--企业--废气无组织排口污染物信息", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TBasGasoutputPollutantUnorganized tBasGasoutputPollutantUnorganized) {
@@ -80,7 +80,7 @@ public class TBasGasoutputPollutantUnorganizedController extends BaseController 
      * 修改基础信息--企业--废气无组织排口污染物信息
      */
     @ApiOperation("修改废气无组织排口污染物信息")
-    @PreAuthorize("@ss.hasPermi('business:gasoutputPollutantUnorganized:edit')")
+//    @PreAuthorize("@ss.hasPermi('business:gasoutputPollutantUnorganized:edit')")
     @Log(title = "基础信息--企业--废气无组织排口污染物信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TBasGasoutputPollutantUnorganized tBasGasoutputPollutantUnorganized) {
@@ -91,7 +91,7 @@ public class TBasGasoutputPollutantUnorganizedController extends BaseController 
      * 删除基础信息--企业--废气无组织排口污染物信息
      */
     @ApiOperation("删除废气无组织排口污染物信息")
-    @PreAuthorize("@ss.hasPermi('business:gasoutputPollutantUnorganized:remove')")
+//    @PreAuthorize("@ss.hasPermi('business:gasoutputPollutantUnorganized:remove')")
     @Log(title = "基础信息--企业--废气无组织排口污染物信息", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {

@@ -35,7 +35,7 @@ public class TBasWateroutputPollutantController extends BaseController {
      * 查询基础信息--企业--废水排口污染物基本信息列表
      */
     @ApiOperation("获取废水排口污染物基本信息列表")
-    @PreAuthorize("@ss.hasPermi('business:waterOutputPollutant:list')")
+//    @PreAuthorize("@ss.hasPermi('business:waterOutputPollutant:list')")
     @GetMapping("/list")
     public TableDataInfo list(TBasWateroutputPollutant tBasWateroutputPollutant) {
         startPage();
@@ -47,7 +47,7 @@ public class TBasWateroutputPollutantController extends BaseController {
      * 导出基础信息--企业--废水排口污染物基本信息列表
      */
     @ApiOperation("导出废水排口污染物基本信息列表")
-    @PreAuthorize("@ss.hasPermi('business:waterOutputPollutant:export')")
+//    @PreAuthorize("@ss.hasPermi('business:waterOutputPollutant:export')")
     @Log(title = "基础信息--企业--废水排口污染物基本信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, TBasWateroutputPollutant tBasWateroutputPollutant) {
@@ -60,7 +60,7 @@ public class TBasWateroutputPollutantController extends BaseController {
      * 获取基础信息--企业--废水排口污染物基本信息详细信息
      */
     @ApiOperation("获取废水排口污染物基本信息详细信息")
-    @PreAuthorize("@ss.hasPermi('business:waterOutputPollutant:query')")
+//    @PreAuthorize("@ss.hasPermi('business:waterOutputPollutant:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(tBasWateroutputPollutantService.selectTBasWateroutputPollutantById(id));
@@ -70,7 +70,7 @@ public class TBasWateroutputPollutantController extends BaseController {
      * 新增基础信息--企业--废水排口污染物基本信息
      */
     @ApiOperation("新增废水排口污染物基本信息")
-    @PreAuthorize("@ss.hasPermi('business:waterOutputPollutant:add')")
+//    @PreAuthorize("@ss.hasPermi('business:waterOutputPollutant:add')")
     @Log(title = "基础信息--企业--废水排口污染物基本信息", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TBasWateroutputPollutant tBasWateroutputPollutant) {
@@ -86,7 +86,7 @@ public class TBasWateroutputPollutantController extends BaseController {
      * 修改基础信息--企业--废水排口污染物基本信息
      */
     @ApiOperation("修改废水排口污染物基本信息")
-    @PreAuthorize("@ss.hasPermi('business:waterOutputPollutant:edit')")
+//    @PreAuthorize("@ss.hasPermi('business:waterOutputPollutant:edit')")
     @Log(title = "基础信息--企业--废水排口污染物基本信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TBasWateroutputPollutant tBasWateroutputPollutant) {
@@ -99,7 +99,7 @@ public class TBasWateroutputPollutantController extends BaseController {
      * 删除基础信息--企业--废水排口污染物基本信息
      */
     @ApiOperation("删除废水排口污染物基本信息")
-    @PreAuthorize("@ss.hasPermi('business:waterOutputPollutant:remove')")
+//    @PreAuthorize("@ss.hasPermi('business:waterOutputPollutant:remove')")
     @Log(title = "基础信息--企业--废水排口污染物基本信息", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {

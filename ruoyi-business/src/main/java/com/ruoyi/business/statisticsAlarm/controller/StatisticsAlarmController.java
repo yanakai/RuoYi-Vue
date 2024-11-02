@@ -104,7 +104,7 @@ public class StatisticsAlarmController extends BaseController {
      * 排放量报警导出
      */
     @ApiOperation("排放量报警导出")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
+    //@PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
     @Log(title = "排放量报警导出", businessType = BusinessType.EXPORT)
     @PostMapping("/alarm/emission/export")
     public void emissionExport(HttpServletResponse response, VOutPutDayStatistics vOutPutDayStatistics) {
@@ -134,7 +134,7 @@ public class StatisticsAlarmController extends BaseController {
      * 异常报警导出
      */
     @ApiOperation("异常报警导出")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
+    //@PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
     @Log(title = "异常报警导出", businessType = BusinessType.EXPORT)
     @PostMapping("/alarm/exception/export")
     public void exceptionExport(HttpServletResponse response, AlarmHourDto alarmHourDto) {
@@ -228,7 +228,7 @@ public class StatisticsAlarmController extends BaseController {
      */
     @Deprecated
     @ApiOperation("传输有效率预警")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
+    //@PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
     @Log(title = "传输有效率预警导出", businessType = BusinessType.EXPORT)
     @PostMapping("/alarm/transmissionEfficiency/export")
     public void transmissionEfficiency(HttpServletResponse response, DataEfficiencyDto dataEfficiencyDto) {
@@ -263,7 +263,7 @@ public class StatisticsAlarmController extends BaseController {
      * 小时数据预警导出
      */
     @ApiOperation("小时数据预警导出")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
+    //@PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
     @Log(title = "小时数据预警导出", businessType = BusinessType.EXPORT)
     @PostMapping("/warning/hour/export")
     public void warningHourExport(HttpServletResponse response, OutControlHourDto outControlHourDto) {

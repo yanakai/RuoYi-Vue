@@ -53,7 +53,7 @@ public class TDataWateroutControlHourController extends BaseController {
     /**
      * 获取废水排口--小时剩余排放平均值详细信息
      */
-    @PreAuthorize("@ss.hasPermi('statisticsAlarm:alarm:query')")
+    //@PreAuthorize("@ss.hasPermi('statisticsAlarm:alarm:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(tDataWateroutControlHourService.selectTDataWateroutControlHourById(id));
@@ -62,7 +62,7 @@ public class TDataWateroutControlHourController extends BaseController {
     /**
      * 新增废水排口--小时剩余排放平均值
      */
-    @PreAuthorize("@ss.hasPermi('statisticsAlarm:alarm:add')")
+    //@PreAuthorize("@ss.hasPermi('statisticsAlarm:alarm:add')")
     @Log(title = "废水排口--小时剩余排放平均值", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TDataWateroutControlHour tDataWateroutControlHour) {
@@ -72,7 +72,7 @@ public class TDataWateroutControlHourController extends BaseController {
     /**
      * 修改废水排口--小时剩余排放平均值
      */
-    @PreAuthorize("@ss.hasPermi('statisticsAlarm:alarm:edit')")
+    //@PreAuthorize("@ss.hasPermi('statisticsAlarm:alarm:edit')")
     @Log(title = "废水排口--小时剩余排放平均值", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TDataWateroutControlHour tDataWateroutControlHour) {
@@ -82,7 +82,7 @@ public class TDataWateroutControlHourController extends BaseController {
     /**
      * 删除废水排口--小时剩余排放平均值
      */
-    @PreAuthorize("@ss.hasPermi('statisticsAlarm:alarm:remove')")
+    //@PreAuthorize("@ss.hasPermi('statisticsAlarm:alarm:remove')")
     @Log(title = "废水排口--小时剩余排放平均值", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {

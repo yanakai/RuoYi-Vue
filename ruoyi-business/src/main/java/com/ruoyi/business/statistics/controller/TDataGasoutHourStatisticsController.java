@@ -34,7 +34,7 @@ public class TDataGasoutHourStatisticsController extends BaseController {
      * 查询废气排口--小时报统计数据列表
      */
     @ApiOperation("获取废气排口--小时报统计数据列表")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutHourStatistics:list')")
+    //@PreAuthorize("@ss.hasPermi('business:dataGasoutHourStatistics:list')")
     @GetMapping("/list")
     public TableDataInfo list(TDataGasoutHourStatistics tDataGasoutHourStatistics) {
         startPage();
@@ -46,7 +46,7 @@ public class TDataGasoutHourStatisticsController extends BaseController {
      * 导出废气排口--小时报统计数据列表
      */
     @ApiOperation("导出废气排口--小时报统计数据列表")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutHourStatistics:export')")
+    //@PreAuthorize("@ss.hasPermi('business:dataGasoutHourStatistics:export')")
     @Log(title = "废气排口--小时报统计数据", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, TDataGasoutHourStatistics tDataGasoutHourStatistics) {

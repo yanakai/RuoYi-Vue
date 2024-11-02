@@ -39,7 +39,7 @@ public class TDataGasoutStatisticsController extends BaseController {
      * 查询废气排口--月统计数据列表
      */
     @ApiOperation("月监测报表数据列表")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
+    //@PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/month/list")
     public TableDataInfo monthList(TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
         startPage();
@@ -51,7 +51,7 @@ public class TDataGasoutStatisticsController extends BaseController {
      * 导出废气排口--月报统计数据列表
      */
     @ApiOperation("导出月监测报表数据列表")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
+    //@PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
     @Log(title = "废气排口--月监测报表数据列表", businessType = BusinessType.EXPORT)
     @PostMapping("/month/export")
     public void monthExport(HttpServletResponse response, TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
@@ -64,7 +64,7 @@ public class TDataGasoutStatisticsController extends BaseController {
      * 查询废气排口--季度统计数据列表
      */
     @ApiOperation("季度监测报表数据列表")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
+    //@PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/quarter/list")
     public TableDataInfo quarterList(TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
         startPage();
@@ -76,7 +76,7 @@ public class TDataGasoutStatisticsController extends BaseController {
      * 导出废气排口--季度报统计数据列表
      */
     @ApiOperation("导出季度监测报表数据列表")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
+    //@PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
     @Log(title = "废气排口--季度监测报表数据列表", businessType = BusinessType.EXPORT)
     @PostMapping("/quarter/export")
     public void quarterExport(HttpServletResponse response, TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
@@ -89,7 +89,7 @@ public class TDataGasoutStatisticsController extends BaseController {
      * 查询废气排口--年统计数据列表
      */
     @ApiOperation("年监测报表数据列表")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
+    //@PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/year/list")
     public TableDataInfo yearList(TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
         startPage();
@@ -101,7 +101,7 @@ public class TDataGasoutStatisticsController extends BaseController {
      * 导出废气排口--年报统计数据列表
      */
     @ApiOperation("导出年监测报表数据列表")
-    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
+    //@PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
     @Log(title = "废气排口--年监测报表数据列表", businessType = BusinessType.EXPORT)
     @PostMapping("/year/export")
     public void yearExport(HttpServletResponse response, TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {
