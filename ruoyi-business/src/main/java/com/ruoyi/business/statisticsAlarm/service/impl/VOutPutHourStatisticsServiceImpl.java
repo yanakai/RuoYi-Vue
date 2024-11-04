@@ -21,6 +21,7 @@ import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 排口小时报警统计视图Service业务层处理
@@ -60,6 +61,34 @@ public class VOutPutHourStatisticsServiceImpl implements IVOutPutHourStatisticsS
     @DataEntScope
     public List<VOutPutHourStatistics> selectVOutPutHourStatisticsList(VOutPutHourStatistics vOutPutHourStatistics) {
         return vOutPutHourStatisticsMapper.selectVOutPutHourStatisticsList(vOutPutHourStatistics);
+    }
+
+    @Override
+    public List<VOutPutHourStatistics> selectVOutPutHourStatisticsListV2(VOutPutHourStatistics vOutPutHourStatistics) {
+        List<VOutPutHourStatistics> vOutPutHourStatisticsList = vOutPutHourStatisticsMapper.selectVOutPutHourStatisticsListV2(vOutPutHourStatistics);
+        vOutPutHourStatisticsList.forEach(vOutPutHourStatistics1 -> {
+            String monitorTimeHour = vOutPutHourStatistics1.getMonitorTimeHour();
+            String sortHours = sortHours(monitorTimeHour);
+            vOutPutHourStatistics1.setMonitorTimeHour(sortHours);
+        });
+
+        return vOutPutHourStatisticsList;
+    }
+
+    private String sortHours(String monitorTimeHour) {
+        // 将字符串按顿号分割成数组
+        String[] hoursArray = monitorTimeHour.split(",");
+
+        // 将数组转换为列表
+        List<String> hoursList = Arrays.asList(hoursArray);
+
+        // 对列表进行排序
+        Collections.sort(hoursList);
+
+        // 将排序后的列表转换回字符串，并用顿号连接
+        String sortedHours = hoursList.stream()
+                .collect(Collectors.joining(","));
+        return sortedHours;
     }
 
 

@@ -30,6 +30,8 @@ public interface IVOutPutHourStatisticsService {
      */
     List<VOutPutHourStatistics> selectVOutPutHourStatisticsList(VOutPutHourStatistics vOutPutHourStatistics);
 
+    List<VOutPutHourStatistics> selectVOutPutHourStatisticsListV2(VOutPutHourStatistics vOutPutHourStatistics);
+
     /**
      * 排放量报警
      * @param vOutPutHourStatistics

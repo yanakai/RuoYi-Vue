@@ -66,7 +66,7 @@ public class StatisticsAlarmController extends BaseController {
         if(ObjUtil.isNotNull(alarmHourDto) && ObjUtil.isNotNull(alarmHourDto.getOutPutEnum())){
             vOutPutHourStatistics.setOutPutType(alarmHourDto.getOutPutEnum().getName());
         }
-        List<VOutPutHourStatistics> list = vOutPutHourStatisticsService.selectVOutPutHourStatisticsList(vOutPutHourStatistics);
+        List<VOutPutHourStatistics> list = vOutPutHourStatisticsService.selectVOutPutHourStatisticsListV2(vOutPutHourStatistics);
         return getDataTable(list);
     }
 
@@ -83,7 +83,7 @@ public class StatisticsAlarmController extends BaseController {
         if(ObjUtil.isNotNull(alarmHourDto) && ObjUtil.isNotNull(alarmHourDto.getOutPutEnum())){
             vOutPutHourStatistics.setOutPutType(alarmHourDto.getOutPutEnum().getName());
         }
-        List<VOutPutHourStatistics> list = vOutPutHourStatisticsService.selectVOutPutHourStatisticsList(vOutPutHourStatistics);
+        List<VOutPutHourStatistics> list = vOutPutHourStatisticsService.selectVOutPutHourStatisticsListV2(vOutPutHourStatistics);
         ExcelUtil<VOutPutHourStatistics> util = new ExcelUtil<>(VOutPutHourStatistics.class);
         util.exportExcel(response, list, "小时数据报警导出");
     }

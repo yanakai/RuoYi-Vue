@@ -77,4 +77,13 @@ public class VOutPutHourStatistics extends BaseEntity {
      * 异常标记说明 异常报警DTO
      */
     private String abnormalMark;
+
+    /**
+     * 监测时间
+     */
+    private String monitorTimeDate;
+    /**
+     * 小时
+     */
+    private String monitorTimeHour;
 }
