@@ -30,6 +30,8 @@ public class MetaVo {
 
     private String outPutCode;
 
+    private String mnNum;
+
     public MetaVo() {
     }
 
@@ -72,6 +74,9 @@ public class MetaVo {
             if(split.length>2 && StringUtils.isNotEmpty(split[2])){
                 this.title = split[2];
             }
+            if (split.length>3 && StringUtils.isNotEmpty(split[3])){
+                this.mnNum = split[3];
+            }
         }
     }
 
@@ -113,5 +118,12 @@ public class MetaVo {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getMnNum() {
+        return mnNum;
+    }
+    public void setMnNum(String mnNum) {
+        this.mnNum = mnNum;
     }
 }
