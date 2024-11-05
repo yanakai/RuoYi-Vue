@@ -32,6 +32,8 @@ public class MetaVo {
 
     private String mnNum;
 
+    private String entCode;
+
     public MetaVo() {
     }
 
@@ -77,6 +79,10 @@ public class MetaVo {
             if (split.length>3 && StringUtils.isNotEmpty(split[3])){
                 this.mnNum = split[3];
             }
+            if (split.length>4 && StringUtils.isNotEmpty(split[4])){
+                this.entCode = split[4];
+            }
+
         }
     }
 
@@ -125,5 +131,12 @@ public class MetaVo {
     }
     public void setMnNum(String mnNum) {
         this.mnNum = mnNum;
+    }
+
+    public String getEntCode() {
+        return entCode;
+    }
+    public void setEntCode(String entCode) {
+        this.entCode = entCode;
     }
 }
