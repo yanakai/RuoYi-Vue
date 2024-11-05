@@ -8,6 +8,7 @@ import com.ruoyi.business.base.mapper.TBasWateroutPutInfoMapper;
 import com.ruoyi.business.base.mapper.TBasWateroutputPollutantMapper;
 import com.ruoyi.business.base.service.ITBasWateroutputPollutantService;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +63,11 @@ public class TBasWateroutputPollutantServiceImpl implements ITBasWateroutputPoll
         //获取排口信息
         TBasWateroutPutInfo tBasWateroutPutInfo = new TBasWateroutPutInfo();
         tBasWateroutPutInfo.setOutPutCode(tBasWateroutputPollutant.getOutPutCode());
+        if(StringUtils.isEmpty(tBasWateroutputPollutant.getEntCode()) && (StringUtils.isEmpty(tBasWateroutputPollutant.getEntName()))){
+            return 0;
+        }
+        tBasWateroutPutInfo.setEntCode(tBasWateroutputPollutant.getEntCode());
+        tBasWateroutPutInfo.setEntName(tBasWateroutputPollutant.getEntName());
         List<TBasWateroutPutInfo> list = waterOutputPollutantMapper.selectTBasWateroutPutInfoList(tBasWateroutPutInfo);
         if(ArrayUtil.isNotEmpty(list)){
             tBasWateroutputPollutant.setOutPutName(list.get(0).getOutPutName());

@@ -7,6 +7,7 @@ import com.ruoyi.business.base.mapper.TBasGasoutPutInfoMapper;
 import com.ruoyi.business.base.mapper.TBasGasoutputPollutantMapper;
 import com.ruoyi.business.base.service.ITBasGasoutputPollutantService;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +63,11 @@ public class TBasGasoutputPollutantServiceImpl implements ITBasGasoutputPollutan
         //获取排口信息
         TBasGasoutPutInfo tBasGasoutPutInfo = new TBasGasoutPutInfo();
         tBasGasoutPutInfo.setOutPutCode(tBasGasoutputPollutant.getOutPutCode());
+        if(StringUtils.isEmpty(tBasGasoutputPollutant.getEntCode()) && (StringUtils.isEmpty(tBasGasoutputPollutant.getEntName()))){
+            return 0;
+        }
+        tBasGasoutPutInfo.setEntCode(tBasGasoutputPollutant.getEntCode());
+        tBasGasoutPutInfo.setEntName(tBasGasoutputPollutant.getEntName());
         List<TBasGasoutPutInfo> tBasGasoutPutInfos = gasoutputPollutantMapper.selectTBasGasoutPutInfoList(tBasGasoutPutInfo);
         if(ArrayUtil.isNotEmpty(tBasGasoutPutInfos)){
             tBasGasoutputPollutant.setOutPutName(tBasGasoutPutInfos.get(0).getOutPutName());
