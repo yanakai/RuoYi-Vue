@@ -3,11 +3,13 @@ package com.ruoyi.common.utils;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.domain.entity.SysRole;
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.exception.ServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.PatternMatchUtils;
 
 import java.util.Collection;
@@ -103,6 +105,22 @@ public class SecurityUtils {
      */
     public static boolean isAdmin(Long userId) {
         return userId != null && 1L == userId;
+    }
+
+    public static boolean isAdmin() {
+         SysUser user = getLoginUser().getUser();
+         if(ObjectUtils.isEmpty(user.getRoles())){
+             return false;
+         }else{
+             List<SysRole> list = user.getRoles();
+                for (SysRole sysRole : list) {
+                    if(sysRole.isAdmin()){
+                        return true;
+                    }
+                }
+         }
+
+        return false;
     }
 
     /**

@@ -130,7 +130,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
     @Override
     public List<SysMenu> selectMenuTreeByUserIdV2(LoginUser loginUser) {
         List<SysMenu> menus = null;
-        boolean isAdmin = SecurityUtils.isAdmin(loginUser.getUserId());
+        boolean isAdmin = SecurityUtils.isAdmin();
         if (isAdmin) {
             menus = menuMapper.selectMenuTreeAll();
         } else {
