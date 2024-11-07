@@ -160,14 +160,14 @@ public class DataScopeAspect {
         if (StringUtils.isNotNull(loginUser)) {
             SysUser currentUser = loginUser.getUser();
             // 如果是超级管理员，则不过滤数据
-            if (StringUtils.isNotNull(currentUser) && !currentUser.isAdmin()) {
+            if (StringUtils.isNotNull(currentUser) && !SecurityUtils.isAdmin()) {
                 String permission = StringUtils.defaultIfEmpty(controllerDataScope.permission(), PermissionContextHolder.getContext());
                 dataScopeFilter(joinPoint, currentUser, controllerDataScope.deptAlias(),
                         controllerDataScope.userAlias(), permission);
             }
 
             //用户只能查看当前企业数据权限过滤，超级管理员 不过滤
-            if (StringUtils.isNotNull(currentUser) && !currentUser.isAdmin()) {
+            if (StringUtils.isNotNull(currentUser) && !SecurityUtils.isAdmin()) {
                 entDataScopeFilter(joinPoint, currentUser);
             }
         }

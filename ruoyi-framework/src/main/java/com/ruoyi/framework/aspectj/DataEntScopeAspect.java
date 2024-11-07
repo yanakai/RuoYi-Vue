@@ -58,13 +58,18 @@ public class DataEntScopeAspect {
 
     protected void handleDataScope(final JoinPoint joinPoint, DataEntScope controllerDataScope) {
         // 获取当前的用户
-        LoginUser loginUser = SecurityUtils.getLoginUser();
+
+       /* LoginUser loginUser = SecurityUtils.getLoginUser();
         if (StringUtils.isNotNull(loginUser)) {
             SysUser currentUser = loginUser.getUser();
             //用户只能查看当前企业数据权限过滤，超级管理员 不过滤
             if (StringUtils.isNotNull(currentUser) && !currentUser.isAdmin()) {
                 entDataScopeFilter(joinPoint, currentUser);
             }
+        }*/
+        SysUser currentUser = SecurityUtils.getLoginUser().getUser();
+        if(StringUtils.isNotNull(currentUser) && !SecurityUtils.isAdmin()){
+            entDataScopeFilter(joinPoint, currentUser);
         }
     }
 

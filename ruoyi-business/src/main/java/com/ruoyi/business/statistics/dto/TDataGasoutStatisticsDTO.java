@@ -28,4 +28,8 @@ public class TDataGasoutStatisticsDTO extends BaseDto {
     private String outPutName;
 
     private DataEnum dataEnum;
+
+    private String entCode;
+
+    private String mnNum;
 }

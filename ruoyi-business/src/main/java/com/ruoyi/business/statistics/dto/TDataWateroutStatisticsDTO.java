@@ -30,5 +30,9 @@ public class TDataWateroutStatisticsDTO extends BaseDto {
 
     private DataEnum dataEnum;
 
+    private String entCode;
+
+    private String mnNum;
+
 
 }

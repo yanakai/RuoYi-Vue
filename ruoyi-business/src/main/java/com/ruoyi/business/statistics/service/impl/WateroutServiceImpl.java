@@ -79,8 +79,6 @@ public class WateroutServiceImpl implements IWateroutService {
                 params.put("endTime", DateUtil.year(DateUtil.date()));
                 tDataWateroutStatisticsDTO.setParams(params);
             }
-
-
             PageUtils.startPage();
             List<TDataWateroutYearStatistics> list = tDataWateroutDayStatisticsService.selectTDataWateroutYearStatisticsList(tDataWateroutStatisticsDTO);
             return getDataTable(list);
@@ -163,6 +161,8 @@ public class WateroutServiceImpl implements IWateroutService {
             //获取排口信息
             VOutPutInfo vOutPutInfo = new VOutPutInfo();
             vOutPutInfo.setOutPutCode(wateroutDTO.getOutPutCode());
+            vOutPutInfo.setEntCode(wateroutDTO.getEntCode());
+            vOutPutInfo.setMnNum(wateroutDTO.getMnNum());
             List<VOutPutInfo> list = vOutPutInfoMapper.selectVOutPutInfoList(vOutPutInfo);
             if(ArrayUtil.isNotEmpty(list)){
                 vOutPutInfo = list.get(0);

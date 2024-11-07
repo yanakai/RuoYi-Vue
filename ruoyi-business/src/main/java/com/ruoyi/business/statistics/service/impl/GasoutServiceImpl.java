@@ -155,6 +155,8 @@ public class GasoutServiceImpl implements IGasoutService {
             //获取排口信息
             VOutPutInfo vOutPutInfo = new VOutPutInfo();
             vOutPutInfo.setOutPutCode(gasoutDTO.getOutPutCode());
+            vOutPutInfo.setEntCode(gasoutDTO.getEntCode());
+            vOutPutInfo.setMnNum(gasoutDTO.getMnNum());
             List<VOutPutInfo> list = vOutPutInfoMapper.selectVOutPutInfoList(vOutPutInfo);
             if(ArrayUtil.isNotEmpty(list)){
                 vOutPutInfo = list.get(0);

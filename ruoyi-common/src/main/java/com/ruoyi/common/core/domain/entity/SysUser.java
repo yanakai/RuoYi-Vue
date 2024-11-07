@@ -7,6 +7,7 @@ import com.ruoyi.common.annotation.Excels;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.xss.Xss;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -185,7 +186,15 @@ public class SysUser extends BaseEntity {
     }
 
     public boolean isAdmin() {
-        return isAdmin(this.userId);
+        List<SysRole> list = getRoles();
+        if(ObjectUtils.isNotEmpty(list)){
+            for (SysRole sysRole : list) {
+                if(sysRole.isAdmin()){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public Long getDeptId() {

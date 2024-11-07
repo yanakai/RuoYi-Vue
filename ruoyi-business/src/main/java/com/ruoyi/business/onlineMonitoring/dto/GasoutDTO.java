@@ -25,4 +25,8 @@ public class GasoutDTO extends BaseDto {
     @ApiModelProperty
     private DataEnum dataEnum;
 
+    private String entCode;
+
+    private String mnNum;
+
 }
