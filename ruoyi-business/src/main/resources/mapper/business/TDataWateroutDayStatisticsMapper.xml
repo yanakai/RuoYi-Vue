@@ -267,9 +267,7 @@
             resultMap="TDataWateroutMonthStatisticsResult">
         select  date_format(monitor_time,'%Y-%m') monitor_time,
         ent_code,
-        ent_name,
         out_put_code,
-        out_put_name,
         ROUND(SUM(volume_avg_flow), 3) volume_avg_flow,
         ROUND(SUM(volume_total_flow), 3) volume_total_flow,
         ROUND(SUM(ph_value), 3) ph_value,
@@ -317,7 +315,7 @@
                 ${params.dataEntScope}
             </if>
         </where>
-        GROUP BY date_format(monitor_time,'%Y-%m'),ent_code, ent_name,out_put_code,out_put_name
+        GROUP BY date_format(monitor_time,'%Y-%m'),ent_code,out_put_code
         order by monitor_time desc
     </select>
     <!-- 废水排口-季度统计数据列表 -->
@@ -325,9 +323,7 @@
             resultMap="TDataWateroutDayStatisticsResult">
         select  date_format(monitor_time,'%Y') monitor_time,
         ent_code,
-        ent_name,
         out_put_code,
-        out_put_name,
         SUM(volume_avg_flow),
         SUM(volume_total_flow),
         SUM(ph_value),
@@ -360,7 +356,7 @@
                 and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
             </if>
         </where>
-        GROUP BY date_format(monitor_time,'%Y'),ent_code, ent_name,out_put_code,out_put_name
+        GROUP BY date_format(monitor_time,'%Y'),ent_code,out_put_code
         order by monitor_time desc
     </select>
     <!-- 废水排口-年度统计数据列表 -->
@@ -368,9 +364,7 @@
             resultMap="TDataWateroutDayStatisticsVoResult">
         select  date_format(monitor_time,'%Y') monitor_time,
         ent_code,
-        ent_name,
         out_put_code,
-        out_put_name,
         ROUND(SUM(volume_avg_flow) , 3) volume_avg_flow,
         ROUND(SUM(volume_total_flow) , 3) volume_total_flow,
         ROUND(SUM(ph_value) , 3) ph_value,
@@ -417,14 +411,14 @@
                 ${params.dataEntScope}
             </if>
         </where>
-        GROUP BY date_format(monitor_time,'%Y'),ent_code, ent_name,out_put_code,out_put_name
+        GROUP BY date_format(monitor_time,'%Y'),ent_code,out_put_code
         order by monitor_time desc
     </select>
 
     <!-- 废水排口-分钟和实时统计数据列表 -->
     <select id="selectTDataWateroutMinuteOrRealStatisticsList" parameterType="TDataWateroutDayStatistics"
             resultMap="TDataWateroutDayStatisticsResult">
-        SELECT ent_code,ent_name,out_put_code,out_put_name,monitor_time,update_time,
+        SELECT ent_code,out_put_code,monitor_time,update_time,
 
         <if test="dataEnum.name == 'real'">
             SUM(IF(pollutant_name_cn='pH值 ',rtd_value,0)) as ph_value,
@@ -478,7 +472,7 @@
                 ${params.dataEntScope}
             </if>
         </where>
-        GROUP BY ent_code,ent_name,out_put_code,out_put_name,monitor_time,update_time
+        GROUP BY ent_code,out_put_code,monitor_time,update_time
         order by  monitor_time desc
     </select>
 </mapper>

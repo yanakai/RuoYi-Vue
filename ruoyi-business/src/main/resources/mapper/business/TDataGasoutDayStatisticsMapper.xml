@@ -241,9 +241,7 @@
             resultMap="TDataGasoutMonthStatisticsResult">
         select date_format(monitor_time,'%Y-%m') monitor_time,
         ent_code,
-        ent_name,
         out_put_code,
-        out_put_name,
         ROUND(SUM(volume_avg_flow), 3) volume_avg_flow,
         ROUND(SUM(volume_total_flow), 3) volume_total_flow,
         ROUND(SUM(velocity_flow), 3) velocity_flow,
@@ -292,7 +290,7 @@
                 ${params.dataEntScope}
             </if>
         </where>
-        GROUP BY date_format(monitor_time,'%Y-%m'),ent_code, ent_name,out_put_code,out_put_name
+        GROUP BY date_format(monitor_time,'%Y-%m'),ent_code,out_put_code
         order by monitor_time desc
     </select>
 
@@ -319,9 +317,7 @@
             resultMap="TDataGasoutMonthStatisticsResult">
         select date_format(monitor_time,'%Y') monitor_time,
         ent_code,
-        ent_name,
         out_put_code,
-        out_put_name,
         ROUND(SUM(volume_avg_flow), 3) volume_avg_flow,
         ROUND(SUM(volume_total_flow), 3) volume_total_flow,
         ROUND(SUM(velocity_flow), 3) velocity_flow,
@@ -369,7 +365,7 @@
                 ${params.dataEntScope}
             </if>
         </where>
-        GROUP BY date_format(monitor_time,'%Y'),ent_code, ent_name,out_put_code,out_put_name
+        GROUP BY date_format(monitor_time,'%Y'),ent_code,out_put_code
         order by monitor_time desc
     </select>
 
