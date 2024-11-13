@@ -5,6 +5,7 @@ import com.ruoyi.business.onlineMonitoring.dto.GasoutDTO;
 import com.ruoyi.business.statistics.domain.TDataGasoutDayStatistics;
 import com.ruoyi.business.statistics.service.IGasoutService;
 import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
@@ -42,7 +43,16 @@ public class GasoutController extends BaseController {
 //    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/list")
     public TableDataInfo list(GasoutDTO gasoutDTO) {
-        return gasoutService.selectDataList(gasoutDTO);
+         try {
+             return gasoutService.selectDataList(gasoutDTO);
+         }catch (Exception e){
+             log.error("排口查询错误",e);
+             TableDataInfo tableDataInfo = new TableDataInfo();
+             tableDataInfo.setCode(HttpStatus.ERROR);
+             tableDataInfo.setMsg("系统错误");
+             return  tableDataInfo;
+         }
+
     }
 
     /**
@@ -53,10 +63,11 @@ public class GasoutController extends BaseController {
     @Log(title = "废气排口在线监测导出", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, GasoutDTO gasoutDTO) {
-        gasoutService.export(response,gasoutDTO);
-//        List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutMonthStatisticsList(tDataGasoutStatisticsDTO);
-//        ExcelUtil<TDataGasoutDayStatistics> util = new ExcelUtil<TDataGasoutDayStatistics>(TDataGasoutDayStatistics.class);
-//        util.exportExcel(response, list, "废气排口在线监测导出");
+        try {
+            gasoutService.export(response,gasoutDTO);
+        }catch (Exception e){
+            log.error("排口导出错误",e);
+        }
     }
 
 

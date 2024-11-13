@@ -145,4 +145,19 @@
             #{id}
         </foreach>
     </delete>
+
+    <update id="createTableMin" parameterType="TBasWateroutPutInfo">
+        create table t_data_gasout_minute_${mnNum} as select * from t_data_waterout_minute
+    </update>
+    <update id="createTableHour" parameterType="TBasWateroutPutInfo">
+        create table t_data_gasout_hour_${mnNum} as select * from t_data_waterout_hour
+    </update>
+    <update id="createTableDay" parameterType="TBasWateroutPutInfo">
+        create table t_data_waterout_day_${mnNum} as select * from t_data_waterout_day
+    </update>
+
+    <update id="createTableReal" parameterType="TBasWateroutPutInfo">
+        create table t_data_waterout_real_${mnNum} as select * from t_data_waterout_real
+    </update>
+
 </mapper>

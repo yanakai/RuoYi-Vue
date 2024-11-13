@@ -21,7 +21,6 @@ import java.util.List;
 @ApiModel("基础信息--企业--废气排口")
 public class TBasGasoutPutInfo extends BaseEntity {
     private static final long serialVersionUID = 1L;
-
     /**
      * 主键id
      */

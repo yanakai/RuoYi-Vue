@@ -58,4 +58,11 @@ public interface TBasGasoutPutInfoMapper {
      * @return 结果
      */
     int deleteTBasGasoutPutInfoByIds(Long[] ids);
+
+    int createTableMin(TBasGasoutPutInfo tBasGasoutPutInfo);
+
+    int createTableHour(TBasGasoutPutInfo tBasGasoutPutInfo);
+
+    int createTableDay(TBasGasoutPutInfo tBasGasoutPutInfo);
+    int createTableReal(TBasGasoutPutInfo tBasGasoutPutInfo);
 }

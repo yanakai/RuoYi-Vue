@@ -74,6 +74,14 @@ public class TBasWateroutPutInfoServiceImpl implements ITBasWateroutPutInfoServi
             }
         }
 
+        if (result > 0){
+            tBasWateroutPutInfoMapper.createTableReal(tBasWateroutPutInfo);
+            tBasWateroutPutInfoMapper.createTableMin(tBasWateroutPutInfo);
+            tBasWateroutPutInfoMapper.createTableHour(tBasWateroutPutInfo);
+            tBasWateroutPutInfoMapper.createTableDay(tBasWateroutPutInfo);
+
+        }
+
         return result;
     }
 

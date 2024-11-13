@@ -58,4 +58,9 @@ public interface TBasWateroutPutInfoMapper {
      * @return 结果
      */
     int deleteTBasWateroutPutInfoByIds(Long[] ids);
+
+    int createTableReal(TBasWateroutPutInfo tBasWateroutPutInfo);
+    int createTableMin(TBasWateroutPutInfo tBasWateroutPutInfo);
+    int createTableHour(TBasWateroutPutInfo tBasWateroutPutInfo);
+    int createTableDay(TBasWateroutPutInfo tBasWateroutPutInfo);
 }

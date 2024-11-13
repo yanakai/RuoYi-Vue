@@ -5,11 +5,14 @@ import com.ruoyi.business.statistics.dto.TDataGasoutStatisticsDTO;
 import com.ruoyi.business.statistics.service.ITDataGasoutDayStatisticsService;
 import com.ruoyi.business.statistics.service.IWateroutService;
 import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author lx
  * @date 2024-07-04
  */
+@Slf4j
 @Api(value = "业务模块-废水在线监测", tags = "废水在线监测")
 @RestController
 @RequestMapping("/business/onlinemonitoring/waterout")
@@ -40,17 +44,25 @@ public class WateroutController extends BaseController {
      * 小时数据报警
      */
     @ApiOperation("废水在线监测")
-//    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:list')")
     @GetMapping("/list")
     public TableDataInfo list(WateroutDTO wateroutDTO) {
-        return wateroutService.selectDataList(wateroutDTO);
+        try {
+            return wateroutService.selectDataList(wateroutDTO);
+        }catch (Exception e){
+            log.error("废水排口查询错误",e);
+            TableDataInfo tableDataInfo = new TableDataInfo();
+            tableDataInfo.setCode(HttpStatus.ERROR);
+            tableDataInfo.setMsg("系统错误");
+            return  tableDataInfo;
+        }
+
+
     }
 
     /**
      * 小时数据报警导出
      */
     @ApiOperation("废水在线监测导出")
-//    @PreAuthorize("@ss.hasPermi('business:dataGasoutDayStatistics:export')")
     @Log(title = "废水在线监测导出", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, TDataGasoutStatisticsDTO tDataGasoutStatisticsDTO) {

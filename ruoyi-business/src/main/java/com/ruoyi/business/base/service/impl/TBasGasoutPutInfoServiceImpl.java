@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 基础信息--企业--废气排口Service业务层处理
@@ -75,6 +77,15 @@ public class TBasGasoutPutInfoServiceImpl implements ITBasGasoutPutInfoService {
                 basUploadFilesMapper.updateTBasUploadFiles(uploadFiles);
             }
         }
+        if (result > 0){
+            //创建表 分钟表t_data_gasout_minute  小时表t_data_gasout_hour 天表t_data_gasout_day
+            tBasGasoutPutInfoMapper.createTableReal(tBasGasoutPutInfo);
+            tBasGasoutPutInfoMapper.createTableMin(tBasGasoutPutInfo);
+            tBasGasoutPutInfoMapper.createTableHour(tBasGasoutPutInfo);
+            tBasGasoutPutInfoMapper.createTableDay(tBasGasoutPutInfo);
+
+        }
+
         return result;
     }
 
