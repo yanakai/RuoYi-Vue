@@ -64,6 +64,7 @@ public class VOutPutHourStatisticsServiceImpl implements IVOutPutHourStatisticsS
     }
 
     @Override
+    @DataEntScope
     public List<VOutPutHourStatistics> selectVOutPutHourStatisticsListV2(VOutPutHourStatistics vOutPutHourStatistics) {
         List<VOutPutHourStatistics> vOutPutHourStatisticsList = vOutPutHourStatisticsMapper.selectVOutPutHourStatisticsListV2(vOutPutHourStatistics);
         vOutPutHourStatisticsList.forEach(vOutPutHourStatistics1 -> {

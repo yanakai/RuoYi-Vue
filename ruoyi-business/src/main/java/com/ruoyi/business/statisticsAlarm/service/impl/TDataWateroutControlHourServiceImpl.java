@@ -4,6 +4,7 @@ import com.ruoyi.business.statisticsAlarm.domain.TDataWateroutControlHour;
 import com.ruoyi.business.statisticsAlarm.dto.OutControlHourDto;
 import com.ruoyi.business.statisticsAlarm.mapper.TDataWateroutControlHourMapper;
 import com.ruoyi.business.statisticsAlarm.service.ITDataWateroutControlHourService;
+import com.ruoyi.common.annotation.DataEntScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,7 @@ public class TDataWateroutControlHourServiceImpl implements ITDataWateroutContro
      * @return 废水排口--小时剩余排放平均值
      */
     @Override
+    @DataEntScope
     public List<TDataWateroutControlHour> selectTDataWateroutControlHourList(OutControlHourDto outControlHourDto) {
         return tDataWateroutControlHourMapper.selectTDataWateroutControlHourList(outControlHourDto);
     }
