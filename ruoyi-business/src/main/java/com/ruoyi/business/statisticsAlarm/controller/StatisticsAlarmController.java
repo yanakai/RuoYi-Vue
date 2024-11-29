@@ -13,6 +13,7 @@ import com.ruoyi.business.statisticsAlarm.dto.*;
 import com.ruoyi.business.statisticsAlarm.service.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
@@ -235,6 +236,50 @@ public class StatisticsAlarmController extends BaseController {
 //        List<TDataGasoutDayStatistics> list = tDataGasoutDayStatisticsService.selectTDataGasoutYearStatisticsList(tDataGasoutStatisticsDTO);
         ExcelUtil<DataEfficiencyDto> util = new ExcelUtil<>(DataEfficiencyDto.class);
         util.exportExcel(response, new ArrayList<>(), "传输有效率预警导出");
+    }
+
+    //小时预警翻译
+    @ApiOperation("首页统计排口数据")
+    @GetMapping("/index/hourlyWarning")
+    public R<List<HourlyWarningDto>> indexHourlyWarning(OutControlHourDto outControlHourDto) {
+        List<HourlyWarningDto> list = new ArrayList<>();
+        outControlHourDto.setOutPutEnum(OutPutEnum.GASOUT);
+        List<TDataGasoutControlHour> gasoutList = tDataGasoutControlHourService.selectTDataGasoutControlHourList(outControlHourDto);
+
+        //对gasoutList进行聚合
+        Map<String,List<TDataGasoutControlHour>> map = gasoutList.stream().collect(
+                Collectors.groupingBy(tDataGasoutControlHour -> tDataGasoutControlHour.getEntCode()+"_"+tDataGasoutControlHour.getOutPutCode()+"_"+tDataGasoutControlHour.getOutPutName()));
+        List<HourlyWarningDto> gasoutControlHourList = map.entrySet().stream().map(key -> {
+                    String[] keyArr = key.getKey().split("_");
+                    HourlyWarningDto hourlyWarningDto = new HourlyWarningDto();
+                    hourlyWarningDto.setEntCode(keyArr[0]);
+                    hourlyWarningDto.setOutPutCode(keyArr[1]);
+                    hourlyWarningDto.setOutPutName(keyArr[2]);
+                    hourlyWarningDto.setOutPutType(OutPutEnum.GASOUT.getCode());
+                    hourlyWarningDto.setGasoutControlHourList(map.get(key.getKey()));
+                    return hourlyWarningDto;
+                }
+        ).collect(Collectors.toList());
+
+        outControlHourDto.setOutPutEnum(OutPutEnum.WATEROUT);
+        List<TDataWateroutControlHour> waterList = tDataWateroutControlHourService.selectTDataWateroutControlHourList(outControlHourDto);
+        //对waterList进行聚合
+        Map<String,List<TDataWateroutControlHour>> waterMap = waterList.stream().collect(
+                Collectors.groupingBy(tDataWateroutControlHour -> tDataWateroutControlHour.getEntCode()+"_"+tDataWateroutControlHour.getOutPutCode()+"_"+tDataWateroutControlHour.getOutPutName()));
+        List<HourlyWarningDto> waterControlHourList = waterMap.entrySet().stream().map(key -> {
+                    String[] keyArr = key.getKey().split("_");
+                    HourlyWarningDto hourlyWarningDto = new HourlyWarningDto();
+                    hourlyWarningDto.setEntCode(keyArr[0]);
+                    hourlyWarningDto.setOutPutCode(keyArr[1]);
+                    hourlyWarningDto.setOutPutName(keyArr[2]);
+                    hourlyWarningDto.setOutPutType(OutPutEnum.WATEROUT.getCode());
+                    hourlyWarningDto.setWateroutControlHourList(waterMap.get(key.getKey()));
+                    return hourlyWarningDto;
+        }).collect(Collectors.toList());
+        //list 合并 gasoutControlHourList waterControlHourList
+        list.addAll(gasoutControlHourList);
+        list.addAll(waterControlHourList);
+        return R.ok(list);
     }
 
     /**

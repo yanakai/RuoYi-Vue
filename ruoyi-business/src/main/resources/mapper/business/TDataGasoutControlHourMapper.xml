@@ -31,10 +31,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="outPutName != null  and outPutName != ''"> and out_put_name like concat('%', #{outPutName}, '%')</if>
 
              <!-- 根据所属企业数据范围过滤 -->
-            <if test="params.dataEntScope != null and params.dataEntScope != ''">
+            <if test="params!=null and  params.dataEntScope != null and params.dataEntScope != ''">
                 ${params.dataEntScope}
             </if>
         </where>
+        ORDER BY ent_code,ent_name,out_put_code,out_put_name
     </select>
     
     <select id="selectTDataGasoutControlHourById" parameterType="Long" resultMap="TDataGasoutControlHourResult">

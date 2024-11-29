@@ -73,6 +73,7 @@ public class TDataGasoutControlHour extends BaseEntity {
      */
     private String surplusValue;
 
+
     public Long getId() {
         return id;
     }
