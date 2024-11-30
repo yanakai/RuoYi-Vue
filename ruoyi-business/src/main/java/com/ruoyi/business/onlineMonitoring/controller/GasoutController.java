@@ -48,8 +48,10 @@ public class GasoutController extends BaseController {
          }catch (Exception e){
              log.error("排口查询错误",e);
              TableDataInfo tableDataInfo = new TableDataInfo();
-             tableDataInfo.setCode(HttpStatus.ERROR);
-             tableDataInfo.setMsg("系统错误");
+             tableDataInfo.setRows(null);
+             tableDataInfo.setTotal(0);
+             tableDataInfo.setCode(HttpStatus.NO_CONTENT);
+             tableDataInfo.setMsg("操作已经执行成功，但是没有返回数据");
              return  tableDataInfo;
          }
 

@@ -1,6 +1,7 @@
 package com.ruoyi.business.statistics.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,7 +102,7 @@ public class WateroutServiceImpl implements IWateroutService {
             }
         }
 
-        return getDataTable(null);
+        return getDataTable(new ArrayList<>());
     }
     @Override
     public void export(HttpServletResponse response, WateroutDTO wateroutDTO) {
@@ -164,11 +166,14 @@ public class WateroutServiceImpl implements IWateroutService {
             vOutPutInfo.setEntCode(wateroutDTO.getEntCode());
             vOutPutInfo.setMnNum(wateroutDTO.getMnNum());
             List<VOutPutInfo> list = vOutPutInfoMapper.selectVOutPutInfoList(vOutPutInfo);
-            if(ArrayUtil.isNotEmpty(list)){
+            if(ObjUtil.isNotNull(list) &&  ArrayUtil.isNotEmpty(list) && list.size() > 0){
                 vOutPutInfo = list.get(0);
                 tableName = tableName+vOutPutInfo.getMnNum();
+                return tableName;
+            }else{
+                return null;
             }
-            return tableName;
+
         }else{
             return null;
         }
