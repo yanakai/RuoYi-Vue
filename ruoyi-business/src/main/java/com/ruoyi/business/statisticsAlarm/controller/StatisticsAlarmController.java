@@ -27,6 +27,7 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -425,5 +426,42 @@ public class StatisticsAlarmController extends BaseController {
                 util.exportExcel(response, list, "小时数据预警导出");
             }
         }
+    }
+
+    /**
+     * 查询废水排口--月统计数据列表
+     */
+    @ApiOperation("获取首页统计数据")
+    @GetMapping("/index")
+    public R index() {
+        //达标率、传输有效率、今日标记完成率
+        IndexDataDto.Statistics achievementRateDto = new IndexDataDto.Statistics ();
+        IndexDataDto.Statistics  transmissionEfficiencyDto = new IndexDataDto.Statistics ();
+        IndexDataDto.Statistics  todayCompletionRateDto = new IndexDataDto.Statistics ();
+        IndexDataDto indexDataDto = new IndexDataDto();
+        indexDataDto.setAchievementRateDto(achievementRateDto);
+        indexDataDto.setTransmissionEfficiencyDto(transmissionEfficiencyDto);
+        indexDataDto.setTodayCompletionRateDto(todayCompletionRateDto);
+        return R.ok(indexDataDto);
+    }
+
+}
+@Data
+class IndexDataDto{
+    //达标率
+    Statistics achievementRateDto;
+    //传输有效率
+    Statistics transmissionEfficiencyDto;
+    //今日标记完成率
+    Statistics todayCompletionRateDto;
+    @Data
+    static
+    class Statistics{
+        //总数
+        private float total;
+        //已完成
+        private float complete;
+        //比率
+        private float rate;
     }
 }
