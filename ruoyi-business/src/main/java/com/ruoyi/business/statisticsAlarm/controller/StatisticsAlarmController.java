@@ -430,6 +430,8 @@ public class StatisticsAlarmController extends BaseController {
 
     /**
      * 查询废水排口--月统计数据列表
+     * TODO 待确定统计需求开发
+     * 达标率=达标数据条数/总数据条数
      */
     @ApiOperation("获取首页统计数据")
     @GetMapping("/index")

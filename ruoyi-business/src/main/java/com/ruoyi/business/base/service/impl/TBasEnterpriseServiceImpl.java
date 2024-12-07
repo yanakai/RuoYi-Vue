@@ -5,10 +5,13 @@ import com.ruoyi.business.base.dto.TBasEnterpriseBaseInfoDto;
 import com.ruoyi.business.base.mapper.TBasEnterpriseMapper;
 import com.ruoyi.business.base.service.ITBasEnterpriseService;
 import com.ruoyi.common.annotation.DataEntScope;
+import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.system.service.ISysDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +24,9 @@ import java.util.List;
 public class TBasEnterpriseServiceImpl implements ITBasEnterpriseService {
     @Autowired
     private TBasEnterpriseMapper tBasEnterpriseMapper;
+
+    @Autowired
+    private ISysDeptService deptService;
 
     /**
      * 查询基础信息---企业基础
@@ -47,14 +53,27 @@ public class TBasEnterpriseServiceImpl implements ITBasEnterpriseService {
 
     /**
      * 新增基础信息---企业基础
-     *
+     * 2024-12-7 增加企业保存后，自动保存一条部门信息
      * @param tBasEnterprise 基础信息---企业基础
      * @return 结果
      */
     @Override
     public int insertTBasEnterprise(TBasEnterprise tBasEnterprise) {
         tBasEnterprise.setCreateTime(DateUtils.getNowDate());
-        return tBasEnterpriseMapper.insertTBasEnterprise(tBasEnterprise);
+        int result = tBasEnterpriseMapper.insertTBasEnterprise(tBasEnterprise);
+        // 保存部门信息
+        SysDept sysDept = new SysDept();
+        sysDept.setCreateTime(new Date());
+        sysDept.setAncestors("0");
+        sysDept.setLeader(tBasEnterprise.getEnvManagerPersion());
+        sysDept.setCreateBy(tBasEnterprise.getCreateBy());
+        sysDept.setDeptName(tBasEnterprise.getEntName());
+        sysDept.setEntCode(tBasEnterprise.getEntCode());
+        sysDept.setEntName(tBasEnterprise.getEntName());
+        sysDept.setSocialCreditCode(tBasEnterprise.getSocialCreditCode());
+        sysDept.setCreateTime(new Date());
+        deptService.insertDept(sysDept);
+        return result;
     }
 
     /**

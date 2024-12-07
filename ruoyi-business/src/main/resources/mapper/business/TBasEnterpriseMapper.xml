@@ -103,8 +103,16 @@
             <if test="params.dataEntScope != null and params.dataEntScope != ''">
                 ${params.dataEntScope}
             </if>
-
         </where>
+        <choose>
+            <when test="params.orderByColumn != null and params.orderByColumn != ''">
+                order by ${params.orderByColumn}  ${params.isAsc}
+            </when>
+            <otherwise>
+                order by ent_name, create_time desc
+            </otherwise>
+        </choose>
+
     </select>
 
     <select id="selectTBasEnterpriseById" parameterType="Long" resultMap="TBasEnterpriseResult">
