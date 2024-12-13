@@ -10,6 +10,7 @@ import com.ruoyi.business.onlineMonitoring.dto.DataEnum;
 import com.ruoyi.business.onlineMonitoring.dto.GasoutDTO;
 import com.ruoyi.business.onlineMonitoring.dto.WateroutDTO;
 import com.ruoyi.business.statistics.domain.TDataGasoutDayStatistics;
+import com.ruoyi.business.statistics.dto.TDataGasoutMonthStatistics;
 import com.ruoyi.business.statistics.dto.TDataGasoutRealOrMinuteStatistics;
 import com.ruoyi.business.statistics.dto.TDataGasoutStatisticsDTO;
 import com.ruoyi.business.statistics.dto.TDataWateroutRealOrMinuteStatistics;
@@ -28,6 +29,7 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,6 +48,7 @@ import java.util.stream.Collectors;
  * @author lx
  * @date 2024-07-04
  */
+@Slf4j
 @Api(value = "业务模块-分级预警报警", tags = "分级预警报警")
 @RestController
 @RequestMapping("/business/statisticsAlarm")
@@ -279,7 +282,8 @@ public class StatisticsAlarmController extends BaseController {
             gasoutDTO.setDataEnum(DataEnum.minute);
             gasoutDTO.setParams(getParams());
             TableDataInfo tableDataInfo = gasoutService.selectDataList(gasoutDTO);
-            hourlyWarningDto.setGasoutRealOrMinuteStatisticsList((List<TDataGasoutRealOrMinuteStatistics>) tableDataInfo.getRows());
+//            hourlyWarningDto.setGasoutRealOrMinuteStatisticsList((List<TDataGasoutRealOrMinuteStatistics>) tableDataInfo.getRows());
+            setHourlyWarningDto(hourlyWarningDto,tableDataInfo);
             return hourlyWarningDto;
         }
         ).collect(Collectors.toList());
@@ -305,7 +309,7 @@ public class StatisticsAlarmController extends BaseController {
             wateroutDTO.setDataEnum(DataEnum.minute);
             wateroutDTO.setParams(getParams());
             TableDataInfo tableDataInfo = wateroutService.selectDataList(wateroutDTO);
-            hourlyWarningDto.setWateroutRealOrMinuteStatisticsList((List<TDataWateroutRealOrMinuteStatistics>) tableDataInfo.getRows());
+//            hourlyWarningDto.setWateroutRealOrMinuteStatisticsList((List<TDataWateroutRealOrMinuteStatistics>) tableDataInfo.getRows());
             return hourlyWarningDto;
         }).collect(Collectors.toList());
         //list 合并 gasoutControlHourList waterControlHourList
@@ -326,6 +330,7 @@ public class StatisticsAlarmController extends BaseController {
         //对gasoutList进行聚合
         Map<String,List<TDataGasoutControlHour>> map = gasoutList.stream().collect(
                 Collectors.groupingBy(tDataGasoutControlHour -> tDataGasoutControlHour.getEntCode()+"_"+tDataGasoutControlHour.getOutPutCode()+"_"+tDataGasoutControlHour.getOutPutName()));
+
         List<HourlyWarningDto> gasoutControlHourList = map.entrySet().stream().map(key -> {
                     String[] keyArr = key.getKey().split("_");
                     HourlyWarningDto hourlyWarningDto = new HourlyWarningDto();
@@ -341,7 +346,8 @@ public class StatisticsAlarmController extends BaseController {
                     gasoutDTO.setDataEnum(DataEnum.minute);
                     gasoutDTO.setParams(getParams());
                     TableDataInfo tableDataInfo = gasoutService.selectDataList(gasoutDTO);
-                    hourlyWarningDto.setGasoutRealOrMinuteStatisticsList((List<TDataGasoutRealOrMinuteStatistics>) tableDataInfo.getRows());
+                    setHourlyWarningDto(hourlyWarningDto,tableDataInfo);
+                    //hourlyWarningDto.setGasoutRealOrMinuteStatisticsList((List<TDataGasoutRealOrMinuteStatistics>) tableDataInfo.getRows());
                     return hourlyWarningDto;
                 }
         ).collect(Collectors.toList());
@@ -367,13 +373,50 @@ public class StatisticsAlarmController extends BaseController {
             wateroutDTO.setDataEnum(DataEnum.minute);
             wateroutDTO.setParams(getParams());
             TableDataInfo tableDataInfo = wateroutService.selectDataList(wateroutDTO);
-            hourlyWarningDto.setWateroutRealOrMinuteStatisticsList((List<TDataWateroutRealOrMinuteStatistics>) tableDataInfo.getRows());
+//            hourlyWarningDto.setWateroutRealOrMinuteStatisticsList((List<TDataWateroutRealOrMinuteStatistics>) tableDataInfo.getRows());
             return hourlyWarningDto;
         }).collect(Collectors.toList());
         //list 合并 gasoutControlHourList waterControlHourList
         list.addAll(gasoutControlHourList);
         list.addAll(waterControlHourList);
         return getDataTable(list);
+    }
+
+    private void setHourlyWarningDto (HourlyWarningDto hourlyWarningDto,TableDataInfo tableDataInfo){
+        hourlyWarningDto.getGasoutControlHourList().forEach(t -> {
+            log.info("hourlyWarningDto:{},t:{};{}",hourlyWarningDto,t.getPollutantNameCn(),tableDataInfo.getRows());
+           List<Map<String,Object>> result = new ArrayList<>();
+           if(StrUtil.equals(hourlyWarningDto.getOutPutType(),"gasout")){
+               if(StrUtil.equals(t.getPollutantNameCn(),"二氧化硫")) {
+                   tableDataInfo.getRows().forEach(t1 -> {
+                       log.info("t1:{}",t1);
+                       Map<String,Object> map = new HashMap<>();
+                       map.put("monTime",((TDataGasoutMonthStatistics)t1).getMonitorTime());
+                       map.put("avgValue",((TDataGasoutMonthStatistics)t1).getSo2AvgValue());
+                       map.put("zsavgValue",((TDataGasoutMonthStatistics)t1).getSo2ZsavgValue());
+                       result.add(map);
+                   });
+               }else if(StrUtil.equals(t.getPollutantNameCn(),"氮氧化物")) {
+                   tableDataInfo.getRows().forEach(t1 -> {
+                       Map<String,Object> map = new HashMap<>();
+                       map.put("monTime",((TDataGasoutMonthStatistics)t1).getMonitorTime());
+                       map.put("avgValue",((TDataGasoutMonthStatistics)t1).getNoAvgValue());
+                       map.put("zsavgValue",((TDataGasoutMonthStatistics)t1).getNoZsavgValue());
+                       result.add(map);
+                   });
+               }else if(StrUtil.equals(t.getPollutantNameCn(),"烟尘")) {
+                   tableDataInfo.getRows().forEach(t1 -> {
+                       Map<String,Object> map = new HashMap<>();
+                       map.put("monTime",((TDataGasoutMonthStatistics)t1).getMonitorTime());
+                       map.put("avgValue",((TDataGasoutMonthStatistics)t1).getYcAvgValue());
+                       map.put("zsavgValue",((TDataGasoutMonthStatistics)t1).getYcZsavgValue());
+                       result.add(map);
+                   });
+               }
+           }
+
+            t.setDataList(result);
+        });
     }
 
     private Map<String, Object> getParams() {

@@ -5,12 +5,16 @@ import com.ruoyi.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 废气排口--小时剩余排放平均值对象 t_data_gasout_control_hour
  *
  * @author lx
  * @date 2024-07-13
  */
+
 public class TDataGasoutControlHour extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -73,6 +77,16 @@ public class TDataGasoutControlHour extends BaseEntity {
      */
     private String surplusValue;
 
+    private List<Map<String,Object>> dataList;
+
+
+    public List<Map<String, Object>> getDataList() {
+        return dataList;
+    }
+
+    public void setDataList(List<Map<String, Object>> dataList) {
+        this.dataList = dataList;
+    }
 
     public Long getId() {
         return id;
