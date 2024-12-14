@@ -86,4 +86,9 @@ public class TDataGasoutHourStatisticsServiceImpl implements ITDataGasoutHourSta
     public int deleteTDataGasoutHourStatisticsById(Long id) {
         return tDataGasoutHourStatisticsMapper.deleteTDataGasoutHourStatisticsById(id);
     }
+
+    @Override
+    public int selectTDataGasoutHourStatisticsCount(TDataGasoutHourStatistics tDataGasoutHourStatistics) {
+        return tDataGasoutHourStatisticsMapper.selectTDataGasoutHourStatisticsCount(tDataGasoutHourStatistics);
+    }
 }

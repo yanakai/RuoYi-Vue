@@ -60,4 +60,6 @@ public interface TDataGasoutHourStatisticsMapper {
     int deleteTDataGasoutHourStatisticsByIds(Long[] ids);
 
     List<TDataGasoutHourStatistics> selectTDataGasout4alarmList(TDataGasoutHourStatistics tDataGasoutHourStatistics);
+
+    int selectTDataGasoutHourStatisticsCount(TDataGasoutHourStatistics tDataGasoutHourStatistics);
 }

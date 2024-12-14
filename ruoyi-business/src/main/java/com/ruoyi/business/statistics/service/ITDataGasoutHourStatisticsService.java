@@ -58,4 +58,6 @@ public interface ITDataGasoutHourStatisticsService {
      * @return 结果
      */
     int deleteTDataGasoutHourStatisticsById(Long id);
+
+    int selectTDataGasoutHourStatisticsCount(TDataGasoutHourStatistics tDataGasoutHourStatistics);
 }

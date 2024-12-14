@@ -217,4 +217,31 @@
         </where>
     </select>
 
+    <select id="selectTDataGasoutHourStatisticsCount" parameterType="TDataGasoutHourStatistics"
+            resultType="int">
+        select count(*) from t_data_gasout_hour_statistics
+        <where>
+            <!-- 非预警状态 -->
+            <if test="entCode != null  and entCode != ''">and ent_code = #{entCode}</if>
+            <if test="entName != null  and entName != ''">and ent_name like concat('%', #{entName}, '%')</if>
+            <if test="outPutCode != null  and outPutCode != ''">and out_put_code = #{outPutCode}</if>
+            <if test="outPutName != null  and outPutName != ''">and out_put_name like concat('%', #{outPutName}, '%')
+            </if>
+            <!-- 开始时间检索 -->
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(monitor_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')</if>
+            <!-- 结束时间检索 -->
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(monitor_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')</if>
+            <if test="params.isAlarm != null and params.isAlarm == true ">
+                and (yc_is_alarm != 0 or so2_is_alarm != 0  or no_si_alarm != 0 )
+            </if>
+            <!-- 根据所属企业数据范围过滤 -->
+            <if test="params.dataEntScope != null and params.dataEntScope != ''">
+                ${params.dataEntScope}
+            </if>
+        </where>
+    </select>
+
+
 </mapper>

@@ -10,12 +10,14 @@ import com.ruoyi.business.onlineMonitoring.dto.DataEnum;
 import com.ruoyi.business.onlineMonitoring.dto.GasoutDTO;
 import com.ruoyi.business.onlineMonitoring.dto.WateroutDTO;
 import com.ruoyi.business.statistics.domain.TDataGasoutDayStatistics;
+import com.ruoyi.business.statistics.domain.TDataGasoutHourStatistics;
 import com.ruoyi.business.statistics.dto.TDataGasoutMonthStatistics;
 import com.ruoyi.business.statistics.dto.TDataGasoutRealOrMinuteStatistics;
 import com.ruoyi.business.statistics.dto.TDataGasoutStatisticsDTO;
 import com.ruoyi.business.statistics.dto.TDataWateroutRealOrMinuteStatistics;
 import com.ruoyi.business.statistics.service.IGasoutService;
 import com.ruoyi.business.statistics.service.ITDataGasoutDayStatisticsService;
+import com.ruoyi.business.statistics.service.ITDataGasoutHourStatisticsService;
 import com.ruoyi.business.statistics.service.IWateroutService;
 import com.ruoyi.business.statisticsAlarm.domain.*;
 import com.ruoyi.business.statisticsAlarm.dto.*;
@@ -319,6 +321,7 @@ public class StatisticsAlarmController extends BaseController {
     }
 
     //TODO  分页优化
+    @Deprecated
     @ApiOperation("首页统计排口数据")
     @GetMapping("/index/hourlyWarningPage")
     public TableDataInfo hourlyWarningPage(OutControlHourDto outControlHourDto) {
@@ -471,19 +474,46 @@ public class StatisticsAlarmController extends BaseController {
         }
     }
 
+
+    @Resource
+    private ITDataGasoutHourStatisticsService tDataGasoutHourStatisticsService;
+
     /**
      * 查询废水排口--月统计数据列表
      * TODO 待确定统计需求开发
-     * 达标率=达标数据条数/总数据条数
+     * 达标率=达标数据条数/总数据条数  2024-12-14 增加根据排口统计达标率
      */
     @ApiOperation("获取首页统计数据")
     @GetMapping("/index")
-    public R index() {
+    public R index(IndexDataDto indexDataDto) {
         //达标率、传输有效率、今日标记完成率
         IndexDataDto.Statistics achievementRateDto = new IndexDataDto.Statistics ();
         IndexDataDto.Statistics  transmissionEfficiencyDto = new IndexDataDto.Statistics ();
         IndexDataDto.Statistics  todayCompletionRateDto = new IndexDataDto.Statistics ();
-        IndexDataDto indexDataDto = new IndexDataDto();
+        if(ObjUtil.isNotNull(indexDataDto)){
+            if(StrUtil.equals(indexDataDto.getOutPutType(),"gasout") && StrUtil.isNotEmpty(indexDataDto.getOutPutCode())&& StrUtil.isNotEmpty(indexDataDto.getEntCode())){
+                TDataGasoutHourStatistics tDataGasoutHourStatistics = new TDataGasoutHourStatistics();
+                tDataGasoutHourStatistics.setEntCode(indexDataDto.getEntCode());
+                tDataGasoutHourStatistics.setOutPutCode(indexDataDto.getOutPutCode());
+                float total = tDataGasoutHourStatisticsService.selectTDataGasoutHourStatisticsCount(tDataGasoutHourStatistics);
+
+                HashMap<String, Object> params = MapUtil.newHashMap();
+                params.put("isAlarm",true);
+                tDataGasoutHourStatistics.setParams(params);
+                float complete = total - tDataGasoutHourStatisticsService.selectTDataGasoutHourStatisticsCount(tDataGasoutHourStatistics);
+                achievementRateDto.setTotal(total);
+                achievementRateDto.setComplete(complete);
+                achievementRateDto.setRate(complete/total);
+            }else if(StrUtil.equals(indexDataDto.getOutPutType(),"waterout")){
+                //TODO 待确定统计需求开发
+
+            }
+
+
+
+        }
+
+
         indexDataDto.setAchievementRateDto(achievementRateDto);
         indexDataDto.setTransmissionEfficiencyDto(transmissionEfficiencyDto);
         indexDataDto.setTodayCompletionRateDto(todayCompletionRateDto);
@@ -493,6 +523,10 @@ public class StatisticsAlarmController extends BaseController {
 }
 @Data
 class IndexDataDto{
+    private String entCode;
+    private String outPutCode;
+    private String outPutType;
+
     //达标率
     Statistics achievementRateDto;
     //传输有效率
@@ -510,3 +544,4 @@ class IndexDataDto{
         private float rate;
     }
 }
+
