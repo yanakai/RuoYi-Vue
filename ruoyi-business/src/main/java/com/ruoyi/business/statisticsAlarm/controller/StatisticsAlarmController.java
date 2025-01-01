@@ -283,8 +283,8 @@ public class StatisticsAlarmController extends BaseController {
             gasoutDTO.setOutPutCode(keyArr[1]);
             gasoutDTO.setDataEnum(DataEnum.minute);
             gasoutDTO.setParams(getParams());
+
             TableDataInfo tableDataInfo = gasoutService.selectDataList(gasoutDTO);
-//            hourlyWarningDto.setGasoutRealOrMinuteStatisticsList((List<TDataGasoutRealOrMinuteStatistics>) tableDataInfo.getRows());
             setHourlyWarningDto(hourlyWarningDto,tableDataInfo);
             return hourlyWarningDto;
         }
@@ -387,7 +387,7 @@ public class StatisticsAlarmController extends BaseController {
 
     private void setHourlyWarningDto (HourlyWarningDto hourlyWarningDto,TableDataInfo tableDataInfo){
         hourlyWarningDto.getGasoutControlHourList().forEach(t -> {
-            log.info("hourlyWarningDto:{},t:{};{}",hourlyWarningDto,t.getPollutantNameCn(),tableDataInfo.getRows());
+           log.info("t:{}",t);
            List<Map<String,Object>> result = new ArrayList<>();
            if(StrUtil.equals(hourlyWarningDto.getOutPutType(),"gasout")){
                if(StrUtil.equals(t.getPollutantNameCn(),"二氧化硫")) {
@@ -395,6 +395,7 @@ public class StatisticsAlarmController extends BaseController {
                        log.info("t1:{}",t1);
                        Map<String,Object> map = new HashMap<>();
                        map.put("monTime",((TDataGasoutMonthStatistics)t1).getMonitorTime());
+                       map.put("standardValue",t.getStandardValue());
                        map.put("avgValue",((TDataGasoutMonthStatistics)t1).getSo2AvgValue());
                        map.put("zsavgValue",((TDataGasoutMonthStatistics)t1).getSo2ZsavgValue());
                        result.add(map);
@@ -403,6 +404,7 @@ public class StatisticsAlarmController extends BaseController {
                    tableDataInfo.getRows().forEach(t1 -> {
                        Map<String,Object> map = new HashMap<>();
                        map.put("monTime",((TDataGasoutMonthStatistics)t1).getMonitorTime());
+                       map.put("standardValue",t.getStandardValue());
                        map.put("avgValue",((TDataGasoutMonthStatistics)t1).getNoAvgValue());
                        map.put("zsavgValue",((TDataGasoutMonthStatistics)t1).getNoZsavgValue());
                        result.add(map);
@@ -411,6 +413,7 @@ public class StatisticsAlarmController extends BaseController {
                    tableDataInfo.getRows().forEach(t1 -> {
                        Map<String,Object> map = new HashMap<>();
                        map.put("monTime",((TDataGasoutMonthStatistics)t1).getMonitorTime());
+                       map.put("standardValue",t.getStandardValue());
                        map.put("avgValue",((TDataGasoutMonthStatistics)t1).getYcAvgValue());
                        map.put("zsavgValue",((TDataGasoutMonthStatistics)t1).getYcZsavgValue());
                        result.add(map);
