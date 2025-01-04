@@ -67,11 +67,22 @@ public class VOutPutInfo extends BaseEntity {
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private String monitoringPointType;
 
+    //是否关注
+    private boolean attention;
+
     /**
      * $column.columnComment
      */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private String pollutantName;
+
+    public boolean isAttention() {
+        return attention;
+    }
+
+    public void setAttention(boolean attention) {
+        this.attention = attention;
+    }
 
     public Long getId() {
         return id;

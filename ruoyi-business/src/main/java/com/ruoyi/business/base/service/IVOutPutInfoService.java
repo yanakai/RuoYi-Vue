@@ -1,6 +1,7 @@
 package com.ruoyi.business.base.service;
 
 import com.ruoyi.business.base.domain.VOutPutInfo;
+import com.ruoyi.common.core.domain.model.LoginUser;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public interface IVOutPutInfoService {
      * @param vOutPutInfo 污染排口信息
      * @return 污染排口信息集合
      */
-    List<VOutPutInfo> selectVOutPutInfoList(VOutPutInfo vOutPutInfo);
+    List<VOutPutInfo> selectVOutPutInfoList(VOutPutInfo vOutPutInfo , LoginUser loginUser);
 
     /**
      * 新增污染排口信息

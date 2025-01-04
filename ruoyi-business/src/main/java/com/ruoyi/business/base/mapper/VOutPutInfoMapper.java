@@ -3,6 +3,7 @@ package com.ruoyi.business.base.mapper;
 import com.ruoyi.business.base.domain.VOutPutInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 污染排口信息Mapper接口
@@ -58,4 +59,6 @@ public interface VOutPutInfoMapper {
      * @return 结果
      */
     int deleteVOutPutInfoByIds(Long[] ids);
+
+    int selectTBasUserPutInfoList(Map<String, Object> map);
 }

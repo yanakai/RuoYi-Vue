@@ -54,7 +54,7 @@ public class TBasOutPutInfoController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(VOutPutInfo vOutPutInfo) {
         startPage();
-        List<VOutPutInfo> list = vOutPutInfoService.selectVOutPutInfoList(vOutPutInfo);
+        List<VOutPutInfo> list = vOutPutInfoService.selectVOutPutInfoList(vOutPutInfo, getLoginUser());
         return getDataTable(list);
     }
 
@@ -66,7 +66,7 @@ public class TBasOutPutInfoController extends BaseController {
     @Log(title = "企业档案--污染排放口信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, VOutPutInfo vOutPutInfo) {
-        List<VOutPutInfo> list = vOutPutInfoService.selectVOutPutInfoList(vOutPutInfo);
+        List<VOutPutInfo> list = vOutPutInfoService.selectVOutPutInfoList(vOutPutInfo,getLoginUser());
         ExcelUtil<VOutPutInfo> util = new ExcelUtil<>(VOutPutInfo.class);
         util.exportExcel(response, list, "企业档案--污染排放口信息");
     }

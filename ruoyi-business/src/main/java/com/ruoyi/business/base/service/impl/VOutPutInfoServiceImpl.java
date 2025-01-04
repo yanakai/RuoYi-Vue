@@ -4,11 +4,14 @@ import com.ruoyi.business.base.domain.VOutPutInfo;
 import com.ruoyi.business.base.mapper.VOutPutInfoMapper;
 import com.ruoyi.business.base.service.IVOutPutInfoService;
 import com.ruoyi.common.annotation.DataEntScope;
+import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 污染排口信息Service业务层处理
@@ -40,8 +43,19 @@ public class VOutPutInfoServiceImpl implements IVOutPutInfoService {
      */
     @Override
     @DataEntScope
-    public List<VOutPutInfo> selectVOutPutInfoList(VOutPutInfo vOutPutInfo) {
-        return vOutPutInfoMapper.selectVOutPutInfoList(vOutPutInfo);
+    public List<VOutPutInfo> selectVOutPutInfoList(VOutPutInfo vOutPutInfo, LoginUser loginUser) {
+        List<VOutPutInfo> vOutPutInfos = vOutPutInfoMapper.selectVOutPutInfoList(vOutPutInfo);
+        vOutPutInfos.forEach(vOutPutInfo1 -> {
+            Map<String, Object> map =  new HashMap<>();
+            map.put("userId", loginUser.getUser().getUserId());
+            map.put("entCode", vOutPutInfo1.getEntCode());
+            map.put("monitoringPointType", vOutPutInfo1.getMonitoringPointType());
+            map.put("outPutCode", vOutPutInfo1.getOutPutCode());
+            int count = vOutPutInfoMapper.selectTBasUserPutInfoList(map);
+            vOutPutInfo1.setAttention(count > 0);
+        });
+        return vOutPutInfos;
+//        return vOutPutInfoMapper.selectVOutPutInfoList(vOutPutInfo);
     }
 
     /**
