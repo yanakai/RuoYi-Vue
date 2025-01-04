@@ -1,9 +1,10 @@
 package com.ruoyi.web.controller.system;
 
-import cn.hutool.core.util.ObjectUtil;
-import com.ruoyi.business.base.domain.TBasEnterprise;
-import com.ruoyi.business.base.dto.TBasEnterpriseBaseInfoDto;
+import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.util.ObjUtil;
+import cn.hutool.core.util.StrUtil;
 import com.ruoyi.business.base.service.ITBasEnterpriseService;
+import com.ruoyi.system.domain.TBasUserPutInfo;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -16,10 +17,7 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.system.service.ISysDeptService;
-import com.ruoyi.system.service.ISysPostService;
-import com.ruoyi.system.service.ISysRoleService;
-import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.system.service.*;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +28,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -255,5 +255,78 @@ public class SysUserController extends BaseController {
     @GetMapping("/deptTree")
     public AjaxResult deptTree(SysDept dept) {
         return success(deptService.selectDeptTreeList(dept));
+    }
+
+    @Resource
+    private ITBasUserPutInfoService tBasUserPutInfoService;
+
+    /**
+     * 用户关注排口
+     */
+    @Log(title = "用户关注", businessType = BusinessType.GRANT)
+    @PostMapping("/authOutPut")
+    public AjaxResult insertAuthPut(String monitorPointType,int outPutId) {
+        LoginUser loginUser = getLoginUser();
+        TBasUserPutInfo tBasUserPutInfo = new TBasUserPutInfo();
+        tBasUserPutInfo.setUserId(loginUser.getUser().getUserId());
+        List<TBasUserPutInfo> tBasUserPutInfos = tBasUserPutInfoService.selectTBasUserPutInfoList(tBasUserPutInfo);
+        if(tBasUserPutInfos.size() >= 10){
+            return error("最多关注10个排口");
+        }
+
+        tBasUserPutInfo.setLoginName(loginUser.getUsername());
+        tBasUserPutInfo.setMonitorPointType(String.valueOf(monitorPointType));
+        tBasUserPutInfo.setOutPutId(outPutId);
+
+        //删除之前关联的排口
+        List<TBasUserPutInfo> l = tBasUserPutInfoService.selectTBasUserPutInfoList(tBasUserPutInfo);
+        if(ObjUtil.isNotEmpty(l)){
+            tBasUserPutInfoService.deleteTBasUserPutInfoById(l.get(0).getId());
+        }
+
+        tBasUserPutInfo.setCreateTime(new Date());
+        if(StrUtil.equals("1",monitorPointType)){
+            //废水
+            List<Map<String, Object>> list = tBasUserPutInfoService.selectTBasWaterPutInfo((long) outPutId);
+            if (ObjUtil.isNotEmpty(list)) {
+                tBasUserPutInfo.setEntCode((String) list.get(0).get("ent_code"));
+                tBasUserPutInfo.setEntName((String) list.get(0).get("ent_name"));
+                tBasUserPutInfo.setOutPutCode((String) list.get(0).get("out_put_code"));
+                tBasUserPutInfo.setOutPutName((String) list.get(0).get("out_put_name"));
+            }else {
+                return error("排口信息不存在");
+            }
+        }else if(StrUtil.equals("2",monitorPointType)){
+            //废气
+            List<Map<String, Object>> list = tBasUserPutInfoService.selectTBasGasoutPutInfo((long) outPutId);
+            if (ObjUtil.isNotEmpty(list)) {
+                tBasUserPutInfo.setEntCode((String) list.get(0).get("ent_code"));
+                tBasUserPutInfo.setEntName((String) list.get(0).get("ent_name"));
+                tBasUserPutInfo.setOutPutCode((String) list.get(0).get("out_put_code"));
+                tBasUserPutInfo.setOutPutName((String) list.get(0).get("out_put_name"));
+            }else {
+                return error("排口信息不存在");
+            }
+        }
+        tBasUserPutInfoService.insertTBasUserPutInfo(tBasUserPutInfo);
+        return success();
+    }
+
+    @Log(title = "用户取消关注", businessType = BusinessType.GRANT)
+    @DeleteMapping("/delAuthOutPut")
+    public AjaxResult deleteAuthPut(String monitorPointType,int outPutId) {
+        LoginUser loginUser = getLoginUser();
+        TBasUserPutInfo tBasUserPutInfo = new TBasUserPutInfo();
+        tBasUserPutInfo.setUserId(loginUser.getUser().getUserId());
+        tBasUserPutInfo.setLoginName(loginUser.getUsername());
+        tBasUserPutInfo.setMonitorPointType(String.valueOf(monitorPointType));
+        tBasUserPutInfo.setOutPutId(outPutId);
+        List<TBasUserPutInfo> list = tBasUserPutInfoService.selectTBasUserPutInfoList(tBasUserPutInfo);
+        if(ObjUtil.isEmpty(list)){
+            return error("未关注该排口");
+        }else{
+            tBasUserPutInfoService.deleteTBasUserPutInfoById(list.get(0).getId());
+        }
+        return success();
     }
 }
