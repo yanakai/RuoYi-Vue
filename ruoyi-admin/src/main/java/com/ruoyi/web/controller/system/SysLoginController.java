@@ -35,7 +35,7 @@ public class SysLoginController {
 
     @GetMapping("/version")
     public AjaxResult getVersion() {
-        return AjaxResult.success("hello world,version:1.0.0.20241129");
+        return AjaxResult.success("hello world,version:1.0.0.2025011101");
     }
 
 

@@ -2,6 +2,8 @@ package com.ruoyi.business.statisticsAlarm.service;
 
 import com.ruoyi.business.statisticsAlarm.domain.TDataGasoutControlHour;
 import com.ruoyi.business.statisticsAlarm.dto.OutControlHourDto;
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.model.LoginUser;
 
 import java.util.List;
 
@@ -26,7 +28,7 @@ public interface ITDataGasoutControlHourService {
      * @param tDataGasoutControlHour 废气排口--小时剩余排放平均值
      * @return 废气排口--小时剩余排放平均值集合
      */
-    List<TDataGasoutControlHour> selectTDataGasoutControlHourList(OutControlHourDto outControlHourDto);
+    List<TDataGasoutControlHour> selectTDataGasoutControlHourList(OutControlHourDto outControlHourDto, LoginUser user);
 
     /**
      * 新增废气排口--小时剩余排放平均值

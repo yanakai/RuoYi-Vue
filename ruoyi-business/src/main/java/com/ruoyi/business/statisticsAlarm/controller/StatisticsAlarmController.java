@@ -264,7 +264,7 @@ public class StatisticsAlarmController extends BaseController {
     public R<List<HourlyWarningDto>> indexHourlyWarning(OutControlHourDto outControlHourDto) {
         List<HourlyWarningDto> list = new ArrayList<>();
         outControlHourDto.setOutPutEnum(OutPutEnum.GASOUT);
-        List<TDataGasoutControlHour> gasoutList = tDataGasoutControlHourService.selectTDataGasoutControlHourList(outControlHourDto);
+        List<TDataGasoutControlHour> gasoutList = tDataGasoutControlHourService.selectTDataGasoutControlHourList(outControlHourDto,getLoginUser());
 
         //对gasoutList进行聚合
         Map<String,List<TDataGasoutControlHour>> map = gasoutList.stream().collect(
@@ -291,7 +291,7 @@ public class StatisticsAlarmController extends BaseController {
         ).collect(Collectors.toList());
 
         outControlHourDto.setOutPutEnum(OutPutEnum.WATEROUT);
-        List<TDataWateroutControlHour> waterList = tDataWateroutControlHourService.selectTDataWateroutControlHourList(outControlHourDto);
+        List<TDataWateroutControlHour> waterList = tDataWateroutControlHourService.selectTDataWateroutControlHourList(outControlHourDto,getLoginUser());
         //对waterList进行聚合
         Map<String,List<TDataWateroutControlHour>> waterMap = waterList.stream().collect(
                 Collectors.groupingBy(tDataWateroutControlHour -> tDataWateroutControlHour.getEntCode()+"_"+tDataWateroutControlHour.getOutPutCode()+"_"+tDataWateroutControlHour.getOutPutName()));
@@ -328,7 +328,7 @@ public class StatisticsAlarmController extends BaseController {
         startPage();
         List<HourlyWarningDto> list = new ArrayList<>();
         outControlHourDto.setOutPutEnum(OutPutEnum.GASOUT);
-        List<TDataGasoutControlHour> gasoutList = tDataGasoutControlHourService.selectTDataGasoutControlHourList(outControlHourDto);
+        List<TDataGasoutControlHour> gasoutList = tDataGasoutControlHourService.selectTDataGasoutControlHourList(outControlHourDto,getLoginUser());
 
         //对gasoutList进行聚合
         Map<String,List<TDataGasoutControlHour>> map = gasoutList.stream().collect(
@@ -356,7 +356,7 @@ public class StatisticsAlarmController extends BaseController {
         ).collect(Collectors.toList());
 
         outControlHourDto.setOutPutEnum(OutPutEnum.WATEROUT);
-        List<TDataWateroutControlHour> waterList = tDataWateroutControlHourService.selectTDataWateroutControlHourList(outControlHourDto);
+        List<TDataWateroutControlHour> waterList = tDataWateroutControlHourService.selectTDataWateroutControlHourList(outControlHourDto,getLoginUser());
         //对waterList进行聚合
         Map<String,List<TDataWateroutControlHour>> waterMap = waterList.stream().collect(
                 Collectors.groupingBy(tDataWateroutControlHour -> tDataWateroutControlHour.getEntCode()+"_"+tDataWateroutControlHour.getOutPutCode()+"_"+tDataWateroutControlHour.getOutPutName()));
@@ -443,11 +443,11 @@ public class StatisticsAlarmController extends BaseController {
         if(ObjUtil.isNotNull(outControlHourDto) && ObjUtil.isNotNull(outControlHourDto.getOutPutEnum())){
             if (outControlHourDto.getOutPutEnum().name().equals("GASOUT")) {
                 //废气排口
-                List<TDataGasoutControlHour> list = tDataGasoutControlHourService.selectTDataGasoutControlHourList(outControlHourDto);
+                List<TDataGasoutControlHour> list = tDataGasoutControlHourService.selectTDataGasoutControlHourList(outControlHourDto,getLoginUser());
                 return getDataTable(list);
             } else if (outControlHourDto.getOutPutEnum().name().equals("WATEROUT")) {
                 //废水排口
-                List<TDataWateroutControlHour> list = tDataWateroutControlHourService.selectTDataWateroutControlHourList(outControlHourDto);
+                List<TDataWateroutControlHour> list = tDataWateroutControlHourService.selectTDataWateroutControlHourList(outControlHourDto,getLoginUser());
                 return getDataTable(list);
             }
         }
@@ -465,12 +465,12 @@ public class StatisticsAlarmController extends BaseController {
         if(ObjUtil.isNotNull(outControlHourDto) && ObjUtil.isNotNull(outControlHourDto.getOutPutEnum())){
             if (outControlHourDto.getOutPutEnum().name().equals("GASOUT")) {
                 //废气排口
-                List<TDataGasoutControlHour> list = tDataGasoutControlHourService.selectTDataGasoutControlHourList(outControlHourDto);
+                List<TDataGasoutControlHour> list = tDataGasoutControlHourService.selectTDataGasoutControlHourList(outControlHourDto,getLoginUser());
                 ExcelUtil<TDataGasoutControlHour> util = new ExcelUtil<>(TDataGasoutControlHour.class);
                 util.exportExcel(response, list, "小时数据预警导出");
             } else if (outControlHourDto.getOutPutEnum().name().equals("WATEROUT")) {
                 //废水排口
-                List<TDataWateroutControlHour> list = tDataWateroutControlHourService.selectTDataWateroutControlHourList(outControlHourDto);
+                List<TDataWateroutControlHour> list = tDataWateroutControlHourService.selectTDataWateroutControlHourList(outControlHourDto,getLoginUser());
                 ExcelUtil<TDataWateroutControlHour> util = new ExcelUtil<>(TDataWateroutControlHour.class);
                 util.exportExcel(response, list, "小时数据预警导出");
             }

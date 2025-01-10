@@ -1,14 +1,19 @@
 package com.ruoyi.business.statisticsAlarm.service.impl;
 
+import cn.hutool.core.util.ObjUtil;
 import com.ruoyi.business.statisticsAlarm.domain.TDataWateroutControlHour;
 import com.ruoyi.business.statisticsAlarm.dto.OutControlHourDto;
 import com.ruoyi.business.statisticsAlarm.mapper.TDataWateroutControlHourMapper;
 import com.ruoyi.business.statisticsAlarm.service.ITDataWateroutControlHourService;
 import com.ruoyi.common.annotation.DataEntScope;
+import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 废水排口--小时剩余排放平均值Service业务层处理
@@ -40,7 +45,19 @@ public class TDataWateroutControlHourServiceImpl implements ITDataWateroutContro
      */
     @Override
     @DataEntScope
-    public List<TDataWateroutControlHour> selectTDataWateroutControlHourList(OutControlHourDto outControlHourDto) {
+    public List<TDataWateroutControlHour> selectTDataWateroutControlHourList(OutControlHourDto outControlHourDto, LoginUser user) {
+        StringBuilder dataScopSqlString = new StringBuilder();
+        String entCode = user.getUser().getEntCode();
+        if(StringUtils.isNotEmpty(entCode)){
+            dataScopSqlString.append(StringUtils.format(" and  ent_code = '{}' ", entCode));
+        }
+        if(ObjUtil.isNotEmpty(outControlHourDto.getParams())){
+            outControlHourDto.getParams().put("dataEntScope", " AND (" + dataScopSqlString.substring(5) + ")");
+        }else{
+            Map<String,Object> params = new HashMap<>();
+            params.put("dataEntScope", " AND (" + dataScopSqlString.substring(5) + ")");
+            outControlHourDto.setParams(params);
+        }
         return tDataWateroutControlHourMapper.selectTDataWateroutControlHourList(outControlHourDto);
     }
 

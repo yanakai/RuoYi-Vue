@@ -2,6 +2,7 @@ package com.ruoyi.business.statisticsAlarm.service;
 
 import com.ruoyi.business.statisticsAlarm.domain.TDataWateroutControlHour;
 import com.ruoyi.business.statisticsAlarm.dto.OutControlHourDto;
+import com.ruoyi.common.core.domain.model.LoginUser;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public interface ITDataWateroutControlHourService {
      * @param outControlHourDto 废水排口--小时剩余排放平均值
      * @return 废水排口--小时剩余排放平均值集合
      */
-    List<TDataWateroutControlHour> selectTDataWateroutControlHourList(OutControlHourDto outControlHourDto);
+    List<TDataWateroutControlHour> selectTDataWateroutControlHourList(OutControlHourDto outControlHourDto, LoginUser loginUser);
 
     /**
      * 新增废水排口--小时剩余排放平均值
