@@ -56,8 +56,11 @@ public class TDataGasoutControlHourServiceImpl implements ITDataGasoutControlHou
             outControlHourDto.getParams().put("dataEntScope", " AND (" + dataScopSqlString.substring(5) + ")");
         }else{
             Map<String,Object> params = new HashMap<>();
-            params.put("dataEntScope", " AND (" + dataScopSqlString.substring(5) + ")");
-            outControlHourDto.setParams(params);
+            if(!user.getUser().isAdmin() && StringUtils.isNotEmpty(entCode)){
+                params.put("dataEntScope", " AND (" + StringUtils.format(" ent_code = '{}' ", entCode) + ")");
+                outControlHourDto.setParams(params);
+            }
+
         }
         return tDataGasoutControlHourMapper.selectTDataGasoutControlHourList(outControlHourDto);
     }
