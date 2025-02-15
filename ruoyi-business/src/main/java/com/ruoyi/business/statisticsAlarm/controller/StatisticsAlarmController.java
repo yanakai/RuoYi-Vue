@@ -25,9 +25,12 @@ import com.ruoyi.business.statisticsAlarm.service.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.R;
+import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.system.domain.TBasUserPutInfo;
+import com.ruoyi.system.service.ITBasUserPutInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.Data;
@@ -258,13 +261,33 @@ public class StatisticsAlarmController extends BaseController {
         util.exportExcel(response, new ArrayList<>(), "传输有效率预警导出");
     }
 
+    @Resource
+    private ITBasUserPutInfoService tBasUserPutInfoService;
     //小时预警
     @ApiOperation("首页统计排口数据")
     @GetMapping("/index/hourlyWarning")
     public R<List<HourlyWarningDto>> indexHourlyWarning(OutControlHourDto outControlHourDto) {
+        LoginUser loginUser = getLoginUser();
+        TBasUserPutInfo tBasUserPutInfo = new TBasUserPutInfo();
+        tBasUserPutInfo.setUserId(loginUser.getUser().getUserId());
+        List<TBasUserPutInfo> tBasUserPutInfos = tBasUserPutInfoService.selectTBasUserPutInfoList(tBasUserPutInfo);
+        List<String> gasoutOutPutCodes = getOutPutCodes("2", tBasUserPutInfos);
+        List<String> waterOutPutCodes = getOutPutCodes("1", tBasUserPutInfos);
+
+
+
+
         List<HourlyWarningDto> list = new ArrayList<>();
         outControlHourDto.setOutPutEnum(OutPutEnum.GASOUT);
         List<TDataGasoutControlHour> gasoutList = tDataGasoutControlHourService.selectTDataGasoutControlHourList(outControlHourDto,getLoginUser());
+        if(gasoutOutPutCodes.size() == 0){
+           // gasoutList 进行处理，如果不包含在gasoutOutPutCodes中，删除
+            gasoutList = gasoutList.stream().filter(t -> gasoutOutPutCodes.contains(t.getOutPutCode())).collect(Collectors.toList());
+        }else {
+            // gasoutList 取5条
+            gasoutList = gasoutList.stream().limit(5).collect(Collectors.toList());
+        }
+
 
         //对gasoutList进行聚合
         Map<String,List<TDataGasoutControlHour>> map = gasoutList.stream().collect(
@@ -292,6 +315,16 @@ public class StatisticsAlarmController extends BaseController {
 
         outControlHourDto.setOutPutEnum(OutPutEnum.WATEROUT);
         List<TDataWateroutControlHour> waterList = tDataWateroutControlHourService.selectTDataWateroutControlHourList(outControlHourDto,getLoginUser());
+        if (waterOutPutCodes.size() == 0){
+            // waterList 进行处理，如果不包含在waterOutPutCodes中，删除
+            waterList = waterList.stream().filter(t -> waterOutPutCodes.contains(t.getOutPutCode())).collect(Collectors.toList());
+        }else {
+            // waterList 取5条
+            waterList = waterList.stream().limit(5).collect(Collectors.toList());
+        }
+
+
+
         //对waterList进行聚合
         Map<String,List<TDataWateroutControlHour>> waterMap = waterList.stream().collect(
                 Collectors.groupingBy(tDataWateroutControlHour -> tDataWateroutControlHour.getEntCode()+"_"+tDataWateroutControlHour.getOutPutCode()+"_"+tDataWateroutControlHour.getOutPutName()));
@@ -318,6 +351,12 @@ public class StatisticsAlarmController extends BaseController {
         list.addAll(gasoutControlHourList);
         list.addAll(waterControlHourList);
         return R.ok(list);
+    }
+
+    private List<String> getOutPutCodes(String monitorPointType, List<TBasUserPutInfo> tBasUserPutInfos){
+        List<String> outPutCodes = new ArrayList<>();
+        outPutCodes = tBasUserPutInfos.stream().filter(t -> StrUtil.equals(t.getMonitorPointType(),monitorPointType)).map(TBasUserPutInfo::getOutPutCode).collect(Collectors.toList());
+        return outPutCodes;
     }
 
     //TODO  分页优化
