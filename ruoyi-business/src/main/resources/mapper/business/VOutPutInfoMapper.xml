@@ -39,6 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 ${params.dataEntScope}
             </if>
         </where>
+        ORDER BY ent_code,ent_name,out_put_code,out_put_name
     </select>
 
     <select id="selectTBasUserPutInfoList" parameterType="map" resultType="int">
