@@ -156,6 +156,23 @@ public class SysMenuServiceImpl implements ISysMenuService {
                     list = menuMapper.selectVOutPutInfoList(vOutPutInfo);
                 }
                 addListMenu(menu,addList, list);
+            } else if (StringUtils.equals(menu.getPath(), "gasoutPutUnorganizedYc")) {
+                //扬尘在线监测
+                VOutPutInfoMenu vOutPutInfo = getVOutPutInfoMenu("3",isAdmin,loginUser);
+                List<VOutPutInfoMenu> list = new ArrayList<>();
+                if(isAdmin || StringUtils.isNotNull(vOutPutInfo.getEntCode())){
+                    list = menuMapper.selectVOutPutInfoList(vOutPutInfo);
+                }
+                addListMenu(menu,addList, list);
+
+            } else if (StringUtils.equals(menu.getPath(), "gasoutPutUnorganizedVOC")) {
+                //voc在线监测
+                VOutPutInfoMenu vOutPutInfo = getVOutPutInfoMenu("4",isAdmin,loginUser);
+                List<VOutPutInfoMenu> list = new ArrayList<>();
+                if(isAdmin || StringUtils.isNotNull(vOutPutInfo.getEntCode())){
+                    list = menuMapper.selectVOutPutInfoList(vOutPutInfo);
+                }
+                addListMenu(menu,addList, list);
             }
         }
         menus.addAll(addList);
