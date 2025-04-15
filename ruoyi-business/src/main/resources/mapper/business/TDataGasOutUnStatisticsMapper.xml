@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.statistics.mapper.TDataGasOutUnDayStatisticsMapper">
+
+    <resultMap type="com.ruoyi.business.statistics.dto.TDataGasOutUnStatistics" id="tDataGasOutUnStatisticsResult">
+        <result property="monitorTime" column="monitor_time2"/>
+        <result property="tsp" column="tsp"/>
+        <result property="speed" column="speed"/>
+        <result property="direction" column="direction"/>
+        <result property="temperature" column="temperature"/>
+        <result property="humidity" column="humidity"/>
+        <result property="pressure" column="pressure"/>
+    </resultMap>
+
+    <!-- a34001	TSP；a01007	风速;a01008	风向；a01001	温度；a01002	湿度；a01006	气压 -->
+    <select id="selectTDataGasOutUnStatisticsList"
+            parameterType="com.ruoyi.business.onlineMonitoring.dto.GasOutUnDTO"
+            resultMap="tDataGasOutUnStatisticsResult">
+        SELECT
+            SUM(IF(pollutant_code='a34001',avg_value,0)) as tsp,
+            SUM(IF(pollutant_code='a01007',avg_value,0)) as speed,
+            SUM(IF(pollutant_code='a01008',avg_value,0)) as direction,
+            SUM(IF(pollutant_code='a01001',avg_value,0)) as temperature,
+            SUM(IF(pollutant_code='a01002',avg_value,0)) as humidity,
+            SUM(IF(pollutant_code='a01006',avg_value,0)) as pressure,
+            <if test="dataEnum.name == 'real'">
+                DATE_FORMAT(monitor_time, '%Y-%m-%d %H:%i:%s') as monitor_time2
+            </if>
+            <if test="dataEnum.name == 'minute'">
+                DATE_FORMAT(monitor_time, '%Y-%m-%d %H:%i') as monitor_time2
+            </if>
+            <if test="dataEnum.name == 'hour'">
+                DATE_FORMAT(monitor_time, '%Y-%m-%d %H') as monitor_time2
+            </if>
+            <if test="dataEnum.name == 'day'">
+                DATE_FORMAT(monitor_time, '%Y-%m-%d') as monitor_time2
+            </if>
+            <if test="dataEnum.name == 'month'">
+                DATE_FORMAT(monitor_time, '%Y-%m') as monitor_time2
+            </if>
+            <if test="dataEnum.name == 'year'">
+                DATE_FORMAT(monitor_time, '%Y') as monitor_time2
+            </if>
+        FROM ${params.tableName}
+        <where>
+            <choose>
+                <when test="params.beginTime != null and params.beginTime != ''">
+                    <choose>
+                        <when test="params.endTime != null and params.endTime != ''">
+                            AND monitor_time BETWEEN #{params.beginTime} AND #{params.endTime}
+                        </when>
+                        <otherwise>
+                            AND monitor_time &gt;= #{params.beginTime}
+                        </otherwise>
+                    </choose>
+                </when>
+                <otherwise>
+                    <if test="params.endTime != null and params.endTime != ''">
+                        AND monitor_time &lt;= #{params.endTime}
+                    </if>
+                </otherwise>
+            </choose>
+        </where>
+        GROUP BY monitor_time2
+        ORDER BY monitor_time2 DESC
+    </select>
+    <!-- 是不是可以直接代码上进行时间的分页，时间上无数据用横线代替
+     或者脚本里分页（这样不确定总页数，另加sql获取总条数），最好前端把maxid传下来，用自增id进行分页优化
+
+     -->
+    <select id="selectTDataGasOutUnStatisticsListTest"
+            parameterType="com.ruoyi.business.onlineMonitoring.dto.GasOutUnDTO"
+            resultMap="tDataGasOutUnStatisticsResult">
+        SELECT
+        pollutant_code,
+        <if test="dataEnum.name == 'real'">
+            DATE_FORMAT(monitor_time, '%Y-%m-%d %H:%i:%s') as monitor_time2
+        </if>
+        <if test="dataEnum.name == 'minute'">
+            DATE_FORMAT(monitor_time, '%Y-%m-%d %H:%i') as monitor_time2
+        </if>
+        <if test="dataEnum.name == 'hour'">
+            DATE_FORMAT(monitor_time, '%Y-%m-%d %H') as monitor_time2
+        </if>
+        <if test="dataEnum.name == 'day'">
+            DATE_FORMAT(monitor_time, '%Y-%m-%d') as monitor_time2
+        </if>
+        <if test="dataEnum.name == 'month'">
+            DATE_FORMAT(monitor_time, '%Y-%m') as monitor_time2
+        </if>
+        <if test="dataEnum.name == 'year'">
+            DATE_FORMAT(monitor_time, '%Y') as monitor_time2
+        </if>
+        SUM(IFNULL(avg_value,0)) as avg_value,
+        FROM ${params.tableName}
+        WHERE monitor_time BETWEEN #{params.beginTime} AND #{params.endTime}
+        GROUP BY pollutant_code, monitor_time2
+    </select>
+</mapper>
