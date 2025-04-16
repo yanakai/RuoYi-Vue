@@ -13,6 +13,12 @@
         <result property="humidity" column="humidity"/>
         <result property="pressure" column="pressure"/>
     </resultMap>
+    <resultMap type="com.ruoyi.business.statistics.dto.TDataGasOutUnPoll" id="tDataGasOutUnPollResult">
+        <result property="monitorTime" column="monitor_date"/>
+        <result property="totals" column="total_days"/>
+        <result property="pollutantCode" column="pollutant_code"/>
+        <result property="totalValue" column="total_value"/>
+    </resultMap>
 
     <!-- a34001	TSP；a01007	风速;a01008	风向；a01001	温度；a01002	湿度；a01006	气压 -->
     <select id="selectTDataGasOutUnStatisticsList"
@@ -91,7 +97,7 @@
      -->
     <select id="selectTDataGasOutUnStatisticsListTest"
             parameterType="com.ruoyi.business.onlineMonitoring.dto.GasOutUnDTO"
-            resultMap="tDataGasOutUnStatisticsResult">
+            resultMap="tDataGasOutUnPollResult">
         WITH date_ranking AS (
             SELECT
                 DATE_FORMAT(monitor_time, <include refid="dateCD"/>) AS monitor_date,
@@ -123,7 +129,7 @@
         paginated_dates AS (
             SELECT
                 monitor_date,
-                (select count(*) from date_ranking) AS totals
+                (select count(*) from date_ranking) AS total_days
             FROM
                 date_ranking
             WHERE
@@ -131,9 +137,8 @@
         )
         SELECT
             pd.monitor_date,
-            pd.total_days,
+            any_value(pd.total_days) as total_days,
             d.pollutant_code,
-            b.pollutant_name_cn,
             SUM(CAST(d.avg_value AS DECIMAL(10,2))) AS total_value
         FROM
             paginated_dates pd
@@ -142,8 +147,6 @@
         LEFT JOIN
             t_bas_gasoutput_pollutant_unorganized b ON d.pollutant_code = b.pollutant_code and b.mn_num = #{mnNum}
         GROUP BY
-            pd.monitor_date, pd.total_days, d.pollutant_code, b.pollutant_name_cn
-        ORDER BY
-            pd.monitor_date DESC, d.pollutant_code;
+            pd.monitor_date, d.pollutant_code
     </select>
 </mapper>

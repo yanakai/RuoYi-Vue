@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,14 +40,28 @@ public class GasOutUnServiceImpl implements IGasOutUnService {
         log.info("查询废气无组织排口--在线监测数据列表:{}", gasOutUnDTO);
         // 整理请求参数
         getQueryParam(gasOutUnDTO);
-        PageHelper.startPage(gasOutUnDTO.getCurrent(), gasOutUnDTO.getSize());
-        List<TDataGasOutUnStatistics> list = tDataGasOutUnDayStatisticsMapper.selectTDataGasOutUnStatisticsList(gasOutUnDTO);
+        List<TDataGasOutUnPoll> list = tDataGasOutUnDayStatisticsMapper.selectTDataGasOutUnStatisticsListTest(gasOutUnDTO);
+        Map<String, TDataGasOutUnPollResult> map = new HashMap<>();
+        List<TDataGasOutUnPollResult> rl = new ArrayList<>();
+        list.forEach(e -> {
+            TDataGasOutUnPollResult r;
+            if (map.containsKey(e.getMonitorTime())) {
+                r = map.get(e.getMonitorTime());
+            } else {
+                r = new TDataGasOutUnPollResult();
+                r.setList(new ArrayList<>());
+                r.setMonitorTime(e.getMonitorTime());
+                rl.add(r);
+                map.put(e.getMonitorTime(), r);
+            }
+            r.getList().add(e);
+        });
+        rl.sort((o1, o2) -> o2.getMonitorTime().compareTo(o1.getMonitorTime()));
         TableDataInfo rspData = new TableDataInfo();
         rspData.setCode(HttpStatus.SUCCESS);
         rspData.setMsg("查询成功");
-        rspData.setRows(list);
-        rspData.setTotal(new PageInfo<>(list).getTotal());
-        PageHelper.clearPage();
+        rspData.setRows(rl);
+        rspData.setTotal(list.size() > 0 ? list.get(0).getTotals() : 0);
         return rspData;
     }
 
@@ -74,6 +89,8 @@ public class GasOutUnServiceImpl implements IGasOutUnService {
         if (null == gasOutUnDTO.getSize() || gasOutUnDTO.getSize() < 1) {
             gasOutUnDTO.setSize(10);
         }
+        gasOutUnDTO.setStart((gasOutUnDTO.getCurrent() - 1) * gasOutUnDTO.getSize() + 1);
+        gasOutUnDTO.setEnd(gasOutUnDTO.getCurrent() * gasOutUnDTO.getSize());
         Map<String, Object> params = gasOutUnDTO.getParams();
         if (null == params) {
             params = new HashMap<>();

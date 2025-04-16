@@ -1,6 +1,7 @@
 package com.ruoyi.business.statistics.mapper;
 
 import com.ruoyi.business.onlineMonitoring.dto.GasOutUnDTO;
+import com.ruoyi.business.statistics.dto.TDataGasOutUnPoll;
 import com.ruoyi.business.statistics.dto.TDataGasOutUnStatistics;
 
 import java.util.List;
@@ -20,5 +21,6 @@ public interface TDataGasOutUnDayStatisticsMapper {
      * @return 废气排口--统计数据集合
      */
     List<TDataGasOutUnStatistics> selectTDataGasOutUnStatisticsList(GasOutUnDTO gasOutUnDTO);
+    List<TDataGasOutUnPoll> selectTDataGasOutUnStatisticsListTest(GasOutUnDTO gasOutUnDTO);
 
 }

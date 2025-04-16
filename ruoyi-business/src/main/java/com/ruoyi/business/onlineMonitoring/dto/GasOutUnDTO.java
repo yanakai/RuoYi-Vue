@@ -28,5 +28,6 @@ public class GasOutUnDTO extends BaseDto {
 
     private Integer size;
     private Integer current;
-
+    private Integer start;
+    private Integer end;
 }
