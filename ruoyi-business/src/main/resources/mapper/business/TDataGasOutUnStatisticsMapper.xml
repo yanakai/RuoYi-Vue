@@ -66,36 +66,84 @@
         GROUP BY monitor_time2
         ORDER BY monitor_time2 DESC
     </select>
-    <!-- 是不是可以直接代码上进行时间的分页，时间上无数据用横线代替
-     或者脚本里分页（这样不确定总页数，另加sql获取总条数），最好前端把maxid传下来，用自增id进行分页优化
-
+    <sql id="dateCD">
+        <if test="dataEnum.name == 'real'">
+            '%Y-%m-%d %H:%i:%s'
+        </if>
+        <if test="dataEnum.name == 'minute'">
+            '%Y-%m-%d %H:%i'
+        </if>
+        <if test="dataEnum.name == 'hour'">
+            '%Y-%m-%d %H'
+        </if>
+        <if test="dataEnum.name == 'day'">
+            '%Y-%m-%d'
+        </if>
+        <if test="dataEnum.name == 'month'">
+            '%Y-%m'
+        </if>
+        <if test="dataEnum.name == 'year'">
+            '%Y'
+        </if>
+    </sql>
+    <!-- 下边sql可以把总页数，分页数据都查出来，不需要额外的分页配置
+     查出数据后，需要代码里进行合并处理
      -->
     <select id="selectTDataGasOutUnStatisticsListTest"
             parameterType="com.ruoyi.business.onlineMonitoring.dto.GasOutUnDTO"
             resultMap="tDataGasOutUnStatisticsResult">
+        WITH date_ranking AS (
+            SELECT
+                DATE_FORMAT(monitor_time, <include refid="dateCD"/>) AS monitor_date,
+                ROW_NUMBER() OVER(ORDER BY DATE_FORMAT(monitor_time, <include refid="dateCD"/>) DESC) AS date_rank
+            FROM
+                ${params.tableName}
+            <where>
+                <choose>
+                    <when test="params.beginTime != null and params.beginTime != ''">
+                        <choose>
+                            <when test="params.endTime != null and params.endTime != ''">
+                                AND monitor_time BETWEEN #{params.beginTime} AND #{params.endTime}
+                            </when>
+                            <otherwise>
+                                AND monitor_time &gt;= #{params.beginTime}
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <otherwise>
+                        <if test="params.endTime != null and params.endTime != ''">
+                            AND monitor_time &lt;= #{params.endTime}
+                        </if>
+                    </otherwise>
+                </choose>
+            </where>
+            GROUP BY
+                monitor_date
+        ),
+        paginated_dates AS (
+            SELECT
+                monitor_date,
+                (select count(*) from date_ranking) AS totals
+            FROM
+                date_ranking
+            WHERE
+                date_rank BETWEEN #{start} AND #{end}
+        )
         SELECT
-        pollutant_code,
-        <if test="dataEnum.name == 'real'">
-            DATE_FORMAT(monitor_time, '%Y-%m-%d %H:%i:%s') as monitor_time2
-        </if>
-        <if test="dataEnum.name == 'minute'">
-            DATE_FORMAT(monitor_time, '%Y-%m-%d %H:%i') as monitor_time2
-        </if>
-        <if test="dataEnum.name == 'hour'">
-            DATE_FORMAT(monitor_time, '%Y-%m-%d %H') as monitor_time2
-        </if>
-        <if test="dataEnum.name == 'day'">
-            DATE_FORMAT(monitor_time, '%Y-%m-%d') as monitor_time2
-        </if>
-        <if test="dataEnum.name == 'month'">
-            DATE_FORMAT(monitor_time, '%Y-%m') as monitor_time2
-        </if>
-        <if test="dataEnum.name == 'year'">
-            DATE_FORMAT(monitor_time, '%Y') as monitor_time2
-        </if>
-        SUM(IFNULL(avg_value,0)) as avg_value,
-        FROM ${params.tableName}
-        WHERE monitor_time BETWEEN #{params.beginTime} AND #{params.endTime}
-        GROUP BY pollutant_code, monitor_time2
+            pd.monitor_date,
+            pd.total_days,
+            d.pollutant_code,
+            b.pollutant_name_cn,
+            SUM(CAST(d.avg_value AS DECIMAL(10,2))) AS total_value
+        FROM
+            paginated_dates pd
+        JOIN
+            ${params.tableName} d ON DATE_FORMAT(d.monitor_time, <include refid="dateCD"/>) = pd.monitor_date
+        LEFT JOIN
+            t_bas_gasoutput_pollutant_unorganized b ON d.pollutant_code = b.pollutant_code and b.mn_num = #{mnNum}
+        GROUP BY
+            pd.monitor_date, pd.total_days, d.pollutant_code, b.pollutant_name_cn
+        ORDER BY
+            pd.monitor_date DESC, d.pollutant_code;
     </select>
 </mapper>
