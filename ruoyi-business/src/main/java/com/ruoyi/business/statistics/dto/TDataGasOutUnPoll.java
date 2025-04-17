@@ -1,6 +1,5 @@
 package com.ruoyi.business.statistics.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -24,12 +23,10 @@ public class TDataGasOutUnPoll {
     /**
      * 时间
      */
-    @JsonIgnore
     private String monitorTime;
 
     /**
      * 总条数
      */
-    @JsonIgnore
     private Long totals;
 }

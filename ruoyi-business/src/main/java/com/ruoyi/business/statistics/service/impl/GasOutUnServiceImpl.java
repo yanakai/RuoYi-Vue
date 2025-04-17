@@ -3,8 +3,6 @@ package com.ruoyi.business.statistics.service.impl;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.ruoyi.business.onlineMonitoring.dto.GasOutUnDTO;
 import com.ruoyi.business.statistics.dto.*;
 import com.ruoyi.business.statistics.mapper.TDataGasOutUnDayStatisticsMapper;
@@ -41,22 +39,21 @@ public class GasOutUnServiceImpl implements IGasOutUnService {
         // 整理请求参数
         getQueryParam(gasOutUnDTO);
         List<TDataGasOutUnPoll> list = tDataGasOutUnDayStatisticsMapper.selectTDataGasOutUnStatisticsListTest(gasOutUnDTO);
-        Map<String, TDataGasOutUnPollResult> map = new HashMap<>();
-        List<TDataGasOutUnPollResult> rl = new ArrayList<>();
+        Map<String, Map<String, Object>> map = new HashMap<>();
+        List<Map<String, Object>> rl = new ArrayList<>();
         list.forEach(e -> {
-            TDataGasOutUnPollResult r;
+            Map<String, Object> r;
             if (map.containsKey(e.getMonitorTime())) {
                 r = map.get(e.getMonitorTime());
             } else {
-                r = new TDataGasOutUnPollResult();
-                r.setList(new ArrayList<>());
-                r.setMonitorTime(e.getMonitorTime());
+                r = new HashMap<>();
+                r.put("monitorTime", e.getMonitorTime());
                 rl.add(r);
                 map.put(e.getMonitorTime(), r);
             }
-            r.getList().add(e);
+            r.put(e.getPollutantCode(), e.getTotalValue());
         });
-        rl.sort((o1, o2) -> o2.getMonitorTime().compareTo(o1.getMonitorTime()));
+        rl.sort((o1, o2) -> MapUtil.getStr(o2, "monitorTime").compareTo(MapUtil.getStr(o1, "monitorTime")));
         TableDataInfo rspData = new TableDataInfo();
         rspData.setCode(HttpStatus.SUCCESS);
         rspData.setMsg("查询成功");
