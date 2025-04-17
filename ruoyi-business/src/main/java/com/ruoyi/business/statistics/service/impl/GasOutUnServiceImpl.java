@@ -139,7 +139,7 @@ public class GasOutUnServiceImpl implements IGasOutUnService {
                     endTime = endTime + " 23:59:59";
                     break;
                 case "hour":
-                    endTime = beginTime + ":59:59";
+                    endTime = endTime + ":59:59";
                     break;
                 case "minute":
                     endTime = endTime + ":59";
