@@ -80,14 +80,16 @@ public class GasOutUnServiceImpl implements IGasOutUnService {
         if (null == tableName) {
             throw new RuntimeException("未知的查询条件");
         }
-        if (null == gasOutUnDTO.getCurrent() || gasOutUnDTO.getCurrent() < 1) {
-            gasOutUnDTO.setCurrent(1);
+        if (null == gasOutUnDTO.getPageNum() || gasOutUnDTO.getPageNum() < 1) {
+            gasOutUnDTO.setPageNum(1);
         }
-        if (null == gasOutUnDTO.getSize() || gasOutUnDTO.getSize() < 1) {
-            gasOutUnDTO.setSize(10);
+        if (null == gasOutUnDTO.getPageSize() || gasOutUnDTO.getPageSize() < 1) {
+            gasOutUnDTO.setPageSize(10);
         }
-        gasOutUnDTO.setStart((gasOutUnDTO.getCurrent() - 1) * gasOutUnDTO.getSize() + 1);
-        gasOutUnDTO.setEnd(gasOutUnDTO.getCurrent() * gasOutUnDTO.getSize());
+        gasOutUnDTO.setStart((gasOutUnDTO.getPageNum() - 1) * gasOutUnDTO.getPageSize() + 1);
+        gasOutUnDTO.setEnd(gasOutUnDTO.getPageNum() * gasOutUnDTO.getPageSize());
+        gasOutUnDTO.setPageNum(null);
+        gasOutUnDTO.setPageSize(null);
         Map<String, Object> params = gasOutUnDTO.getParams();
         if (null == params) {
             params = new HashMap<>();

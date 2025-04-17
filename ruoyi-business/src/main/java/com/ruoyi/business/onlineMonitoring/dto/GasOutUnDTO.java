@@ -26,8 +26,8 @@ public class GasOutUnDTO extends BaseDto {
 
     private String mnNum;
 
-    private Integer size;
-    private Integer current;
+    private Integer pageNum;
+    private Integer pageSize;
     private Integer start;
     private Integer end;
 }
