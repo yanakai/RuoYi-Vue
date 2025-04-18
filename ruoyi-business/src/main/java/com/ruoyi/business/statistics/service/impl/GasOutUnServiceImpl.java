@@ -9,6 +9,7 @@ import com.ruoyi.business.onlineMonitoring.dto.GasOutUnDTO;
 import com.ruoyi.business.statistics.dto.PollutantInfo;
 import com.ruoyi.business.statistics.mapper.TDataGasOutUnDayStatisticsMapper;
 import com.ruoyi.business.statistics.service.*;
+import com.ruoyi.business.statistics.util.GasOutUnExcelUtil;
 import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.page.TableDataInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -62,7 +63,7 @@ public class GasOutUnServiceImpl implements IGasOutUnService {
 
     @Override
     public void export(HttpServletResponse response, GasOutUnDTO gasOutUnDTO) {
-        log.info("查询废气排口--导出在线监测数据列表:{}", gasOutUnDTO);
+        log.info("查询废气无组织排口--导出在线监测数据列表:{}", gasOutUnDTO);
         // 整理请求参数
         getQueryParam(gasOutUnDTO);
         // 1. 先获取污染物列表code，然后依据code进行统计
@@ -74,7 +75,8 @@ public class GasOutUnServiceImpl implements IGasOutUnService {
             list = tDataGasOutUnDayStatisticsMapper.selectTDataGasOutUnStatisticsList(gasOutUnDTO);
         }
         // 生成excel文件
-
+        // 可以判断要导出英文还是中文版，已有对应的英文单位、名称字段
+        GasOutUnExcelUtil.exportGasOutUnFile(response, codes, list, "废气无组织排口--在线监测数据", "废气无组织排口在线监测数据");
     }
 
     private void getQueryParam(GasOutUnDTO gasOutUnDTO) {
