@@ -39,22 +39,22 @@
             resultType="java.util.Map">
         SELECT
             <if test="dataEnum.name == 'real'">
-                DATE_FORMAT(monitor_time, '%Y-%m-%d %H:%i:%s') as monitor_time2
+                DATE_FORMAT(monitor_time, '%Y-%m-%d %H:%i:%s') as monitorTime
             </if>
             <if test="dataEnum.name == 'minute'">
-                DATE_FORMAT(monitor_time, '%Y-%m-%d %H:%i') as monitor_time2
+                DATE_FORMAT(monitor_time, '%Y-%m-%d %H:%i') as monitorTime
             </if>
             <if test="dataEnum.name == 'hour'">
-                DATE_FORMAT(monitor_time, '%Y-%m-%d %H') as monitor_time2
+                DATE_FORMAT(monitor_time, '%Y-%m-%d %H') as monitorTime
             </if>
             <if test="dataEnum.name == 'day'">
-                DATE_FORMAT(monitor_time, '%Y-%m-%d') as monitor_time2
+                DATE_FORMAT(monitor_time, '%Y-%m-%d') as monitorTime
             </if>
             <if test="dataEnum.name == 'month'">
-                DATE_FORMAT(monitor_time, '%Y-%m') as monitor_time2
+                DATE_FORMAT(monitor_time, '%Y-%m') as monitorTime
             </if>
             <if test="dataEnum.name == 'year'">
-                DATE_FORMAT(monitor_time, '%Y') as monitor_time2
+                DATE_FORMAT(monitor_time, '%Y') as monitorTime
             </if>
             <foreach collection="codes" item="code">
                 , SUM(IF(pollutant_code=#{code}, avg_value, 0)) as ${code}
@@ -79,7 +79,7 @@
                 </otherwise>
             </choose>
         </where>
-        GROUP BY monitor_time2
-        ORDER BY monitor_time2 DESC
+        GROUP BY monitorTime
+        ORDER BY monitorTime DESC
     </select>
 </mapper>
