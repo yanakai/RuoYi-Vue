@@ -3,13 +3,14 @@ package com.ruoyi.business.statistics.service.impl;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.ruoyi.business.onlineMonitoring.dto.GasOutUnDTO;
-import com.ruoyi.business.statistics.dto.*;
+import com.ruoyi.business.statistics.dto.PollutantInfo;
 import com.ruoyi.business.statistics.mapper.TDataGasOutUnDayStatisticsMapper;
 import com.ruoyi.business.statistics.service.*;
 import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.page.TableDataInfo;
-import com.ruoyi.common.utils.poi.ExcelUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -38,27 +40,23 @@ public class GasOutUnServiceImpl implements IGasOutUnService {
         log.info("查询废气无组织排口--在线监测数据列表:{}", gasOutUnDTO);
         // 整理请求参数
         getQueryParam(gasOutUnDTO);
-        List<TDataGasOutUnPoll> list = tDataGasOutUnDayStatisticsMapper.selectTDataGasOutUnStatisticsListTest(gasOutUnDTO);
-        Map<String, Map<String, Object>> map = new HashMap<>();
-        List<Map<String, Object>> rl = new ArrayList<>();
-        list.forEach(e -> {
-            Map<String, Object> r;
-            if (map.containsKey(e.getMonitorTime())) {
-                r = map.get(e.getMonitorTime());
-            } else {
-                r = new HashMap<>();
-                r.put("monitorTime", e.getMonitorTime());
-                rl.add(r);
-                map.put(e.getMonitorTime(), r);
-            }
-            r.put(e.getPollutantCode(), e.getTotalValue());
-        });
-        rl.sort((o1, o2) -> MapUtil.getStr(o2, "monitorTime").compareTo(MapUtil.getStr(o1, "monitorTime")));
+        // 1. 先获取污染物列表code，然后依据code进行统计
+        List<PollutantInfo> codes = tDataGasOutUnDayStatisticsMapper.selectPollutantCodes(gasOutUnDTO.getEntCode(), gasOutUnDTO.getOutPutCode());
         TableDataInfo rspData = new TableDataInfo();
         rspData.setCode(HttpStatus.SUCCESS);
         rspData.setMsg("查询成功");
-        rspData.setRows(rl);
-        rspData.setTotal(list.size() > 0 ? list.get(0).getTotals() : 0);
+        // 2. 依据code进行统计
+        if (codes.size() > 0) {
+            gasOutUnDTO.setCodes(codes.stream().map(PollutantInfo::getPollutantCode).collect(Collectors.toList()));
+            PageHelper.startPage(gasOutUnDTO.getCurrent(), gasOutUnDTO.getSize());
+            List<Map<String, Object>> list = tDataGasOutUnDayStatisticsMapper.selectTDataGasOutUnStatisticsList(gasOutUnDTO);
+            rspData.setRows(list);
+            rspData.setTotal(new PageInfo<>(list).getTotal());
+            PageHelper.clearPage();
+        } else {
+            rspData.setRows(new ArrayList<>());
+            rspData.setTotal(0);
+        }
         return rspData;
     }
 
@@ -67,10 +65,16 @@ public class GasOutUnServiceImpl implements IGasOutUnService {
         log.info("查询废气排口--导出在线监测数据列表:{}", gasOutUnDTO);
         // 整理请求参数
         getQueryParam(gasOutUnDTO);
-        // 执行请求
-        List<TDataGasOutUnStatistics> list = tDataGasOutUnDayStatisticsMapper.selectTDataGasOutUnStatisticsList(gasOutUnDTO);
-        ExcelUtil<TDataGasOutUnStatistics> util = new ExcelUtil<>(TDataGasOutUnStatistics.class);
-        util.exportExcel(response, list, "废气排口在线监测导出");
+        // 1. 先获取污染物列表code，然后依据code进行统计
+        List<PollutantInfo> codes = tDataGasOutUnDayStatisticsMapper.selectPollutantCodes(gasOutUnDTO.getEntCode(), gasOutUnDTO.getOutPutCode());
+        // 2. 依据code进行统计
+        List<Map<String, Object>> list = null;
+        if (codes.size() > 0) {
+            gasOutUnDTO.setCodes(codes.stream().map(PollutantInfo::getPollutantCode).collect(Collectors.toList()));
+            list = tDataGasOutUnDayStatisticsMapper.selectTDataGasOutUnStatisticsList(gasOutUnDTO);
+        }
+        // 生成excel文件
+
     }
 
     private void getQueryParam(GasOutUnDTO gasOutUnDTO) {
@@ -80,14 +84,8 @@ public class GasOutUnServiceImpl implements IGasOutUnService {
         if (null == tableName) {
             throw new RuntimeException("未知的查询条件");
         }
-        if (null == gasOutUnDTO.getPageNum() || gasOutUnDTO.getPageNum() < 1) {
-            gasOutUnDTO.setPageNum(1);
-        }
-        if (null == gasOutUnDTO.getPageSize() || gasOutUnDTO.getPageSize() < 1) {
-            gasOutUnDTO.setPageSize(10);
-        }
-        gasOutUnDTO.setStart((gasOutUnDTO.getPageNum() - 1) * gasOutUnDTO.getPageSize() + 1);
-        gasOutUnDTO.setEnd(gasOutUnDTO.getPageNum() * gasOutUnDTO.getPageSize());
+        gasOutUnDTO.setCurrent(null == gasOutUnDTO.getPageNum() || gasOutUnDTO.getPageNum() < 1 ? 1 : gasOutUnDTO.getPageNum());
+        gasOutUnDTO.setSize(null == gasOutUnDTO.getPageSize() || gasOutUnDTO.getPageSize() < 1 ? 10 : gasOutUnDTO.getPageSize());
         gasOutUnDTO.setPageNum(null);
         gasOutUnDTO.setPageSize(null);
         Map<String, Object> params = gasOutUnDTO.getParams();

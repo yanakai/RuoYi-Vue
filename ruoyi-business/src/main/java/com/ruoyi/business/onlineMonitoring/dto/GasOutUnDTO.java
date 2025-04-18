@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 废气无组织排口
  */
@@ -28,6 +30,8 @@ public class GasOutUnDTO extends BaseDto {
 
     private Integer pageNum;
     private Integer pageSize;
-    private Integer start;
-    private Integer end;
+    private Integer current;
+    private Integer size;
+    /** 排口的污染物列表 */
+    private List<String> codes;
 }

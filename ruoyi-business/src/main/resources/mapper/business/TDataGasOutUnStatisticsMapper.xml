@@ -4,33 +4,40 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.business.statistics.mapper.TDataGasOutUnDayStatisticsMapper">
 
-    <resultMap type="com.ruoyi.business.statistics.dto.TDataGasOutUnStatistics" id="tDataGasOutUnStatisticsResult">
-        <result property="monitorTime" column="monitor_time2"/>
-        <result property="tsp" column="tsp"/>
-        <result property="speed" column="speed"/>
-        <result property="direction" column="direction"/>
-        <result property="temperature" column="temperature"/>
-        <result property="humidity" column="humidity"/>
-        <result property="pressure" column="pressure"/>
-    </resultMap>
-    <resultMap type="com.ruoyi.business.statistics.dto.TDataGasOutUnPoll" id="tDataGasOutUnPollResult">
-        <result property="monitorTime" column="monitor_date"/>
-        <result property="totals" column="total_days"/>
+    <resultMap type="com.ruoyi.business.statistics.dto.PollutantInfo" id="pollutantInfoResult">
         <result property="pollutantCode" column="pollutant_code"/>
-        <result property="totalValue" column="total_value"/>
+        <result property="pollutantNameCn" column="pollutant_name_cn"/>
+        <result property="pollutantUnitCn" column="pollutant_unit_cn"/>
+        <result property="pollutantNameEn" column="pollutant_name_en"/>
+        <result property="pollutantUnitEn" column="pollutant_unit_en"/>
     </resultMap>
 
-    <!-- a34001	TSP；a01007	风速;a01008	风向；a01001	温度；a01002	湿度；a01006	气压 -->
+    <!-- 获取排口的污染物列表 -->
+    <select id="selectPollutantCodes" resultMap="pollutantInfoResult">
+        SELECT
+            u.pollutant_code,
+            c.pollutant_name_cn,
+            c.pollutant_unit_cn,
+            c.pollutant_name_en,
+            c.pollutant_unit_en
+        FROM
+            t_bas_gasoutput_pollutant_unorganized u
+        LEFT JOIN
+            t_bas_pollutant_code c
+        ON
+            c.pollutant_code = u.pollutant_code
+        WHERE
+            ent_code = #{entCode} AND out_put_code = #{outPutCode}
+        ORDER BY
+            u.pollutant_sort
+        DESC
+    </select>
+
+    <!-- 获取污染物统计数据（方案有待优化） -->
     <select id="selectTDataGasOutUnStatisticsList"
             parameterType="com.ruoyi.business.onlineMonitoring.dto.GasOutUnDTO"
-            resultMap="tDataGasOutUnStatisticsResult">
+            resultType="java.util.Map">
         SELECT
-            SUM(IF(pollutant_code='a34001',avg_value,0)) as tsp,
-            SUM(IF(pollutant_code='a01007',avg_value,0)) as speed,
-            SUM(IF(pollutant_code='a01008',avg_value,0)) as direction,
-            SUM(IF(pollutant_code='a01001',avg_value,0)) as temperature,
-            SUM(IF(pollutant_code='a01002',avg_value,0)) as humidity,
-            SUM(IF(pollutant_code='a01006',avg_value,0)) as pressure,
             <if test="dataEnum.name == 'real'">
                 DATE_FORMAT(monitor_time, '%Y-%m-%d %H:%i:%s') as monitor_time2
             </if>
@@ -49,6 +56,9 @@
             <if test="dataEnum.name == 'year'">
                 DATE_FORMAT(monitor_time, '%Y') as monitor_time2
             </if>
+            <foreach collection="codes" item="code">
+                , SUM(IF(pollutant_code=#{code}, avg_value, 0)) as ${code}
+            </foreach>
         FROM ${params.tableName}
         <where>
             <choose>
@@ -71,119 +81,5 @@
         </where>
         GROUP BY monitor_time2
         ORDER BY monitor_time2 DESC
-    </select>
-    <sql id="dateCD">
-        <if test="dataEnum.name == 'real'">
-            '%Y-%m-%d %H:%i:%s'
-        </if>
-        <if test="dataEnum.name == 'minute'">
-            '%Y-%m-%d %H:%i'
-        </if>
-        <if test="dataEnum.name == 'hour'">
-            '%Y-%m-%d %H'
-        </if>
-        <if test="dataEnum.name == 'day'">
-            '%Y-%m-%d'
-        </if>
-        <if test="dataEnum.name == 'month'">
-            '%Y-%m'
-        </if>
-        <if test="dataEnum.name == 'year'">
-            '%Y'
-        </if>
-    </sql>
-    <!-- 下边sql可以把总页数，分页数据都查出来，不需要额外的分页配置
-     查出数据后，需要代码里进行合并处理
-     -->
-    <select id="selectTDataGasOutUnStatisticsListTest"
-            parameterType="com.ruoyi.business.onlineMonitoring.dto.GasOutUnDTO"
-            resultMap="tDataGasOutUnPollResult">
-        WITH date_ranking AS (
-            SELECT
-                DATE_FORMAT(monitor_time, <include refid="dateCD"/>) AS monitor_date,
-                ROW_NUMBER() OVER(ORDER BY DATE_FORMAT(monitor_time, <include refid="dateCD"/>) DESC) AS date_rank
-            FROM
-                ${params.tableName}
-            <where>
-                <choose>
-                    <when test="params.beginTime != null and params.beginTime != ''">
-                        <choose>
-                            <when test="params.endTime != null and params.endTime != ''">
-                                AND monitor_time BETWEEN #{params.beginTime} AND #{params.endTime}
-                            </when>
-                            <otherwise>
-                                AND monitor_time &gt;= #{params.beginTime}
-                            </otherwise>
-                        </choose>
-                    </when>
-                    <otherwise>
-                        <if test="params.endTime != null and params.endTime != ''">
-                            AND monitor_time &lt;= #{params.endTime}
-                        </if>
-                    </otherwise>
-                </choose>
-            </where>
-            GROUP BY
-                monitor_date
-        ),
-        paginated_dates AS (
-            SELECT
-                monitor_date,
-                (select count(*) from date_ranking) AS total_days
-            FROM
-                date_ranking
-            WHERE
-                date_rank BETWEEN #{start} AND #{end}
-        )
-        SELECT
-            pd.monitor_date,
-            any_value(pd.total_days) as total_days,
-            d.pollutant_code,
-            SUM(CAST(d.avg_value AS DECIMAL(10,2))) AS total_value
-        FROM
-            paginated_dates pd
-        JOIN
-            ${params.tableName} d ON DATE_FORMAT(d.monitor_time, <include refid="dateCD"/>) = pd.monitor_date
-        LEFT JOIN
-            t_bas_gasoutput_pollutant_unorganized b ON d.pollutant_code = b.pollutant_code and b.mn_num = #{mnNum}
-        GROUP BY
-            pd.monitor_date, d.pollutant_code
-    </select>
-    <!-- 导出时查询全部 -->
-    <select id="selectTDataGasOutUnStatisticsListForExport"
-            parameterType="com.ruoyi.business.onlineMonitoring.dto.GasOutUnDTO"
-            resultMap="tDataGasOutUnPollResult">
-        SELECT
-            DATE_FORMAT(d.monitor_time, <include refid="dateCD"/>) as monitor_date,
-            d.pollutant_code,
-            u.pollutant_sort,
-            u.pollutant_name_cn,
-            SUM(CAST(d.avg_value AS DECIMAL(10,2))) AS total_value
-        FROM
-            ${params.tableName} d
-        LEFT JOIN
-            t_bas_gasoutput_pollutant_unorganized u
-        ON
-            u.pollutant_code = d.pollutant_code and u.mn_num = #{mnNum}
-        <where>
-            <choose>
-                <when test="params.beginTime != null and params.beginTime != ''">
-                    <choose>
-                        <when test="params.endTime != null and params.endTime != ''">
-                            AND monitor_time BETWEEN #{params.beginTime} AND #{params.endTime}
-                        </when>
-                        <otherwise>
-                            AND monitor_time &gt;= #{params.beginTime}
-                        </otherwise>
-                    </choose>
-                </when>
-                <otherwise>
-                    <if test="params.endTime != null and params.endTime != ''">
-                        AND monitor_time &lt;= #{params.endTime}
-                    </if>
-                </otherwise>
-            </choose>
-        </where>
-        GROUP BY d.monitor_time, d.pollutant_code
     </select>
 </mapper>
