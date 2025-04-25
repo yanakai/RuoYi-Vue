@@ -8,6 +8,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import cn.hutool.core.util.XmlUtil;
 import com.ruoyi.business.workWeChat.util.WXBizMsgCrypt;
 import com.ruoyi.common.core.controller.BaseController;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,11 +32,15 @@ import java.util.logging.Logger;
 public class WorkWeChatController extends BaseController {
     //内容填写自己企业微信中配置的
     //自建应用中的开通api接口消息详情里的sToken
-    String sToken = "nq2hGi31at";
+    @Value("${freeApi.workWeChat.sToken:nq2hGi31at}")
+    private String sToken;
     //企业微信后台的企业微信id
-    String sCorpID = "ww1762f93cf724ed5d";
+    @Value("${freeApi.workWeChat.sCorpID:ww1762f93cf724ed5d}")
+    private String sCorpID;
     //自建应用的开通api接口消息详情里的sEncodingAESKey
-    String sEncodingAESKey = "2tqOuklybabXSnTyebq9JQoyYqg1fGMHrL4berNNE10";
+    @Value("${freeApi.workWeChat.sEncodingAESKey:2tqOuklybabXSnTyebq9JQoyYqg1fGMHrL4berNNE10}")
+    private String sEncodingAESKey;
+
     private Logger logger = Logger.getLogger(WorkWeChatController.class.getName());
 
 
