@@ -23,6 +23,7 @@
         <result property="linkManPhone" column="link_man_phone"/>
         <result property="linkManeMail" column="link_mane_mail"/>
         <result property="entIntroduction" column="ent_introduction"/>
+        <result property="weComMsg" column="we_com_msg"/>
         <result property="createUser" column="create_user"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
@@ -48,6 +49,7 @@
                link_man_phone,
                link_mane_mail,
                ent_introduction,
+               we_com_msg,
                create_user,
                create_time,
                update_time,
@@ -140,6 +142,7 @@
             <if test="linkManPhone != null">link_man_phone,</if>
             <if test="linkManeMail != null">link_mane_mail,</if>
             <if test="entIntroduction != null">ent_introduction,</if>
+            <if test="weComMsg != null">we_com_msg,</if>
             <if test="createUser != null">create_user,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
@@ -163,6 +166,7 @@
             <if test="linkManPhone != null">#{linkManPhone},</if>
             <if test="linkManeMail != null">#{linkManeMail},</if>
             <if test="entIntroduction != null">#{entIntroduction},</if>
+            <if test="weComMsg != null">#{weComMsg},</if>
             <if test="createUser != null">#{createUser},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
@@ -190,6 +194,7 @@
             <if test="linkManPhone != null">link_man_phone = #{linkManPhone},</if>
             <if test="linkManeMail != null">link_mane_mail = #{linkManeMail},</if>
             <if test="entIntroduction != null">ent_introduction = #{entIntroduction},</if>
+            <if test="weComMsg != null">#{weComMsg},</if>
             <if test="createUser != null">create_user = #{createUser},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>

@@ -137,6 +137,12 @@ public class TBasEnterprise extends BaseEntity {
     private String entIntroduction;
 
     /**
+     * 企业微信关联信息
+     */
+    @ApiModelProperty(hidden = true)
+    private String weComMsg;
+
+    /**
      * 创建人
      */
     @Excel(name = "创建人")
@@ -292,6 +298,14 @@ public class TBasEnterprise extends BaseEntity {
 
     public void setEntIntroduction(String entIntroduction) {
         this.entIntroduction = entIntroduction;
+    }
+
+    public String getWeComMsg() {
+        return weComMsg;
+    }
+
+    public void setWeComMsg(String weComMsg) {
+        this.weComMsg = weComMsg;
     }
 
     public String getCreateUser() {
