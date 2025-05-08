@@ -57,7 +57,7 @@
                 DATE_FORMAT(monitor_time, '%Y') as monitorTime
             </if>
             <foreach collection="codes" item="code">
-                , SUM(IF(pollutant_code=#{code}, avg_value, 0)) as ${code}
+                , ROUND(SUM(IF(pollutant_code=#{code}, avg_value, 0)), 2) as ${code}
             </foreach>
         FROM ${params.tableName}
         <where>
