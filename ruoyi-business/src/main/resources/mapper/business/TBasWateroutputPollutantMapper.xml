@@ -22,6 +22,7 @@
         <result property="isContinuityAlarm" column="is_continuity_alarm"/>
         <result property="standardVal" column="standard_val"/>
         <result property="annualLimitValue" column="annual_limit_value"/>
+        <result property="monthlyLimitValue" column="monthly_limit_value"/>
         <result property="earlyWarnMaxvalue" column="early_warn_maxValue"/>
         <result property="earlyWarnMinvalue" column="early_warn_minValue"/>
         <result property="overMaxvalue" column="over_maxValue"/>
@@ -51,7 +52,7 @@
                alarm_type,
                is_zero_alarm,
                is_continuity_alarm,
-               standard_val,annual_limit_value,
+               standard_val,annual_limit_value,monthly_limit_value,
                early_warn_maxValue,
                early_warn_minValue,
                over_maxValue,
@@ -129,6 +130,7 @@
             <if test="updateName != null">update_name,</if>
             <if test="remark != null">remark,</if>
             <if test="annualLimitValue != null">annual_limit_value,</if>
+            <if test="monthlyLimitValue != null">monthly_limit_value,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="pollutantCode != null">#{pollutantCode},</if>
@@ -191,6 +193,7 @@
             <if test="updateName != null">update_name = #{updateName},</if>
             <if test="remark != null">remark = #{remark},</if>
             <if test="annualLimitValue != null">annual_limit_value = #{annualLimitValue},</if>
+            <if test="monthlyLimitValue != null">monthly_limit_value = #{monthlyLimitValue},</if>
         </trim>
         where id = #{id}
     </update>

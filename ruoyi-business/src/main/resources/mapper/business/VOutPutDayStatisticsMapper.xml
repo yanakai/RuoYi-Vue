@@ -27,6 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="pollutantNameCn"    column="pollutant_name_cn"    />
         <result property="emissions"    column="emissions"    />
         <result property="annualLimitValue"    column="annual_Limit_Value"    />
+        <result property="monthlyLimitValue"    column="monthly_limit_value"    />
     </resultMap>
 
     <sql id="selectVOutPutDayStatisticsVo">
@@ -50,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectAlarmExceptionDtoList" parameterType="VOutPutDayStatistics" resultMap="AlarmExceptionDtoResult">
-        select  tmp.ent_name,tmp.ent_code, tmp.out_put_code, tmp.out_put_name, tmp.out_put_type, tmp.monitoring_point_type, tmp.pollutant_name_cn, tmp.monitoring_point_type, tmp.pollutant_name_cn,tmp.emissions,gp.annual_limit_value from (
+        select  tmp.ent_name,tmp.ent_code, tmp.out_put_code, tmp.out_put_name, tmp.out_put_type, tmp.monitoring_point_type, tmp.pollutant_name_cn, tmp.monitoring_point_type, tmp.pollutant_name_cn,tmp.emissions,gp.annual_limit_value,gp.monthly_limit_value from (
         select ent_code,ent_name,out_put_code,out_put_name,out_put_type,monitoring_point_type, pollutant_name_cn,SUM(emissions) emissions from v_out_put_day_statistics
 <!--        where monitor_time>='2024-01-01 00:00:00' and monitor_time<='2024-10-01 00:00:00'-->
         <where>

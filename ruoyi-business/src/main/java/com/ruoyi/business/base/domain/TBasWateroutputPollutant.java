@@ -120,6 +120,11 @@ public class TBasWateroutputPollutant extends BaseEntity {
     private BigDecimal annualLimitValue;
 
     /**
+     * 月度限值--预留字段（逗号分隔，12个值，页面设置时可按年度/12当做默认）
+     */
+    private String monthlyLimitValue;
+
+    /**
      * 报警上限--预留字段
      */
     private BigDecimal earlyWarnMaxvalue;
@@ -362,6 +367,15 @@ public class TBasWateroutputPollutant extends BaseEntity {
     public void setAnnualLimitValue(BigDecimal annualLimitValue) {
         this.annualLimitValue = annualLimitValue;
     }
+
+    public String getMonthlyLimitValue() {
+        return monthlyLimitValue;
+    }
+
+    public void setMonthlyLimitValue(String monthlyLimitValue) {
+        this.monthlyLimitValue = monthlyLimitValue;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)

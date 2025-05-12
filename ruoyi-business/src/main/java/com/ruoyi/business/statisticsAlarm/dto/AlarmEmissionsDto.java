@@ -30,4 +30,5 @@ public class AlarmEmissionsDto extends BaseDto {
     private String pollutantNameCn; // 污染物名称（中文）
     private Double emissions; // 排放量（总和）
     private Double annualLimitValue; // 年度限值
+    private String monthlyLimitValue;// 月度限值--预留字段（逗号分隔，12个值）
 }
