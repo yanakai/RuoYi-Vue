@@ -1,5 +1,6 @@
 package com.ruoyi.business.base.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiModel;
@@ -113,20 +114,13 @@ public class TBasGasoutPutInfo extends BaseEntity {
     /**
      * 数据传输率，‰(表中存储)
      */
+    @JsonIgnore
     private Integer transRateI;
     /**
      * 数据传输率，%
      */
     @Excel(name = "数据传输率")
     private Float transRate;
-
-    public Integer getTransRateI() {
-        return this.transRateI;
-    }
-
-    public Float getTransRate() {
-        return this.transRate;
-    }
 
     public void setTransRateI(Integer transRateI) {
         this.transRateI = transRateI;
@@ -141,20 +135,13 @@ public class TBasGasoutPutInfo extends BaseEntity {
     /**
      * 数据有效率，‰(表中存储)
      */
+    @JsonIgnore
     private Integer efficientI;
     /**
      * 数据有效率，%
      */
     @Excel(name = "数据传输率")
     private Float efficient;
-
-    public Integer getEfficientI() {
-        return this.efficientI;
-    }
-
-    public Float getEfficient() {
-        return this.efficient = efficient;
-    }
 
     public void setEfficientI(Integer efficientI) {
         this.efficientI = efficientI;
