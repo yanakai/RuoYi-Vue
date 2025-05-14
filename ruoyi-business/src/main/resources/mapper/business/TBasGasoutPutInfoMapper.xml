@@ -22,6 +22,8 @@
         <result property="createName" column="create_name"/>
         <result property="updateTime" column="update_time"/>
         <result property="updateName" column="update_name"/>
+        <result property="transRateI" column="trans_rate"/>
+        <result property="efficientI" column="efficient"/>
         <result property="remark" column="remark"/>
     </resultMap>
 
@@ -43,6 +45,8 @@
                create_name,
                update_time,
                update_name,
+               trans_rate,
+               efficient,
                remark
         from t_bas_gasout_put_info
     </sql>
@@ -83,6 +87,8 @@
             <if test="createName != null">create_name,</if>
             <if test="updateTime != null">update_time,</if>
             <if test="updateName != null">update_name,</if>
+            <if test="transRateI != null">trans_rate,</if>
+            <if test="efficientI != null">efficient,</if>
             <if test="remark != null">remark,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -102,6 +108,8 @@
             <if test="createName != null">#{createName},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="updateName != null">#{updateName},</if>
+            <if test="transRateI != null">#{transRateI},</if>
+            <if test="efficientI != null">#{efficientI},</if>
             <if test="remark != null">#{remark},</if>
         </trim>
     </insert>
@@ -125,6 +133,8 @@
             <if test="createName != null">create_name = #{createName},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="updateName != null">update_name = #{updateName},</if>
+            <if test="transRateI != null">trans_rate = #{transRateI},</if>
+            <if test="efficientI != null">efficient = #{efficientI},</if>
             <if test="remark != null">remark = #{remark},</if>
         </trim>
         where id = #{id}

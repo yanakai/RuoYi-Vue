@@ -1,5 +1,6 @@
 package com.ruoyi.business.base.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiModel;
@@ -102,6 +103,7 @@ public class TBasWateroutPutInfo extends BaseEntity {
     /**
      * 数据传输率，‰(表中存储)
      */
+    @JsonIgnore
     private Integer transRateI;
     /**
      * 数据传输率，%
@@ -122,6 +124,7 @@ public class TBasWateroutPutInfo extends BaseEntity {
     /**
      * 数据有效率，‰(表中存储)
      */
+    @JsonIgnore
     private Integer efficientI;
     /**
      * 数据有效率，%
