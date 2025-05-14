@@ -18,6 +18,8 @@
         <result property="outPutStatus" column="out_put_status"/>
         <result property="outPutImage" column="out_put_image"/>
         <result property="mnNum" column="mn_num"/>
+        <result property="transRateI" column="trans_rate"/>
+        <result property="efficientI" column="efficient"/>
         <result property="createTime" column="create_time"/>
         <result property="createName" column="create_name"/>
         <result property="updateTime" column="update_time"/>
@@ -41,6 +43,8 @@
                out_put_status,
                out_put_image,
                mn_num,
+               trans_rate,
+               efficient,
                create_time,
                create_name,
                update_time,
@@ -86,6 +90,8 @@
             <if test="outPutStatus != null">out_put_status,</if>
             <if test="outPutImage != null">out_put_image,</if>
             <if test="mnNum != null">mn_num,</if>
+            <if test="transRateI != null">trans_rate,</if>
+            <if test="efficientI != null">efficient,</if>
             <if test="createTime != null">create_time,</if>
             <if test="createName != null">create_name,</if>
             <if test="updateTime != null">update_time,</if>
@@ -107,6 +113,8 @@
             <if test="outPutStatus != null">#{outPutStatus},</if>
             <if test="outPutImage != null">#{outPutImage},</if>
             <if test="mnNum != null">#{mnNum},</if>
+            <if test="transRateI != null">#{transRateI},</if>
+            <if test="efficientI != null">#{efficientI},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="createName != null">#{createName},</if>
             <if test="updateTime != null">#{updateTime},</if>
@@ -132,6 +140,8 @@
             <if test="outPutStatus != null">out_put_status = #{outPutStatus},</if>
             <if test="outPutImage != null">out_put_image = #{outPutImage},</if>
             <if test="mnNum != null">mn_num = #{mnNum},</if>
+            <if test="transRateI != null">trans_rate = #{transRateI},</if>
+            <if test="efficientI != null">efficient = #{efficientI},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="createName != null">create_name = #{createName},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
