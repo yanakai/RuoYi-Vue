@@ -100,6 +100,46 @@ public class TBasWateroutPutInfo extends BaseEntity {
     private String mnNum;
 
     /**
+     * 数据传输率，‰(表中存储)
+     */
+    private Integer transRateI;
+    /**
+     * 数据传输率，%
+     */
+    @Excel(name = "数据传输率")
+    private Float transRate;
+
+    public void setTransRateI(Integer transRateI) {
+        this.transRateI = transRateI;
+        this.transRate = null == transRateI ? null : transRateI / 100.0f;
+    }
+
+    public void setTransRate(Float transRate) {
+        this.transRate = transRate;
+        this.transRateI = null == transRate ? null : (int)(transRate * 100);
+    }
+
+    /**
+     * 数据有效率，‰(表中存储)
+     */
+    private Integer efficientI;
+    /**
+     * 数据有效率，%
+     */
+    @Excel(name = "数据传输率")
+    private Float efficient;
+
+    public void setEfficientI(Integer efficientI) {
+        this.efficientI = efficientI;
+        this.efficient = null == efficientI ? null : efficientI / 100.0f;
+    }
+
+    public void setEfficient(Float efficient) {
+        this.efficient = efficient;
+        this.efficientI = null == efficient ? null : (int)(efficient * 100);
+    }
+
+    /**
      * 创建人
      */
     @ApiModelProperty(hidden = true)
