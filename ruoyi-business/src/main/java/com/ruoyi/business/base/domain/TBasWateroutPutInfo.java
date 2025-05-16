@@ -130,16 +130,16 @@ public class TBasWateroutPutInfo extends BaseEntity {
      * 数据有效率，%
      */
     @Excel(name = "数据传输率")
-    private Float efficient;
+    private Float validRate;
 
-    public void setEfficientI(Integer efficientI) {
-        this.efficientI = efficientI;
-        this.efficient = null == efficientI ? null : efficientI / 100.0f;
+    public void setValidRateI(Integer validRateI) {
+        this.validRateI = validRateI;
+        this.validRate = null == validRateI ? null : validRateI / 100.0f;
     }
 
-    public void setEfficient(Float efficient) {
-        this.efficient = efficient;
-        this.efficientI = null == efficient ? null : (int)(efficient * 100);
+    public void setValidRate(Float validRate) {
+        this.validRate = validRate;
+        this.validRateI = null == validRate ? null : (int)(validRate * 100);
     }
 
     /**

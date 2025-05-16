@@ -23,7 +23,7 @@
         <result property="updateTime" column="update_time"/>
         <result property="updateName" column="update_name"/>
         <result property="transRateI" column="trans_rate"/>
-        <result property="efficientI" column="efficient"/>
+        <result property="validRateI" column="valid_rate"/>
         <result property="remark" column="remark"/>
     </resultMap>
 
@@ -46,7 +46,7 @@
                update_time,
                update_name,
                trans_rate,
-               efficient,
+               valid_rate,
                remark
         from t_bas_waterout_put_info
     </sql>
@@ -91,7 +91,7 @@
             <if test="updateTime != null">update_time,</if>
             <if test="updateName != null">update_name,</if>
             <if test="transRateI != null">trans_rate,</if>
-            <if test="efficientI != null">efficient,</if>
+            <if test="validRateI != null">valid_rate,</if>
             <if test="remark != null">remark,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -112,7 +112,7 @@
             <if test="updateTime != null">#{updateTime},</if>
             <if test="updateName != null">#{updateName},</if>
             <if test="transRateI != null">#{transRateI},</if>
-            <if test="efficientI != null">#{efficientI},</if>
+            <if test="validRateI != null">#{validRateI},</if>
             <if test="remark != null">#{remark},</if>
         </trim>
     </insert>
@@ -137,7 +137,7 @@
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="updateName != null">update_name = #{updateName},</if>
             <if test="transRateI != null">trans_rate = #{transRateI},</if>
-            <if test="efficientI != null">efficient = #{efficientI},</if>
+            <if test="validRateI != null">valid_rate = #{validRateI},</if>
             <if test="remark != null">remark = #{remark},</if>
         </trim>
         where id = #{id}
