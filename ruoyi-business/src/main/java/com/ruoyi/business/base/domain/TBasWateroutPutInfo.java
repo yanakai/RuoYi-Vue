@@ -125,7 +125,7 @@ public class TBasWateroutPutInfo extends BaseEntity {
      * 数据有效率，‰(表中存储)
      */
     @JsonIgnore
-    private Integer efficientI;
+    private Integer validRateI;
     /**
      * 数据有效率，%
      */
