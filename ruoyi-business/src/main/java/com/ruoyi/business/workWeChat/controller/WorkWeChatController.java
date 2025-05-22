@@ -8,7 +8,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import cn.hutool.core.util.XmlUtil;
 import com.ruoyi.business.workWeChat.util.WXBizMsgCrypt;
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -51,18 +50,6 @@ public class WorkWeChatController extends BaseController {
         logger.info("回调开始");
         String method = request.getMethod();
         logger.info(method);
-        String sToken = request.getParameter("sToken");
-        if (StringUtils.isEmpty(sToken)) {
-            sToken = this.sToken;
-        }
-        String sEncodingAESKey = request.getParameter("sEncodingAESKey");
-        if (StringUtils.isEmpty(sToken)) {
-            sEncodingAESKey = this.sEncodingAESKey;
-        }
-        String sCorpID = request.getParameter("sCorpID");
-        if (StringUtils.isEmpty(sCorpID)) {
-            sCorpID = this.sCorpID;
-        }
         WXBizMsgCrypt wxcpt = new WXBizMsgCrypt(sToken, sEncodingAESKey, sCorpID);
         // 微信加密签名
         String msg_signature = request.getParameter("msg_signature");
