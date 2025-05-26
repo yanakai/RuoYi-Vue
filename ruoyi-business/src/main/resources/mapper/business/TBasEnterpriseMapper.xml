@@ -194,7 +194,7 @@
             <if test="linkManPhone != null">link_man_phone = #{linkManPhone},</if>
             <if test="linkManeMail != null">link_mane_mail = #{linkManeMail},</if>
             <if test="entIntroduction != null">ent_introduction = #{entIntroduction},</if>
-            <if test="weComMsg != null">#{weComMsg},</if>
+            <if test="weComMsg != null">we_com_msg = #{weComMsg},</if>
             <if test="createUser != null">create_user = #{createUser},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
