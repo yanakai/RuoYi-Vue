@@ -190,7 +190,7 @@ public class TBasGasoutputPollutant extends BaseEntity {
     }
 
     public void setMonFactorStr(String monFactorStr) {
-        this.monFactor = JSONArray.parseArray(monFactorStr, MonFactorInfo.class);
+        this.monFactorStr = monFactorStr;
     }
 
     public List<MonFactorInfo> getMonFactor() {
@@ -198,7 +198,7 @@ public class TBasGasoutputPollutant extends BaseEntity {
     }
 
     public void setMonFactor(List<MonFactorInfo> monFactor) {
-        this.monFactorStr = JSONArray.toJSONString(monFactor);
+        this.monFactor = monFactor;
     }
 
     public Long getId() {

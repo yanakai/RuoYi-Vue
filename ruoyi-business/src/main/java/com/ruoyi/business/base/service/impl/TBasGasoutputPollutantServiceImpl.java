@@ -243,6 +243,15 @@ public class TBasGasoutputPollutantServiceImpl implements ITBasGasoutputPollutan
         if(StringUtils.isEmpty(tBasGasoutputPollutant.getEntCode()) && (StringUtils.isEmpty(tBasGasoutputPollutant.getEntName()))){
             return 0;
         }
+        if (null != tBasGasoutputPollutant.getMonFactor()) {
+            tBasGasoutputPollutant.getMonFactor().forEach( e -> {
+                e.setField(null);
+                e.setDesc(null);
+            });
+            tBasGasoutputPollutant.setMonFactorStr(JSONArray.toJSONString(tBasGasoutputPollutant.getMonFactor()));
+        } else {
+            tBasGasoutputPollutant.setMonFactorStr("[]");
+        }
         tBasGasoutPutInfo.setEntCode(tBasGasoutputPollutant.getEntCode());
         tBasGasoutPutInfo.setEntName(tBasGasoutputPollutant.getEntName());
         List<TBasGasoutPutInfo> tBasGasoutPutInfos = gasoutputPollutantMapper.selectTBasGasoutPutInfoList(tBasGasoutPutInfo);
@@ -266,6 +275,15 @@ public class TBasGasoutputPollutantServiceImpl implements ITBasGasoutputPollutan
     @Override
     public int updateTBasGasoutputPollutant(TBasGasoutputPollutant tBasGasoutputPollutant) {
         tBasGasoutputPollutant.setUpdateTime(DateUtils.getNowDate());
+        if (null != tBasGasoutputPollutant.getMonFactor()) {
+            tBasGasoutputPollutant.getMonFactor().forEach( e -> {
+                e.setField(null);
+                e.setDesc(null);
+            });
+            tBasGasoutputPollutant.setMonFactorStr(JSONArray.toJSONString(tBasGasoutputPollutant.getMonFactor()));
+        } else {
+            tBasGasoutputPollutant.setMonFactorStr("[]");
+        }
         return tBasGasoutputPollutantMapper.updateTBasGasoutputPollutant(tBasGasoutputPollutant);
     }
 

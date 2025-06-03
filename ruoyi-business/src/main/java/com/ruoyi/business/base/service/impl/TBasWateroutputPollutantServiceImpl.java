@@ -198,6 +198,15 @@ public class TBasWateroutputPollutantServiceImpl implements ITBasWateroutputPoll
         if(StringUtils.isEmpty(tBasWateroutputPollutant.getEntCode()) && (StringUtils.isEmpty(tBasWateroutputPollutant.getEntName()))){
             return 0;
         }
+        if (null != tBasWateroutputPollutant.getMonFactor()) {
+            tBasWateroutputPollutant.getMonFactor().forEach( e -> {
+                e.setField(null);
+                e.setDesc(null);
+            });
+            tBasWateroutputPollutant.setMonFactorStr(JSONArray.toJSONString(tBasWateroutputPollutant.getMonFactor()));
+        } else {
+            tBasWateroutputPollutant.setMonFactorStr("[]");
+        }
         tBasWateroutPutInfo.setEntCode(tBasWateroutputPollutant.getEntCode());
         tBasWateroutPutInfo.setEntName(tBasWateroutputPollutant.getEntName());
         List<TBasWateroutPutInfo> list = waterOutputPollutantMapper.selectTBasWateroutPutInfoList(tBasWateroutPutInfo);
@@ -220,6 +229,15 @@ public class TBasWateroutputPollutantServiceImpl implements ITBasWateroutputPoll
     @Override
     public int updateTBasWateroutputPollutant(TBasWateroutputPollutant tBasWateroutputPollutant) {
         tBasWateroutputPollutant.setUpdateTime(DateUtils.getNowDate());
+        if (null != tBasWateroutputPollutant.getMonFactor()) {
+            tBasWateroutputPollutant.getMonFactor().forEach( e -> {
+                e.setField(null);
+                e.setDesc(null);
+            });
+            tBasWateroutputPollutant.setMonFactorStr(JSONArray.toJSONString(tBasWateroutputPollutant.getMonFactor()));
+        } else {
+            tBasWateroutputPollutant.setMonFactorStr("[]");
+        }
         return tBasWateroutputPollutantMapper.updateTBasWateroutputPollutant(tBasWateroutputPollutant);
     }
 
