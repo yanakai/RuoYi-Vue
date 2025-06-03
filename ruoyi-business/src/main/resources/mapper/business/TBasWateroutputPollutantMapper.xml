@@ -192,6 +192,7 @@
             <if test="updateName != null">#{updateName},</if>
             <if test="remark != null">#{remark},</if>
             <if test="annualLimitValue != null">#{annualLimitValue},</if>
+            <if test="monthlyLimitValue != null">#{monthlyLimitValue},</if>
             <if test="monFactorStr != null">#{monFactorStr},</if>
         </trim>
     </insert>
