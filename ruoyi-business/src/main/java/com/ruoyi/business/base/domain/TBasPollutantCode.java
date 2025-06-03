@@ -1,6 +1,6 @@
 package com.ruoyi.business.base.domain;
 
-import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.JSONArray;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -63,7 +63,7 @@ public class TBasPollutantCode extends BaseEntity
     /** 监测因子 */
     @JsonIgnore
     private String monFactorStr;
-    private JSONObject monFactor;
+    private JSONArray monFactor;
 
     public void setId(Long id) 
     {
@@ -164,12 +164,12 @@ public class TBasPollutantCode extends BaseEntity
         return pollutantSort;
     }
 
-    public JSONObject getMonFactor() {
+    public JSONArray getMonFactor() {
         return monFactor;
     }
 
     public void setMonFactorStr(String monFactorStr) {
-        this.monFactor = JSONObject.parse(monFactorStr);
+        this.monFactor = JSONArray.parse(monFactorStr);
     }
 
     @Override
