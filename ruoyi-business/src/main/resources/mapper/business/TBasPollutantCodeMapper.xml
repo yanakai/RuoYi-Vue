@@ -16,10 +16,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="pollutantUnitCn"    column="pollutant_unit_cn"    />
         <result property="pollutantStatus"    column="pollutant_status"    />
         <result property="pollutantSort"    column="pollutant_sort"    />
+        <result property="monFactorStr"    column="mon_factor"    />
     </resultMap>
 
     <sql id="selectTBasPollutantCodeVo">
-        select id, 2017_code, 2005_code, pollutant_code, pollutant_name_en, pollutant_name_cn, pollutant_type, pollutant_unit_en, pollutant_unit_cn, pollutant_status, pollutant_sort from t_bas_pollutant_code
+        select id, 2017_code, 2005_code, pollutant_code, pollutant_name_en, pollutant_name_cn, pollutant_type, pollutant_unit_en, pollutant_unit_cn, pollutant_status, pollutant_sort
+            , mon_factor
+        from t_bas_pollutant_code
     </sql>
 
     <select id="selectTBasPollutantCodeList" parameterType="TBasPollutantCode" resultMap="TBasPollutantCodeResult">
