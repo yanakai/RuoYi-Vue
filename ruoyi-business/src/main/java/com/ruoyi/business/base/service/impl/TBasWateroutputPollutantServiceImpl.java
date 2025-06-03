@@ -42,7 +42,9 @@ public class TBasWateroutputPollutantServiceImpl implements ITBasWateroutputPoll
      */
     @Override
     public TBasWateroutputPollutant selectTBasWateroutputPollutantById(Long id) {
-        return tBasWateroutputPollutantMapper.selectTBasWateroutputPollutantById(id);
+        TBasWateroutputPollutant info = tBasWateroutputPollutantMapper.selectTBasWateroutputPollutantById(id);
+        info.setMonFactor(JSONArray.parseArray(info.getMonFactorStr(), MonFactorInfo.class));
+        return info;
     }
 
     /**
@@ -180,7 +182,9 @@ public class TBasWateroutputPollutantServiceImpl implements ITBasWateroutputPoll
      */
     @Override
     public List<TBasWateroutputPollutant> selectTBasWateroutputPollutantList(TBasWateroutputPollutant tBasWateroutputPollutant) {
-        return tBasWateroutputPollutantMapper.selectTBasWateroutputPollutantList(tBasWateroutputPollutant);
+        List<TBasWateroutputPollutant> list = tBasWateroutputPollutantMapper.selectTBasWateroutputPollutantList(tBasWateroutputPollutant);
+        list.forEach( e -> e.setMonFactor(JSONArray.parseArray(e.getMonFactorStr(), MonFactorInfo.class)));
+        return list;
     }
 
     /**

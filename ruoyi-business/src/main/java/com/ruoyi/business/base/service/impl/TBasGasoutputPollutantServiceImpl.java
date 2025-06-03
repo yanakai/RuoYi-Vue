@@ -42,7 +42,9 @@ public class TBasGasoutputPollutantServiceImpl implements ITBasGasoutputPollutan
      */
     @Override
     public TBasGasoutputPollutant selectTBasGasoutputPollutantById(Long id) {
-        return tBasGasoutputPollutantMapper.selectTBasGasoutputPollutantById(id);
+        TBasGasoutputPollutant info = tBasGasoutputPollutantMapper.selectTBasGasoutputPollutantById(id);
+        info.setMonFactor(JSONArray.parseArray(info.getMonFactorStr(), MonFactorInfo.class));
+        return info;
     }
 
     /**
@@ -53,7 +55,9 @@ public class TBasGasoutputPollutantServiceImpl implements ITBasGasoutputPollutan
      */
     @Override
     public List<TBasGasoutputPollutant> selectTBasGasoutputPollutantList(TBasGasoutputPollutant tBasGasoutputPollutant) {
-        return tBasGasoutputPollutantMapper.selectTBasGasoutputPollutantList(tBasGasoutputPollutant);
+        List<TBasGasoutputPollutant> list = tBasGasoutputPollutantMapper.selectTBasGasoutputPollutantList(tBasGasoutputPollutant);
+        list.forEach( e -> e.setMonFactor(JSONArray.parseArray(e.getMonFactorStr(), MonFactorInfo.class)));
+        return list;
     }
 
     /**
