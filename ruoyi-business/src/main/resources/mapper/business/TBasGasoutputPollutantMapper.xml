@@ -85,6 +85,35 @@
         </where>
     </select>
 
+    <select id="selectOutputPollutantAutoHead" resultType="com.ruoyi.business.base.domain.OutputPollutantAutoHead">
+        select
+            g.pollutant_code as pollutantCode,
+            g.alarm_type as alarmType,
+            g.is_zero_alarm as isZeroAlarm,
+            g.is_continuity_alarm as isContinuityAlarm,
+            g.standard_val as standardVal,
+            g.annual_limit_value as annualLimitValue,
+            g.monthly_limit_value as monthlyLimitValue,
+            g.early_warn_maxValue as earlyWarnMaxValue,
+            g.early_warn_minValue as earlyWarnMinValue,
+            g.over_maxValue as overMaxValue,
+            g.over_minValue as overMinValue,
+            g.exception_maxValue as exceptionMaxValue,
+            g.exception_minValue as exceptionMinValue,
+            g.mon_factor as monFactorStr,
+            p.mon_factor as baseMonFactorStr,
+            p.pollutant_name_en as pollutantNameEn,
+            p.pollutant_name_cn as pollutantNameCn,
+            p.pollutant_unit_en as pollutantUnitEn,
+            p.pollutant_unit_cn as pollutantUnitCn,
+            p.unit_pf_cn as unitPfCn,
+            p.unit_pf_en as unitPfEn
+        from t_bas_gasoutput_pollutant g
+        left join t_bas_pollutant_code p on p.pollutant_code = g.pollutant_code and p.pollutant_type = 2
+        where g.ent_code = #{entCode} and g.out_put_code = #{outPutCode}
+        order by g.pollutant_sort desc
+    </select>
+
     <select id="selectTBasGasoutputPollutantById" parameterType="Long" resultMap="TBasGasoutputPollutantResult">
         <include refid="selectTBasGasoutputPollutantVo"/>
         where id = #{id}

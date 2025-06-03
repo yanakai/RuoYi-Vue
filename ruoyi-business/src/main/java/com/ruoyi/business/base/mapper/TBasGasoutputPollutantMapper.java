@@ -1,6 +1,8 @@
 package com.ruoyi.business.base.mapper;
 
+import com.ruoyi.business.base.domain.OutputPollutantAutoHead;
 import com.ruoyi.business.base.domain.TBasGasoutputPollutant;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,6 +20,11 @@ public interface TBasGasoutputPollutantMapper {
      * @return 基础信息--企业--废气排口污染物基本信息
      */
     TBasGasoutputPollutant selectTBasGasoutputPollutantById(Long id);
+
+    /**
+     * 查询基础信息--企业--废水排口污染物基本信息自动表头列表
+     */
+    List<OutputPollutantAutoHead> selectOutputPollutantAutoHead(@Param("entCode") String entCode, @Param("outPutCode") String outPutCode);
 
     /**
      * 查询基础信息--企业--废气排口污染物基本信息列表
