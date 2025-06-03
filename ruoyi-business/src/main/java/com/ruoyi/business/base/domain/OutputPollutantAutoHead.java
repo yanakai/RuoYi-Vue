@@ -4,6 +4,8 @@ import com.alibaba.fastjson2.JSONArray;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 基础信息--企业--排口污染物基本信息自动表头列表
  */
@@ -37,7 +39,7 @@ public class OutputPollutantAutoHead{
     /** 异常下限--预留字段 */
     private String exceptionMinValue;
     /** 选择的监测因子 */
-    private JSONArray monFactor;
+    private List<AutoHeadInfo> monFactor;
     /** 选择的监测因子 */
     @JsonIgnore
     private String monFactorStr;
