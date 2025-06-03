@@ -1,5 +1,7 @@
 package com.ruoyi.business.base.domain;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiModel;
@@ -8,6 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 基础信息--企业--废水排口污染物基本信息对象 t_bas_wateroutput_pollutant
@@ -167,6 +170,29 @@ public class TBasWateroutputPollutant extends BaseEntity {
     @ApiModelProperty(hidden = true)
     @Excel(name = "修改人")
     private String updateName;
+
+    /**
+     * 监测因子项
+     */
+    private List<MonFactorInfo> monFactor;
+    @JsonIgnore
+    private String monFactorStr;
+
+    public String getMonFactorStr() {
+        return monFactorStr;
+    }
+
+    public void setMonFactorStr(String monFactorStr) {
+        this.monFactor = JSONArray.parseArray(monFactorStr, MonFactorInfo.class);
+    }
+
+    public List<MonFactorInfo> getMonFactor() {
+        return monFactor;
+    }
+
+    public void setMonFactor(List<MonFactorInfo> monFactor) {
+        this.monFactorStr = JSONArray.toJSONString(monFactor);
+    }
 
     public Long getId() {
         return id;

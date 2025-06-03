@@ -1,6 +1,5 @@
 package com.ruoyi.business.base.domain;
 
-import com.alibaba.fastjson2.JSONArray;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -39,7 +38,7 @@ public class OutputPollutantAutoHead{
     /** 异常下限--预留字段 */
     private String exceptionMinValue;
     /** 选择的监测因子 */
-    private List<AutoHeadInfo> monFactor;
+    private List<MonFactorInfo> monFactor;
     /** 选择的监测因子 */
     @JsonIgnore
     private String monFactorStr;

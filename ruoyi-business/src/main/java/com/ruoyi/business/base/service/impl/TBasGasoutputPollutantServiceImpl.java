@@ -2,7 +2,7 @@ package com.ruoyi.business.base.service.impl;
 
 import cn.hutool.core.util.ArrayUtil;
 import com.alibaba.fastjson2.JSONArray;
-import com.ruoyi.business.base.domain.AutoHeadInfo;
+import com.ruoyi.business.base.domain.MonFactorInfo;
 import com.ruoyi.business.base.domain.OutputPollutantAutoHead;
 import com.ruoyi.business.base.domain.TBasGasoutPutInfo;
 import com.ruoyi.business.base.domain.TBasGasoutputPollutant;
@@ -63,106 +63,106 @@ public class TBasGasoutputPollutantServiceImpl implements ITBasGasoutputPollutan
     public List<OutputPollutantAutoHead> selectOutputPollutantAutoHead(String entCode, String outPutCode) {
         List<OutputPollutantAutoHead> headList = tBasGasoutputPollutantMapper.selectOutputPollutantAutoHead(entCode, outPutCode);
         headList.forEach( e -> {
-            List<AutoHeadInfo> monFactor = new ArrayList<>();
+            List<MonFactorInfo> monFactor = new ArrayList<>();
             e.setMonFactor(monFactor);
             // 未配置监测因子，先按默认来
             if (StringUtils.isEmpty(e.getMonFactorStr()) || StringUtils.isEmpty(e.getBaseMonFactorStr())) {
-                AutoHeadInfo sub;
+                MonFactorInfo sub;
                 if ("a00000".equals(e.getPollutantCode())) { // 废气流量
-                    sub = new AutoHeadInfo();
+                    sub = new MonFactorInfo();
                     sub.setName("avg");
                     sub.setDesc("平均值");
                     sub.setField("volumeAvgFlow");
                     monFactor.add(sub);
-                    sub = new AutoHeadInfo();
+                    sub = new MonFactorInfo();
                     sub.setName("cou");
                     sub.setDesc("累计值");
                     sub.setField("volumeTotalFlow");
                     monFactor.add(sub);
                 } else if ("a34013".equals(e.getPollutantCode())) { // 烟尘
-                    sub = new AutoHeadInfo();
+                    sub = new MonFactorInfo();
                     sub.setName("avg");
                     sub.setDesc("平均值");
                     sub.setField("ycAvgValue");
                     monFactor.add(sub);
-                    sub = new AutoHeadInfo();
+                    sub = new MonFactorInfo();
                     sub.setName("zsAvg");
                     sub.setDesc("折算平均值");
                     sub.setField("ycZsavgValue");
                     monFactor.add(sub);
-                    sub = new AutoHeadInfo();
+                    sub = new MonFactorInfo();
                     sub.setName("cou");
                     sub.setDesc("累计值");
                     sub.setField("ycEmissions");
                     monFactor.add(sub);
                 } else if ("a21026".equals(e.getPollutantCode())) { // 二氧化硫
-                    sub = new AutoHeadInfo();
+                    sub = new MonFactorInfo();
                     sub.setName("avg");
                     sub.setDesc("平均值");
                     sub.setField("so2AvgValue");
                     monFactor.add(sub);
-                    sub = new AutoHeadInfo();
+                    sub = new MonFactorInfo();
                     sub.setName("zsAvg");
                     sub.setDesc("折算平均值");
                     sub.setField("so2ZsavgValue");
                     monFactor.add(sub);
-                    sub = new AutoHeadInfo();
+                    sub = new MonFactorInfo();
                     sub.setName("cou");
                     sub.setDesc("累计值");
                     sub.setField("so2Emissions");
                     monFactor.add(sub);
                 } else if ("a21002".equals(e.getPollutantCode())) { // 氮氧化物
-                    sub = new AutoHeadInfo();
+                    sub = new MonFactorInfo();
                     sub.setName("avg");
                     sub.setDesc("平均值");
                     sub.setField("noAvgValue");
                     monFactor.add(sub);
-                    sub = new AutoHeadInfo();
+                    sub = new MonFactorInfo();
                     sub.setName("zsAvg");
                     sub.setDesc("折算平均值");
                     sub.setField("noZsavgValue");
                     monFactor.add(sub);
-                    sub = new AutoHeadInfo();
+                    sub = new MonFactorInfo();
                     sub.setName("cou");
                     sub.setDesc("累计值");
                     sub.setField("noEmissions");
                     monFactor.add(sub);
                 } else if ("a19001".equals(e.getPollutantCode())) { // 氧气含量
-                    sub = new AutoHeadInfo();
+                    sub = new MonFactorInfo();
                     sub.setName("avg");
                     sub.setDesc("平均值");
                     sub.setField("oxygenContent");
                     monFactor.add(sub);
                 } else if ("a01012".equals(e.getPollutantCode())) { // 烟气温度
-                    sub = new AutoHeadInfo();
+                    sub = new MonFactorInfo();
                     sub.setName("avg");
                     sub.setDesc("平均值");
                     sub.setField("yqTemperature");
                     monFactor.add(sub);
                 } else if ("a01014".equals(e.getPollutantCode())) { // 烟气湿度
-                    sub = new AutoHeadInfo();
+                    sub = new MonFactorInfo();
                     sub.setName("avg");
                     sub.setDesc("平均值");
                     sub.setField("yqHumidity");
                     monFactor.add(sub);
                 } else if ("a01013".equals(e.getPollutantCode())) { // 烟气压力
-                    sub = new AutoHeadInfo();
+                    sub = new MonFactorInfo();
                     sub.setName("avg");
                     sub.setDesc("平均值");
                     sub.setField("yqPressure");
                     monFactor.add(sub);
                 } else if ("a01011".equals(e.getPollutantCode())) { // 烟气流速
-                    sub = new AutoHeadInfo();
+                    sub = new MonFactorInfo();
                     sub.setName("avg");
                     sub.setDesc("平均值");
                     sub.setField("velocityFlow");
                     monFactor.add(sub);
                 }
             } else {
-                List<AutoHeadInfo> monFactorStr = JSONArray.parseArray(e.getMonFactorStr(), AutoHeadInfo.class);
-                Map<String, String> baseMonFactor = JSONArray.parseArray(e.getBaseMonFactorStr(), AutoHeadInfo.class).stream()
-                        .collect(Collectors.toMap(AutoHeadInfo::getName, AutoHeadInfo::getDesc, (v1, v2) -> v1));
-                for (AutoHeadInfo factor : monFactorStr) {
+                List<MonFactorInfo> monFactorStr = JSONArray.parseArray(e.getMonFactorStr(), MonFactorInfo.class);
+                Map<String, String> baseMonFactor = JSONArray.parseArray(e.getBaseMonFactorStr(), MonFactorInfo.class).stream()
+                        .collect(Collectors.toMap(MonFactorInfo::getName, MonFactorInfo::getDesc, (v1, v2) -> v1));
+                for (MonFactorInfo factor : monFactorStr) {
                     String name = factor.getName();
                     factor.setDesc(baseMonFactor.get(name));
                     // 判断是否选中，1选中

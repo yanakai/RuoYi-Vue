@@ -33,6 +33,7 @@
         <result property="createName" column="create_name"/>
         <result property="updateTime" column="update_time"/>
         <result property="updateName" column="update_name"/>
+        <result property="monFactorStr" column="mon_factor"/>
         <result property="remark" column="remark"/>
     </resultMap>
 
@@ -63,6 +64,7 @@
                create_name,
                update_time,
                update_name,
+               mon_factor,
                remark
         from t_bas_wateroutput_pollutant
     </sql>
@@ -160,6 +162,7 @@
             <if test="remark != null">remark,</if>
             <if test="annualLimitValue != null">annual_limit_value,</if>
             <if test="monthlyLimitValue != null">monthly_limit_value,</if>
+            <if test="monFactorStr != null">mon_factor,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="pollutantCode != null">#{pollutantCode},</if>
@@ -189,6 +192,7 @@
             <if test="updateName != null">#{updateName},</if>
             <if test="remark != null">#{remark},</if>
             <if test="annualLimitValue != null">#{annualLimitValue},</if>
+            <if test="monFactorStr != null">#{monFactorStr},</if>
         </trim>
     </insert>
 
@@ -223,6 +227,7 @@
             <if test="remark != null">remark = #{remark},</if>
             <if test="annualLimitValue != null">annual_limit_value = #{annualLimitValue},</if>
             <if test="monthlyLimitValue != null">monthly_limit_value = #{monthlyLimitValue},</if>
+            <if test="monFactorStr != null">mon_factor = #{monFactorStr},</if>
         </trim>
         where id = #{id}
     </update>

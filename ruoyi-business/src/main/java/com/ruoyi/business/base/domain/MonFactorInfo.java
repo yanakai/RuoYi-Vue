@@ -3,7 +3,7 @@ package com.ruoyi.business.base.domain;
 import lombok.Data;
 
 @Data
-public class AutoHeadInfo {
+public class MonFactorInfo {
     /** 监测因子 */
     private String name;
     /** 中文描述 */
