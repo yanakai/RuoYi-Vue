@@ -36,8 +36,8 @@ public class TBasGasoutputPollutantController extends BaseController {
      */
     @ApiOperation("获取废气排口污染物基本信息自动表头列表")
     @GetMapping("/autoHead")
-    public List<OutputPollutantAutoHead> autoHead(String entCode, String outPutCode) {
-        return tBasGasoutputPollutantService.selectOutputPollutantAutoHead(entCode, outPutCode);
+    public AjaxResult autoHead(String entCode, String outPutCode) {
+        return AjaxResult.success(tBasGasoutputPollutantService.selectOutputPollutantAutoHead(entCode, outPutCode));
     }
 
     /**
