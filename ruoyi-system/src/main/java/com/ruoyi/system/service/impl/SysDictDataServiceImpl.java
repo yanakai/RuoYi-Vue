@@ -19,6 +19,11 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
     @Autowired
     private SysDictDataMapper dictDataMapper;
 
+    @Override
+    public List<SysDictData> getDictDataListByTypes(List<String> dictTypes) {
+        return dictDataMapper.getDictDataListByTypes(dictTypes);
+    }
+
     /**
      * 根据条件分页查询字典数据
      *

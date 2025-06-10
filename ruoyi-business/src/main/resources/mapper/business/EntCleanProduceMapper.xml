@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.envProt.mapper.EntCleanProduceMapper">
+    
+    <resultMap id="entCleanProduceResult" type="com.ruoyi.business.envProt.domain.EntCleanProduce">
+        <result property="cleanProduceId"    column="clean_produce_id"    />
+        <result property="entCode"    column="ent_code"    />
+        <result property="entName"    column="ent_name"    />
+        <result property="cleanName"    column="clean_name"    />
+        <result property="makeUnit"    column="make_unit"    />
+        <result property="makeDate"    column="make_date"    />
+        <result property="auditInfo"    column="audit_info"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="auditDesc"    column="audit_desc"    />
+        <result property="auditOpinion"    column="audit_opinion"    />
+        <result property="planInfo"    column="plan_info"    />
+        <result property="mayReduce"    column="may_reduce"    />
+        <result property="workProgress"    column="work_progress"    />
+        <result property="planDate"    column="plan_date"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateUser"    column="update_user"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="auditUser"    column="audit_user"    />
+        <result property="auditTime"    column="audit_time"    />
+    </resultMap>
+
+    <select id="selectEntCleanProduceList" parameterType="com.ruoyi.business.envProt.domain.EntCleanProduce"
+            resultMap="entCleanProduceResult">
+        select
+            p.clean_produce_id, p.ent_code, e.ent_name, p.clean_name, p.make_unit, p.make_date, p.audit_info,
+            p.audit_status, p.audit_desc, p.audit_opinion, p.plan_info, p.may_reduce, p.work_progress, p.plan_date,
+            p.create_user, p.create_time, p.update_user, p.update_time, p.audit_user, p.audit_time
+        from t_bas_ent_clean_produce p
+        left join t_bas_enterprise e on e.ent_code = p.ent_code
+        <where>
+            <if test="entCode != null and entCode != ''"> and p.ent_code = #{entCode}</if>
+            <if test="entName != null and entName != ''"> and e.ent_name like concat('%', #{entName}, '%')</if>
+            <if test="cleanName != null and cleanName != ''"> and p.clean_name like concat('%', #{cleanName}, '%')</if>
+            <if test="entCodes != null and entCodes.size() > 0"> and p.ent_code in
+                <foreach item="code" collection="entCodes" open="(" separator="," close=")">
+                    #{code}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertEntCleanProduce" parameterType="com.ruoyi.business.envProt.domain.EntCleanProduce">
+        insert into t_bas_ent_clean_produce
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cleanProduceId != null">clean_produce_id,</if>
+            <if test="entCode != null">ent_code,</if>
+            <if test="cleanName != null">clean_name,</if>
+            <if test="makeUnit != null">make_unit,</if>
+            <if test="makeDate != null">make_date,</if>
+            <if test="auditInfo != null">audit_info,</if>
+            <if test="auditStatus != null">audit_status,</if>
+            <if test="auditDesc != null">audit_desc,</if>
+            <if test="planInfo != null">plan_info,</if>
+            <if test="mayReduce != null">may_reduce,</if>
+            <if test="workProgress != null">work_progress,</if>
+            <if test="planDate != null">plan_date,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateUser != null">update_user,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cleanProduceId != null">#{cleanProduceId},</if>
+            <if test="entCode != null">#{entCode},</if>
+            <if test="cleanName != null">#{cleanName},</if>
+            <if test="makeUnit != null">#{makeUnit},</if>
+            <if test="makeDate != null">#{makeDate},</if>
+            <if test="auditInfo != null">#{auditInfo},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="auditDesc != null">#{auditDesc},</if>
+            <if test="planInfo != null">#{planInfo},</if>
+            <if test="mayReduce != null">#{mayReduce},</if>
+            <if test="workProgress != null">#{workProgress},</if>
+            <if test="planDate != null">#{planDate},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateUser != null">#{updateUser},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEntCleanProduce" parameterType="com.ruoyi.business.envProt.domain.EntCleanProduce">
+        update t_bas_ent_clean_produce
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cleanName != null">clean_name = #{cleanName},</if>
+            <if test="makeUnit != null">make_unit = #{makeUnit},</if>
+            <if test="makeDate != null">make_date = #{makeDate},</if>
+            <if test="auditInfo != null">audit_info = #{auditInfo},</if>
+            <if test="planInfo != null">plan_info = #{planInfo},</if>
+            <if test="mayReduce != null">may_reduce = #{mayReduce},</if>
+            <if test="workProgress != null">work_progress = #{workProgress},</if>
+            <if test="planDate != null">plan_date = #{planDate},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where clean_produce_id = #{cleanProduceId}
+    </update>
+
+    <update id="entCleanProduceAudit" parameterType="com.ruoyi.business.envProt.domain.EntCleanProduce">
+        update t_bas_ent_clean_produce
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="auditStatus != null">audit_status = #{auditStatus},</if>
+            <if test="auditDesc != null">audit_desc = #{auditDesc},</if>
+            <if test="auditOpinion != null">audit_opinion = #{auditOpinion},</if>
+            <if test="auditUser != null">audit_user = #{auditUser},</if>
+            <if test="auditTime != null">audit_time = #{auditTime},</if>
+        </trim>
+        where clean_produce_id = #{cleanProduceId}
+    </update>
+
+    <delete id="deleteEntCleanProduceByCleanProduceIds" parameterType="String">
+        delete from t_bas_ent_clean_produce where clean_produce_id in 
+        <foreach item="cleanProduceId" collection="cleanProduceIds" open="(" separator="," close=")">
+            #{cleanProduceId}
+        </foreach>
+    </delete>
+</mapper>

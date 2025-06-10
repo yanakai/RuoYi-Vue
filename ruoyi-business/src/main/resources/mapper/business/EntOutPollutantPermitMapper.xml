@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.zkhf.epmis.platform.envProt.mapper.EntOutPollutantPermitMapper">
+    
+    <resultMap id="entOutPollutantPermitResult" type="com.ruoyi.business.envProt.domain.EntOutPollutantPermit">
+        <result property="pollPermitId"    column="poll_permit_id"    />
+        <result property="entCode"    column="ent_code"    />
+        <result property="entName"    column="ent_name"    />
+        <result property="certUnitName"    column="cert_unit_name"    />
+        <result property="certUnitCode"    column="cert_unit_code"    />
+        <result property="permitLevel"    column="permit_level"    />
+        <result property="permitNum"    column="permit_num"    />
+        <result property="beginDate"    column="begin_date"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="issueOffice"    column="issue_office"    />
+        <result property="issueDate"    column="issue_date"    />
+        <result property="reportRequire"    column="report_require"    />
+        <result property="productIds"    column="product_ids"    />
+        <result property="productOutput"    column="product_output"    />
+        <result property="account"    column="account"    />
+        <result property="password"    column="password"    />
+        <result property="gasPollType"    column="gas_poll_type"    />
+        <result property="gasEmissionRule"    column="gas_emission_rule"    />
+        <result property="gasExecuteStandard"    column="gas_execute_standard"    />
+        <result property="waterPollType"    column="water_poll_type"    />
+        <result property="waterEmissionRule"    column="water_emission_rule"    />
+        <result property="waterExecuteStandard"    column="water_execute_standard"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateUser"    column="update_user"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <resultMap id="entOutPollutantPermitCountResult" type="com.ruoyi.business.envProt.domain.EntOutPollutantPermitCount">
+        <result property="pollPermitCountId"    column="poll_permit_Count_id"    />
+        <result property="pollPermitId"    column="poll_permit_id"    />
+        <result property="pollType"    column="poll_type"    />
+        <result property="pollutantCode"    column="pollutant_code"    />
+        <result property="pollutantNameCn"    column="pollutant_name_cn"    />
+        <result property="pollutantNameEn"    column="pollutant_name_en"    />
+        <result property="permitYear"    column="permit_year"    />
+        <result property="permitCount"    column="permit_count"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateUser"    column="update_user"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <select id="selectEntOutPollutantPermitList" parameterType="com.ruoyi.business.envProt.domain.EntOutPollutantPermitReq"
+            resultMap="entOutPollutantPermitResult">
+        select
+            p.poll_permit_id, p.ent_code, e.ent_name, p.cert_unit_name, p.cert_unit_code, p.permit_level, p.permit_num, p.begin_date, p.end_date,
+            p.issue_office, p.issue_date, p.report_require, p.product_ids, p.product_output, p.account, p.password, p.gas_poll_type, p.gas_emission_rule,
+            p.gas_execute_standard, p.water_poll_type, p.water_emission_rule, p.water_execute_standard, p.create_user, p.create_time, p.update_user,
+            p.update_time, p.remark
+        from t_bas_ent_out_pollutant_permit p
+        left join t_bas_enterprise e on e.ent_code = p.ent_code
+        <where>  
+            <if test="entCode != null and entCode != ''"> and p.ent_code = #{entCode}</if>
+            <if test="entName != null and entName != ''"> and e.ent_name like concat('%', #{entName}, '%')</if>
+            <if test="certUnitName != null and certUnitName != ''"> and p.cert_unit_name like concat('%', #{certUnitName}, '%')</if>
+            <if test="permitNum != null and permitNum != ''"> and p.permit_num like concat('%', #{permitNum}, '%')</if>
+            <if test="entCodes != null and entCodes.size() > 0"> and p.ent_code in
+                <foreach item="code" collection="entCodes" open="(" separator="," close=")">
+                    #{code}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertEntOutPollutantPermit" parameterType="com.ruoyi.business.envProt.domain.EntOutPollutantPermit">
+        insert into t_bas_ent_out_pollutant_permit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pollPermitId != null">poll_permit_id,</if>
+            <if test="entCode != null">ent_code,</if>
+            <if test="certUnitName != null">cert_unit_name,</if>
+            <if test="certUnitCode != null">cert_unit_code,</if>
+            <if test="permitLevel != null">permit_level,</if>
+            <if test="permitNum != null">permit_num,</if>
+            <if test="beginDate != null">begin_date,</if>
+            <if test="endDate != null">end_date,</if>
+            <if test="issueOffice != null">issue_office,</if>
+            <if test="issueDate != null">issue_date,</if>
+            <if test="reportRequire != null">report_require,</if>
+            <if test="productIds != null">product_ids,</if>
+            <if test="productOutput != null">product_output,</if>
+            <if test="account != null">account,</if>
+            <if test="password != null">password,</if>
+            <if test="gasPollType != null">gas_poll_type,</if>
+            <if test="gasEmissionRule != null">gas_emission_rule,</if>
+            <if test="gasExecuteStandard != null">gas_execute_standard,</if>
+            <if test="waterPollType != null">water_poll_type,</if>
+            <if test="waterEmissionRule != null">water_emission_rule,</if>
+            <if test="waterExecuteStandard != null">water_execute_standard,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateUser != null">update_user,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pollPermitId != null">#{pollPermitId},</if>
+            <if test="entCode != null">#{entCode},</if>
+            <if test="certUnitName != null">#{certUnitName},</if>
+            <if test="certUnitCode != null">#{certUnitCode},</if>
+            <if test="permitLevel != null">#{permitLevel},</if>
+            <if test="permitNum != null">#{permitNum},</if>
+            <if test="beginDate != null">#{beginDate},</if>
+            <if test="endDate != null">#{endDate},</if>
+            <if test="issueOffice != null">#{issueOffice},</if>
+            <if test="issueDate != null">#{issueDate},</if>
+            <if test="reportRequire != null">#{reportRequire},</if>
+            <if test="productIds != null">#{productIds},</if>
+            <if test="productOutput != null">#{productOutput},</if>
+            <if test="account != null">#{account},</if>
+            <if test="password != null">#{password},</if>
+            <if test="gasPollType != null">#{gasPollType},</if>
+            <if test="gasEmissionRule != null">#{gasEmissionRule},</if>
+            <if test="gasExecuteStandard != null">#{gasExecuteStandard},</if>
+            <if test="waterPollType != null">#{waterPollType},</if>
+            <if test="waterEmissionRule != null">#{waterEmissionRule},</if>
+            <if test="waterExecuteStandard != null">#{waterExecuteStandard},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateUser != null">#{updateUser},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEntOutPollutantPermit" parameterType="com.ruoyi.business.envProt.domain.EntOutPollutantPermit">
+        update t_bas_ent_out_pollutant_permit
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="certUnitName != null">cert_unit_name = #{certUnitName},</if>
+            <if test="certUnitCode != null">cert_unit_code = #{certUnitCode},</if>
+            <if test="permitLevel != null">permit_level = #{permitLevel},</if>
+            <if test="permitNum != null">permit_num = #{permitNum},</if>
+            <if test="beginDate != null">begin_date = #{beginDate},</if>
+            <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="issueOffice != null">issue_office = #{issueOffice},</if>
+            <if test="issueDate != null">issue_date = #{issueDate},</if>
+            <if test="reportRequire != null">report_require = #{reportRequire},</if>
+            <if test="productIds != null">product_ids = #{productIds},</if>
+            <if test="productOutput != null">product_output = #{productOutput},</if>
+            <if test="account != null">account = #{account},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="gasPollType != null">gas_poll_type = #{gasPollType},</if>
+            <if test="gasEmissionRule != null">gas_emission_rule = #{gasEmissionRule},</if>
+            <if test="gasExecuteStandard != null">gas_execute_standard = #{gasExecuteStandard},</if>
+            <if test="waterPollType != null">water_poll_type = #{waterPollType},</if>
+            <if test="waterEmissionRule != null">water_emission_rule = #{waterEmissionRule},</if>
+            <if test="waterExecuteStandard != null">water_execute_standard = #{waterExecuteStandard},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where poll_permit_id = #{pollPermitId}
+    </update>
+
+    <delete id="deleteEntOutPollutantPermitByPollPermitIds" parameterType="String">
+        delete from t_bas_ent_out_pollutant_permit where poll_permit_id in 
+        <foreach item="pollPermitId" collection="pollPermitIds" open="(" separator="," close=")">
+            #{pollPermitId}
+        </foreach>
+    </delete>
+
+    <select id="selectEntOutPollutantPermitCountList" parameterType="com.ruoyi.business.envProt.domain.EntOutPollutantPermitCountReq"
+            resultMap="entOutPollutantPermitCountResult">
+        select 
+            c.poll_permit_count_id, c.poll_permit_id, c.poll_type, c.pollutant_code, p.pollutant_name_cn, p.pollutant_name_en,
+            c.permit_year, c.permit_count, c.create_user, c.create_time, c.update_user, c.update_time
+        from t_bas_ent_out_pollutant_permit_count c
+        left join t_bas_pollutant_code p on p.pollutant_code = c.pollutant_code
+        <where>
+            <if test="pollPermitId != null  and pollPermitId != ''"> and c.poll_permit_id = #{pollPermitId}</if>
+            <if test="pollutantNameCn != null  and pollutantNameCn != ''"> and p.pollutant_name_cn = #{pollutantNameCn}</if>
+            <if test="pollutantNameEn != null  and pollutantNameEn != ''"> and p.pollutant_name_en = #{pollutantNameEn}</if>
+            <if test="permitYear != null "> and c.permit_year = #{permitYear}</if>
+        </where>
+    </select>
+
+    <insert id="insertEntOutPollutantPermitCount" parameterType="com.ruoyi.business.envProt.domain.EntOutPollutantPermitCount">
+        insert into t_bas_ent_out_pollutant_permit_count
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pollPermitCountId != null">poll_permit_count_id,</if>
+            <if test="pollPermitId != null and pollPermitId != ''">poll_permit_id,</if>
+            <if test="pollType != null">poll_type,</if>
+            <if test="pollutantCode != null">pollutant_code,</if>
+            <if test="permitYear != null">permit_year,</if>
+            <if test="permitCount != null">permit_count,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateUser != null">update_user,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pollPermitCountId != null">#{pollPermitCountId},</if>
+            <if test="pollPermitId != null and pollPermitId != ''">#{pollPermitId},</if>
+            <if test="pollType != null">#{pollType},</if>
+            <if test="pollutantCode != null">#{pollutantCode},</if>
+            <if test="permitYear != null">#{permitYear},</if>
+            <if test="permitCount != null">#{permitCount},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateUser != null">#{updateUser},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateEntOutPollutantPermitCount" parameterType="com.ruoyi.business.envProt.domain.EntOutPollutantPermitCount">
+        update t_bas_ent_out_pollutant_permit_count
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pollType != null">poll_type = #{pollType},</if>
+            <if test="pollutantCode != null">pollutant_code = #{pollutantCode},</if>
+            <if test="permitYear != null">permit_year = #{permitYear},</if>
+            <if test="permitCount != null">permit_count = #{permitCount},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where poll_permit_count_id = #{pollPermitCountId}
+    </update>
+
+    <delete id="deleteEntOutPollutantPermitCountByPollPermitIds" parameterType="String">
+        delete from t_bas_ent_out_pollutant_permit_count where poll_permit_id in
+        <foreach item="pollPermitId" collection="pollPermitIds" open="(" separator="," close=")">
+            #{pollPermitId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteEntOutPollutantPermitCountByPollPermitCountIds" parameterType="String">
+        delete from t_bas_ent_out_pollutant_permit_count where poll_permit_count_id in
+        <foreach item="pollPermitCountId" collection="pollPermitCountIds" open="(" separator="," close=")">
+            #{pollPermitCountId}
+        </foreach>
+    </delete>
+</mapper>
