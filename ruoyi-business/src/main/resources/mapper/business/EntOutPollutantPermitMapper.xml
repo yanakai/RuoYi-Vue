@@ -175,8 +175,8 @@
         left join t_bas_pollutant_code p on p.pollutant_code = c.pollutant_code
         <where>
             <if test="pollPermitId != null  and pollPermitId != ''"> and c.poll_permit_id = #{pollPermitId}</if>
-            <if test="pollutantNameCn != null  and pollutantNameCn != ''"> and p.pollutant_name_cn = #{pollutantNameCn}</if>
-            <if test="pollutantNameEn != null  and pollutantNameEn != ''"> and p.pollutant_name_en = #{pollutantNameEn}</if>
+            <if test="pollutantNameCn != null and pollutantNameCn != ''"> and p.pollutant_name_cn like concat('%', #{pollutantNameCn}, '%')</if>
+            <if test="pollutantNameEn != null and pollutantNameEn != ''"> and p.pollutant_name_en like concat('%', #{pollutantNameEn}, '%')</if>
             <if test="permitYear != null "> and c.permit_year = #{permitYear}</if>
         </where>
     </select>
