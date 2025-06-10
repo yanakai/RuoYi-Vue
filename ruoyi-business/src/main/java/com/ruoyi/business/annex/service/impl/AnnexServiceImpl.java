@@ -73,11 +73,11 @@ public class AnnexServiceImpl implements AnnexService {
         }
         String sourceType = annexInfo.getString("sourceType");
         List<String> annexIds = annexInfo.getList("annexIds", String.class);
+        // 删除旧附件-不在annexIds列表里的，指定sourceType、sourceId
+        annexMapper.deleteAnnexBySourceExclude(sourceType, sourceId, annexIds);
         if (null == annexIds || annexIds.size() < 1) {
             return AjaxResult.error("未知的更新数据");
         }
-        // 删除旧附件-不在annexIds列表里的，指定sourceType、sourceId
-        annexMapper.deleteAnnexBySourceExclude(sourceType, sourceId, annexIds);
         // 更新附件
         return AjaxResult.success(annexMapper.updateAnnex(sourceType, sourceId, annexIds));
     }

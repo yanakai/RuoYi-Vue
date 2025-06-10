@@ -3,6 +3,7 @@ package com.ruoyi.business.annex.mapper;
 
 import com.ruoyi.business.annex.domain.AnnexInfo;
 import com.ruoyi.business.annex.domain.AnnexReq;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,7 +22,8 @@ public interface AnnexMapper {
     /**
      * 修改附件信息
      */
-    int updateAnnex(String sourceType, String sourceId, List<String> annexIds);
+    int updateAnnex(@Param("sourceType") String sourceType, @Param("sourceId") String sourceId
+            , @Param("annexIds") List<String> annexIds);
 
     /**
      * 批量删除附件
@@ -31,10 +33,11 @@ public interface AnnexMapper {
     /**
      * 按附件来源删除
      */
-    void deleteAnnexBySource(String sourceType, List<String> sourceIds);
+    void deleteAnnexBySource(@Param("sourceType") String sourceType, @Param("sourceIds") List<String> sourceIds);
 
     /**
      * 按附件来源删除，排除指定附件id
      */
-    void deleteAnnexBySourceExclude(String sourceType, String sourceId, List<String> annexIds);
+    void deleteAnnexBySourceExclude(@Param("sourceType") String sourceType, @Param("sourceId") String sourceId
+            , @Param("annexIds") List<String> annexIds);
 }

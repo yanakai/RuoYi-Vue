@@ -92,9 +92,14 @@
 
     <delete id="deleteAnnexBySourceExclude">
         delete from t_data_annex
-        where source_type = #{sourceType} and source_id = #{sourceId} and annex_id not in
-        <foreach item="annexId" collection="annexIds" open="(" separator="," close=")">
-            #{annexId}
-        </foreach>
+        <where>
+            source_type = #{sourceType} and source_id = #{sourceId}
+            <if test="annexIds != null and annexIds.size() > 0 ">
+                and annex_id not in
+                <foreach item="annexId" collection="annexIds" open="(" separator="," close=")">
+                    #{annexId}
+                </foreach>
+            </if>
+        </where>
     </delete>
 </mapper>
