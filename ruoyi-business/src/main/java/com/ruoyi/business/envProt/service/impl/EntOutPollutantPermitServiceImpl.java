@@ -1,6 +1,5 @@
 package com.ruoyi.business.envProt.service.impl;
 
-import cn.hutool.core.map.MapUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.business.annex.mapper.AnnexMapper;
@@ -15,10 +14,8 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysDictData;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.CellUtils;
-import com.ruoyi.common.utils.DictUtils;
 import com.ruoyi.common.utils.PageUtils;
 import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.utils.uuid.IdUtils;
 import com.ruoyi.system.service.ISysDictDataService;
 import lombok.extern.slf4j.Slf4j;
@@ -272,7 +269,7 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
                     cell.setCellValue(permit.getRemark());
                 }
             }
-            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("企业环保证书列表.xlsx", "UTF-8"));
+            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("企业排序许可列表.xlsx", "UTF-8"));
             outputStream = response.getOutputStream();
             workbook.write(outputStream);
         } catch (Exception e){
@@ -349,19 +346,85 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
 
     @Override
     @Log(title = "企业排污许可总量基础", businessType = BusinessType.EXPORT)
-    public void exportEntOutPollutantPermitCount(HttpServletResponse response, EntOutPollutantPermitCountReq req) {
+    public void exportEntOutPollutantPermitCount(EntOutPollutantPermitCountReq req, HttpServletResponse response) {
         if (null == req) {
             req = new EntOutPollutantPermitCountReq();
         }
-        List<EntOutPollutantPermitCount> list = entOutPollutantPermitMapper.selectEntOutPollutantPermitCountList(req);
-        ExcelUtil<EntOutPollutantPermitCount> util = new ExcelUtil<>(EntOutPollutantPermitCount.class);
-        util.exportExcel(response, list, "企业排污许可总量基础数据");
+        OutputStream outputStream = null;
+        try {
+            String templatePath = "template/排污许可列表许可总量模版.xlsx";
+            InputStream fis = getClass().getClassLoader().getResourceAsStream(templatePath);
+            if (fis == null) {
+                log.error("无法从路径加载资源: " + templatePath);
+                return;
+            }
+            List<EntOutPollutantPermitCount> list = entOutPollutantPermitMapper.selectEntOutPollutantPermitCountList(req);
+            XSSFWorkbook workbook = new XSSFWorkbook(fis);
+            Sheet sheet = workbook.getSheetAt(0);
+            int rowIndex= 4;// 从第5行开始插入
+
+            rowIndex = 1;// 首行
+            Row templateRow = sheet.getRow(rowIndex);
+            CellStyle templateStyle = templateRow.getCell(0).getCellStyle(); // 假设获取第一列的样式
+            CellStyle style = workbook.createCellStyle();
+            // 复制单元格样式
+            CellUtils.copyCellStyle(templateStyle, style);
+            if (null != list && list.size() > 0) {
+                int index = 0;
+                Row row;
+                Cell cell;
+                for (EntOutPollutantPermitCount count : list) {
+                    index++;
+                    sheet.shiftRows(rowIndex, sheet.getLastRowNum(), 1);
+                    row = sheet.createRow(rowIndex);
+                    rowIndex++;
+
+                    int cellIndex = 0;
+                    // 序号
+                    cell = CellUtils.getCell(row, cellIndex++, style);
+                    cell.setCellValue(index);
+                    // 年份
+                    cell = CellUtils.getCell(row, cellIndex++, style);
+                    cell.setCellValue(count.getPermitYear());
+                    // 污染因子类型
+                    cell = CellUtils.getCell(row, cellIndex++, style);
+                    if (null == count.getPollType()) {
+                        cell.setCellValue("");
+                    } else if (1 == count.getPollType()) {
+                        cell.setCellValue("废水");
+                    } else if (2 == count.getPollType()) {
+                        cell.setCellValue("废气");
+                    } else if (3 == count.getPollType()) {
+                        cell.setCellValue("无组织");
+                    }
+                    // 污染因子
+                    cell = CellUtils.getCell(row, cellIndex++, style);
+                    cell.setCellValue(count.getPollutantNameCn());
+                    // 许可总量（t/a）
+                    cell = CellUtils.getCell(row, cellIndex, style);
+                    cell.setCellValue(null == count.getPermitCount() ? "" : Double.toString(count.getPermitCount()));
+                }
+            }
+            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("企业排污许可总量列表.xlsx", "UTF-8"));
+            outputStream = response.getOutputStream();
+            workbook.write(outputStream);
+        } catch (Exception e){
+            log.error("按模板导出文件失败", e);
+        } finally {
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override
     @Log(title = "企业排污许可总量基础", businessType = BusinessType.INSERT)
     public AjaxResult insertEntOutPollutantPermitCount(EntOutPollutantPermitCount count) {
-        count.setPollPermitId(IdUtils.fastSimpleUUID());
+        count.setPollPermitCountId(IdUtils.fastSimpleUUID());
         count.setCreateTime(LocalDateTime.now());
         count.setCreateUser(SecurityUtils.getUserName());
         count.setUpdateUser(count.getCreateUser());

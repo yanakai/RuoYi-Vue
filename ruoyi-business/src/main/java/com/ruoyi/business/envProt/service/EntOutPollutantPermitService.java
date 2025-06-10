@@ -47,7 +47,7 @@ public interface EntOutPollutantPermitService {
     /**
      * 导出企业排污许可总量数据列表
      */
-    void exportEntOutPollutantPermitCount(HttpServletResponse response, EntOutPollutantPermitCountReq req);
+    void exportEntOutPollutantPermitCount(EntOutPollutantPermitCountReq req, HttpServletResponse response);
 
     /**
      * 新增企业排污许可总量数据

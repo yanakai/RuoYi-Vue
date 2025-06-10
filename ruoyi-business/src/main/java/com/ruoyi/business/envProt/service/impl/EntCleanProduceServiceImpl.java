@@ -177,7 +177,7 @@ public class EntCleanProduceServiceImpl implements EntCleanProduceService {
                     cell.setCellValue(produce.getPlanDate());
                 }
             }
-            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("企业排污许可列表.xlsx", "UTF-8"));
+            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("企业清洁生产列表.xlsx", "UTF-8"));
             outputStream = response.getOutputStream();
             workbook.write(outputStream);
         } catch (Exception e){

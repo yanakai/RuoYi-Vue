@@ -68,7 +68,7 @@ public class EntOutPollutantPermitController {
     /**
      * 查询企业排污许可总量数据
      */
-    @GetMapping("/count/list")
+    @PostMapping("/count/list")
     public AjaxResult countList(@RequestBody(required = false) EntOutPollutantPermitCountReq req) {
         return entOutPollutantPermitService.selectEntOutPollutantPermitCountList(req);
     }
@@ -76,9 +76,9 @@ public class EntOutPollutantPermitController {
     /**
      * 导出企业排污许可总量数据
      */
-    @PostMapping("/count/export")
-    public void countExport(HttpServletResponse response, EntOutPollutantPermitCountReq req) {
-        entOutPollutantPermitService.exportEntOutPollutantPermitCount(response, req);
+    @PostMapping("/count/exportTemplate")
+    public void countExportTemplate(@RequestBody(required = false) EntOutPollutantPermitCountReq req, HttpServletResponse response) {
+        entOutPollutantPermitService.exportEntOutPollutantPermitCount(req, response);
     }
 
     /**
