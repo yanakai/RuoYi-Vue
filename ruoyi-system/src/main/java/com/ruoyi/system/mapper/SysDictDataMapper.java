@@ -12,6 +12,10 @@ import java.util.List;
  */
 public interface SysDictDataMapper {
     /**
+     * 依据字典类型获取字典值
+     */
+    List<SysDictData> getDictDataListByTypes(List<String> dictTypes);
+    /**
      * 根据条件分页查询字典数据
      *
      * @param dictData 字典数据信息

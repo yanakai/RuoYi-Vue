@@ -13,6 +13,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.PatternMatchUtils;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,6 +69,24 @@ public class SecurityUtils {
     }
 
     /**
+     * 获取用户权限列表
+     **/
+    public static List<String> getEntCodes() {
+        return Collections.singletonList(getLoginUser().getUser().getEntCode());
+    }
+
+    /**
+     * 用户名称
+     **/
+    public static String getUserName() {
+        try {
+            return getLoginUser().getUser().getUserName();
+        } catch (Exception e) {
+            throw new ServiceException("获取用户ID异常", HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    /**
      * 获取Authentication
      */
     public static Authentication getAuthentication() {
@@ -105,6 +124,13 @@ public class SecurityUtils {
      */
     public static boolean isAdmin(Long userId) {
         return userId != null && 1L == userId;
+    }
+
+    /**
+     * 判断不是管理员账号
+     **/
+    public static boolean isNotAdmin() {
+        return !isAdmin();
     }
 
     public static boolean isAdmin() {
