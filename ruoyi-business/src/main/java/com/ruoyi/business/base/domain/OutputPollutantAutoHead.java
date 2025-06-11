@@ -3,6 +3,7 @@ package com.ruoyi.business.base.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -20,23 +21,23 @@ public class OutputPollutantAutoHead{
     /** 是否连续值报警：0：否；1：是 */
     private String isContinuityAlarm;
     /** 标准值--预留字段 */
-    private String standardVal;
+    private BigDecimal standardVal;
     /** 年度污染物排放限值 */
-    private String annualLimitValue;
+    private BigDecimal annualLimitValue;
     /** 月段污染物排放限值 */
     private String monthlyLimitValue;
     /** 报警上限--预留字段 */
-    private String earlyWarnMaxValue;
+    private BigDecimal earlyWarnMaxValue;
     /** 报警下限--预留字段 */
-    private String earlyWarnMinValue;
+    private BigDecimal earlyWarnMinValue;
     /** 超标上限--当alarmType=1时区间上限；当为3时上限报警的最大值 */
-    private String overMaxValue;
+    private BigDecimal overMaxValue;
     /** 超标下限--当alarmType=1时区间下限；当为4时上限报警的最小值 */
-    private String overMinValue;
+    private BigDecimal overMinValue;
     /** 异常上限--预留字段 */
-    private String exceptionMaxValue;
+    private BigDecimal exceptionMaxValue;
     /** 异常下限--预留字段 */
-    private String exceptionMinValue;
+    private BigDecimal exceptionMinValue;
     /** 选择的监测因子 */
     private List<MonFactorInfo> monFactor;
     /** 选择的监测因子 */
