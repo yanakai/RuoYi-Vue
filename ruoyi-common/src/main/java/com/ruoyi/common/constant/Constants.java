@@ -183,4 +183,14 @@ public class Constants {
      * 附件类型-企业排污许可附件
      */
     public static final String ANNEX_EntOutPollutantPermit = "entOutPollutantPermit";
+
+    /**
+     * 污染物类型，1废气；2废水
+     */
+    public static final Integer POLLUTION_TYPE_GAS = 1;
+
+    /**
+     * 污染物类型，1废气；2废水
+     */
+    public static final Integer POLLUTION_TYPE_WATER = 2;
 }
