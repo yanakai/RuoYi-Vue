@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zkhf.epmis.business.statisticsAlarm.mapper.EntAnnualOutputInfoMapper">
+    
+    <resultMap id="entAnnualOutputInfoResult" type="com.zkhf.epmis.business.statisticsAlarm.domain.EntAnnualOutputInfo" >
+        <result property="annualOutputId"       column="annual_output_id"    />
+        <result property="entCode"              column="ent_code"    />
+        <result property="entName"              column="ent_name"    />
+        <result property="outPutCode"           column="out_put_code"    />
+        <result property="outPutName"           column="out_put_name"    />
+        <result property="outPutType"           column="out_put_type"    />
+        <result property="pollutantCode"        column="pollutant_code"    />
+        <result property="pollutantNameCn"      column="pollutant_name_cn"    />
+        <result property="pollutantNameEn"      column="pollutant_name_en"    />
+        <result property="annualNum"            column="annual_num"    />
+        <result property="annualCount"          column="annual_count"    />
+        <result property="annualEmissionLimit"  column="annual_emission_limit"    />
+        <result property="presentEmissionLimit" column="present_emission_limit"    />
+    </resultMap>
+
+    <select id="selectEntAnnualOutputInfoList_Gas" parameterType="com.zkhf.epmis.business.statisticsAlarm.domain.EntAnnualOutputInfoReq"
+            resultMap="entAnnualOutputInfoResult">
+        select
+            a.annual_output_id, a.ent_code, e.ent_name, a.out_put_code, pi.out_put_name, a.out_put_type, a.pollutant_code,
+            p.pollutant_name_cn, p.pollutant_name_en, a.annual_num, a.annual_count, a.annual_emission_limit, a.present_emission_limit
+        from t_bas_ent_annual_output_info a
+        left join t_bas_pollutant_code p on p.pollutant_code = a.pollutant_code
+        left join t_bas_gasout_put_info pi on pi.ent_code = a.ent_code and pi.out_put_code = a.out_put_code
+        left join t_bas_enterprise e on e.ent_code = a.ent_code
+        <where>
+            <if test="entCodes != null and entCodes.size() > 0"> and a.ent_code in
+                <foreach item="code" collection="entCodes" open="(" separator="," close=")">
+                    #{code}
+                </foreach>
+            </if>
+            <if test="entName != null and entName != ''">
+                and e.ent_name like concat('%', #{entName}, '%')
+            </if>
+            <if test="outPutName != null and outPutName != ''">
+                and pi.out_put_name like concat('%', #{outPutName}, '%')
+            </if>
+            <if test="pollutantNameCn != null and pollutantNameCn != ''">
+                and p.pollutant_name_cn like concat('%', #{pollutantNameCn}, '%')
+            </if>
+            <if test="pollutantNameEn != null and pollutantNameEn != ''">
+                and p.pollutant_name_en like concat('%', #{pollutantNameEn}, '%')
+            </if>
+            <if test="annualNum != null">
+                and a.annual_num = #{annualNum}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectEntAnnualOutputInfoList_Water" parameterType="com.zkhf.epmis.business.statisticsAlarm.domain.EntAnnualOutputInfoReq"
+            resultMap="entAnnualOutputInfoResult">
+        select
+            a.annual_output_id, a.ent_code, e.ent_name, a.out_put_code, pi.out_put_name, a.out_put_type, a.pollutant_code,
+            p.pollutant_name_cn, p.pollutant_name_en, a.annual_num, a.annual_count, a.annual_emission_limit, a.present_emission_limit
+        from t_bas_ent_annual_output_info a
+        left join t_bas_pollutant_code p on p.pollutant_code = a.pollutant_code
+        left join t_bas_waterout_put_info pi on pi.ent_code = a.ent_code and pi.out_put_code = a.out_put_code
+        left join t_bas_enterprise e on e.ent_code = a.ent_code
+        <where>
+            <if test="entCodes != null and entCodes.size() > 0"> and a.ent_code in
+                <foreach item="code" collection="entCodes" open="(" separator="," close=")">
+                    #{code}
+                </foreach>
+            </if>
+            <if test="entName != null and entName != ''">
+                and e.ent_name like concat('%', #{entName}, '%')
+            </if>
+            <if test="outPutName != null and outPutName != ''">
+                and pi.out_put_name like concat('%', #{outPutName}, '%')
+            </if>
+            <if test="pollutantNameCn != null and pollutantNameCn != ''">
+                and p.pollutant_name_cn like concat('%', #{pollutantNameCn}, '%')
+            </if>
+            <if test="pollutantNameEn != null and pollutantNameEn != ''">
+                and p.pollutant_name_en like concat('%', #{pollutantNameEn}, '%')
+            </if>
+            <if test="annualNum != null">
+                and a.annual_num = #{annualNum}
+            </if>
+        </where>
+    </select>
+</mapper>

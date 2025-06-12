@@ -170,4 +170,15 @@ public class Constants {
      */
     public static final String[] JOB_ERROR_STR = {"java.net.URL", "javax.naming.InitialContext", "org.yaml.snakeyaml",
             "org.springframework", "org.apache", "com.ruoyi.common.utils.file", "com.ruoyi.common.config", "com.ruoyi.generator"};
+
+
+    /**
+     * 污染物类型，1废气；2废水
+     */
+    public static final Integer POLLUTION_TYPE_GAS = 1;
+
+    /**
+     * 污染物类型，1废气；2废水
+     */
+    public static final Integer POLLUTION_TYPE_WATER = 2;
 }
