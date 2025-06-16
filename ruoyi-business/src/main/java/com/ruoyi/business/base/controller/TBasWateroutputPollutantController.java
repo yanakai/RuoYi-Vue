@@ -37,8 +37,8 @@ public class TBasWateroutputPollutantController extends BaseController {
      */
     @ApiOperation("获取废水排口污染物基本信息自动表头列表")
     @GetMapping("/autoHead")
-    public AjaxResult autoHead(String entCode, String outPutCode) {
-        return AjaxResult.success(tBasWateroutputPollutantService.selectOutputPollutantAutoHead(entCode, outPutCode));
+    public AjaxResult autoHead(String entCode, String outPutCode, String dataEnum) {
+        return AjaxResult.success(tBasWateroutputPollutantService.selectOutputPollutantAutoHead(entCode, outPutCode, dataEnum));
     }
 
     /**

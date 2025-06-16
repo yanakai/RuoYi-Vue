@@ -9,6 +9,7 @@ import com.ruoyi.business.base.domain.TBasWateroutputPollutant;
 import com.ruoyi.business.base.mapper.TBasWateroutPutInfoMapper;
 import com.ruoyi.business.base.mapper.TBasWateroutputPollutantMapper;
 import com.ruoyi.business.base.service.ITBasWateroutputPollutantService;
+import com.ruoyi.business.onlineMonitoring.dto.DataEnum;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,75 +52,46 @@ public class TBasWateroutputPollutantServiceImpl implements ITBasWateroutputPoll
      * 查询基础信息--企业--废水排口污染物基本信息自动表头列表
      */
     @Override
-    public List<OutputPollutantAutoHead> selectOutputPollutantAutoHead(String entCode, String outPutCode) {
+    public List<OutputPollutantAutoHead> selectOutputPollutantAutoHead(String entCode, String outPutCode, String dataEnum) {
         List<OutputPollutantAutoHead> headList = tBasWateroutputPollutantMapper.selectOutputPollutantAutoHead(entCode, outPutCode);
         headList.forEach( e -> {
             List<MonFactorInfo> monFactor = new ArrayList<>();
             e.setMonFactor(monFactor);
             // 未配置监测因子，先按默认来
             if (StringUtils.isEmpty(e.getMonFactorStr()) || StringUtils.isEmpty(e.getBaseMonFactorStr())) {
-                MonFactorInfo sub;
-                if ("w00000".equals(e.getPollutantCode())) { // 污水流量
-                    sub = new MonFactorInfo();
-                    sub.setName("avg");
-                    sub.setDesc("平均值");
-                    sub.setField("volumeAvgFlow");
-                    monFactor.add(sub);
-                    sub = new MonFactorInfo();
-                    sub.setName("cou");
-                    sub.setDesc("累计值");
-                    sub.setField("volumeTotalFlow");
-                    monFactor.add(sub);
-                } else if ("w01001".equals(e.getPollutantCode())) { // pH值
-                    sub = new MonFactorInfo();
-                    sub.setName("rtd");
-                    sub.setDesc("实测值");
-                    sub.setField("phValue");
-                    monFactor.add(sub);
-                } else if ("w01018".equals(e.getPollutantCode())) { // 化学需氧量
-                    sub = new MonFactorInfo();
-                    sub.setName("avg");
-                    sub.setDesc("平均值");
-                    sub.setField("codAvgValue");
-                    monFactor.add(sub);
-                    sub = new MonFactorInfo();
-                    sub.setName("cou");
-                    sub.setDesc("累计值");
-                    sub.setField("codEmissions");
-                    monFactor.add(sub);
-                } else if ("w21003".equals(e.getPollutantCode())) { // 氨氮
-                    sub = new MonFactorInfo();
-                    sub.setName("avg");
-                    sub.setDesc("平均值");
-                    sub.setField("anAvgValue");
-                    monFactor.add(sub);
-                    sub = new MonFactorInfo();
-                    sub.setName("cou");
-                    sub.setDesc("累计值");
-                    sub.setField("anEmissions");
-                    monFactor.add(sub);
-                } else if ("w21011".equals(e.getPollutantCode())) { // 总磷
-                    sub = new MonFactorInfo();
-                    sub.setName("avg");
-                    sub.setDesc("平均值");
-                    sub.setField("tpAvgValue");
-                    monFactor.add(sub);
-                    sub = new MonFactorInfo();
-                    sub.setName("cou");
-                    sub.setDesc("累计值");
-                    sub.setField("tpEmissions");
-                    monFactor.add(sub);
-                } else if ("w21001".equals(e.getPollutantCode())) { // 总氮
-                    sub = new MonFactorInfo();
-                    sub.setName("avg");
-                    sub.setDesc("平均值");
-                    sub.setField("tnAvgValue");
-                    monFactor.add(sub);
-                    sub = new MonFactorInfo();
-                    sub.setName("cou");
-                    sub.setDesc("累计值");
-                    sub.setField("tnEmissions");
-                    monFactor.add(sub);
+                if (DataEnum.real.name().equals(dataEnum)) {
+                    if ("w00000".equals(e.getPollutantCode())) { // 污水流量
+                        addFactor("rtd", "实测值", "volumeAvgFlow", monFactor);
+                    } else if ("w01001".equals(e.getPollutantCode())) { // pH值
+                        addFactor("rtd", "实测值", "phValue", monFactor);
+                    } else if ("w01018".equals(e.getPollutantCode())) { // 化学需氧量
+                        addFactor("rtd", "实测值", "codAvgValue", monFactor);
+                    } else if ("w21003".equals(e.getPollutantCode())) { // 氨氮
+                        addFactor("rtd", "实测值", "anAvgValue", monFactor);
+                    } else if ("w21011".equals(e.getPollutantCode())) { // 总磷
+                        addFactor("rtd", "实测值", "tpAvgValue", monFactor);
+                    } else if ("w21001".equals(e.getPollutantCode())) { // 总氮
+                        addFactor("rtd", "实测值", "tnAvgValue", monFactor);
+                    }
+                } else {
+                    if ("w00000".equals(e.getPollutantCode())) { // 污水流量
+                        addFactor("avg", "平均值", "volumeAvgFlow", monFactor);
+                        addFactor("cou", "累计值", "volumeTotalFlow", monFactor);
+                    } else if ("w01001".equals(e.getPollutantCode())) { // pH值
+                        addFactor("avg", "平均值", "phValue", monFactor);
+                    } else if ("w01018".equals(e.getPollutantCode())) { // 化学需氧量
+                        addFactor("avg", "平均值", "codAvgValue", monFactor);
+                        addFactor("cou", "累计值", "codEmissions", monFactor);
+                    } else if ("w21003".equals(e.getPollutantCode())) { // 氨氮
+                        addFactor("avg", "平均值", "anAvgValue", monFactor);
+                        addFactor("cou", "累计值", "anEmissions", monFactor);
+                    } else if ("w21011".equals(e.getPollutantCode())) { // 总磷
+                        addFactor("avg", "平均值", "tpAvgValue", monFactor);
+                        addFactor("cou", "累计值", "tpEmissions", monFactor);
+                    } else if ("w21001".equals(e.getPollutantCode())) { // 总氮
+                        addFactor("avg", "平均值", "tnAvgValue", monFactor);
+                        addFactor("cou", "累计值", "tnEmissions", monFactor);
+                    }
                 }
             } else {
                 List<MonFactorInfo> monFactorStr = JSONArray.parseArray(e.getMonFactorStr(), MonFactorInfo.class);
@@ -132,46 +104,90 @@ public class TBasWateroutputPollutantServiceImpl implements ITBasWateroutputPoll
                     if (null == factor.getValue() || factor.getValue() != 1) {
                         continue;
                     }
-                    monFactor.add(factor);
-                    if ("w00000".equals(e.getPollutantCode())) { // 污水流量
-                        if ("avg".equals(name)) {
-                            factor.setField("volumeAvgFlow");
-                        } else if ("cou".equals(name)) {
-                            factor.setField("volumeTotalFlow");
+                    if (DataEnum.real.name().equals(dataEnum)) {
+                        if ("rtd".equals(name)) { // 实时数据只查看实测值
+                            monFactor.add(factor);
                         }
-                    } else if ("w01001".equals(e.getPollutantCode())) { // pH值
-                        if ("rtd".equals(name)) {
-                            factor.setField("phValue");
+                    } else {
+                        if (!"rtd".equals(name)) { // 非实时数据不查看实测值
+                            monFactor.add(factor);
                         }
-                    } else if ("w01018".equals(e.getPollutantCode())) { // 化学需氧量
-                        if ("avg".equals(name)) {
-                            factor.setField("codAvgValue");
-                        } else if ("cou".equals(name)) {
-                            factor.setField("codEmissions");
+                    }
+                    if (DataEnum.real.name().equals(dataEnum)) {
+                        if ("w00000".equals(e.getPollutantCode())) { // 污水流量
+                            if ("rtd".equals(name)) {
+                                factor.setField("volumeAvgFlow");
+                            }
+                        } else if ("w01001".equals(e.getPollutantCode())) { // pH值
+                            if ("rtd".equals(name)) {
+                                factor.setField("phValue");
+                            }
+                        } else if ("w01018".equals(e.getPollutantCode())) { // 化学需氧量
+                            if ("rtd".equals(name)) {
+                                factor.setField("codAvgValue");
+                            }
+                        } else if ("w21003".equals(e.getPollutantCode())) { // 氨氮
+                            if ("rtd".equals(name)) {
+                                factor.setField("anAvgValue");
+                            }
+                        } else if ("w21011".equals(e.getPollutantCode())) { // 总磷
+                            if ("rtd".equals(name)) {
+                                factor.setField("tpAvgValue");
+                            }
+                        } else if ("w21001".equals(e.getPollutantCode())) { // 总氮
+                            if ("rtd".equals(name)) {
+                                factor.setField("tnAvgValue");
+                            }
                         }
-                    } else if ("w21003".equals(e.getPollutantCode())) { // 氨氮
-                        if ("avg".equals(name)) {
-                            factor.setField("anAvgValue");
-                        } else if ("cou".equals(name)) {
-                            factor.setField("anEmissions");
-                        }
-                    } else if ("w21011".equals(e.getPollutantCode())) { // 总磷
-                        if ("avg".equals(name)) {
-                            factor.setField("tpAvgValue");
-                        } else if ("cou".equals(name)) {
-                            factor.setField("tpEmissions");
-                        }
-                    } else if ("w21001".equals(e.getPollutantCode())) { // 总氮
-                        if ("avg".equals(name)) {
-                            factor.setField("tnAvgValue");
-                        } else if ("cou".equals(name)) {
-                            factor.setField("tnEmissions");
+                    } else {
+                        if ("w00000".equals(e.getPollutantCode())) { // 污水流量
+                            if ("avg".equals(name)) {
+                                factor.setField("volumeAvgFlow");
+                            } else if ("cou".equals(name)) {
+                                factor.setField("volumeTotalFlow");
+                            }
+                        } else if ("w01001".equals(e.getPollutantCode())) { // pH值
+                            if ("rtd".equals(name)) {
+                                factor.setField("phValue");
+                            }
+                        } else if ("w01018".equals(e.getPollutantCode())) { // 化学需氧量
+                            if ("avg".equals(name)) {
+                                factor.setField("codAvgValue");
+                            } else if ("cou".equals(name)) {
+                                factor.setField("codEmissions");
+                            }
+                        } else if ("w21003".equals(e.getPollutantCode())) { // 氨氮
+                            if ("avg".equals(name)) {
+                                factor.setField("anAvgValue");
+                            } else if ("cou".equals(name)) {
+                                factor.setField("anEmissions");
+                            }
+                        } else if ("w21011".equals(e.getPollutantCode())) { // 总磷
+                            if ("avg".equals(name)) {
+                                factor.setField("tpAvgValue");
+                            } else if ("cou".equals(name)) {
+                                factor.setField("tpEmissions");
+                            }
+                        } else if ("w21001".equals(e.getPollutantCode())) { // 总氮
+                            if ("avg".equals(name)) {
+                                factor.setField("tnAvgValue");
+                            } else if ("cou".equals(name)) {
+                                factor.setField("tnEmissions");
+                            }
                         }
                     }
                 }
             }
         });
         return headList;
+    }
+
+    private void addFactor(String name, String desc, String field, List<MonFactorInfo> list) {
+        MonFactorInfo info = new MonFactorInfo();
+        info.setName(name);
+        info.setDesc(desc);
+        info.setField(field);
+        list.add(info);
     }
 
     /**
