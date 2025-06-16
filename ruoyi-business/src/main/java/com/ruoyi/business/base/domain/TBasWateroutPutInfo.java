@@ -1,6 +1,7 @@
 package com.ruoyi.business.base.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ruoyi.business.annex.domain.AnnexInfo;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
@@ -156,7 +157,7 @@ public class TBasWateroutPutInfo extends BaseEntity {
     private String updateName;
 
     /** 附件列表（更新时用） */
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<String> annexIdList;
     /** 附件列表（查询时用） */
     private List<AnnexInfo> annexInfoList;
