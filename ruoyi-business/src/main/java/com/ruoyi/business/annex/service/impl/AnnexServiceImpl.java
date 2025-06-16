@@ -38,6 +38,11 @@ public class AnnexServiceImpl implements AnnexService {
     }
 
     @Override
+    public List<AnnexInfo> selectAnnexList(String sourceId, String sourceType) {
+        return annexMapper.selectAnnexListBySource(sourceId, sourceType);
+    }
+
+    @Override
     public AjaxResult insertAnnex(MultipartFile file, String sourceType) {
         if (file.isEmpty()) {
             return AjaxResult.error("上传附件为空，请检查确认");
@@ -112,7 +117,7 @@ public class AnnexServiceImpl implements AnnexService {
         }
         // 删除本地保存的数据
         if (deletePath.size() > 0) {
-            deletePath.forEach( e -> FileUploadUtils.deleteFile(e));
+            deletePath.forEach(FileUploadUtils::deleteFile);
         }
     }
 }

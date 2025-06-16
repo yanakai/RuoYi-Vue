@@ -85,7 +85,7 @@ public class TBasWateroutPutUnorganized extends BaseEntity {
      * 排放口状态
      */
     @Excel(name = "排放口状态")
-    private String outPutStatus;
+    private Integer outPutStatus;
 
     /**
      * 排放口图片
@@ -199,11 +199,11 @@ public class TBasWateroutPutUnorganized extends BaseEntity {
         this.outPutType = outPutType;
     }
 
-    public String getOutPutStatus() {
+    public Integer getOutPutStatus() {
         return outPutStatus;
     }
 
-    public void setOutPutStatus(String outPutStatus) {
+    public void setOutPutStatus(Integer outPutStatus) {
         this.outPutStatus = outPutStatus;
     }
 

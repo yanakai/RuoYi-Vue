@@ -16,6 +16,11 @@ public interface AnnexService {
     List<AnnexInfo> selectAnnexList(AnnexReq req);
 
     /**
+     * 查询附件
+     */
+    List<AnnexInfo> selectAnnexList(String sourceId, String sourceType);
+
+    /**
      * 添加附件
      */
     AjaxResult insertAnnex(MultipartFile file, String sourceType);

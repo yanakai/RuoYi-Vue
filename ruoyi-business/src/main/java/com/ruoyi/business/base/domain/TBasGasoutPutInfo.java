@@ -1,6 +1,7 @@
 package com.ruoyi.business.base.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ruoyi.business.annex.domain.AnnexInfo;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiModel;
@@ -95,7 +96,7 @@ public class TBasGasoutPutInfo extends BaseEntity {
      */
     @ApiModelProperty(value = "排放口状态")
     @Excel(name = "排放口状态")
-    private String outPutStatus;
+    private Integer outPutStatus;
 
     /**
      * 排放口图片
@@ -167,6 +168,9 @@ public class TBasGasoutPutInfo extends BaseEntity {
     @Excel(name = "修改人")
     private String updateName;
 
-    private List<TBasUploadFiles> uploadFilesList;
-
+    /** 附件列表（更新时用） */
+    @JsonIgnore
+    private List<String> annexIdList;
+    /** 附件列表（查询时用） */
+    private List<AnnexInfo> annexInfoList;
 }

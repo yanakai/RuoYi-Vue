@@ -193,4 +193,14 @@ public class Constants {
      * 污染物类型，1废气；2废水
      */
     public static final Integer POLLUTION_TYPE_WATER = 2;
+
+    /**
+     * 附件类型-废气排口
+     */
+    public static final String ANNEX_GasOutPut = "entEnvProtCert";
+    /**
+     * 附件类型-废水排口
+     */
+    public static final String ANNEX_WaterOutPut = "entOutPollutantPermit";
+
 }

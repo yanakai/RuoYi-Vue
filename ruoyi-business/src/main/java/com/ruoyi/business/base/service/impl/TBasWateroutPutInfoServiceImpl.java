@@ -1,11 +1,13 @@
 package com.ruoyi.business.base.service.impl;
 
+import com.ruoyi.business.annex.service.AnnexService;
 import com.ruoyi.business.base.domain.TBasUploadFiles;
 import com.ruoyi.business.base.domain.TBasWateroutPutInfo;
 import com.ruoyi.business.base.mapper.TBasUploadFilesMapper;
 import com.ruoyi.business.base.mapper.TBasWateroutPutInfoMapper;
 import com.ruoyi.business.base.mapper.TBasWateroutputPollutantMapper;
 import com.ruoyi.business.base.service.ITBasWateroutPutInfoService;
+import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,8 +28,11 @@ public class TBasWateroutPutInfoServiceImpl implements ITBasWateroutPutInfoServi
     @Resource
     private TBasWateroutputPollutantMapper tBasWateroutputPollutantMapper;
 
-    @Resource
-    private TBasUploadFilesMapper basUploadFilesMapper;
+    private AnnexService annexService;
+    @Autowired
+    public void setAnnexService(AnnexService annexService) {
+        this.annexService = annexService;
+    }
 
     /**
      * 查询基础信息--企业--废水排口
@@ -38,11 +43,8 @@ public class TBasWateroutPutInfoServiceImpl implements ITBasWateroutPutInfoServi
     @Override
     public TBasWateroutPutInfo selectTBasWateroutPutInfoById(Long id) {
         TBasWateroutPutInfo tBasWateroutPutInfo = tBasWateroutPutInfoMapper.selectTBasWateroutPutInfoById(id);
-        //查询附件信息
-        TBasUploadFiles basUploadFiles = new TBasUploadFiles();
-        basUploadFiles.setBusinessModuleId(tBasWateroutPutInfo.getId().toString());
-        tBasWateroutPutInfo.setUploadFilesList(basUploadFilesMapper.selectTBasUploadFilesList(basUploadFiles));
-
+        // 查询附件信息
+        tBasWateroutPutInfo.setAnnexInfoList(annexService.selectAnnexList(tBasWateroutPutInfo.getId().toString(), Constants.ANNEX_WaterOutPut));
         return tBasWateroutPutInfo;
     }
 
@@ -67,21 +69,16 @@ public class TBasWateroutPutInfoServiceImpl implements ITBasWateroutPutInfoServi
     public int insertTBasWateroutPutInfo(TBasWateroutPutInfo tBasWateroutPutInfo) {
         tBasWateroutPutInfo.setCreateTime(DateUtils.getNowDate());
         int result = tBasWateroutPutInfoMapper.insertTBasWateroutPutInfo(tBasWateroutPutInfo);
-        if (tBasWateroutPutInfo.getUploadFilesList() != null && tBasWateroutPutInfo.getUploadFilesList().size() > 0) {
-            for (TBasUploadFiles uploadFiles : tBasWateroutPutInfo.getUploadFilesList()) {
-                uploadFiles.setBusinessModuleId(tBasWateroutPutInfo.getId().toString());
-                basUploadFilesMapper.updateTBasUploadFiles(uploadFiles);
-            }
-        }
-
         if (result > 0){
             tBasWateroutPutInfoMapper.createTableReal(tBasWateroutPutInfo);
             tBasWateroutPutInfoMapper.createTableMin(tBasWateroutPutInfo);
             tBasWateroutPutInfoMapper.createTableHour(tBasWateroutPutInfo);
             tBasWateroutPutInfoMapper.createTableDay(tBasWateroutPutInfo);
-
+            // 更新附件
+            if (tBasWateroutPutInfo.getAnnexIdList() != null && tBasWateroutPutInfo.getAnnexIdList().size() > 0) {
+                annexService.updateAnnex(tBasWateroutPutInfo.getId().toString(), Constants.ANNEX_WaterOutPut, tBasWateroutPutInfo.getAnnexIdList());
+            }
         }
-
         return result;
     }
 
@@ -95,23 +92,9 @@ public class TBasWateroutPutInfoServiceImpl implements ITBasWateroutPutInfoServi
     public int updateTBasWateroutPutInfo(TBasWateroutPutInfo tBasWateroutPutInfo) {
         tBasWateroutPutInfo.setUpdateTime(DateUtils.getNowDate());
         int result = tBasWateroutPutInfoMapper.updateTBasWateroutPutInfo(tBasWateroutPutInfo);
-        //重置附件信息
-        TBasUploadFiles basUploadFiles = new TBasUploadFiles();
-        basUploadFiles.setBusinessModuleId(tBasWateroutPutInfo.getId().toString());
-        List<TBasUploadFiles> uploadFilesList = basUploadFilesMapper.selectTBasUploadFilesList(basUploadFiles);
-        if (uploadFilesList != null && uploadFilesList.size() > 0) {
-            for (TBasUploadFiles uploadFiles : uploadFilesList) {
-                uploadFiles.setBusinessModuleId(null);
-                basUploadFilesMapper.updateTBasUploadFiles(uploadFiles);
-            }
-        }
-
-        //新增附件
-        if (tBasWateroutPutInfo.getUploadFilesList() != null && tBasWateroutPutInfo.getUploadFilesList().size() > 0) {
-            for (TBasUploadFiles uploadFiles : tBasWateroutPutInfo.getUploadFilesList()) {
-                uploadFiles.setBusinessModuleId(tBasWateroutPutInfo.getId().toString());
-                basUploadFilesMapper.updateTBasUploadFiles(uploadFiles);
-            }
+        // 修改附件信息
+        if (result > 0) {
+            annexService.updateAnnex(tBasWateroutPutInfo.getId().toString(), Constants.ANNEX_WaterOutPut, tBasWateroutPutInfo.getAnnexIdList());
         }
         return result;
     }
