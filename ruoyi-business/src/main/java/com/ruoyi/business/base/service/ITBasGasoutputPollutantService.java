@@ -23,7 +23,7 @@ public interface ITBasGasoutputPollutantService {
     /**
      * 查询基础信息--企业--废水排口污染物基本信息自动表头列表
      */
-    List<OutputPollutantAutoHead> selectOutputPollutantAutoHead(String entCode, String outPutCode);
+    List<OutputPollutantAutoHead> selectOutputPollutantAutoHead(String entCode, String outPutCode, String dataEnum);
 
     /**
      * 查询基础信息--企业--废气排口污染物基本信息列表

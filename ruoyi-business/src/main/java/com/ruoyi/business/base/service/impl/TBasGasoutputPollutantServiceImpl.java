@@ -9,6 +9,7 @@ import com.ruoyi.business.base.domain.TBasGasoutputPollutant;
 import com.ruoyi.business.base.mapper.TBasGasoutPutInfoMapper;
 import com.ruoyi.business.base.mapper.TBasGasoutputPollutantMapper;
 import com.ruoyi.business.base.service.ITBasGasoutputPollutantService;
+import com.ruoyi.business.onlineMonitoring.dto.DataEnum;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,103 +65,60 @@ public class TBasGasoutputPollutantServiceImpl implements ITBasGasoutputPollutan
      * 查询基础信息--企业--废气排口污染物基本信息自动表头列表
      */
     @Override
-    public List<OutputPollutantAutoHead> selectOutputPollutantAutoHead(String entCode, String outPutCode) {
+    public List<OutputPollutantAutoHead> selectOutputPollutantAutoHead(String entCode, String outPutCode, String dataEnum) {
         List<OutputPollutantAutoHead> headList = tBasGasoutputPollutantMapper.selectOutputPollutantAutoHead(entCode, outPutCode);
         headList.forEach( e -> {
             List<MonFactorInfo> monFactor = new ArrayList<>();
             e.setMonFactor(monFactor);
             // 未配置监测因子，先按默认来
             if (StringUtils.isEmpty(e.getMonFactorStr()) || StringUtils.isEmpty(e.getBaseMonFactorStr())) {
-                MonFactorInfo sub;
-                if ("a00000".equals(e.getPollutantCode())) { // 废气流量
-                    sub = new MonFactorInfo();
-                    sub.setName("avg");
-                    sub.setDesc("平均值");
-                    sub.setField("volumeAvgFlow");
-                    monFactor.add(sub);
-                    sub = new MonFactorInfo();
-                    sub.setName("cou");
-                    sub.setDesc("累计值");
-                    sub.setField("volumeTotalFlow");
-                    monFactor.add(sub);
-                } else if ("a34013".equals(e.getPollutantCode())) { // 烟尘
-                    sub = new MonFactorInfo();
-                    sub.setName("avg");
-                    sub.setDesc("平均值");
-                    sub.setField("ycAvgValue");
-                    monFactor.add(sub);
-                    sub = new MonFactorInfo();
-                    sub.setName("zsAvg");
-                    sub.setDesc("折算平均值");
-                    sub.setField("ycZsavgValue");
-                    monFactor.add(sub);
-                    sub = new MonFactorInfo();
-                    sub.setName("cou");
-                    sub.setDesc("累计值");
-                    sub.setField("ycEmissions");
-                    monFactor.add(sub);
-                } else if ("a21026".equals(e.getPollutantCode())) { // 二氧化硫
-                    sub = new MonFactorInfo();
-                    sub.setName("avg");
-                    sub.setDesc("平均值");
-                    sub.setField("so2AvgValue");
-                    monFactor.add(sub);
-                    sub = new MonFactorInfo();
-                    sub.setName("zsAvg");
-                    sub.setDesc("折算平均值");
-                    sub.setField("so2ZsavgValue");
-                    monFactor.add(sub);
-                    sub = new MonFactorInfo();
-                    sub.setName("cou");
-                    sub.setDesc("累计值");
-                    sub.setField("so2Emissions");
-                    monFactor.add(sub);
-                } else if ("a21002".equals(e.getPollutantCode())) { // 氮氧化物
-                    sub = new MonFactorInfo();
-                    sub.setName("avg");
-                    sub.setDesc("平均值");
-                    sub.setField("noAvgValue");
-                    monFactor.add(sub);
-                    sub = new MonFactorInfo();
-                    sub.setName("zsAvg");
-                    sub.setDesc("折算平均值");
-                    sub.setField("noZsavgValue");
-                    monFactor.add(sub);
-                    sub = new MonFactorInfo();
-                    sub.setName("cou");
-                    sub.setDesc("累计值");
-                    sub.setField("noEmissions");
-                    monFactor.add(sub);
-                } else if ("a19001".equals(e.getPollutantCode())) { // 氧气含量
-                    sub = new MonFactorInfo();
-                    sub.setName("avg");
-                    sub.setDesc("平均值");
-                    sub.setField("oxygenContent");
-                    monFactor.add(sub);
-                } else if ("a01012".equals(e.getPollutantCode())) { // 烟气温度
-                    sub = new MonFactorInfo();
-                    sub.setName("avg");
-                    sub.setDesc("平均值");
-                    sub.setField("yqTemperature");
-                    monFactor.add(sub);
-                } else if ("a01014".equals(e.getPollutantCode())) { // 烟气湿度
-                    sub = new MonFactorInfo();
-                    sub.setName("avg");
-                    sub.setDesc("平均值");
-                    sub.setField("yqHumidity");
-                    monFactor.add(sub);
-                } else if ("a01013".equals(e.getPollutantCode())) { // 烟气压力
-                    sub = new MonFactorInfo();
-                    sub.setName("avg");
-                    sub.setDesc("平均值");
-                    sub.setField("yqPressure");
-                    monFactor.add(sub);
-                } else if ("a01011".equals(e.getPollutantCode())) { // 烟气流速
-                    sub = new MonFactorInfo();
-                    sub.setName("avg");
-                    sub.setDesc("平均值");
-                    sub.setField("velocityFlow");
-                    monFactor.add(sub);
+                if (DataEnum.real.name().equals(dataEnum)) {
+                    if ("a00000".equals(e.getPollutantCode())) { // 废气流量
+                        addFactor("rtd", "实测值", "volumeAvgFlow", monFactor);
+                    } else if ("a34013".equals(e.getPollutantCode())) { // 烟尘
+                        addFactor("rtd", "实测值", "ycAvgValue", monFactor);
+                    } else if ("a21026".equals(e.getPollutantCode())) { // 二氧化硫
+                        addFactor("rtd", "实测值", "so2AvgValue", monFactor);
+                    } else if ("a21002".equals(e.getPollutantCode())) { // 氮氧化物
+                        addFactor("rtd", "实测值", "noAvgValue", monFactor);
+                    } else if ("a19001".equals(e.getPollutantCode())) { // 氧气含量
+                        addFactor("rtd", "实测值", "oxygenContent", monFactor);
+                    } else if ("a01012".equals(e.getPollutantCode())) { // 烟气温度
+                        addFactor("rtd", "实测值", "yqTemperature", monFactor);
+                    } else if ("a01014".equals(e.getPollutantCode())) { // 烟气湿度
+                        addFactor("rtd", "实测值", "yqHumidity", monFactor);
+                    } else if ("a01013".equals(e.getPollutantCode())) { // 烟气压力
+                        addFactor("rtd", "实测值", "yqPressure", monFactor);
+                    } else if ("a01011".equals(e.getPollutantCode())) { // 烟气流速
+                        addFactor("rtd", "实测值", "velocityFlow", monFactor);
+                    }
+                } else {
+                    if ("a00000".equals(e.getPollutantCode())) { // 废气流量
+                        addFactor("avg", "平均值", "volumeAvgFlow", monFactor);
+                        addFactor("cou", "排放量", "volumeTotalFlow", monFactor);
+                    } else if ("a34013".equals(e.getPollutantCode())) { // 烟尘
+                        addFactor("avg", "平均值", "ycAvgValue", monFactor);
+                        addFactor("zsAvg", "折算平均值", "ycZsavgValue", monFactor);
+                        addFactor("cou", "排放量", "ycEmissions", monFactor);
+                    } else if ("a21026".equals(e.getPollutantCode())) { // 二氧化硫
+                        addFactor("avg", "平均值", "so2AvgValue", monFactor);
+                        addFactor("zsAvg", "折算平均值", "so2ZsavgValue", monFactor);
+                        addFactor("cou", "排放量", "so2Emissions", monFactor);
+                    } else if ("a21002".equals(e.getPollutantCode())) { // 氮氧化物
+                        addFactor("avg", "平均值", "noAvgValue", monFactor);
+                        addFactor("zsAvg", "折算平均值", "noZsavgValue", monFactor);
+                        addFactor("cou", "排放量", "noEmissions", monFactor);
+                    } else if ("a19001".equals(e.getPollutantCode())) { // 氧气含量
+                        addFactor("avg", "平均值", "oxygenContent", monFactor);
+                    } else if ("a01012".equals(e.getPollutantCode())) { // 烟气温度
+                        addFactor("avg", "平均值", "yqTemperature", monFactor);
+                    } else if ("a01014".equals(e.getPollutantCode())) { // 烟气湿度
+                        addFactor("avg", "平均值", "yqHumidity", monFactor);
+                    } else if ("a01013".equals(e.getPollutantCode())) { // 烟气压力
+                        addFactor("avg", "平均值", "yqPressure", monFactor);
+                    } else if ("a01011".equals(e.getPollutantCode())) { // 烟气流速
+                        addFactor("avg", "平均值", "velocityFlow", monFactor);
+                    }
                 }
             } else {
                 List<MonFactorInfo> monFactorStr = JSONArray.parseArray(e.getMonFactorStr(), MonFactorInfo.class);
@@ -173,62 +131,118 @@ public class TBasGasoutputPollutantServiceImpl implements ITBasGasoutputPollutan
                     if (null == factor.getValue() || factor.getValue() != 1) {
                         continue;
                     }
-                    monFactor.add(factor);
-                    if ("a00000".equals(e.getPollutantCode())) { // 废气流量
-                        if ("avg".equals(name)) {
-                            factor.setField("volumeAvgFlow");
-                        } else if ("cou".equals(name)) {
-                            factor.setField("volumeTotalFlow");
+                    if (DataEnum.real.name().equals(dataEnum)) {
+                        if ("rtd".equals(name)) { // 实时数据只查看实测值
+                            monFactor.add(factor);
                         }
-                    } else if ("a34013".equals(e.getPollutantCode())) { // 烟尘
-                        if ("avg".equals(name)) {
-                            factor.setField("ycAvgValue");
-                        } else if ("zsAvg".equals(name)) {
-                            factor.setField("ycZsavgValue");
-                        } else if ("cou".equals(name)) {
-                            factor.setField("ycEmissions");
+                    } else {
+                        if (!"rtd".equals(name)) { // 非实时数据不查看实测值
+                            monFactor.add(factor);
                         }
-                    } else if ("a21026".equals(e.getPollutantCode())) { // 二氧化硫
-                        if ("avg".equals(name)) {
-                            factor.setField("so2AvgValue");
-                        } else if ("zsAvg".equals(name)) {
-                            factor.setField("so2ZsavgValue");
-                        } else if ("cou".equals(name)) {
-                            factor.setField("so2Emissions");
+                    }
+                    if (DataEnum.real.name().equals(dataEnum)) {
+                        if ("a00000".equals(e.getPollutantCode())) { // 废气流量
+                            if ("rtd".equals(name)) {
+                                factor.setField("volumeAvgFlow");
+                            }
+                        } else if ("a34013".equals(e.getPollutantCode())) { // 烟尘
+                            if ("rtd".equals(name)) {
+                                factor.setField("ycAvgValue");
+                            }
+                        } else if ("a21026".equals(e.getPollutantCode())) { // 二氧化硫
+                            if ("rtd".equals(name)) {
+                                factor.setField("so2AvgValue");
+                            }
+                        } else if ("a21002".equals(e.getPollutantCode())) { // 氮氧化物
+                            if ("rtd".equals(name)) {
+                                factor.setField("noAvgValue");
+                            }
+                        } else if ("a19001".equals(e.getPollutantCode())) { // 氧气含量
+                            if ("rtd".equals(name)) {
+                                factor.setField("oxygenContent");
+                            }
+                        } else if ("a01012".equals(e.getPollutantCode())) { // 烟气温度
+                            if ("rtd".equals(name)) {
+                                factor.setField("yqTemperature");
+                            }
+                        } else if ("a01014".equals(e.getPollutantCode())) { // 烟气湿度
+                            if ("rtd".equals(name)) {
+                                factor.setField("yqHumidity");
+                            }
+                        } else if ("a01013".equals(e.getPollutantCode())) { // 烟气压力
+                            if ("rtd".equals(name)) {
+                                factor.setField("yqPressure");
+                            }
+                        } else if ("a01011".equals(e.getPollutantCode())) { // 烟气流速
+                            if ("rtd".equals(name)) {
+                                factor.setField("velocityFlow");
+                            }
                         }
-                    } else if ("a21002".equals(e.getPollutantCode())) { // 氮氧化物
-                        if ("avg".equals(name)) {
-                            factor.setField("noAvgValue");
-                        } else if ("zsAvg".equals(name)) {
-                            factor.setField("noZsavgValue");
-                        } else if ("cou".equals(name)) {
-                            factor.setField("noEmissions");
-                        }
-                    } else if ("a19001".equals(e.getPollutantCode())) { // 氧气含量
-                        if ("avg".equals(name)) {
-                            factor.setField("oxygenContent");
-                        }
-                    } else if ("a01012".equals(e.getPollutantCode())) { // 烟气温度
-                        if ("avg".equals(name)) {
-                            factor.setField("yqTemperature");
-                        }
-                    } else if ("a01014".equals(e.getPollutantCode())) { // 烟气湿度
-                        if ("avg".equals(name)) {
-                            factor.setField("yqHumidity");
-                        }
-                    } else if ("a01013".equals(e.getPollutantCode())) { // 烟气压力
-                        if ("avg".equals(name)) {
-                            factor.setField("yqPressure");
-                        }
-                    } else if ("a01011".equals(e.getPollutantCode())) { // 烟气流速
-                        if ("avg".equals(name)) {
-                            factor.setField("velocityFlow");
+                    } else {
+                        if ("a00000".equals(e.getPollutantCode())) { // 废气流量
+                            if ("avg".equals(name)) {
+                                factor.setField("volumeAvgFlow");
+                            } else if ("cou".equals(name)) {
+                                factor.setField("volumeTotalFlow");
+                            }
+                        } else if ("a34013".equals(e.getPollutantCode())) { // 烟尘
+                            if ("avg".equals(name)) {
+                                factor.setField("ycAvgValue");
+                            } else if ("zsAvg".equals(name)) {
+                                factor.setField("ycZsavgValue");
+                            } else if ("cou".equals(name)) {
+                                factor.setField("ycEmissions");
+                            }
+                        } else if ("a21026".equals(e.getPollutantCode())) { // 二氧化硫
+                            if ("avg".equals(name)) {
+                                factor.setField("so2AvgValue");
+                            } else if ("zsAvg".equals(name)) {
+                                factor.setField("so2ZsavgValue");
+                            } else if ("cou".equals(name)) {
+                                factor.setField("so2Emissions");
+                            }
+                        } else if ("a21002".equals(e.getPollutantCode())) { // 氮氧化物
+                            if ("avg".equals(name)) {
+                                factor.setField("noAvgValue");
+                            } else if ("zsAvg".equals(name)) {
+                                factor.setField("noZsavgValue");
+                            } else if ("cou".equals(name)) {
+                                factor.setField("noEmissions");
+                            }
+                        } else if ("a19001".equals(e.getPollutantCode())) { // 氧气含量
+                            if ("avg".equals(name)) {
+                                factor.setField("oxygenContent");
+                            }
+                        } else if ("a01012".equals(e.getPollutantCode())) { // 烟气温度
+                            if ("avg".equals(name)) {
+                                factor.setField("yqTemperature");
+                            }
+                        } else if ("a01014".equals(e.getPollutantCode())) { // 烟气湿度
+                            if ("avg".equals(name)) {
+                                factor.setField("yqHumidity");
+                            }
+                        } else if ("a01013".equals(e.getPollutantCode())) { // 烟气压力
+                            if ("avg".equals(name)) {
+                                factor.setField("yqPressure");
+                            }
+                        } else if ("a01011".equals(e.getPollutantCode())) { // 烟气流速
+                            if ("avg".equals(name)) {
+                                factor.setField("velocityFlow");
+                            }
                         }
                     }
                 }
             }
         });
         return headList;
+    }
+
+    private void addFactor(String name, String desc, String field, List<MonFactorInfo> list) {
+        MonFactorInfo info = new MonFactorInfo();
+        info.setName(name);
+        info.setDesc(desc);
+        info.setField(field);
+        list.add(info);
     }
 
     /**
