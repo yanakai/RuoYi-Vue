@@ -6,6 +6,7 @@ import com.ruoyi.business.annex.domain.AnnexReq;
 import com.ruoyi.business.annex.mapper.AnnexMapper;
 import com.ruoyi.business.annex.service.AnnexService;
 import com.ruoyi.common.config.RuoYiConfig;
+import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.utils.SecurityUtils;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -73,17 +75,44 @@ public class AnnexServiceImpl implements AnnexService {
         }
         String sourceType = annexInfo.getString("sourceType");
         List<String> annexIds = annexInfo.getList("annexIds", String.class);
-        // 删除旧附件-不在annexIds列表里的，指定sourceType、sourceId
-        annexMapper.deleteAnnexBySourceExclude(sourceType, sourceId, annexIds);
-        if (null == annexIds || annexIds.size() < 1) {
-            return AjaxResult.error("未知的更新数据");
-        }
         // 更新附件
-        return AjaxResult.success(annexMapper.updateAnnex(sourceType, sourceId, annexIds));
+        updateAnnex(sourceId, sourceType, annexIds);
+        return AjaxResult.success();
     }
 
     @Override
-    public AjaxResult deleteAnnexByIds(String[] annexIds) {
-        return AjaxResult.success(annexMapper.deleteAnnexByIds(annexIds));
+    public void updateAnnex(String sourceId, String sourceType, List<String> annexIds) {
+        if (StringUtils.isEmpty(sourceId)) {
+            return;
+        }
+        // 先获取旧的配置
+        List<AnnexInfo> oldList = annexMapper.selectAnnexListBySource(sourceId, sourceType);
+        List<String> deletePath = new ArrayList<>();
+        List<String> deleteAnnexId = new ArrayList<>();
+        if (null != oldList && oldList.size() > 0) {
+            for (AnnexInfo old : oldList) {
+                // 更新时的id包含在旧的内无需更新；旧的不包含在新的列表内删除
+                if (null != annexIds && annexIds.contains(old.getAnnexId())) {
+                    annexIds.remove(old.getAnnexId());
+                } else {
+                    if (null != old.getFilePath()) {
+                        deletePath.add(old.getFilePath().replace(Constants.RESOURCE_PREFIX, ""));
+                    }
+                    deleteAnnexId.add(old.getAnnexId());
+                }
+            }
+        }
+        // 删除不包含在新的内的配置
+        if (deleteAnnexId.size() > 0) {
+            annexMapper.deleteAnnexByIds(deleteAnnexId);
+        }
+        // 更新数据
+        if (null != annexIds && annexIds.size() > 0) {
+            annexMapper.updateAnnex(sourceId, sourceType, annexIds);
+        }
+        // 删除本地保存的数据
+        if (deletePath.size() > 0) {
+            deletePath.forEach( e -> FileUploadUtils.deleteFile(e));
+        }
     }
 }

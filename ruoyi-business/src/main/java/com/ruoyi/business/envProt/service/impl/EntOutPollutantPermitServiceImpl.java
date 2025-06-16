@@ -2,7 +2,7 @@ package com.ruoyi.business.envProt.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.ruoyi.business.annex.mapper.AnnexMapper;
+import com.ruoyi.business.annex.service.AnnexService;
 import com.ruoyi.business.base.domain.TBasPollutantCode;
 import com.ruoyi.business.base.mapper.TBasPollutantCodeMapper;
 import com.ruoyi.business.envProt.domain.*;
@@ -52,10 +52,10 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
         this.entOutPollutantPermitMapper = entOutPollutantPermitMapper;
     }
 
-    private AnnexMapper annexMapper;
+    private AnnexService annexService;
     @Autowired
-    public void setAnnexMapper(AnnexMapper annexMapper) {
-        this.annexMapper = annexMapper;
+    public void setAnnexService(AnnexService annexService) {
+        this.annexService = annexService;
     }
 
     private TBasPollutantCodeMapper tBasPollutantCodeMapper;
@@ -295,7 +295,7 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
         permit.setUpdateTime(permit.getCreateTime());
         int count = entOutPollutantPermitMapper.insertEntOutPollutantPermit(permit);
         if (count > 0 && null != permit.getAnnexIds() && permit.getAnnexIds().size() > 0) {
-            annexMapper.updateAnnex(Constants.ANNEX_EntOutPollutantPermit, permit.getPollPermitId(), permit.getAnnexIds());
+            annexService.updateAnnex(permit.getPollPermitId(), Constants.ANNEX_EntOutPollutantPermit, permit.getAnnexIds());
         }
         return AjaxResult.success(count);
     }
@@ -319,7 +319,7 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
             // 删除对应的排污许可总量
             entOutPollutantPermitMapper.deleteEntOutPollutantPermitCountByPollPermitIds(pollPermitIds);
             // 删除附件
-            annexMapper.deleteAnnexBySource(Constants.ANNEX_EntOutPollutantPermit, pollPermitIds);
+            pollPermitIds.forEach( e -> annexService.updateAnnex(e, Constants.ANNEX_EntOutPollutantPermit, null));
         }
         return AjaxResult.success(count);
     }

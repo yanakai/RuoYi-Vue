@@ -2,7 +2,7 @@ package com.ruoyi.business.envProt.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.ruoyi.business.annex.mapper.AnnexMapper;
+import com.ruoyi.business.annex.service.AnnexService;
 import com.ruoyi.business.envProt.domain.EntEnvProtCert;
 import com.ruoyi.business.envProt.domain.EntEnvProtCertReq;
 import com.ruoyi.business.envProt.mapper.EntEnvProtCertMapper;
@@ -46,10 +46,10 @@ public class EntEnvProtCertServiceImpl implements EntEnvProtCertService {
         this.entEnvProtCertMapper = entEnvProtCertMapper;
     }
 
-    private AnnexMapper annexMapper;
+    private AnnexService annexService;
     @Autowired
-    public void setAnnexMapper(AnnexMapper annexMapper) {
-        this.annexMapper = annexMapper;
+    public void setAnnexService(AnnexService annexService) {
+        this.annexService = annexService;
     }
 
     @Override
@@ -162,7 +162,7 @@ public class EntEnvProtCertServiceImpl implements EntEnvProtCertService {
         cert.setUpdateTime(cert.getCreateTime());
         int count = entEnvProtCertMapper.insertEntEnvProtCert(cert);
         if (count > 0 && null != cert.getAnnexIds() && cert.getAnnexIds().size() > 0) {
-            annexMapper.updateAnnex(Constants.ANNEX_EntEnvProtCert, cert.getProtCertId(), cert.getAnnexIds());
+            annexService.updateAnnex(cert.getProtCertId(), Constants.ANNEX_EntEnvProtCert, cert.getAnnexIds());
         }
         return AjaxResult.success(count);
     }
@@ -184,7 +184,7 @@ public class EntEnvProtCertServiceImpl implements EntEnvProtCertService {
         int count = entEnvProtCertMapper.deleteEntEnvProtCertByProtCertIds(protCertIds);
         if (count > 0) {
             // 删除附件
-            annexMapper.deleteAnnexBySource(Constants.ANNEX_EntEnvProtCert, protCertIds);
+            protCertIds.forEach( e -> annexService.updateAnnex(e, Constants.ANNEX_EntEnvProtCert, null));
         }
         return AjaxResult.success(count);
     }
