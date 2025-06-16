@@ -56,12 +56,4 @@ public class AnnexController {
     public AjaxResult update(@RequestBody(required = false) JSONObject annexInfo) {
         return annexService.updateAnnex(annexInfo);
     }
-
-    /**
-     * 删除附件
-     */
-    @DeleteMapping("/delete/{annexIds}")
-    public AjaxResult delete(@PathVariable String[] annexIds) {
-        return annexService.deleteAnnexByIds(annexIds);
-    }
 }

@@ -3,7 +3,7 @@ package com.ruoyi.business.envProt.service.impl;
 import cn.hutool.core.map.MapUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.ruoyi.business.annex.mapper.AnnexMapper;
+import com.ruoyi.business.annex.service.AnnexService;
 import com.ruoyi.business.envProt.domain.EntCleanProduce;
 import com.ruoyi.business.envProt.domain.EntCleanProduceReq;
 import com.ruoyi.business.envProt.mapper.EntCleanProduceMapper;
@@ -48,10 +48,10 @@ public class EntCleanProduceServiceImpl implements EntCleanProduceService {
         this.entCleanProduceMapper = entCleanProduceMapper;
     }
 
-    private AnnexMapper annexMapper;
+    private AnnexService annexService;
     @Autowired
-    public void setAnnexMapper(AnnexMapper annexMapper) {
-        this.annexMapper = annexMapper;
+    public void setAnnexService(AnnexService annexService) {
+        this.annexService = annexService;
     }
 
     @Override
@@ -203,7 +203,7 @@ public class EntCleanProduceServiceImpl implements EntCleanProduceService {
         produce.setUpdateTime(produce.getCreateTime());
         int count = entCleanProduceMapper.insertEntCleanProduce(produce);
         if (count > 0 && null != produce.getAnnexIds() && produce.getAnnexIds().size() > 0) {
-            annexMapper.updateAnnex(Constants.ANNEX_EntCleanProduce, produce.getCleanProduceId(), produce.getAnnexIds());
+            annexService.updateAnnex(produce.getCleanProduceId(), Constants.ANNEX_EntCleanProduce, produce.getAnnexIds());
         }
         return AjaxResult.success(count);
     }
@@ -233,7 +233,7 @@ public class EntCleanProduceServiceImpl implements EntCleanProduceService {
         int count = entCleanProduceMapper.deleteEntCleanProduceByCleanProduceIds(cleanProduceIds);
         if (count > 0) {
             // 删除附件
-            annexMapper.deleteAnnexBySource(Constants.ANNEX_EntCleanProduce, cleanProduceIds);
+            cleanProduceIds.forEach( e -> annexService.updateAnnex(e, Constants.ANNEX_EntCleanProduce, null));
         }
         return AjaxResult.success(count);
     }

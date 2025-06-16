@@ -26,7 +26,9 @@ public interface AnnexService {
     AjaxResult updateAnnex(JSONObject annexInfo);
 
     /**
-     * 批量删除附件
+     * 修改附件信息
+     * 更新时的id包含在旧的内无需更新；旧的不包含在新的列表内时删除记录及文件
+     * annexId为空时表示直接删除
      */
-    AjaxResult deleteAnnexByIds(String[] annexIds);
+    void updateAnnex(String sourceId, String sourceType, List<String> annexIds);
 }

@@ -8,12 +8,16 @@ import com.ruoyi.common.exception.file.InvalidExtensionException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.uuid.Seq;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
 /**
@@ -21,6 +25,7 @@ import java.util.Objects;
  *
  * @author ruoyi
  */
+@Slf4j
 public class FileUploadUtils {
     /**
      * 默认大小 50M
@@ -194,5 +199,37 @@ public class FileUploadUtils {
             extension = MimeTypeUtils.getExtension(Objects.requireNonNull(file.getContentType()));
         }
         return extension;
+    }
+
+    /**
+     * 文件删除(更改为移动到备份目录)
+     */
+    public static void deleteFile(String filePath) {
+        String baseDir = RuoYiConfig.getProfile();
+        if (filePath.startsWith(Constants.RESOURCE_PREFIX)) {
+            filePath = filePath.substring(Constants.RESOURCE_PREFIX.length());
+        }
+        Path path = Paths.get(baseDir + File.separator + filePath);
+        if (!Files.exists(path)) {
+            log.error("文件不存在 {} {}", baseDir, filePath);
+            return;
+        }
+        if (Files.isDirectory(path)) {
+            log.error("路径是目录不是文件 {} {}", baseDir, filePath);
+            return;
+        }
+        try {
+            Path back = Paths.get(baseDir + File.separator + "backups" + File.separator + filePath);
+            // 创建目标目录（如果不存在）
+            Path targetDir = back.getParent();
+            if (targetDir != null && !Files.exists(targetDir)) {
+                Files.createDirectories(targetDir);
+            }
+            // 标准移动操作
+            Files.move(path, back, StandardCopyOption.REPLACE_EXISTING);
+//            Files.delete(path);
+        } catch (Exception e) {
+            log.error("删除失败", e);
+        }
     }
 }

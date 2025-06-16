@@ -15,6 +15,11 @@ public interface AnnexMapper {
     List<AnnexInfo> selectAnnexList(AnnexReq req);
 
     /**
+     * 查询附件
+     */
+    List<AnnexInfo> selectAnnexListBySource(@Param("sourceId") String sourceId, @Param("sourceType") String sourceType);
+
+    /**
      * 添加附件
      */
     void insertAnnex(AnnexInfo annexInfo);
@@ -22,22 +27,10 @@ public interface AnnexMapper {
     /**
      * 修改附件信息
      */
-    int updateAnnex(@Param("sourceType") String sourceType, @Param("sourceId") String sourceId
-            , @Param("annexIds") List<String> annexIds);
+    void updateAnnex(@Param("sourceId") String sourceId, @Param("sourceType") String sourceType, @Param("annexIds") List<String> annexIds);
 
     /**
      * 批量删除附件
      */
-    int deleteAnnexByIds(String[] ids);
-
-    /**
-     * 按附件来源删除
-     */
-    void deleteAnnexBySource(@Param("sourceType") String sourceType, @Param("sourceIds") List<String> sourceIds);
-
-    /**
-     * 按附件来源删除，排除指定附件id
-     */
-    void deleteAnnexBySourceExclude(@Param("sourceType") String sourceType, @Param("sourceId") String sourceId
-            , @Param("annexIds") List<String> annexIds);
+    void deleteAnnexByIds(List<String> ids);
 }
