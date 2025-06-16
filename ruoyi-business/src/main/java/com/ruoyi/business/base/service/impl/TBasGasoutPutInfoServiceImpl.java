@@ -1,11 +1,13 @@
 package com.ruoyi.business.base.service.impl;
 
+import com.ruoyi.business.annex.service.AnnexService;
 import com.ruoyi.business.base.domain.TBasGasoutPutInfo;
 import com.ruoyi.business.base.domain.TBasUploadFiles;
 import com.ruoyi.business.base.mapper.TBasGasoutPutInfoMapper;
 import com.ruoyi.business.base.mapper.TBasGasoutputPollutantMapper;
 import com.ruoyi.business.base.mapper.TBasUploadFilesMapper;
 import com.ruoyi.business.base.service.ITBasGasoutPutInfoService;
+import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,8 +30,11 @@ public class TBasGasoutPutInfoServiceImpl implements ITBasGasoutPutInfoService {
     @Resource
     private TBasGasoutputPollutantMapper tBasGasoutputPollutantMapper;
 
-    @Resource
-    private TBasUploadFilesMapper basUploadFilesMapper;
+    private AnnexService annexService;
+    @Autowired
+    public void setAnnexService(AnnexService annexService) {
+        this.annexService = annexService;
+    }
 
     /**
      * 查询基础信息--企业--废气排口
@@ -40,11 +45,7 @@ public class TBasGasoutPutInfoServiceImpl implements ITBasGasoutPutInfoService {
     @Override
     public TBasGasoutPutInfo selectTBasGasoutPutInfoById(Long id) {
         TBasGasoutPutInfo tBasGasoutPutInfo = tBasGasoutPutInfoMapper.selectTBasGasoutPutInfoById(id);
-        //查询附件信息
-        TBasUploadFiles basUploadFiles = new TBasUploadFiles();
-        basUploadFiles.setBusinessModuleId(tBasGasoutPutInfo.getId().toString());
-        tBasGasoutPutInfo.setUploadFilesList(basUploadFilesMapper.selectTBasUploadFilesList(basUploadFiles));
-
+        tBasGasoutPutInfo.setAnnexInfoList(annexService.selectAnnexList(tBasGasoutPutInfo.getId().toString(), Constants.ANNEX_GasOutPut));
         return tBasGasoutPutInfo;
     }
 
@@ -69,21 +70,16 @@ public class TBasGasoutPutInfoServiceImpl implements ITBasGasoutPutInfoService {
     public int insertTBasGasoutPutInfo(TBasGasoutPutInfo tBasGasoutPutInfo) {
         tBasGasoutPutInfo.setCreateTime(DateUtils.getNowDate());
         int result = tBasGasoutPutInfoMapper.insertTBasGasoutPutInfo(tBasGasoutPutInfo);
-        //新增附件信息
-        List<TBasUploadFiles> uploadFilesList = tBasGasoutPutInfo.getUploadFilesList();
-        if (uploadFilesList != null && uploadFilesList.size() > 0) {
-            for (TBasUploadFiles uploadFiles : uploadFilesList) {
-                uploadFiles.setBusinessModuleId(tBasGasoutPutInfo.getId().toString());
-                basUploadFilesMapper.updateTBasUploadFiles(uploadFiles);
-            }
-        }
         if (result > 0){
             //创建表 分钟表t_data_gasout_minute  小时表t_data_gasout_hour 天表t_data_gasout_day
             tBasGasoutPutInfoMapper.createTableReal(tBasGasoutPutInfo);
             tBasGasoutPutInfoMapper.createTableMin(tBasGasoutPutInfo);
             tBasGasoutPutInfoMapper.createTableHour(tBasGasoutPutInfo);
             tBasGasoutPutInfoMapper.createTableDay(tBasGasoutPutInfo);
-
+            // 设置附件
+            if (tBasGasoutPutInfo.getAnnexIdList() != null && tBasGasoutPutInfo.getAnnexIdList().size() > 0) {
+                annexService.updateAnnex(tBasGasoutPutInfo.getId().toString(), Constants.ANNEX_GasOutPut, tBasGasoutPutInfo.getAnnexIdList());
+            }
         }
 
         return result;
@@ -99,23 +95,9 @@ public class TBasGasoutPutInfoServiceImpl implements ITBasGasoutPutInfoService {
     public int updateTBasGasoutPutInfo(TBasGasoutPutInfo tBasGasoutPutInfo) {
         tBasGasoutPutInfo.setUpdateTime(DateUtils.getNowDate());
         int result = tBasGasoutPutInfoMapper.updateTBasGasoutPutInfo(tBasGasoutPutInfo);
-        //重置附件信息业务id
-        TBasUploadFiles basUploadFiles = new TBasUploadFiles();
-        basUploadFiles.setBusinessModuleId(tBasGasoutPutInfo.getId().toString());
-        List<TBasUploadFiles> files = basUploadFilesMapper.selectTBasUploadFilesList(basUploadFiles);
-        if (files != null && files.size() > 0) {
-            for (TBasUploadFiles file : files) {
-                file.setBusinessModuleId(null);
-                basUploadFilesMapper.updateTBasUploadFiles(file);
-            }
-        }
-        //新增附件信息
-        List<TBasUploadFiles> uploadFilesList = tBasGasoutPutInfo.getUploadFilesList();
-        if (uploadFilesList != null && uploadFilesList.size() > 0) {
-            for (TBasUploadFiles uploadFiles : uploadFilesList) {
-                uploadFiles.setBusinessModuleId(tBasGasoutPutInfo.getId().toString());
-                basUploadFilesMapper.updateTBasUploadFiles(uploadFiles);
-            }
+        // 修改附件信息
+        if (result > 0) {
+            annexService.updateAnnex(tBasGasoutPutInfo.getId().toString(), Constants.ANNEX_GasOutPut, tBasGasoutPutInfo.getAnnexIdList());
         }
         return result;
     }
