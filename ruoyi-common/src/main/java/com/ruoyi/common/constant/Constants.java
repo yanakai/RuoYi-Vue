@@ -197,10 +197,10 @@ public class Constants {
     /**
      * 附件类型-废气排口
      */
-    public static final String ANNEX_GasOutPut = "entEnvProtCert";
+    public static final String ANNEX_GasOutPut = "gasOutPut";
     /**
      * 附件类型-废水排口
      */
-    public static final String ANNEX_WaterOutPut = "entOutPollutantPermit";
+    public static final String ANNEX_WaterOutPut = "waterOutPut";
 
 }
