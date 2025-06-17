@@ -11,12 +11,7 @@ import java.util.List;
 public interface EntAnnualOutputInfoMapper {
 
     /**
-     * 查询企业年排量信息记录列表-废气
+     * 查询企业年排量信息记录列表
      */
-    List<EntAnnualOutputInfo> selectEntAnnualOutputInfoList_Gas(EntAnnualOutputInfoReq req);
-
-    /**
-     * 查询企业年排量信息记录列表-废水
-     */
-    List<EntAnnualOutputInfo> selectEntAnnualOutputInfoList_Water(EntAnnualOutputInfoReq req);
+    List<EntAnnualOutputInfo> selectEntAnnualOutputInfoList(EntAnnualOutputInfoReq req);
 }
