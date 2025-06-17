@@ -20,49 +20,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="presentEmissionLimit" column="present_emission_limit"    />
     </resultMap>
 
-    <select id="selectEntAnnualOutputInfoList_Gas" parameterType="com.ruoyi.business.statisticsAlarm.domain.EntAnnualOutputInfoReq"
+    <select id="selectEntAnnualOutputInfoList" parameterType="com.ruoyi.business.statisticsAlarm.domain.EntAnnualOutputInfoReq"
             resultMap="entAnnualOutputInfoResult">
         select
             a.annual_output_id, a.ent_code, e.ent_name, a.out_put_code, pi.out_put_name, a.out_put_type, a.pollutant_code,
             p.pollutant_name_cn, p.pollutant_name_en, a.annual_num, a.annual_count, a.annual_emission_limit, a.present_emission_limit
         from t_bas_ent_annual_output_info a
         left join t_bas_pollutant_code p on p.pollutant_code = a.pollutant_code
-        left join t_bas_gasout_put_info pi on pi.ent_code = a.ent_code and pi.out_put_code = a.out_put_code
+        <if test="outPutType != null">
+            <choose>
+                <when test="outPutType == 1"> <!-- 废水 -->
+                    left join t_bas_waterout_put_info pi on pi.ent_code = a.ent_code and pi.out_put_code = a.out_put_code
+                </when>
+                <when test="outPutType == 2"> <!-- 废气 -->
+                    left join t_bas_gasout_put_info pi on pi.ent_code = a.ent_code and pi.out_put_code = a.out_put_code
+                </when>
+                <otherwise><!-- 默认设置废水 -->
+                    left join t_bas_waterout_put_info pi on pi.ent_code = a.ent_code and pi.out_put_code = a.out_put_code
+                </otherwise>
+            </choose>
+        </if>
         left join t_bas_enterprise e on e.ent_code = a.ent_code
         <where>
-            <if test="entCodes != null and entCodes.size() > 0"> and a.ent_code in
-                <foreach item="code" collection="entCodes" open="(" separator="," close=")">
-                    #{code}
-                </foreach>
+            <if test="outPutType != null">
+                and a.out_put_type = #{outPutType}
             </if>
-            <if test="entName != null and entName != ''">
-                and e.ent_name like concat('%', #{entName}, '%')
-            </if>
-            <if test="outPutName != null and outPutName != ''">
-                and pi.out_put_name like concat('%', #{outPutName}, '%')
-            </if>
-            <if test="pollutantNameCn != null and pollutantNameCn != ''">
-                and p.pollutant_name_cn like concat('%', #{pollutantNameCn}, '%')
-            </if>
-            <if test="pollutantNameEn != null and pollutantNameEn != ''">
-                and p.pollutant_name_en like concat('%', #{pollutantNameEn}, '%')
-            </if>
-            <if test="annualNum != null">
-                and a.annual_num = #{annualNum}
-            </if>
-        </where>
-    </select>
-
-    <select id="selectEntAnnualOutputInfoList_Water" parameterType="com.ruoyi.business.statisticsAlarm.domain.EntAnnualOutputInfoReq"
-            resultMap="entAnnualOutputInfoResult">
-        select
-            a.annual_output_id, a.ent_code, e.ent_name, a.out_put_code, pi.out_put_name, a.out_put_type, a.pollutant_code,
-            p.pollutant_name_cn, p.pollutant_name_en, a.annual_num, a.annual_count, a.annual_emission_limit, a.present_emission_limit
-        from t_bas_ent_annual_output_info a
-        left join t_bas_pollutant_code p on p.pollutant_code = a.pollutant_code
-        left join t_bas_waterout_put_info pi on pi.ent_code = a.ent_code and pi.out_put_code = a.out_put_code
-        left join t_bas_enterprise e on e.ent_code = a.ent_code
-        <where>
             <if test="entCodes != null and entCodes.size() > 0"> and a.ent_code in
                 <foreach item="code" collection="entCodes" open="(" separator="," close=")">
                     #{code}

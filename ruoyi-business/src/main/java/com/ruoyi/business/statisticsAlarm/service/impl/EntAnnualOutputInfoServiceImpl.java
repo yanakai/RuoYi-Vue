@@ -173,11 +173,10 @@ public class EntAnnualOutputInfoServiceImpl implements EntAnnualOutputInfoServic
         if (null == req) {
             return Collections.emptyList();
         }
-        if (Constants.POLLUTION_TYPE_GAS.equals(req.getOutPutType())) {
-            return entAnnualOutputInfoMapper.selectEntAnnualOutputInfoList_Gas(req);
-        }
-        if (Constants.POLLUTION_TYPE_WATER.equals(req.getOutPutType())) {
-            return entAnnualOutputInfoMapper.selectEntAnnualOutputInfoList_Water(req);
+        if (Constants.POLLUTION_TYPE_GAS.equals(req.getOutPutType())
+                || Constants.POLLUTION_TYPE_WATER.equals(req.getOutPutType())
+        ) {
+            return entAnnualOutputInfoMapper.selectEntAnnualOutputInfoList(req);
         }
         return Collections.emptyList();
     }
