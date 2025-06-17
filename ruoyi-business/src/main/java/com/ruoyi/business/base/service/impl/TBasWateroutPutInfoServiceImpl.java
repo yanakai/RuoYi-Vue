@@ -1,9 +1,7 @@
 package com.ruoyi.business.base.service.impl;
 
 import com.ruoyi.business.annex.service.AnnexService;
-import com.ruoyi.business.base.domain.TBasUploadFiles;
 import com.ruoyi.business.base.domain.TBasWateroutPutInfo;
-import com.ruoyi.business.base.mapper.TBasUploadFilesMapper;
 import com.ruoyi.business.base.mapper.TBasWateroutPutInfoMapper;
 import com.ruoyi.business.base.mapper.TBasWateroutputPollutantMapper;
 import com.ruoyi.business.base.service.ITBasWateroutPutInfoService;
@@ -109,7 +107,16 @@ public class TBasWateroutPutInfoServiceImpl implements ITBasWateroutPutInfoServi
     public int deleteTBasWateroutPutInfoByIds(Long[] ids) {
         //删除废水排口污染物基本信息
         tBasWateroutputPollutantMapper.deleteTBasWateroutputPollutantByInfoIds(ids);
-        return tBasWateroutPutInfoMapper.deleteTBasWateroutPutInfoByIds(ids);
+        int result = tBasWateroutPutInfoMapper.deleteTBasWateroutPutInfoByIds(ids);
+        if (result > 0) {
+            for (Long id : ids) {
+                if (null == id) {
+                    continue;
+                }
+                annexService.updateAnnex(id.toString(), Constants.ANNEX_WaterOutPut, null);
+            }
+        }
+        return result;
     }
 
     /**
@@ -122,6 +129,10 @@ public class TBasWateroutPutInfoServiceImpl implements ITBasWateroutPutInfoServi
     public int deleteTBasWateroutPutInfoById(Long id) {
         //删除废水排口污染物基本信息
         tBasWateroutputPollutantMapper.deleteTBasWateroutputPollutantByInfoId(id);
-        return tBasWateroutPutInfoMapper.deleteTBasWateroutPutInfoById(id);
+        int result = tBasWateroutPutInfoMapper.deleteTBasWateroutPutInfoById(id);
+        if (result > 0) {
+            annexService.updateAnnex(id.toString(), Constants.ANNEX_WaterOutPut, null);
+        }
+        return result;
     }
 }

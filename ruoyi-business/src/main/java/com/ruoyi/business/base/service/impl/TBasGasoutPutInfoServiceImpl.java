@@ -2,10 +2,8 @@ package com.ruoyi.business.base.service.impl;
 
 import com.ruoyi.business.annex.service.AnnexService;
 import com.ruoyi.business.base.domain.TBasGasoutPutInfo;
-import com.ruoyi.business.base.domain.TBasUploadFiles;
 import com.ruoyi.business.base.mapper.TBasGasoutPutInfoMapper;
 import com.ruoyi.business.base.mapper.TBasGasoutputPollutantMapper;
-import com.ruoyi.business.base.mapper.TBasUploadFilesMapper;
 import com.ruoyi.business.base.service.ITBasGasoutPutInfoService;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.utils.DateUtils;
@@ -13,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 基础信息--企业--废气排口Service业务层处理
@@ -112,7 +108,16 @@ public class TBasGasoutPutInfoServiceImpl implements ITBasGasoutPutInfoService {
     public int deleteTBasGasoutPutInfoByIds(Long[] ids) {
         //删除废气排口污染物基本信息
         tBasGasoutputPollutantMapper.deleteTBasGasoutputPollutantByInfoIds(ids);
-        return tBasGasoutPutInfoMapper.deleteTBasGasoutPutInfoByIds(ids);
+        int result = tBasGasoutPutInfoMapper.deleteTBasGasoutPutInfoByIds(ids);
+        if (result > 0) {
+            for (Long id : ids) {
+                if (null == id) {
+                    continue;
+                }
+                annexService.updateAnnex(id.toString(), Constants.ANNEX_GasOutPut, null);
+            }
+        }
+        return result;
     }
 
     /**
@@ -125,6 +130,10 @@ public class TBasGasoutPutInfoServiceImpl implements ITBasGasoutPutInfoService {
     public int deleteTBasGasoutPutInfoById(Long id) {
         //删除废气排口污染物基本信息
         tBasGasoutputPollutantMapper.deleteTBasGasoutputPollutantByInfoId(id);
-        return tBasGasoutPutInfoMapper.deleteTBasGasoutPutInfoById(id);
+        int result = tBasGasoutPutInfoMapper.deleteTBasGasoutPutInfoById(id);
+        if (result > 0) {
+            annexService.updateAnnex(id.toString(), Constants.ANNEX_GasOutPut, null);
+        }
+        return result;
     }
 }
