@@ -1,8 +1,8 @@
 package com.ruoyi.business.ent.controller;
 
-import com.zkhf.epmis.core.domain.AjaxResult;
-import com.zkhf.epmis.platform.ent.domain.EntOutputPollutant;
-import com.zkhf.epmis.platform.ent.service.EntOutputPollutantService;
+import com.ruoyi.business.ent.domain.EntOutputPollutant;
+import com.ruoyi.business.ent.service.EntOutputPollutantService;
+import com.ruoyi.common.core.domain.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
