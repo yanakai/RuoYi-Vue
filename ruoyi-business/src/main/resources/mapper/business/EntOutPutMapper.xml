@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.ent.mapper.EntOutPutMapper">
+    
+    <resultMap id="entOutPutInfoResult" type="com.ruoyi.business.ent.domain.EntOutPutInfo">
+        <result property="outPutId"    column="out_put_id"    />
+        <result property="entCode"    column="ent_code"    />
+        <result property="entName"    column="ent_name"    />
+        <result property="outPutCode"    column="out_put_code"    />
+        <result property="outPutName"    column="out_put_name"    />
+        <result property="outPutType"    column="out_put_type"    />
+        <result property="outPutStatus"    column="out_put_status"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="outPutHeight"    column="out_put_height"    />
+        <result property="outPutPosition"    column="out_put_position"    />
+        <result property="mnNum"    column="mn_num"    />
+        <result property="transRate"    column="trans_rate"    />
+        <result property="validRate"    column="valid_rate"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateUser"    column="update_user"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="pollutantCode"    column="pollutant_code"    />
+    </resultMap>
+
+    <select id="selectOutPutList" parameterType="com.ruoyi.business.ent.domain.EntOutPutReq"
+            resultMap="entOutPutInfoResult">
+        select
+            i.out_put_id, e.ent_code, e.ent_name, i.out_put_code, i.out_put_name, i.out_put_type, i.out_put_status,
+            i.longitude, i.latitude, i.out_put_height, i.out_put_position, i.mn_num, i.trans_rate, i.valid_rate, i.create_user,
+            i.create_time, i.update_user, i.update_time, i.remark, i.pollutant_code
+        from t_ent_out_put_info i
+        left join t_bas_enterprise e on e.ent_code = i.ent_code
+        <where>
+            <if test="entName != null and entName != ''"> and e.ent_name like concat('%', #{entName}, '%')</if>
+            <if test="outPutCode != null and outPutCode != ''"> and i.out_put_code like concat('%', #{outPutCode}, '%')</if>
+            <if test="outPutName != null and outPutName != ''"> and i.out_put_name like concat('%', #{outPutName}, '%')</if>
+            <if test="outPutType != null"> and i.out_put_type = #{outPutType}</if>
+            <if test="outPutStatus != null"> and i.out_put_status = #{outPutStatus}</if>
+            <if test="mnNum != null"> and i.mn_num like concat('%', #{mnNum}, '%')</if>
+            <if test="entCodes != null and entCodes.size() > 0"> and e.ent_code in
+                <foreach item="code" collection="entCodes" open="(" separator="," close=")">
+                    #{code}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectOutPutById" resultMap="entOutPutInfoResult">
+        select
+            i.out_put_id, i.ent_code, e.ent_name, i.out_put_code, i.out_put_name, i.out_put_type, i.out_put_status,
+            i.longitude, i.latitude, i.out_put_height, i.out_put_position, i.mn_num, i.trans_rate, i.valid_rate, i.create_user,
+            i.create_time, i.update_user, i.update_time, i.remark, i.pollutant_code
+        from t_ent_out_put_info i
+        left join t_bas_enterprise e on e.ent_code = i.ent_code
+        where i.out_put_id = #{outPutId}
+    </select>
+
+    <insert id="insertOutPut" parameterType="com.ruoyi.business.ent.domain.EntOutPutInfo">
+        insert into t_ent_out_put_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outPutId != null">out_put_id,</if>
+            <if test="entCode != null">ent_code,</if>
+            <if test="outPutCode != null">out_put_code,</if>
+            <if test="outPutName != null">out_put_name,</if>
+            <if test="outPutType != null">out_put_type,</if>
+            <if test="outPutStatus != null">out_put_status,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="outPutHeight != null">out_put_height,</if>
+            <if test="outPutPosition != null">out_put_position,</if>
+            <if test="mnNum != null">mn_num,</if>
+            <if test="transRate != null">trans_rate,</if>
+            <if test="validRate != null">valid_rate,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateUser != null">update_user,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="pollutantCode != null">pollutant_code,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="outPutId != null">#{outPutId},</if>
+            <if test="entCode != null">#{entCode},</if>
+            <if test="outPutCode != null">#{outPutCode},</if>
+            <if test="outPutName != null">#{outPutName},</if>
+            <if test="outPutType != null">#{outPutType},</if>
+            <if test="outPutStatus != null">#{outPutStatus},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="outPutHeight != null">#{outPutHeight},</if>
+            <if test="outPutPosition != null">#{outPutPosition},</if>
+            <if test="mnNum != null">#{mnNum},</if>
+            <if test="transRate != null">#{transRate},</if>
+            <if test="validRate != null">#{validRate},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateUser != null">#{updateUser},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="pollutantCode != null">#{pollutantCode},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOutPut" parameterType="com.ruoyi.business.ent.domain.EntOutPutInfo">
+        update t_ent_out_put_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="entCode != null">ent_code = #{entCode},</if>
+            <if test="outPutCode != null">out_put_code = #{outPutCode},</if>
+            <if test="outPutName != null">out_put_name = #{outPutName},</if>
+            <if test="outPutType != null">out_put_type = #{outPutType},</if>
+            <if test="outPutStatus != null">out_put_status = #{outPutStatus},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="outPutHeight != null">out_put_height = #{outPutHeight},</if>
+            <if test="outPutPosition != null">out_put_position = #{outPutPosition},</if>
+            <if test="mnNum != null">mn_num = #{mnNum},</if>
+            <if test="transRate != null">trans_rate = #{transRate},</if>
+            <if test="validRate != null">valid_rate = #{validRate},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="pollutantCode != null">pollutant_code = #{pollutantCode},</if>
+        </trim>
+        where out_put_id = #{outPutId}
+    </update>
+
+    <delete id="deleteOutPutByIds" parameterType="String">
+        delete from t_ent_out_put_info where out_put_id in
+        <foreach item="outPutId" collection="outPutIds" open="(" separator="," close=")">
+            #{outPutId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteOutPutPollutantByOutPutIds" parameterType="String">
+        delete from t_ent_output_pollutant where out_put_id in
+        <foreach item="outPutId" collection="outPutIds" open="(" separator="," close=")">
+            #{outPutId}
+        </foreach>
+    </delete>
+
+    <select id="selectPollutantByType" resultType="java.util.Map">
+        select
+            pollutant_code as pollutantCode, pollutant_name_cn as pollutantName
+        from t_bas_pollutant_code
+        <where>
+            <if test="outPutType != null"> and pollutant_type = #{outPutType}</if>
+        </where>
+    </select>
+
+    <select id="selectUserPutInfoList" resultType="java.util.Map">
+        select out_put_id as outPutId, count(id) as `count` from t_bas_user_put_info
+        where user_id = #{userId}
+        group by out_put_id
+    </select>
+</mapper>

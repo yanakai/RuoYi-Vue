@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.ent.mapper.EntOutputPollutantMapper">
+    
+    <resultMap id="entOutputPollutantResult" type="com.ruoyi.business.ent.domain.EntOutputPollutant">
+        <result property="outPutPollId"    column="out_put_poll_id"    />
+        <result property="outPutId"    column="out_put_id"    />
+        <result property="pollutantCode"    column="pollutant_code"    />
+        <result property="pollutantNameCn"    column="pollutant_name_cn"    />
+        <result property="pollutantNameEn"    column="pollutant_name_en"    />
+        <result property="pollutantSort"    column="pollutant_sort"    />
+        <result property="alarmType"    column="alarm_type"    />
+        <result property="isZeroAlarm"    column="is_zero_alarm"    />
+        <result property="isContinuityAlarm"    column="is_continuity_alarm"    />
+        <result property="standardVal"    column="standard_val"    />
+        <result property="annualLimitValue"    column="annual_limit_value"    />
+        <result property="monthlyLimitValue"    column="monthly_limit_value"    />
+        <result property="earlyWarnMaxvalue"    column="early_warn_maxValue"    />
+        <result property="earlyWarnMinvalue"    column="early_warn_minValue"    />
+        <result property="overMaxvalue"    column="over_maxValue"    />
+        <result property="overMinvalue"    column="over_minValue"    />
+        <result property="exceptionMaxvalue"    column="exception_maxValue"    />
+        <result property="exceptionMinvalue"    column="exception_minValue"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateUser"    column="update_user"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="monFactorStr"    column="mon_factor"    />
+    </resultMap>
+
+    <select id="selectOutputPollutantById" resultMap="entOutputPollutantResult">
+        select
+            op.out_put_poll_id, op.out_put_id, op.pollutant_code, pc.pollutant_name_cn, pc.pollutant_name_en, pc.pollutant_unit_en,
+            pc.pollutant_unit_cn, pc.unit_pf_cn, pc.unit_pf_en, op.pollutant_sort, op.alarm_type, op.is_zero_alarm, op.is_continuity_alarm,
+            op.standard_val, op.annual_limit_value, op.monthly_limit_value, op.early_warn_maxValue, op.early_warn_minValue, op.over_maxValue,
+            op.over_minValue, op.exception_maxValue, op.exception_minValue, op.create_user, op.create_time, op.update_user, op.update_time,
+            op.mon_factor
+        from t_ent_output_pollutant op
+        left join t_bas_pollutant_code pc on pc.pollutant_code = op.pollutant_code
+        where op.out_put_poll_id = #{outPutPollId}
+    </select>
+
+    <select id="selectOutputPollutantByOutPutId" resultMap="entOutputPollutantResult">
+        select
+            op.out_put_poll_id, op.out_put_id, op.pollutant_code, pc.pollutant_name_cn, pc.pollutant_name_en, pc.pollutant_unit_en,
+            pc.pollutant_unit_cn, pc.unit_pf_cn, pc.unit_pf_en, op.pollutant_sort, op.alarm_type, op.is_zero_alarm, op.is_continuity_alarm,
+            op.standard_val, op.annual_limit_value, op.monthly_limit_value, op.early_warn_maxValue, op.early_warn_minValue, op.over_maxValue,
+            op.over_minValue, op.exception_maxValue, op.exception_minValue, op.create_user, op.create_time, op.update_user, op.update_time,
+            op.mon_factor
+        from t_ent_output_pollutant op
+        left join t_bas_pollutant_code pc on pc.pollutant_code = op.pollutant_code
+        where op.out_put_id = #{outPutId}
+        order by op.pollutant_sort desc
+    </select>
+
+    <insert id="insertOutputPollutant" parameterType="com.ruoyi.business.ent.domain.EntOutputPollutant">
+        insert into t_ent_output_pollutant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outPutPollId != null">out_put_poll_id,</if>
+            <if test="outPutId != null and outPutId != ''">out_put_id,</if>
+            <if test="pollutantCode != null and pollutantCode != ''">pollutant_code,</if>
+            <if test="pollutantSort != null">pollutant_sort,</if>
+            <if test="alarmType != null">alarm_type,</if>
+            <if test="isZeroAlarm != null">is_zero_alarm,</if>
+            <if test="isContinuityAlarm != null">is_continuity_alarm,</if>
+            <if test="standardVal != null">standard_val,</if>
+            <if test="annualLimitValue != null">annual_limit_value,</if>
+            <if test="monthlyLimitValue != null">monthly_limit_value,</if>
+            <if test="earlyWarnMaxvalue != null">early_warn_maxValue,</if>
+            <if test="earlyWarnMinvalue != null">early_warn_minValue,</if>
+            <if test="overMaxvalue != null">over_maxValue,</if>
+            <if test="overMinvalue != null">over_minValue,</if>
+            <if test="exceptionMaxvalue != null">exception_maxValue,</if>
+            <if test="exceptionMinvalue != null">exception_minValue,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateUser != null">update_user,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="monFactorStr != null">mon_factor,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="outPutPollId != null">#{outPutPollId},</if>
+            <if test="outPutId != null and outPutId != ''">#{outPutId},</if>
+            <if test="pollutantCode != null and pollutantCode != ''">#{pollutantCode},</if>
+            <if test="pollutantSort != null">#{pollutantSort},</if>
+            <if test="alarmType != null">#{alarmType},</if>
+            <if test="isZeroAlarm != null">#{isZeroAlarm},</if>
+            <if test="isContinuityAlarm != null">#{isContinuityAlarm},</if>
+            <if test="standardVal != null">#{standardVal},</if>
+            <if test="annualLimitValue != null">#{annualLimitValue},</if>
+            <if test="monthlyLimitValue != null">#{monthlyLimitValue},</if>
+            <if test="earlyWarnMaxvalue != null">#{earlyWarnMaxvalue},</if>
+            <if test="earlyWarnMinvalue != null">#{earlyWarnMinvalue},</if>
+            <if test="overMaxvalue != null">#{overMaxvalue},</if>
+            <if test="overMinvalue != null">#{overMinvalue},</if>
+            <if test="exceptionMaxvalue != null">#{exceptionMaxvalue},</if>
+            <if test="exceptionMinvalue != null">#{exceptionMinvalue},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateUser != null">#{updateUser},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="monFactorStr != null">#{monFactorStr},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOutputPollutant" parameterType="com.ruoyi.business.ent.domain.EntOutputPollutant">
+        update t_ent_output_pollutant
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pollutantCode != null and pollutantCode != ''">pollutant_code = #{pollutantCode},</if>
+            <if test="pollutantSort != null">pollutant_sort = #{pollutantSort},</if>
+            <if test="alarmType != null">alarm_type = #{alarmType},</if>
+            <if test="isZeroAlarm != null">is_zero_alarm = #{isZeroAlarm},</if>
+            <if test="isContinuityAlarm != null">is_continuity_alarm = #{isContinuityAlarm},</if>
+            <if test="standardVal != null">standard_val = #{standardVal},</if>
+            <if test="annualLimitValue != null">annual_limit_value = #{annualLimitValue},</if>
+            <if test="monthlyLimitValue != null">monthly_limit_value = #{monthlyLimitValue},</if>
+            <if test="earlyWarnMaxvalue != null">early_warn_maxValue = #{earlyWarnMaxvalue},</if>
+            <if test="earlyWarnMinvalue != null">early_warn_minValue = #{earlyWarnMinvalue},</if>
+            <if test="overMaxvalue != null">over_maxValue = #{overMaxvalue},</if>
+            <if test="overMinvalue != null">over_minValue = #{overMinvalue},</if>
+            <if test="exceptionMaxvalue != null">exception_maxValue = #{exceptionMaxvalue},</if>
+            <if test="exceptionMinvalue != null">exception_minValue = #{exceptionMinvalue},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="monFactorStr != null">mon_factor = #{monFactorStr},</if>
+        </trim>
+        where out_put_poll_id = #{outPutPollId}
+    </update>
+
+    <delete id="deleteOutputPollutantById" parameterType="String">
+        delete from t_ent_output_pollutant where out_put_poll_id = #{outPutPollId}
+    </delete>
+
+    <update id="updateOutPutPollCodeById">
+        update t_ent_out_put_info
+        set pollutant_code = (
+            select GROUP_CONCAT(pollutant_code ORDER BY pollutant_sort DESC SEPARATOR ',')
+            from t_ent_output_pollutant
+            where out_put_id = #{outPutId}
+        )
+        where out_put_id = #{outPutId}
+    </update>
+</mapper>
