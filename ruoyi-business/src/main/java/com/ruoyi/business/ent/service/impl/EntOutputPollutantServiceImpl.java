@@ -83,7 +83,7 @@ public class EntOutputPollutantServiceImpl implements EntOutputPollutantService 
             if (null == poll.getOutPutId()) { // 请求参数没传outPutId时
                 poll = entOutputPollutantMapper.selectOutputPollutantById(poll.getOutPutPollId());
             }
-            if (null != poll && null == poll.getOutPutId()) {
+            if (null != poll && null != poll.getOutPutId()) {
                 entOutputPollutantMapper.updateOutPutPollCodeById(poll.getOutPutId());
             }
         }
