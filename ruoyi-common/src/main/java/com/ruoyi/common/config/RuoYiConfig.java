@@ -1,5 +1,6 @@
 package com.ruoyi.common.config;
 
+import com.ruoyi.common.utils.StringUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -72,6 +73,16 @@ public class RuoYiConfig {
      */
     public static String getAvatarPath() {
         return getProfile() + "/avatar";
+    }
+
+    /**
+     * 获取附件上传路径
+     */
+    public static String getAnnexPath(String sourceType) {
+        if (StringUtils.isEmpty(sourceType)) {
+            return getProfile() + "/annex";
+        }
+        return getProfile() + "/annex/" + sourceType;
     }
 
     /**
