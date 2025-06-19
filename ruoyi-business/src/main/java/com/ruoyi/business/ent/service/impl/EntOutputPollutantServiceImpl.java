@@ -80,7 +80,12 @@ public class EntOutputPollutantServiceImpl implements EntOutputPollutantService 
         int result = entOutputPollutantMapper.updateOutputPollutant(poll);
         if (result > 0) {
             // 修改排口信息中的污染物列表
-            entOutputPollutantMapper.updateOutPutPollCodeById(poll.getOutPutId());
+            if (null == poll.getOutPutId()) { // 请求参数没传outPutId时
+                poll = entOutputPollutantMapper.selectOutputPollutantById(poll.getOutPutPollId());
+            }
+            if (null != poll && null == poll.getOutPutId()) {
+                entOutputPollutantMapper.updateOutPutPollCodeById(poll.getOutPutId());
+            }
         }
         return AjaxResult.success(poll);
     }
