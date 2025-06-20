@@ -1,8 +1,7 @@
 package com.ruoyi.business.ent.service.impl;
 
 import cn.hutool.core.map.MapUtil;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.github.f4b6a3.ulid.UlidCreator;
 import com.ruoyi.business.annex.service.AnnexService;
 import com.ruoyi.business.ent.domain.EntOutPutInfo;
 import com.ruoyi.business.ent.domain.EntOutPutReq;
@@ -15,9 +14,7 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.CellUtils;
-import com.ruoyi.common.utils.PageUtils;
 import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.common.utils.uuid.IdUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -33,6 +30,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,9 +71,6 @@ public class EntOutPutInfoServiceImpl implements EntOutPutInfoService {
         if (null == req) {
             req = new EntOutPutReq();
         }
-        if (null == req.getCurrent() || req.getCurrent() < 1) {
-            req.setCurrent(1);
-        }
         if (null == req.getSize() || req.getSize() < 1) {
             req.setSize(10);
         }
@@ -83,11 +78,15 @@ public class EntOutPutInfoServiceImpl implements EntOutPutInfoService {
         if (SecurityUtils.isNotAdmin()) {
             req.setEntCodes(SecurityUtils.getEntCodes());
         }
-        PageHelper.startPage(req.getCurrent(), req.getSize());
-        List<EntOutPutInfo> list = entOutPutMapper.selectOutPutList(req);
+        long count = entOutPutMapper.selectOutPutListCount(req);
+        result.put("total", count);
+        List<EntOutPutInfo> list;
+        if (count > 0) {
+            list = entOutPutMapper.selectOutPutList(req);
+        } else {
+            list = new ArrayList<>();
+        }
         result.put("data", list);
-        result.put("total", new PageInfo<>(list).getTotal());
-        PageUtils.clearPage();
         // 设置检测污染物列表、是否关注等信息
         fillPoll(list, req.getOutPutType());
         return result;
@@ -230,7 +229,8 @@ public class EntOutPutInfoServiceImpl implements EntOutPutInfoService {
     @Override
     @Log(title = "新增企业排口", businessType = BusinessType.INSERT)
     public AjaxResult insertOutPut(EntOutPutInfo info) {
-        info.setOutPutId(IdUtils.fastSimpleUUID());
+        // 单调递增 ULID (适合高并发)
+        info.setOutPutId(UlidCreator.getMonotonicUlid().toString());
         info.setCreateUser(SecurityUtils.getUserName());
         info.setCreateTime(LocalDateTime.now());
         info.setUpdateUser(info.getCreateUser());

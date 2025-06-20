@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.business.ent.mapper.EntOutPutMapper">
-    
+
     <resultMap id="entOutPutInfoResult" type="com.ruoyi.business.ent.domain.EntOutPutInfo">
         <result property="outPutId"    column="out_put_id"    />
         <result property="entCode"    column="ent_code"    />
@@ -27,12 +27,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="pollutantCode"    column="pollutant_code"    />
     </resultMap>
 
-    <select id="selectOutPutList" parameterType="com.ruoyi.business.ent.domain.EntOutPutReq"
-            resultMap="entOutPutInfoResult">
+    <select id="selectOutPutListCount" parameterType="com.ruoyi.business.ent.domain.EntOutPutReq">
         select
-            i.out_put_id, e.ent_code, e.ent_name, i.out_put_code, i.out_put_name, i.out_put_type, i.out_put_status,
-            i.longitude, i.latitude, i.out_put_height, i.out_put_position, i.mn_num, i.trans_rate, i.valid_rate, i.create_user,
-            i.create_time, i.update_user, i.update_time, i.remark, i.pollutant_code
+            count(*)
         from t_ent_out_put_info i
         left join t_bas_enterprise e on e.ent_code = i.ent_code
         <where>
@@ -48,6 +45,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 </foreach>
             </if>
         </where>
+    </select>
+
+    <select id="selectOutPutList" parameterType="com.ruoyi.business.ent.domain.EntOutPutReq"
+            resultMap="entOutPutInfoResult">
+        select
+            i.out_put_id, e.ent_code, e.ent_name, i.out_put_code, i.out_put_name, i.out_put_type, i.out_put_status,
+            i.longitude, i.latitude, i.out_put_height, i.out_put_position, i.mn_num, i.trans_rate, i.valid_rate, i.create_user,
+            i.create_time, i.update_user, i.update_time, i.remark, i.pollutant_code
+        from t_ent_out_put_info i
+        left join t_bas_enterprise e on e.ent_code = i.ent_code
+        <where>
+            <if test="outPutId != null and outPutId != ''"> and i.out_put_id &lt; #{outPutId}</if>
+            <if test="entName != null and entName != ''"> and e.ent_name like concat('%', #{entName}, '%')</if>
+            <if test="outPutCode != null and outPutCode != ''"> and i.out_put_code like concat('%', #{outPutCode}, '%')</if>
+            <if test="outPutName != null and outPutName != ''"> and i.out_put_name like concat('%', #{outPutName}, '%')</if>
+            <if test="outPutType != null"> and i.out_put_type = #{outPutType}</if>
+            <if test="outPutStatus != null"> and i.out_put_status = #{outPutStatus}</if>
+            <if test="mnNum != null"> and i.mn_num like concat('%', #{mnNum}, '%')</if>
+            <if test="entCodes != null and entCodes.size() > 0"> and e.ent_code in
+                <foreach item="code" collection="entCodes" open="(" separator="," close=")">
+                    #{code}
+                </foreach>
+            </if>
+        </where>
+        order by i.out_put_id desc
+        limit #{size}
     </select>
 
     <select id="selectOutPutById" resultMap="entOutPutInfoResult">

@@ -16,6 +16,11 @@ public class EntOutPutReq {
     private Integer size;
 
     /**
+     * 分页时最后一条数据的id，为空表示查的首页
+     */
+    private String outPutId;
+
+    /**
      * 企业名称(模糊)
      */
     private String entName;
