@@ -1,5 +1,6 @@
 package com.ruoyi.business.base.controller;
 
+import com.ruoyi.business.base.domain.OutputPollutantAutoHead;
 import com.ruoyi.business.base.domain.TBasGasoutputPollutant;
 import com.ruoyi.business.base.service.ITBasGasoutputPollutantService;
 import com.ruoyi.common.annotation.Log;
@@ -29,6 +30,15 @@ import java.util.List;
 public class TBasGasoutputPollutantController extends BaseController {
     @Autowired
     private ITBasGasoutputPollutantService tBasGasoutputPollutantService;
+
+    /**
+     * 废气排口污染物基本信息自动表头列表
+     */
+    @ApiOperation("获取废气排口污染物基本信息自动表头列表")
+    @GetMapping("/autoHead")
+    public AjaxResult autoHead(String entCode, String outPutCode) {
+        return AjaxResult.success(tBasGasoutputPollutantService.selectOutputPollutantAutoHead(entCode, outPutCode));
+    }
 
     /**
      * 查询基础信息--企业--废气排口污染物基本信息列表

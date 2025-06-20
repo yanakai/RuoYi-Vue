@@ -1,5 +1,6 @@
 package com.ruoyi.business.base.service;
 
+import com.ruoyi.business.base.domain.OutputPollutantAutoHead;
 import com.ruoyi.business.base.domain.TBasWateroutputPollutant;
 
 import java.util.List;
@@ -18,6 +19,11 @@ public interface ITBasWateroutputPollutantService {
      * @return 基础信息--企业--废水排口污染物基本信息
      */
     TBasWateroutputPollutant selectTBasWateroutputPollutantById(Long id);
+
+    /**
+     * 查询基础信息--企业--废水排口污染物基本信息自动表头列表
+     */
+    List<OutputPollutantAutoHead> selectOutputPollutantAutoHead(String entCode, String outPutCode);
 
     /**
      * 查询基础信息--企业--废水排口污染物基本信息列表

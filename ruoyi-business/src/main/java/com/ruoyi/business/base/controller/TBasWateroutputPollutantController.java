@@ -1,6 +1,7 @@
 package com.ruoyi.business.base.controller;
 
 import cn.hutool.core.util.StrUtil;
+import com.ruoyi.business.base.domain.OutputPollutantAutoHead;
 import com.ruoyi.business.base.domain.TBasWateroutputPollutant;
 import com.ruoyi.business.base.service.ITBasWateroutputPollutantService;
 import com.ruoyi.common.annotation.Log;
@@ -30,6 +31,15 @@ import java.util.List;
 public class TBasWateroutputPollutantController extends BaseController {
     @Autowired
     private ITBasWateroutputPollutantService tBasWateroutputPollutantService;
+
+    /**
+     * 废水排口污染物基本信息自动表头列表
+     */
+    @ApiOperation("获取废水排口污染物基本信息自动表头列表")
+    @GetMapping("/autoHead")
+    public AjaxResult autoHead(String entCode, String outPutCode) {
+        return AjaxResult.success(tBasWateroutputPollutantService.selectOutputPollutantAutoHead(entCode, outPutCode));
+    }
 
     /**
      * 查询基础信息--企业--废水排口污染物基本信息列表

@@ -1,5 +1,7 @@
 package com.ruoyi.business.base.domain;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -57,6 +59,11 @@ public class TBasPollutantCode extends BaseEntity
     /** 排序码 */
     @Excel(name = "排序码")
     private Long pollutantSort;
+
+    /** 监测因子 */
+    @JsonIgnore
+    private String monFactorStr;
+    private JSONArray monFactor;
 
     public void setId(Long id) 
     {
@@ -155,6 +162,14 @@ public class TBasPollutantCode extends BaseEntity
     public Long getPollutantSort() 
     {
         return pollutantSort;
+    }
+
+    public JSONArray getMonFactor() {
+        return monFactor;
+    }
+
+    public void setMonFactorStr(String monFactorStr) {
+        this.monFactor = JSONArray.parse(monFactorStr);
     }
 
     @Override

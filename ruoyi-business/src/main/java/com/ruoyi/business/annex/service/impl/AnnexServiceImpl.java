@@ -1,6 +1,7 @@
 package com.ruoyi.business.annex.service.impl;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.github.f4b6a3.ulid.UlidCreator;
 import com.ruoyi.business.annex.domain.AnnexInfo;
 import com.ruoyi.business.annex.domain.AnnexReq;
 import com.ruoyi.business.annex.mapper.AnnexMapper;
@@ -12,7 +13,6 @@ import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
-import com.ruoyi.common.utils.uuid.IdUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +38,11 @@ public class AnnexServiceImpl implements AnnexService {
     }
 
     @Override
+    public List<AnnexInfo> selectAnnexList(String sourceId, String sourceType) {
+        return annexMapper.selectAnnexListBySource(sourceId, sourceType);
+    }
+
+    @Override
     public AjaxResult insertAnnex(MultipartFile file, String sourceType) {
         if (file.isEmpty()) {
             return AjaxResult.error("上传附件为空，请检查确认");
@@ -52,7 +57,7 @@ public class AnnexServiceImpl implements AnnexService {
             return AjaxResult.error("文件转存失败，请检查");
         }
         AnnexInfo annexInfo = new AnnexInfo();
-        annexInfo.setAnnexId(IdUtils.fastSimpleUUID());
+        annexInfo.setAnnexId(UlidCreator.getMonotonicUlid().toString());
         annexInfo.setSourceType(sourceType);
         annexInfo.setFileName(file.getOriginalFilename());
         annexInfo.setFileType(FileUploadUtils.getExtension(file));
@@ -112,7 +117,7 @@ public class AnnexServiceImpl implements AnnexService {
         }
         // 删除本地保存的数据
         if (deletePath.size() > 0) {
-            deletePath.forEach( e -> FileUploadUtils.deleteFile(e));
+            deletePath.forEach(FileUploadUtils::deleteFile);
         }
     }
 }

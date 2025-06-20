@@ -33,6 +33,7 @@
         <result property="createName" column="create_name"/>
         <result property="updateTime" column="update_time"/>
         <result property="updateName" column="update_name"/>
+        <result property="monFactorStr" column="mon_factor"/>
         <result property="remark" column="remark"/>
     </resultMap>
 
@@ -63,6 +64,7 @@
                create_name,
                update_time,
                update_name,
+               mon_factor,
                remark
         from t_bas_wateroutput_pollutant
     </sql>
@@ -92,6 +94,35 @@
             <if test="isContinuityAlarm != null ">and is_continuity_alarm = #{isContinuityAlarm}</if>
             <if test="standardVal != null ">and standard_val = #{standardVal}</if>
         </where>
+    </select>
+
+    <select id="selectOutputPollutantAutoHead" resultType="com.ruoyi.business.base.domain.OutputPollutantAutoHead">
+        select
+            w.pollutant_code as pollutantCode,
+            w.alarm_type as alarmType,
+            w.is_zero_alarm as isZeroAlarm,
+            w.is_continuity_alarm as isContinuityAlarm,
+            w.standard_val as standardVal,
+            w.annual_limit_value as annualLimitValue,
+            w.monthly_limit_value as monthlyLimitValue,
+            w.early_warn_maxValue as earlyWarnMaxValue,
+            w.early_warn_minValue as earlyWarnMinValue,
+            w.over_maxValue as overMaxValue,
+            w.over_minValue as overMinValue,
+            w.exception_maxValue as exceptionMaxValue,
+            w.exception_minValue as exceptionMinValue,
+            w.mon_factor as monFactorStr,
+            p.mon_factor as baseMonFactorStr,
+            p.pollutant_name_en as pollutantNameEn,
+            p.pollutant_name_cn as pollutantNameCn,
+            p.pollutant_unit_en as pollutantUnitEn,
+            p.pollutant_unit_cn as pollutantUnitCn,
+            p.unit_pf_cn as unitPfCn,
+            p.unit_pf_en as unitPfEn
+        from t_bas_wateroutput_pollutant w
+        left join t_bas_pollutant_code p on p.pollutant_code = w.pollutant_code and p.pollutant_type = 1
+        where w.ent_code = #{entCode} and w.out_put_code = #{outPutCode}
+        order by w.pollutant_sort desc
     </select>
 
     <select id="selectTBasWateroutputPollutantById" parameterType="Long" resultMap="TBasWateroutputPollutantResult">
@@ -131,6 +162,7 @@
             <if test="remark != null">remark,</if>
             <if test="annualLimitValue != null">annual_limit_value,</if>
             <if test="monthlyLimitValue != null">monthly_limit_value,</if>
+            <if test="monFactorStr != null">mon_factor,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="pollutantCode != null">#{pollutantCode},</if>
@@ -160,6 +192,8 @@
             <if test="updateName != null">#{updateName},</if>
             <if test="remark != null">#{remark},</if>
             <if test="annualLimitValue != null">#{annualLimitValue},</if>
+            <if test="monthlyLimitValue != null">#{monthlyLimitValue},</if>
+            <if test="monFactorStr != null">#{monFactorStr},</if>
         </trim>
     </insert>
 
@@ -194,6 +228,7 @@
             <if test="remark != null">remark = #{remark},</if>
             <if test="annualLimitValue != null">annual_limit_value = #{annualLimitValue},</if>
             <if test="monthlyLimitValue != null">monthly_limit_value = #{monthlyLimitValue},</if>
+            <if test="monFactorStr != null">mon_factor = #{monFactorStr},</if>
         </trim>
         where id = #{id}
     </update>

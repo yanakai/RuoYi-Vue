@@ -1,6 +1,5 @@
 package com.ruoyi.business.annex.mapper;
 
-
 import com.ruoyi.business.annex.domain.AnnexInfo;
 import com.ruoyi.business.annex.domain.AnnexReq;
 import org.apache.ibatis.annotations.Param;
@@ -32,5 +31,5 @@ public interface AnnexMapper {
     /**
      * 批量删除附件
      */
-    void deleteAnnexByIds(List<String> ids);
+    void deleteAnnexByIds(@Param("ids") List<String> ids);
 }
