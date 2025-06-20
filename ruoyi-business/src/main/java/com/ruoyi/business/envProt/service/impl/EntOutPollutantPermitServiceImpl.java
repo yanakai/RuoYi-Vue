@@ -1,5 +1,6 @@
 package com.ruoyi.business.envProt.service.impl;
 
+import com.github.f4b6a3.ulid.UlidCreator;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.business.annex.service.AnnexService;
@@ -16,7 +17,6 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.CellUtils;
 import com.ruoyi.common.utils.PageUtils;
 import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.common.utils.uuid.IdUtils;
 import com.ruoyi.system.service.ISysDictDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
@@ -288,7 +288,7 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
     @Override
     @Log(title = "企业排污许可基础", businessType = BusinessType.INSERT)
     public AjaxResult insertEntOutPollutantPermit(EntOutPollutantPermit permit) {
-        permit.setPollPermitId(IdUtils.fastSimpleUUID());
+        permit.setPollPermitId(UlidCreator.getMonotonicUlid().toString());
         permit.setCreateUser(SecurityUtils.getUserName());
         permit.setCreateTime(LocalDateTime.now());
         permit.setUpdateUser(permit.getCreateUser());
@@ -424,7 +424,7 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
     @Override
     @Log(title = "企业排污许可总量基础", businessType = BusinessType.INSERT)
     public AjaxResult insertEntOutPollutantPermitCount(EntOutPollutantPermitCount count) {
-        count.setPollPermitCountId(IdUtils.fastSimpleUUID());
+        count.setPollPermitCountId(UlidCreator.getMonotonicUlid().toString());
         count.setCreateTime(LocalDateTime.now());
         count.setCreateUser(SecurityUtils.getUserName());
         count.setUpdateUser(count.getCreateUser());

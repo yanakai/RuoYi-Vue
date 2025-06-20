@@ -1,6 +1,7 @@
 package com.ruoyi.business.envProt.service.impl;
 
 import cn.hutool.core.map.MapUtil;
+import com.github.f4b6a3.ulid.UlidCreator;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.business.annex.service.AnnexService;
@@ -14,7 +15,6 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysDictData;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.*;
-import com.ruoyi.common.utils.uuid.IdUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -196,7 +196,7 @@ public class EntCleanProduceServiceImpl implements EntCleanProduceService {
     @Override
     @Log(title = "企业清洁生产基础", businessType = BusinessType.INSERT)
     public AjaxResult insertEntCleanProduce(EntCleanProduce produce) {
-        produce.setCleanProduceId(IdUtils.fastSimpleUUID());
+        produce.setCleanProduceId(UlidCreator.getMonotonicUlid().toString());
         produce.setCreateUser(SecurityUtils.getUserName());
         produce.setCreateTime(LocalDateTime.now());
         produce.setUpdateUser(produce.getCreateUser());

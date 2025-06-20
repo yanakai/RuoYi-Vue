@@ -1,5 +1,6 @@
 package com.ruoyi.business.envProt.service.impl;
 
+import com.github.f4b6a3.ulid.UlidCreator;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.business.annex.service.AnnexService;
@@ -14,7 +15,6 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.CellUtils;
 import com.ruoyi.common.utils.PageUtils;
 import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.common.utils.uuid.IdUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -155,7 +155,7 @@ public class EntEnvProtCertServiceImpl implements EntEnvProtCertService {
     @Override
     @Log(title = "企业环保证书基础", businessType = BusinessType.INSERT)
     public AjaxResult insertEntEnvProtCert(EntEnvProtCert cert) {
-        cert.setProtCertId(IdUtils.fastSimpleUUID());
+        cert.setProtCertId(UlidCreator.getMonotonicUlid().toString());
         cert.setCreateUser(SecurityUtils.getUserName());
         cert.setCreateTime(LocalDateTime.now());
         cert.setUpdateUser(cert.getCreateUser());
