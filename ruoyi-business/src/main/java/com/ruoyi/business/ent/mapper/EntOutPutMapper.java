@@ -13,6 +13,11 @@ import java.util.Map;
 public interface EntOutPutMapper {
 
     /**
+     * 查询企业排口总条数
+     */
+    long selectOutPutListCount(EntOutPutReq req);
+
+    /**
      * 查询企业排口列表
      */
     List<EntOutPutInfo> selectOutPutList(EntOutPutReq req);

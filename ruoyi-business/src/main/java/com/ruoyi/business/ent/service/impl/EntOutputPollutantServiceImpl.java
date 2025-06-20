@@ -1,6 +1,7 @@
 package com.ruoyi.business.ent.service.impl;
 
 import com.alibaba.fastjson2.JSONArray;
+import com.github.f4b6a3.ulid.UlidCreator;
 import com.ruoyi.business.base.domain.MonFactorInfo;
 import com.ruoyi.business.ent.domain.EntOutputPollutant;
 import com.ruoyi.business.ent.mapper.EntOutputPollutantMapper;
@@ -9,7 +10,6 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.common.utils.uuid.IdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +41,7 @@ public class EntOutputPollutantServiceImpl implements EntOutputPollutantService 
     @Override
     @Log(title = "新增企业排口污染物信息", businessType = BusinessType.INSERT)
     public AjaxResult insertOutputPollutant(EntOutputPollutant poll) {
-        poll.setOutPutPollId(IdUtils.fastSimpleUUID());
+        poll.setOutPutPollId(UlidCreator.getMonotonicUlid().toString());
         poll.setCreateUser(SecurityUtils.getUserName());
         poll.setCreateTime(LocalDateTime.now());
         poll.setUpdateUser(poll.getCreateUser());
@@ -83,7 +83,7 @@ public class EntOutputPollutantServiceImpl implements EntOutputPollutantService 
             if (null == poll.getOutPutId()) { // 请求参数没传outPutId时
                 poll = entOutputPollutantMapper.selectOutputPollutantById(poll.getOutPutPollId());
             }
-            if (null != poll && null == poll.getOutPutId()) {
+            if (null != poll && null != poll.getOutPutId()) {
                 entOutputPollutantMapper.updateOutPutPollCodeById(poll.getOutPutId());
             }
         }
