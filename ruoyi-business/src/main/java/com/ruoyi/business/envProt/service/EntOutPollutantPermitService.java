@@ -25,19 +25,9 @@ public interface EntOutPollutantPermitService {
     void exportEntOutPollutantPermit(EntOutPollutantPermitReq req, HttpServletResponse response);
 
     /**
-     * 新增企业排污许可基础
-     */
-    AjaxResult insertEntOutPollutantPermit(EntOutPollutantPermit permit);
-
-    /**
      * 修改企业排污许可基础
      */
     AjaxResult updateEntOutPollutantPermit(EntOutPollutantPermit permit);
-
-    /**
-     * 批量删除企业排污许可基础
-     */
-    AjaxResult deleteEntOutPollutantPermitByPollPermitIds(List<String> pollPermitIds);
 
     /**
      * 查询企业排污许可总量数据列表

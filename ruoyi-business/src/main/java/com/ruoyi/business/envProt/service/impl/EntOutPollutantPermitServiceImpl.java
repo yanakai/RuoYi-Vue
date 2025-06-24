@@ -1,11 +1,13 @@
 package com.ruoyi.business.envProt.service.impl;
 
+import cn.hutool.core.map.MapUtil;
 import com.github.f4b6a3.ulid.UlidCreator;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.business.annex.service.AnnexService;
 import com.ruoyi.business.base.domain.TBasPollutantCode;
 import com.ruoyi.business.base.mapper.TBasPollutantCodeMapper;
+import com.ruoyi.business.enums.AnnexTypeEnum;
 import com.ruoyi.business.envProt.domain.*;
 import com.ruoyi.business.envProt.mapper.EntOutPollutantPermitMapper;
 import com.ruoyi.business.envProt.service.EntOutPollutantPermitService;
@@ -17,6 +19,8 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.CellUtils;
 import com.ruoyi.common.utils.PageUtils;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.reflect.CurrentSizeUtils;
 import com.ruoyi.system.service.ISysDictDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
@@ -33,10 +37,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -76,23 +77,25 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
         if (null == req) {
             req = new EntOutPollutantPermitReq();
         }
-        if (null == req.getCurrent() || req.getCurrent() < 1) {
-            req.setCurrent(1);
-        }
-        if (null == req.getSize() || req.getSize() < 1) {
-            req.setSize(10);
-        }
-        // 添加权限
+        // 判断权限，非admin账号只能查自己企业的信息
         if (SecurityUtils.isNotAdmin()) {
-            req.setEntCodes(SecurityUtils.getEntCodes());
+            EntOutPollutantPermit permit = entOutPollutantPermitMapper.selectEntOutPollutantPermitByEntCode(SecurityUtils.getEntCode());
+            // 设置污染物信息
+            fillPoll(Collections.singletonList(permit));
+            // 设置附件地址
+            permit.setAnnexInfoList(annexService.selectAnnexList(permit.getEntCode(), AnnexTypeEnum.entOutPollutantPermit.name()));
+            result.put("data", permit);
+        } else {
+            CurrentSizeUtils.currentAndSize(req, "getCurrent", "setCurrent", 1);
+            CurrentSizeUtils.currentAndSize(req, "getSize", "setSize", 10);
+            PageHelper.startPage(req.getCurrent(), req.getSize());
+            List<EntOutPollutantPermit> list = entOutPollutantPermitMapper.selectEntOutPollutantPermitList(req);
+            // 设置污染物信息
+            fillPoll(list);
+            result.put("data", list);
+            result.put("total", new PageInfo<>(list).getTotal());
+            PageUtils.clearPage();
         }
-        PageHelper.startPage(req.getCurrent(), req.getSize());
-        List<EntOutPollutantPermit> list = entOutPollutantPermitMapper.selectEntOutPollutantPermitList(req);
-        // 设置污染物信息
-        fillPoll(list);
-        result.put("data", list);
-        result.put("total", new PageInfo<>(list).getTotal());
-        PageUtils.clearPage();
         return result;
     }
 
@@ -122,24 +125,21 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
         }
         /*
         获取信息
-         ent_product: 企业产品
+         ent_product: 企业产品(先不要这个，产品直接文本输入吧)
          poll_permit_cate: 排污许可管理类别
          emission_rule_gas: 废气排放规律
          emission_rule_water: 废水排放规律
          */
-        List<String> dictTypes = Arrays.asList("ent_product", "poll_permit_cate", "emission_rule_gas", "emission_rule_water");
+        List<String> dictTypes = Arrays.asList("poll_permit_cate", "emission_rule_gas", "emission_rule_water");
         List<SysDictData> dictList = dictDataService.getDictDataListByTypes(dictTypes);
         if (null != dictList && dictList.size() > 0) {
             /* dictLabel: "工程车辆"; dictType: "ent_product"; dictValue: "gccl" */
-            Map<String, String> proMap = new HashMap<>();
             Map<String, String> perMap = new HashMap<>();
             Map<String, String> gasMap = new HashMap<>();
             Map<String, String> waterMap = new HashMap<>();
             dictList.forEach( e -> {
                 String dictType = e.getDictType();
-                if ("ent_product".equals(dictType)) {
-                    proMap.put(e.getDictValue(), e.getDictLabel());
-                } else if ("poll_permit_cate".equals(dictType)) {
+                if ("poll_permit_cate".equals(dictType)) {
                     perMap.put(e.getDictValue(), e.getDictLabel());
                 } else if ("emission_rule_gas".equals(dictType)) {
                     gasMap.put(e.getDictValue(), e.getDictLabel());
@@ -148,13 +148,6 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
                 }
             });
             for (EntOutPollutantPermit p : list) {
-                if (null != p.getProductIds()) {
-                    bu = new StringBuilder();
-                    for (String id : p.getProductIds().split(",")) {
-                        bu.append(proMap.get(id)).append(",");
-                    }
-                    p.setProductDesc(bu.substring(0, bu.length() - 1));
-                }
                 p.setPermitLevelDesc(perMap.get(p.getPermitLevel()));
                 p.setGasEmissionRuleDesc(gasMap.get(p.getGasEmissionRule()));
                 p.setWaterEmissionRuleDesc(waterMap.get(p.getWaterEmissionRule()));
@@ -176,11 +169,13 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
                 log.error("无法从路径加载资源: " + templatePath);
                 return;
             }
-            // 添加权限
+            // 判断权限，非admin账号只能查自己企业的信息
+            List<EntOutPollutantPermit> list;
             if (SecurityUtils.isNotAdmin()) {
-                req.setEntCodes(SecurityUtils.getEntCodes());
+                list = Collections.singletonList(entOutPollutantPermitMapper.selectEntOutPollutantPermitByEntCode(SecurityUtils.getEntCode()));
+            } else {
+                list = entOutPollutantPermitMapper.selectEntOutPollutantPermitList(req);
             }
-            List<EntOutPollutantPermit> list = entOutPollutantPermitMapper.selectEntOutPollutantPermitList(req);
             // 设置污染物信息
             fillPoll(list);
             XSSFWorkbook workbook = new XSSFWorkbook(fis);
@@ -210,12 +205,9 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
                     // 企业名称
                     cell = CellUtils.getCell(row, cellIndex++, style);
                     cell.setCellValue(permit.getEntName());
-                    // 持证单位名称
-                    cell = CellUtils.getCell(row, cellIndex++, style);
-                    cell.setCellValue(permit.getCertUnitName());
                     // 社会信用代码
                     cell = CellUtils.getCell(row, cellIndex++, style);
-                    cell.setCellValue(permit.getCertUnitCode());
+                    cell.setCellValue(permit.getSocialCreditCode());
                     // 排污许可管理类别
                     cell = CellUtils.getCell(row, cellIndex++, style);
                     cell.setCellValue(permit.getPermitLevelDesc());
@@ -224,7 +216,11 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
                     cell.setCellValue(permit.getPermitNum());
                     // 有效期
                     cell = CellUtils.getCell(row, cellIndex++, style);
-                    cell.setCellValue(permit.getBeginDate() + "至" + permit.getEndDate());
+                    if (StringUtils.isNotEmpty(permit.getBeginDate()) && StringUtils.isNotEmpty(permit.getEndDate())) {
+                        cell.setCellValue(permit.getBeginDate() + "至" + permit.getEndDate());
+                    } else {
+                        cell.setCellValue("");
+                    }
                     // 发证机关
                     cell = CellUtils.getCell(row, cellIndex++, style);
                     cell.setCellValue(permit.getIssueOffice());
@@ -239,13 +235,7 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
                     cell.setCellValue(permit.getProductDesc());
                     // 产量
                     cell = CellUtils.getCell(row, cellIndex++, style);
-                    cell.setCellValue(null == permit.getProductOutput() ? "" : String.valueOf(permit.getProductOutput()));
-                    // 平台账号
-                    cell = CellUtils.getCell(row, cellIndex++, style);
-                    cell.setCellValue(permit.getAccount());
-                    // 密码
-                    cell = CellUtils.getCell(row, cellIndex++, style);
-                    cell.setCellValue(permit.getPassword());
+                    cell.setCellValue(permit.getProductOutput());
                     // 废气污染物种类(pollutantCodes)
                     cell = CellUtils.getCell(row, cellIndex++, style);
                     cell.setCellValue(permit.getGasPollDesc());
@@ -269,7 +259,7 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
                     cell.setCellValue(permit.getRemark());
                 }
             }
-            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("企业排序许可列表.xlsx", "UTF-8"));
+            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("企业排序许可信息.xlsx", "UTF-8"));
             outputStream = response.getOutputStream();
             workbook.write(outputStream);
         } catch (Exception e){
@@ -286,42 +276,25 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
     }
 
     @Override
-    @Log(title = "企业排污许可基础", businessType = BusinessType.INSERT)
-    public AjaxResult insertEntOutPollutantPermit(EntOutPollutantPermit permit) {
-        permit.setPollPermitId(UlidCreator.getMonotonicUlid().toString());
-        permit.setCreateUser(SecurityUtils.getUserName());
-        permit.setCreateTime(LocalDateTime.now());
-        permit.setUpdateUser(permit.getCreateUser());
-        permit.setUpdateTime(permit.getCreateTime());
-        int count = entOutPollutantPermitMapper.insertEntOutPollutantPermit(permit);
-        if (count > 0 && null != permit.getAnnexIds() && permit.getAnnexIds().size() > 0) {
-            annexService.updateAnnex(permit.getPollPermitId(), Constants.ANNEX_EntOutPollutantPermit, permit.getAnnexIds());
-        }
-        return AjaxResult.success(count);
-    }
-
-    @Override
     @Log(title = "企业排污许可基础", businessType = BusinessType.UPDATE)
     public AjaxResult updateEntOutPollutantPermit(EntOutPollutantPermit permit) {
-        permit.setUpdateUser(SecurityUtils.getUserName());
         permit.setUpdateTime(LocalDateTime.now());
-        return AjaxResult.success(entOutPollutantPermitMapper.updateEntOutPollutantPermit(permit));
-    }
-
-    @Override
-    @Log(title = "企业排污许可基础", businessType = BusinessType.DELETE)
-    public AjaxResult deleteEntOutPollutantPermitByPollPermitIds(List<String> pollPermitIds) {
-        if (null == pollPermitIds || pollPermitIds.size() < 1) {
-            return AjaxResult.error("请求信息为空");
+        // 设置企业编号
+        if (StringUtils.isEmpty(permit.getEntCode())) {
+            permit.setEntCode(SecurityUtils.getEntCode());
         }
-        int count = entOutPollutantPermitMapper.deleteEntOutPollutantPermitByPollPermitIds(pollPermitIds);
-        if (count > 0) {
-            // 删除对应的排污许可总量
-            entOutPollutantPermitMapper.deleteEntOutPollutantPermitCountByPollPermitIds(pollPermitIds);
-            // 删除附件
-            pollPermitIds.forEach( e -> annexService.updateAnnex(e, Constants.ANNEX_EntOutPollutantPermit, null));
+        // 判断是否已存在
+        int exist = entOutPollutantPermitMapper.checkExistEntOutPollutantPermit(permit.getEntCode());
+        if (exist > 0) { // 存在时修改
+            entOutPollutantPermitMapper.updateEntOutPollutantPermit(permit);
+        } else {
+            entOutPollutantPermitMapper.insertEntOutPollutantPermit(permit);
         }
-        return AjaxResult.success(count);
+        // 更新附件
+        if (null != permit.getAnnexIds() && permit.getAnnexIds().size() > 0) {
+            annexService.updateAnnex(permit.getEntCode(), AnnexTypeEnum.entOutPollutantPermit.name(), permit.getAnnexIds());
+        }
+        return AjaxResult.success();
     }
 
     @Override
@@ -330,12 +303,12 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
         if (null == req) {
             req = new EntOutPollutantPermitCountReq();
         }
-        if (null == req.getCurrent() || req.getCurrent() < 1) {
-            req.setCurrent(1);
+        // 设置企业编号
+        if (StringUtils.isEmpty(req.getEntCode())) {
+            req.setEntCode(SecurityUtils.getEntCode());
         }
-        if (null == req.getSize() || req.getSize() < 1) {
-            req.setSize(10);
-        }
+        CurrentSizeUtils.currentAndSize(req, "getCurrent", "setCurrent", 1);
+        CurrentSizeUtils.currentAndSize(req, "getSize", "setSize", 10);
         PageHelper.startPage(req.getCurrent(), req.getSize());
         List<EntOutPollutantPermitCount> list = entOutPollutantPermitMapper.selectEntOutPollutantPermitCountList(req);
         result.put("data", list);
@@ -349,6 +322,10 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
     public void exportEntOutPollutantPermitCount(EntOutPollutantPermitCountReq req, HttpServletResponse response) {
         if (null == req) {
             req = new EntOutPollutantPermitCountReq();
+        }
+        // 设置企业编号
+        if (StringUtils.isEmpty(req.getEntCode())) {
+            req.setEntCode(SecurityUtils.getEntCode());
         }
         OutputStream outputStream = null;
         try {
@@ -424,20 +401,20 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
     @Override
     @Log(title = "企业排污许可总量基础", businessType = BusinessType.INSERT)
     public AjaxResult insertEntOutPollutantPermitCount(EntOutPollutantPermitCount count) {
+        // 设置企业编号
+        if (StringUtils.isEmpty(count.getEntCode())) {
+            count.setEntCode(SecurityUtils.getEntCode());
+        }
         count.setPollPermitCountId(UlidCreator.getMonotonicUlid().toString());
-        count.setCreateTime(LocalDateTime.now());
-        count.setCreateUser(SecurityUtils.getUserName());
-        count.setUpdateUser(count.getCreateUser());
-        count.setUpdateTime(count.getCreateTime());
-        return AjaxResult.success(entOutPollutantPermitMapper.insertEntOutPollutantPermitCount(count));
+        entOutPollutantPermitMapper.insertEntOutPollutantPermitCount(count);
+        return AjaxResult.success(count);
     }
 
     @Override
     @Log(title = "企业排污许可总量基础", businessType = BusinessType.UPDATE)
     public AjaxResult updateEntOutPollutantPermitCount(EntOutPollutantPermitCount count) {
-        count.setUpdateUser(count.getCreateUser());
-        count.setUpdateTime(count.getCreateTime());
-        return AjaxResult.success(entOutPollutantPermitMapper.updateEntOutPollutantPermitCount(count));
+        entOutPollutantPermitMapper.updateEntOutPollutantPermitCount(count);
+        return AjaxResult.success();
     }
 
     @Override
@@ -446,6 +423,7 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
         if (null == pollPermitIds || pollPermitIds.size() < 1) {
             return AjaxResult.error("请求信息为空");
         }
-        return AjaxResult.success(entOutPollutantPermitMapper.deleteEntOutPollutantPermitCountByPollPermitCountIds(pollPermitIds));
+        entOutPollutantPermitMapper.deleteEntOutPollutantPermitCountByPollPermitCountIds(pollPermitIds);
+        return AjaxResult.success();
     }
 }
