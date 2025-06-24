@@ -14,4 +14,7 @@ public enum AnnexTypeEnum {
 
     /** 附件类型-企业排口附件 */
     entOutPut,
+
+    /** 附件类型-企业环保人员附件 */
+    entEnvProPerson,
 }

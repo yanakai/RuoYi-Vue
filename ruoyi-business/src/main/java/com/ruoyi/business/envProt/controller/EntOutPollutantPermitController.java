@@ -1,5 +1,7 @@
 package com.ruoyi.business.envProt.controller;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.ruoyi.business.envProt.domain.EntOutPollutantPermit;
 import com.ruoyi.business.envProt.domain.EntOutPollutantPermitCount;
 import com.ruoyi.business.envProt.domain.EntOutPollutantPermitCountReq;
@@ -9,7 +11,6 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -42,27 +43,11 @@ public class EntOutPollutantPermitController {
     }
 
     /**
-     * 新增企业排污许可基础
-     */
-    @PostMapping
-    public AjaxResult add(@RequestBody EntOutPollutantPermit permit) {
-        return entOutPollutantPermitService.insertEntOutPollutantPermit(permit);
-    }
-
-    /**
      * 修改企业排污许可基础
      */
     @PutMapping
     public AjaxResult edit(@RequestBody EntOutPollutantPermit permit) {
         return entOutPollutantPermitService.updateEntOutPollutantPermit(permit);
-    }
-
-    /**
-     * 删除企业排污许可基础
-     */
-	@DeleteMapping("/{pollPermitIds}")
-    public AjaxResult remove(@PathVariable List<String> pollPermitIds) {
-        return entOutPollutantPermitService.deleteEntOutPollutantPermitByPollPermitIds(pollPermitIds);
     }
 
     /**

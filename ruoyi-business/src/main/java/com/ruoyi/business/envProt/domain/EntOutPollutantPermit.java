@@ -1,6 +1,7 @@
 package com.ruoyi.business.envProt.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ruoyi.business.annex.domain.AnnexInfo;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -11,10 +12,6 @@ import java.util.List;
  */
 @Data
 public class EntOutPollutantPermit {
-    private static final long serialVersionUID = 1L;
-
-    /** 排污许可id */
-    private String pollPermitId;
 
     /** 企业编码 */
     private String entCode;
@@ -22,11 +19,8 @@ public class EntOutPollutantPermit {
     /** 企业名称 */
     private String entName;
 
-    /** 持证单位名称 */
-    private String certUnitName;
-
-    /** 持证单位社会信用代码 */
-    private String certUnitCode;
+    /** 社会信用代码 */
+    private String socialCreditCode;
 
     /** 排污许可管理类别 */
     private String permitLevel;
@@ -50,18 +44,11 @@ public class EntOutPollutantPermit {
     /** 执行报告报送要求 */
     private String reportRequire;
 
-    /** 主要产品(与字典中企业产品进行值转换) */
-    private String productIds;
+    /** 主要产品 */
     private String productDesc;
 
     /** 产量 */
-    private Double productOutput;
-
-    /** 平台账号 */
-    private String account;
-
-    /** 平台密码 */
-    private String password;
+    private String productOutput;
 
     /** 废气污染物种类(pollutantCodes) */
     private String gasPollType;
@@ -85,16 +72,6 @@ public class EntOutPollutantPermit {
     /** 废水执行标准 */
     private String waterExecuteStandard;
 
-    /** 创建人 */
-    private String createUser;
-
-    /** 创建时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createTime;
-
-    /** 更新人 */
-    private String updateUser;
-
     /** 更新时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
@@ -104,4 +81,7 @@ public class EntOutPollutantPermit {
 
     /** 附件主键id */
     private List<String> annexIds;
+
+    /** 附件列表（查询时返回） */
+    private List<AnnexInfo> annexInfoList;
 }

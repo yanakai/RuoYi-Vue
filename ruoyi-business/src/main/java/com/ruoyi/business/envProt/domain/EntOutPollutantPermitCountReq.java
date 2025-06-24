@@ -13,8 +13,8 @@ public class EntOutPollutantPermitCountReq {
     /** 页大小 */
     private Integer size;
 
-    /** 排污许可id */
-    private String pollPermitId;
+    /** 企业编码 */
+    private String entCode;
 
     /** 污染因子名称（模糊） */
     private String pollutantNameCn;
