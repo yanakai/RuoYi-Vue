@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -38,6 +39,8 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @Service
 public class EnvProPersonServiceImpl implements EnvProPersonService {
+
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     private EnvProPersonMapper envProPersonMapper;
     @Autowired
@@ -318,7 +321,7 @@ public class EnvProPersonServiceImpl implements EnvProPersonService {
                 } else if ("女".equals(value)){
                     info.setProSex(1);
                 }
-                value = getCellStringVal(row, index++);
+                value = getCellStringDateVal(row, index++);
                 if (null != value) {
                     LocalDate dateTime = strToLocalDate(value);
                     if (null == dateTime) {
@@ -345,7 +348,7 @@ public class EnvProPersonServiceImpl implements EnvProPersonService {
                 if (null != value) {
                     info.setAddress(value);
                 }
-                value = getCellStringVal(row, index++);
+                value = getCellStringDateVal(row, index++);
                 if (null != value) {
                     LocalDate dateTime = strToLocalDate(value);
                     if (null == dateTime) {
@@ -354,7 +357,7 @@ public class EnvProPersonServiceImpl implements EnvProPersonService {
                         info.setEntryDate(dateTime);
                     }
                 }
-                value = getCellStringVal(row, index++);
+                value = getCellStringDateVal(row, index++);
                 if (null != value) {
                     LocalDate dateTime = strToLocalDate(value);
                     if (null == dateTime) {
@@ -398,6 +401,35 @@ public class EnvProPersonServiceImpl implements EnvProPersonService {
         String value = null;
         if (CellType.NUMERIC.equals(cell.getCellType())) {
             value = (long)cell.getNumericCellValue() + "";
+        } else if (CellType.STRING.equals(cell.getCellType())) {
+            value = cell.getStringCellValue().trim();
+        }
+        return value;
+    }
+
+    private String getCellStringDateVal(Row row, int index) {
+        Cell cell = row.getCell(index);
+        if (null == cell) {
+            return null;
+        }
+        String value = null;
+        if (CellType.NUMERIC.equals(cell.getCellType())) {
+            if (DateUtil.isCellDateFormatted(cell)) {
+                // 处理格式化的日期单元格
+                Date javaDate = cell.getDateCellValue();
+                value = sdf.format(javaDate);
+            } else {
+                // 处理Excel内部日期数值
+                double excelDateValue = cell.getNumericCellValue();
+                // Excel的日期基准是1900-01-01（Windows版）
+                // 注意：Excel错误地将1900年视为闰年
+                LocalDate baseDate = LocalDate.of(1899, 12, 30);
+                // 调整Excel的日期计算错误（1900年不是闰年）
+                if (excelDateValue >= 61) {
+                    excelDateValue -= 1; // 修正Excel的闰年错误
+                }
+                value = baseDate.plusDays((long) excelDateValue).toString();
+            }
         } else if (CellType.STRING.equals(cell.getCellType())) {
             value = cell.getStringCellValue().trim();
         }
