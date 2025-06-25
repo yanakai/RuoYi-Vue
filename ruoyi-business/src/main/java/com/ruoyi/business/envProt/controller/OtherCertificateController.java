@@ -1,9 +1,9 @@
 package com.ruoyi.business.envProt.controller;
 
-import com.zkhf.epmis.core.domain.AjaxResult;
-import com.zkhf.epmis.platform.envProt.domain.OtherCertificate;
-import com.zkhf.epmis.platform.envProt.domain.OtherCertificateReq;
-import com.zkhf.epmis.platform.envProt.service.OtherCertificateService;
+import com.ruoyi.business.envProt.domain.OtherCertificate;
+import com.ruoyi.business.envProt.domain.OtherCertificateReq;
+import com.ruoyi.business.envProt.service.OtherCertificateService;
+import com.ruoyi.common.core.domain.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
