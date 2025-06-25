@@ -5,7 +5,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 /**
- * 企业年排量信息记录对象 t_bas_ent_annual_output_info
+ * 企业年排量信息记录对象 t_ent_annual_output_info
  */
 @Data
 public class EntAnnualOutputInfo {

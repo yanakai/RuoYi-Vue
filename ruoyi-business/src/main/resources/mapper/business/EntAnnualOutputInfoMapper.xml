@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select
             a.annual_output_id, a.ent_code, e.ent_name, a.out_put_code, pi.out_put_name, a.out_put_type, a.pollutant_code,
             p.pollutant_name_cn, p.pollutant_name_en, a.annual_num, a.annual_count, a.annual_emission_limit, a.present_emission_limit
-        from t_bas_ent_annual_output_info a
+        from t_ent_annual_output_info a
         left join t_bas_pollutant_code p on p.pollutant_code = a.pollutant_code
         <if test="outPutType != null">
             <choose>
@@ -45,10 +45,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="outPutType != null">
                 and a.out_put_type = #{outPutType}
             </if>
-            <if test="entCodes != null and entCodes.size() > 0"> and a.ent_code in
-                <foreach item="code" collection="entCodes" open="(" separator="," close=")">
-                    #{code}
-                </foreach>
+            <if test="entCode != null and entCode != ''">
+                and a.ent_code = #{entCode}
             </if>
             <if test="entName != null and entName != ''">
                 and e.ent_name like concat('%', #{entName}, '%')

@@ -56,7 +56,7 @@ public class EntAnnualOutputInfoServiceImpl implements EntAnnualOutputInfoServic
         }
         // 添加权限
         if (SecurityUtils.isNotAdmin()) {
-            req.setEntCodes(SecurityUtils.getEntCodes());
+            req.setEntCode(SecurityUtils.getEntCode());
         }
         PageHelper.startPage(req.getCurrent(), req.getSize());
         List<EntAnnualOutputInfo> list = getList(req);
@@ -83,7 +83,7 @@ public class EntAnnualOutputInfoServiceImpl implements EntAnnualOutputInfoServic
             }
             // 添加权限
             if (SecurityUtils.isNotAdmin()) {
-                req.setEntCodes(SecurityUtils.getEntCodes());
+                req.setEntCode(SecurityUtils.getEntCode());
             }
             List<EntAnnualOutputInfo> list = getList(req);
             // 判断报警

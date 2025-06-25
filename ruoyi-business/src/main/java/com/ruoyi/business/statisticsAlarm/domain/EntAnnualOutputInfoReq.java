@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * 企业年排量信息记录对象 t_bas_ent_annual_output_info
+ * 企业年排量信息记录对象 t_ent_annual_output_info
  */
 @Data
 public class EntAnnualOutputInfoReq {
@@ -32,5 +32,5 @@ public class EntAnnualOutputInfoReq {
     private Integer annualNum;
 
     /** 权限管理 */
-    private List<String> entCodes;
+    private String entCode;
 }
