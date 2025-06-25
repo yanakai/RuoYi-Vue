@@ -454,7 +454,10 @@ public class EnvProPersonServiceImpl implements EnvProPersonService {
     @Override
     @Log(title = "企业环保人员", businessType = BusinessType.UPDATE)
     public AjaxResult updateProPerson(EnvProPerson info) {
-        envProPersonMapper.updateProPerson(info);
+        int count = envProPersonMapper.updateProPerson(info);
+        if (count > 0) {
+            annexService.updateAnnex(info.getProPersonId(), AnnexTypeEnum.entEnvProPerson.name(), info.getAnnexIds());
+        }
         return AjaxResult.success();
     }
 

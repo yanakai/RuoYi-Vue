@@ -17,4 +17,7 @@ public enum AnnexTypeEnum {
 
     /** 附件类型-企业环保人员附件 */
     entEnvProPerson,
+
+    /** 附件类型-其他证书 */
+    otherCertificate,
 }
