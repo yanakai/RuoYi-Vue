@@ -28,7 +28,7 @@ public interface EnvProPersonMapper {
     /**
      * 修改企业环保人员
      */
-    void updateProPerson(EnvProPerson info);
+    int updateProPerson(EnvProPerson info);
 
     /**
      * 删除企业环保人员
