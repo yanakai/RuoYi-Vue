@@ -14,7 +14,7 @@ public interface SysDictDataMapper {
     /**
      * 依据字典类型获取字典值
      */
-    List<SysDictData> getDictDataListByTypes(List<String> dictTypes);
+    List<SysDictData> getDictDataListByTypes(@Param("dictTypes") List<String> dictTypes);
     /**
      * 根据条件分页查询字典数据
      *
