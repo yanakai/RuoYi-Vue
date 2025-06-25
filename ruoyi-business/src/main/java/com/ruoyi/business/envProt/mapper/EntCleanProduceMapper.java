@@ -11,27 +11,27 @@ import java.util.List;
 public interface EntCleanProduceMapper {
 
     /**
+     * 查询企业清洁生产
+     */
+    EntCleanProduce selectCleanProduceById(String cleanProduceId);
+
+    /**
      * 查询企业清洁生产基础列表
      */
-    List<EntCleanProduce> selectEntCleanProduceList(EntCleanProduceReq req);
+    List<EntCleanProduce> selectCleanProduceList(EntCleanProduceReq req);
 
     /**
      * 新增企业清洁生产基础
      */
-    int insertEntCleanProduce(EntCleanProduce produce);
+    int insertCleanProduce(EntCleanProduce produce);
 
     /**
      * 修改企业清洁生产基础
      */
-    int updateEntCleanProduce(EntCleanProduce produce);
-
-    /**
-     * 修改企业清洁生产基础
-     */
-    int entCleanProduceAudit(EntCleanProduce produce);
+    int updateCleanProduce(EntCleanProduce produce);
 
     /**
      * 批量删除企业清洁生产基础
      */
-    int deleteEntCleanProduceByCleanProduceIds(List<String> cleanProduceIds);
+    int deleteCleanProduceByIds(List<String> cleanProduceIds);
 }

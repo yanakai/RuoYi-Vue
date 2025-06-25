@@ -27,4 +27,6 @@ public class OtherCertificateReq {
 
     /** 权限管理 */
     private String userId;
+    /** 添加的账号（模糊） */
+    private String userName;
 }

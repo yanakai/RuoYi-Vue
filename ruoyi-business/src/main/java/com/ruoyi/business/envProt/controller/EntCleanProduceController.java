@@ -25,20 +25,27 @@ public class EntCleanProduceController {
     }
 
     /**
+     * 查询企业清洁生产详情
+     */
+    @GetMapping(value = "/{cleanProduceId}")
+    public AjaxResult getInfo(@PathVariable("cleanProduceId") String cleanProduceId) {
+        return entCleanProduceService.selectCleanProduceById(cleanProduceId);
+    }
+
+    /**
      * 查询企业清洁生产基础列表
      */
     @PostMapping("/list")
     public AjaxResult list(@RequestBody(required = false) EntCleanProduceReq req) {
-        return entCleanProduceService.selectEntCleanProduceList(req);
+        return entCleanProduceService.selectCleanProduceList(req);
     }
 
     /**
      * 导出企业清洁生产基础列表
-     * 按模版导出
      */
     @PostMapping("/exportTemplate")
     public void exportTemplate(@RequestBody(required = false) EntCleanProduceReq req, HttpServletResponse response) {
-        entCleanProduceService.exportEntCleanProduce(req, response);
+        entCleanProduceService.exportCleanProduce(req, response);
     }
 
     /**
@@ -46,7 +53,7 @@ public class EntCleanProduceController {
      */
     @PostMapping
     public AjaxResult add(@RequestBody EntCleanProduce clean) {
-        return entCleanProduceService.insertEntCleanProduce(clean);
+        return entCleanProduceService.insertCleanProduce(clean);
     }
 
     /**
@@ -54,22 +61,14 @@ public class EntCleanProduceController {
      */
     @PutMapping
     public AjaxResult edit(@RequestBody EntCleanProduce clean) {
-        return entCleanProduceService.updateEntCleanProduce(clean);
-    }
-
-    /**
-     * 修改企业清洁生产基础
-     */
-    @PutMapping("/audit")
-    public AjaxResult editAudit(@RequestBody EntCleanProduce clean) {
-        return entCleanProduceService.entCleanProduceAudit(clean);
+        return entCleanProduceService.updateCleanProduce(clean);
     }
 
     /**
      * 删除企业清洁生产基础
      */
-	@DeleteMapping("/{cleanProduceIds}")
-    public AjaxResult remove(@PathVariable List<String> cleanProduceIds) {
-        return entCleanProduceService.deleteEntCleanProduceByCleanProduceIds(cleanProduceIds);
+	@DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable List<String> ids) {
+        return entCleanProduceService.deleteCleanProduceByIds(ids);
     }
 }

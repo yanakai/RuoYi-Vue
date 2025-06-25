@@ -171,16 +171,4 @@ public class Constants {
     public static final String[] JOB_ERROR_STR = {"java.net.URL", "javax.naming.InitialContext", "org.yaml.snakeyaml",
             "org.springframework", "org.apache", "com.ruoyi.common.utils.file", "com.ruoyi.common.config", "com.ruoyi.generator"};
 
-    /**
-     * 附件类型-企业清洁生产附件
-     */
-    public static final String ANNEX_EntCleanProduce = "entCleanProduce";
-    /**
-     * 附件类型-企业环保证书附件
-     */
-    public static final String ANNEX_EntEnvProtCert = "entEnvProtCert";
-    /**
-     * 附件类型-企业排污许可附件
-     */
-    public static final String ANNEX_EntOutPollutantPermit = "entOutPollutantPermit";
 }

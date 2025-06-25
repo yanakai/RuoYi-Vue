@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap id="otherCertificateResult" type="com.ruoyi.business.envProt.domain.OtherCertificate">
         <result property="otherId"    column="other_id"    />
         <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
         <result property="certName"    column="cert_name"    />
         <result property="issueOffice"    column="issue_office"    />
         <result property="certBelong"    column="cert_belong"    />
@@ -18,21 +19,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <select id="selectOtherCertificateById" resultMap="otherCertificateResult">
-        select other_id, user_id, cert_name, issue_office, cert_belong, belong_type, begin_date, end_date, issue_date, remark
+        select
+            other_id, user_id, (select user_name from sys_user u where u.user_id = t_other_certificate.user_id) as user_name,
+            cert_name, issue_office, cert_belong, belong_type, begin_date, end_date, issue_date, remark
         from t_other_certificate
         where other_id = #{otherId}
     </select>
 
     <select id="selectOtherCertificateList" parameterType="com.ruoyi.business.envProt.domain.OtherCertificateReq"
             resultMap="otherCertificateResult">
-        select other_id, user_id, cert_name, issue_office, cert_belong, belong_type, begin_date, end_date, issue_date, remark
+        select
+            other_id, user_id, (select user_name from sys_user u where u.user_id = t_other_certificate.user_id) as user_name,
+            cert_name, issue_office, cert_belong, belong_type, begin_date, end_date, issue_date, remark
         from t_other_certificate
         <where>  
-            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
-            <if test="certName != null  and certName != ''"> and cert_name like concat('%', #{certName}, '%')</if>
-            <if test="issueOffice != null  and issueOffice != ''"> and issue_office like concat('%', #{issueOffice}, '%')</if>
-            <if test="certBelong != null  and certBelong != ''"> and cert_belong like concat('%', #{certBelong}, '%')</if>
+            <if test="userId != null and userId != ''"> and user_id = #{userId}</if>
+            <if test="certName != null and certName != ''"> and cert_name like concat('%', #{certName}, '%')</if>
+            <if test="issueOffice != null and issueOffice != ''"> and issue_office like concat('%', #{issueOffice}, '%')</if>
+            <if test="certBelong != null and certBelong != ''"> and cert_belong like concat('%', #{certBelong}, '%')</if>
             <if test="belongType != null "> and belong_type = #{belongType}</if>
+            <if test="userName != null and userName != ''">
+                and exists (
+                    select 1 from sys_user u
+                    where u.user_name like concat('%', #{userName}, '%')
+                        and u.user_id = t_other_certificate.user_id
+                )
+            </if>
         </where>
     </select>
 
@@ -76,7 +88,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="issueDate != null">issue_date = #{issueDate},</if>
             <if test="remark != null">remark = #{remark},</if>
         </trim>
-        where other_id = #{otherId} and user_id = #{userId}
+        where other_id = #{otherId}
     </update>
 
     <delete id="deleteOtherCertificateByIds" parameterType="String">
