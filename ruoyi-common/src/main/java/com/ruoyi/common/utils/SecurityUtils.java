@@ -76,6 +76,13 @@ public class SecurityUtils {
     }
 
     /**
+     * 获取用户权限列表
+     **/
+    public static String getEntCode() {
+        return getLoginUser().getUser().getEntCode();
+    }
+
+    /**
      * 用户名称
      **/
     public static String getUserName() {
