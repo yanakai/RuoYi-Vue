@@ -172,19 +172,6 @@ public class Constants {
             "org.springframework", "org.apache", "com.ruoyi.common.utils.file", "com.ruoyi.common.config", "com.ruoyi.generator"};
 
     /**
-     * 附件类型-企业清洁生产附件
-     */
-    public static final String ANNEX_EntCleanProduce = "entCleanProduce";
-    /**
-     * 附件类型-企业环保证书附件
-     */
-    public static final String ANNEX_EntEnvProtCert = "entEnvProtCert";
-    /**
-     * 附件类型-企业排污许可附件
-     */
-    public static final String ANNEX_EntOutPollutantPermit = "entOutPollutantPermit";
-
-    /**
      * 污染物类型，1 废水  2 废气
      */
     public static final Integer POLLUTION_TYPE_WATER = 1;
