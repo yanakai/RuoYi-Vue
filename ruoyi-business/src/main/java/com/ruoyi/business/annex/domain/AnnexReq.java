@@ -13,9 +13,4 @@ public class AnnexReq {
     private List<String> sourceIds;
     /** 附件归属id的类型 */
     private String sourceType;
-
-    public AnnexReq(List<String> sourceIds, String sourceType) {
-        this.sourceIds = sourceIds;
-        this.sourceType = sourceType;
-    }
 }

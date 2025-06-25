@@ -1,8 +1,8 @@
 package com.ruoyi.business.envProt.service;
 
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.business.envProt.domain.EntCleanProduce;
 import com.ruoyi.business.envProt.domain.EntCleanProduceReq;
-import com.ruoyi.common.core.domain.AjaxResult;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -13,32 +13,32 @@ import java.util.List;
 public interface EntCleanProduceService {
 
     /**
+     * 查询企业清洁生产详情
+     */
+    AjaxResult selectCleanProduceById(String cleanProduceId);
+
+    /**
      * 查询企业清洁生产基础列表
      */
-    AjaxResult selectEntCleanProduceList(EntCleanProduceReq req);
+    AjaxResult selectCleanProduceList(EntCleanProduceReq req);
 
     /**
      * 导出企业清洁生产基础列表
      */
-    void exportEntCleanProduce(EntCleanProduceReq req, HttpServletResponse response);
+    void exportCleanProduce(EntCleanProduceReq req, HttpServletResponse response);
 
     /**
      * 新增企业清洁生产基础
      */
-    AjaxResult insertEntCleanProduce(EntCleanProduce produce);
+    AjaxResult insertCleanProduce(EntCleanProduce produce);
 
     /**
      * 修改企业清洁生产基础
      */
-    AjaxResult updateEntCleanProduce(EntCleanProduce produce);
-
-    /**
-     * 企业清洁生产审核
-     */
-    AjaxResult entCleanProduceAudit(EntCleanProduce produce);
+    AjaxResult updateCleanProduce(EntCleanProduce produce);
 
     /**
      * 批量删除企业清洁生产基础
      */
-    AjaxResult deleteEntCleanProduceByCleanProduceIds(List<String> cleanProduceIds);
+    AjaxResult deleteCleanProduceByIds(List<String> ids);
 }

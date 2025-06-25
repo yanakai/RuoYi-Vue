@@ -125,7 +125,6 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
         }
         /*
         获取信息
-         ent_product: 企业产品(先不要这个，产品直接文本输入吧)
          poll_permit_cate: 排污许可管理类别
          emission_rule_gas: 废气排放规律
          emission_rule_water: 废水排放规律

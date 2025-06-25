@@ -2,10 +2,8 @@ package com.ruoyi.business.envProt.domain;
 
 import lombok.Data;
 
-import java.util.List;
-
 /**
- * 企业清洁生产基础对象 t_bas_ent_clean_produce
+ * 企业清洁生产基础对象 t_ent_clean_produce
  */
 @Data
 public class EntCleanProduceReq {
@@ -15,8 +13,6 @@ public class EntCleanProduceReq {
     /** 页大小 */
     private Integer size;
 
-    /** 企业编码 */
-    private String entCode;
     /** 企业名称，模糊 */
     private String entName;
 
@@ -24,5 +20,5 @@ public class EntCleanProduceReq {
     private String cleanName;
 
     /** 权限管理 */
-    private List<String> entCodes;
+    private String permEntCode;
 }

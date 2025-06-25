@@ -3,6 +3,9 @@ package com.ruoyi.business.enums;
 
 public enum AnnexTypeEnum {
 
+    /** 附件类型-标记附件 */
+    entMark,
+
     /** 附件类型-企业清洁生产附件 */
     entCleanProduce,
 

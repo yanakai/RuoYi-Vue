@@ -18,6 +18,7 @@ public class OtherCertificate {
 
     /** 添加证书的账号 */
     private String userId;
+    private String userName;
 
     /** 证书名称 */
     private String certName;

@@ -1,39 +1,35 @@
 package com.ruoyi.business.envProt.service.impl;
 
-import cn.hutool.core.map.MapUtil;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.util.*;
+
 import com.github.f4b6a3.ulid.UlidCreator;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.business.annex.service.AnnexService;
+import com.ruoyi.business.enums.AnnexTypeEnum;
 import com.ruoyi.business.envProt.domain.EntCleanProduce;
 import com.ruoyi.business.envProt.domain.EntCleanProduceReq;
 import com.ruoyi.business.envProt.mapper.EntCleanProduceMapper;
 import com.ruoyi.business.envProt.service.EntCleanProduceService;
 import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.entity.SysDictData;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.*;
+import com.ruoyi.common.utils.CellUtils;
+import com.ruoyi.common.utils.PageUtils;
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.reflect.CurrentSizeUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URLEncoder;
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 企业清洁生产基础Service业务层处理
@@ -55,57 +51,39 @@ public class EntCleanProduceServiceImpl implements EntCleanProduceService {
     }
 
     @Override
-    public AjaxResult selectEntCleanProduceList(EntCleanProduceReq req) {
+    public AjaxResult selectCleanProduceById(String cleanProduceId) {
+        EntCleanProduce info = entCleanProduceMapper.selectCleanProduceById(cleanProduceId);
+        if (null == info) {
+            return AjaxResult.error("清洁生产信息为空");
+        }
+        info.setAnnexInfoList(annexService.selectAnnexList(cleanProduceId, AnnexTypeEnum.entCleanProduce.name()));
+        return AjaxResult.success(info);
+    }
+
+    @Override
+    public AjaxResult selectCleanProduceList(EntCleanProduceReq req) {
         AjaxResult result = AjaxResult.success();
         if (null == req) {
             req = new EntCleanProduceReq();
         }
-        if (null == req.getCurrent() || req.getCurrent() < 1) {
-            req.setCurrent(1);
-        }
-        if (null == req.getSize() || req.getSize() < 1) {
-            req.setSize(10);
-        }
         // 添加权限
-        if (!SecurityUtils.isNotAdmin()) {
-            req.setEntCodes(SecurityUtils.getEntCodes());
+        if (SecurityUtils.isNotAdmin()) {
+            req.setPermEntCode(SecurityUtils.getEntCode());
         }
+        // 分页参数设置
+        CurrentSizeUtils.currentAndSize(req, "getCurrent", "setCurrent", 1);
+        CurrentSizeUtils.currentAndSize(req, "getSize", "setSize", 10);
         PageHelper.startPage(req.getCurrent(), req.getSize());
-        List<EntCleanProduce> list = entCleanProduceMapper.selectEntCleanProduceList(req);
-        // 设置字典信息
-        fillPoll(list);
+        List<EntCleanProduce> list = entCleanProduceMapper.selectCleanProduceList(req);
         result.put("data", list);
         result.put("total", new PageInfo<>(list).getTotal());
         PageUtils.clearPage();
         return result;
     }
 
-    private void fillPoll(List<EntCleanProduce> list) {
-        if (null == list || list.size() < 1) {
-            return;
-        }
-        /* 获取信息
-         clean_produce_progress: 清洁生产工作进展
-         */
-        List<SysDictData> dictList = DictUtils.getDictCache("clean_produce_progress");
-        if (null != dictList && dictList.size() > 0) {
-            /* dictLabel: "工程车辆"; dictType: "ent_product"; dictValue: "gccl" */
-            Map<String, String> cleanMap = new HashMap<>();
-            dictList.forEach( e -> {
-                String dictType = e.getDictType();
-                if ("clean_produce_progress".equals(dictType)) {
-                    cleanMap.put(e.getDictValue(), e.getDictLabel());
-                }
-            });
-            for (EntCleanProduce p : list) {
-                p.setWorkProgressDesc(cleanMap.get(p.getWorkProgress()));
-            }
-        }
-    }
-
     @Override
     @Log(title = "企业清洁生产基础", businessType = BusinessType.EXPORT)
-    public void exportEntCleanProduce(EntCleanProduceReq req, HttpServletResponse response) {
+    public void exportCleanProduce(EntCleanProduceReq req, HttpServletResponse response) {
         if (null == req) {
             req = new EntCleanProduceReq();
         }
@@ -119,14 +97,12 @@ public class EntCleanProduceServiceImpl implements EntCleanProduceService {
             }
             // 添加权限
             if (SecurityUtils.isNotAdmin()) {
-                req.setEntCodes(SecurityUtils.getEntCodes());
+                req.setPermEntCode(SecurityUtils.getEntCode());
             }
-            List<EntCleanProduce> list = entCleanProduceMapper.selectEntCleanProduceList(req);
-            // 设置字典信息
-            fillPoll(list);
+            List<EntCleanProduce> list = entCleanProduceMapper.selectCleanProduceList(req);
             XSSFWorkbook workbook = new XSSFWorkbook(fis);
             Sheet sheet = workbook.getSheetAt(0);
-            int rowIndex= 4;// 从第5行开始插入
+            int rowIndex;// 从第5行开始插入
 
             rowIndex = 2;// 首行
             Row templateRow = sheet.getRow(rowIndex);
@@ -148,33 +124,30 @@ public class EntCleanProduceServiceImpl implements EntCleanProduceService {
                     // 序号
                     cell = CellUtils.getCell(row, cellIndex++, style);
                     cell.setCellValue(index);
-                    // 单位名称
-                    cell = CellUtils.getCell(row, cellIndex++, style);
-                    cell.setCellValue(produce.getEntName());
                     // 名称
                     cell = CellUtils.getCell(row, cellIndex++, style);
                     cell.setCellValue(produce.getCleanName());
-                    //编制单位
+                    // 编制单位
                     cell = CellUtils.getCell(row, cellIndex++, style);
-                    cell.setCellValue(produce.getMakeUnit());
+                    cell.setCellValue(produce.getEntName());
                     // 编制时间
                     cell = CellUtils.getCell(row, cellIndex++, style);
-                    cell.setCellValue(produce.getMakeDate());
+                    cell.setCellValue(null == produce.getMakeDate() ? "" : produce.getMakeDate().toString());
                     // 审核重点
                     cell = CellUtils.getCell(row, cellIndex++, style);
-                    cell.setCellValue(produce.getAuditInfo());
+                    cell.setCellValue(produce.getAuditFocus());
                     // 方案情况
                     cell = CellUtils.getCell(row, cellIndex++, style);
                     cell.setCellValue(produce.getPlanInfo());
-                    // 预计减排效果
+                    // 减排效果
                     cell = CellUtils.getCell(row, cellIndex++, style);
-                    cell.setCellValue(produce.getMayReduce());
+                    cell.setCellValue(produce.getReduceEffect());
                     // 工作进展
                     cell = CellUtils.getCell(row, cellIndex++, style);
-                    cell.setCellValue(produce.getWorkProgressDesc());
-                    // 计划实施时间
+                    cell.setCellValue(produce.getWorkProgress());
+                    // 实施时间
                     cell = CellUtils.getCell(row, cellIndex, style);
-                    cell.setCellValue(produce.getPlanDate());
+                    cell.setCellValue(null == produce.getEffectiveDate() ? "" : produce.getEffectiveDate().toString());
                 }
             }
             response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("企业清洁生产列表.xlsx", "UTF-8"));
@@ -187,7 +160,7 @@ public class EntCleanProduceServiceImpl implements EntCleanProduceService {
                 try {
                     outputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error("outputStream close", e);
                 }
             }
         }
@@ -195,45 +168,38 @@ public class EntCleanProduceServiceImpl implements EntCleanProduceService {
 
     @Override
     @Log(title = "企业清洁生产基础", businessType = BusinessType.INSERT)
-    public AjaxResult insertEntCleanProduce(EntCleanProduce produce) {
+    public AjaxResult insertCleanProduce(EntCleanProduce produce) {
+        if (StringUtils.isEmpty(produce.getEntCode())) {
+            produce.setEntCode(SecurityUtils.getEntCode());
+        }
         produce.setCleanProduceId(UlidCreator.getMonotonicUlid().toString());
-        produce.setCreateUser(SecurityUtils.getUserName());
-        produce.setCreateTime(LocalDateTime.now());
-        produce.setUpdateUser(produce.getCreateUser());
-        produce.setUpdateTime(produce.getCreateTime());
-        int count = entCleanProduceMapper.insertEntCleanProduce(produce);
+        int count = entCleanProduceMapper.insertCleanProduce(produce);
         if (count > 0 && null != produce.getAnnexIds() && produce.getAnnexIds().size() > 0) {
-            annexService.updateAnnex(produce.getCleanProduceId(), Constants.ANNEX_EntCleanProduce, produce.getAnnexIds());
+            annexService.updateAnnex(produce.getCleanProduceId(), AnnexTypeEnum.entCleanProduce.name(), produce.getAnnexIds());
         }
         return AjaxResult.success(count);
     }
 
     @Override
     @Log(title = "企业清洁生产基础", businessType = BusinessType.UPDATE)
-    public AjaxResult updateEntCleanProduce(EntCleanProduce produce) {
-        produce.setUpdateUser(SecurityUtils.getUserName());
-        produce.setUpdateTime(LocalDateTime.now());
-        return AjaxResult.success(entCleanProduceMapper.updateEntCleanProduce(produce));
-    }
-
-    @Override
-    @Log(title = "企业清洁生产审核", businessType = BusinessType.UPDATE)
-    public AjaxResult entCleanProduceAudit(EntCleanProduce produce) {
-        produce.setAuditUser(SecurityUtils.getUserName());
-        produce.setAuditTime(LocalDateTime.now());
-        return AjaxResult.success(entCleanProduceMapper.entCleanProduceAudit(produce));
+    public AjaxResult updateCleanProduce(EntCleanProduce produce) {
+        int count = entCleanProduceMapper.updateCleanProduce(produce);
+        if (count > 0 ) {
+            annexService.updateAnnex(produce.getCleanProduceId(), AnnexTypeEnum.entCleanProduce.name(), produce.getAnnexIds());
+        }
+        return AjaxResult.success();
     }
 
     @Override
     @Log(title = "企业清洁生产基础", businessType = BusinessType.DELETE)
-    public AjaxResult deleteEntCleanProduceByCleanProduceIds(List<String> cleanProduceIds) {
-        if (null == cleanProduceIds || cleanProduceIds.size() < 1) {
+    public AjaxResult deleteCleanProduceByIds(List<String> ids) {
+        if (null == ids || ids.size() < 1) {
             return AjaxResult.error("请求信息为空");
         }
-        int count = entCleanProduceMapper.deleteEntCleanProduceByCleanProduceIds(cleanProduceIds);
+        int count = entCleanProduceMapper.deleteCleanProduceByIds(ids);
         if (count > 0) {
             // 删除附件
-            cleanProduceIds.forEach( e -> annexService.updateAnnex(e, Constants.ANNEX_EntCleanProduce, null));
+            ids.forEach( e -> annexService.updateAnnex(e, AnnexTypeEnum.entCleanProduce.name(), null));
         }
         return AjaxResult.success(count);
     }

@@ -96,6 +96,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateProPerson" parameterType="com.ruoyi.business.envProt.domain.EnvProPerson">
         update t_env_pro_person
         <trim prefix="SET" suffixOverrides=",">
+            <if test="entCode != null">ent_code = #{entCode},</if>
             <if test="proName != null">pro_name = #{proName},</if>
             <if test="proCode != null">pro_code = #{proCode},</if>
             <if test="proSex != null">pro_sex = #{proSex},</if>

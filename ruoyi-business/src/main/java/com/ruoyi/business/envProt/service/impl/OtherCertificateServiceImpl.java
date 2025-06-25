@@ -15,6 +15,7 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.CellUtils;
 import com.ruoyi.common.utils.PageUtils;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.reflect.CurrentSizeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
@@ -180,7 +181,9 @@ public class OtherCertificateServiceImpl implements OtherCertificateService {
     @Log(title = "其他证书", businessType = BusinessType.INSERT)
     public AjaxResult insertOtherCertificate(OtherCertificate info) {
         // userId设置
-        info.setUserId(SecurityUtils.getUserId() + "");
+        if (StringUtils.isEmpty(info.getUserId())) {
+            info.setUserId(SecurityUtils.getUserId() + "");
+        }
         info.setOtherId(UlidCreator.getMonotonicUlid().toString());
         int count = otherCertificateMapper.insertOtherCertificate(info);
         if (count > 0 && null != info.getAnnexIds() && info.getAnnexIds().size() > 0) {
@@ -192,8 +195,6 @@ public class OtherCertificateServiceImpl implements OtherCertificateService {
     @Override
     @Log(title = "其他证书", businessType = BusinessType.UPDATE)
     public AjaxResult updateOtherCertificate(OtherCertificate info) {
-        // userId设置
-        info.setUserId(SecurityUtils.getUserId() + "");
         int count = otherCertificateMapper.updateOtherCertificate(info);
         if (count > 0 ) {
             annexService.updateAnnex(info.getOtherId(), AnnexTypeEnum.otherCertificate.name(), info.getAnnexIds());
