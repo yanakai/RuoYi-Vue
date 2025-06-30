@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.envProt.mapper.EnvMangeCheckMapper">
+    
+    <resultMap id="envMangeCheckResult" type="com.ruoyi.business.envProt.domain.EnvMangeCheck">
+        <result property="mCheckId"    column="m_check_id"    />
+        <result property="mProjectId"    column="m_project_id"    />
+        <result property="checkReply"    column="check_reply"    />
+        <result property="approvalDepart"    column="approval_depart"    />
+        <result property="replyNo"    column="reply_no"    />
+        <result property="checkAgency"    column="check_agency"    />
+        <result property="checkBeginTime"    column="check_begin_time"    />
+        <result property="checkEndTime"    column="check_end_time"    />
+        <result property="reviewTime"    column="review_time"    />
+        <result property="reviewIssue"    column="review_issue"    />
+        <result property="recordAddress"    column="record_address"    />
+        <result property="checkRecordBeginTime"    column="check_record_begin_time"    />
+        <result property="checkRecordEndTime"    column="check_record_end_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <select id="selectMangeCheckList" resultMap="envMangeCheckResult">
+        select
+            m_check_id, m_project_id, check_reply, approval_depart, reply_no, check_agency, check_begin_time,
+            check_end_time, review_time, review_issue, record_address, check_record_begin_time, check_record_end_time,
+            remark
+        from t_env_mange_check
+        where m_project_id = #{mProjectId}
+    </select>
+
+    <insert id="insertMangeCheck" parameterType="com.ruoyi.business.envProt.domain.EnvMangeCheck">
+        insert into t_env_mange_check
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mCheckId != null">m_check_id,</if>
+            <if test="mProjectId != null and mProjectId != ''">m_project_id,</if>
+            <if test="checkReply != null">check_reply,</if>
+            <if test="approvalDepart != null">approval_depart,</if>
+            <if test="replyNo != null">reply_no,</if>
+            <if test="checkAgency != null">check_agency,</if>
+            <if test="checkBeginTime != null">check_begin_time,</if>
+            <if test="checkEndTime != null">check_end_time,</if>
+            <if test="reviewTime != null">review_time,</if>
+            <if test="reviewIssue != null">review_issue,</if>
+            <if test="recordAddress != null">record_address,</if>
+            <if test="checkRecordBeginTime != null">check_record_begin_time,</if>
+            <if test="checkRecordEndTime != null">check_record_end_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mCheckId != null">#{mCheckId},</if>
+            <if test="mProjectId != null and mProjectId != ''">#{mProjectId},</if>
+            <if test="checkReply != null">#{checkReply},</if>
+            <if test="approvalDepart != null">#{approvalDepart},</if>
+            <if test="replyNo != null">#{replyNo},</if>
+            <if test="checkAgency != null">#{checkAgency},</if>
+            <if test="checkBeginTime != null">#{checkBeginTime},</if>
+            <if test="checkEndTime != null">#{checkEndTime},</if>
+            <if test="reviewTime != null">#{reviewTime},</if>
+            <if test="reviewIssue != null">#{reviewIssue},</if>
+            <if test="recordAddress != null">#{recordAddress},</if>
+            <if test="checkRecordBeginTime != null">#{checkRecordBeginTime},</if>
+            <if test="checkRecordEndTime != null">#{checkRecordEndTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMangeCheck" parameterType="com.ruoyi.business.envProt.domain.EnvMangeCheck">
+        update t_env_mange_check
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mProjectId != null and mProjectId != ''">m_project_id = #{mProjectId},</if>
+            <if test="checkReply != null">check_reply = #{checkReply},</if>
+            <if test="approvalDepart != null">approval_depart = #{approvalDepart},</if>
+            <if test="replyNo != null">reply_no = #{replyNo},</if>
+            <if test="checkAgency != null">check_agency = #{checkAgency},</if>
+            <if test="checkBeginTime != null">check_begin_time = #{checkBeginTime},</if>
+            <if test="checkEndTime != null">check_end_time = #{checkEndTime},</if>
+            <if test="reviewTime != null">review_time = #{reviewTime},</if>
+            <if test="reviewIssue != null">review_issue = #{reviewIssue},</if>
+            <if test="recordAddress != null">record_address = #{recordAddress},</if>
+            <if test="checkRecordBeginTime != null">check_record_begin_time = #{checkRecordBeginTime},</if>
+            <if test="checkRecordEndTime != null">check_record_end_time = #{checkRecordEndTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where m_check_id = #{mCheckId}
+    </update>
+
+    <delete id="deleteMangeCheckById">
+        delete from t_env_mange_check where m_check_id = #{mCheckId}
+    </delete>
+
+    <select id="getMangeIdByProjectId">
+        select m_check_id from t_env_mange_check where m_project_id = #{mProjectId}
+    </select>
+
+    <delete id="deleteMangeCheckByProjectId">
+        delete from t_env_mange_check where m_project_id = #{mProjectId}
+    </delete>
+</mapper>
