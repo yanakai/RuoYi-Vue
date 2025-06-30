@@ -1,6 +1,5 @@
 package com.ruoyi.business.envProt.service.impl;
 
-import cn.hutool.core.map.MapUtil;
 import com.github.f4b6a3.ulid.UlidCreator;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -12,7 +11,6 @@ import com.ruoyi.business.envProt.domain.*;
 import com.ruoyi.business.envProt.mapper.EntOutPollutantPermitMapper;
 import com.ruoyi.business.envProt.service.EntOutPollutantPermitService;
 import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysDictData;
 import com.ruoyi.common.enums.BusinessType;

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.envProt.mapper.EnvMangeEvaluateMapper">
+
+    <resultMap id="envMangeEvaluateResult" type="com.ruoyi.business.envProt.domain.EnvMangeEvaluate">
+        <result property="mEvaluateId"    column="m_evaluate_id"    />
+        <result property="mProjectId"    column="m_project_id"    />
+        <result property="eiaLevel"    column="eia_level"    />
+        <result property="approvalDepart"    column="approval_depart"    />
+        <result property="replyNo"    column="reply_no"    />
+        <result property="ratingAgency"    column="rating_agency"    />
+        <result property="leadAuthor"    column="lead_author"    />
+        <result property="ratingCost"    column="rating_cost"    />
+        <result property="pollutantCode"    column="pollutant_code"    />
+        <result property="pollutantTotal"    column="pollutant_total"    />
+        <result property="contractTime"    column="contract_time"    />
+        <result property="reportSubTime"    column="report_sub_time"    />
+        <result property="publicityTime"    column="publicity_time"    />
+        <result property="approvalTime"    column="approval_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <select id="selectMangeEvaluateList" resultMap="envMangeEvaluateResult">
+        select
+            m_evaluate_id, m_project_id, eia_level, approval_depart, reply_no, rating_agency, lead_author, rating_cost,
+            pollutant_code, pollutant_total, contract_time, report_sub_time, publicity_time, approval_time, remark
+        from t_env_mange_evaluate
+        where m_project_id = #{mProjectId}
+    </select>
+
+    <insert id="insertMangeEvaluate" parameterType="com.ruoyi.business.envProt.domain.EnvMangeEvaluate">
+        insert into t_env_mange_evaluate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mEvaluateId != null">m_evaluate_id,</if>
+            <if test="mProjectId != null and mProjectId != ''">m_project_id,</if>
+            <if test="eiaLevel != null">eia_level,</if>
+            <if test="approvalDepart != null">approval_depart,</if>
+            <if test="replyNo != null">reply_no,</if>
+            <if test="ratingAgency != null">rating_agency,</if>
+            <if test="leadAuthor != null">lead_author,</if>
+            <if test="ratingCost != null">rating_cost,</if>
+            <if test="pollutantCode != null">pollutant_code,</if>
+            <if test="pollutantTotal != null">pollutant_total,</if>
+            <if test="contractTime != null">contract_time,</if>
+            <if test="reportSubTime != null">report_sub_time,</if>
+            <if test="publicityTime != null">publicity_time,</if>
+            <if test="approvalTime != null">approval_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mEvaluateId != null">#{mEvaluateId},</if>
+            <if test="mProjectId != null and mProjectId != ''">#{mProjectId},</if>
+            <if test="eiaLevel != null">#{eiaLevel},</if>
+            <if test="approvalDepart != null">#{approvalDepart},</if>
+            <if test="replyNo != null">#{replyNo},</if>
+            <if test="ratingAgency != null">#{ratingAgency},</if>
+            <if test="leadAuthor != null">#{leadAuthor},</if>
+            <if test="ratingCost != null">#{ratingCost},</if>
+            <if test="pollutantCode != null">#{pollutantCode},</if>
+            <if test="pollutantTotal != null">#{pollutantTotal},</if>
+            <if test="contractTime != null">#{contractTime},</if>
+            <if test="reportSubTime != null">#{reportSubTime},</if>
+            <if test="publicityTime != null">#{publicityTime},</if>
+            <if test="approvalTime != null">#{approvalTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMangeEvaluate" parameterType="com.ruoyi.business.envProt.domain.EnvMangeEvaluate">
+        update t_env_mange_evaluate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mProjectId != null and mProjectId != ''">m_project_id = #{mProjectId},</if>
+            <if test="eiaLevel != null">eia_level = #{eiaLevel},</if>
+            <if test="approvalDepart != null">approval_depart = #{approvalDepart},</if>
+            <if test="replyNo != null">reply_no = #{replyNo},</if>
+            <if test="ratingAgency != null">rating_agency = #{ratingAgency},</if>
+            <if test="leadAuthor != null">lead_author = #{leadAuthor},</if>
+            <if test="ratingCost != null">rating_cost = #{ratingCost},</if>
+            <if test="pollutantCode != null">pollutant_code = #{pollutantCode},</if>
+            <if test="pollutantTotal != null">pollutant_total = #{pollutantTotal},</if>
+            <if test="contractTime != null">contract_time = #{contractTime},</if>
+            <if test="reportSubTime != null">report_sub_time = #{reportSubTime},</if>
+            <if test="publicityTime != null">publicity_time = #{publicityTime},</if>
+            <if test="approvalTime != null">approval_time = #{approvalTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where m_evaluate_id = #{mEvaluateId}
+    </update>
+
+    <delete id="deleteMangeEvaluateById">
+        delete from t_env_mange_evaluate where m_evaluate_id = #{mEvaluateId}
+    </delete>
+
+    <select id="getMangeEvaluateIdByProjectId">
+        select m_evaluate_id from t_env_mange_evaluate where m_project_id = #{mProjectId}
+    </select>
+
+    <delete id="deleteMangeEvaluateByProjectId">
+        delete from t_env_mange_evaluate where m_project_id = #{mProjectId}
+    </delete>
+</mapper>

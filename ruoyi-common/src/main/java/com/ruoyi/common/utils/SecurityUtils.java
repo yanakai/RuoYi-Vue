@@ -69,7 +69,8 @@ public class SecurityUtils {
     }
 
     /**
-     * 获取用户权限列表
+     * 获取用户权限
+     * 目前只支持单个账号对应单个企业
      **/
     public static String getEntCode() {
         return getLoginUser().getUser().getEntCode();
