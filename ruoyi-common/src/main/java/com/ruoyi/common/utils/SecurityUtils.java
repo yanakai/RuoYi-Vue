@@ -71,8 +71,8 @@ public class SecurityUtils {
     /**
      * 获取用户权限列表
      **/
-    public static List<String> getEntCodes() {
-        return Collections.singletonList(getLoginUser().getUser().getEntCode());
+    public static String getEntCode() {
+        return getLoginUser().getUser().getEntCode();
     }
 
     /**
