@@ -51,5 +51,5 @@ public class EntOutPutReq {
     private String mnNum;
 
     /** 权限管理 */
-    private List<String> entCodes;
+    private String entCode;
 }

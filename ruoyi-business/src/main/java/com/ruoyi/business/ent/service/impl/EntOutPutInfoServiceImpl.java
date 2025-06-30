@@ -76,7 +76,7 @@ public class EntOutPutInfoServiceImpl implements EntOutPutInfoService {
         }
         // 添加权限
         if (SecurityUtils.isNotAdmin()) {
-            req.setEntCodes(SecurityUtils.getEntCodes());
+            req.setEntCode(SecurityUtils.getEntCode());
         }
         long count = entOutPutMapper.selectOutPutListCount(req);
         result.put("total", count);
@@ -146,7 +146,7 @@ public class EntOutPutInfoServiceImpl implements EntOutPutInfoService {
             }
             // 添加权限
             if (SecurityUtils.isNotAdmin()) {
-                req.setEntCodes(SecurityUtils.getEntCodes());
+                req.setEntCode(SecurityUtils.getEntCode());
             }
             List<EntOutPutInfo> list = entOutPutMapper.selectOutPutList(req);
             // 设置检测污染物列表、是否关注等信息

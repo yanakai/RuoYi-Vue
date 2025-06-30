@@ -39,11 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="outPutType != null"> and i.out_put_type = #{outPutType}</if>
             <if test="outPutStatus != null"> and i.out_put_status = #{outPutStatus}</if>
             <if test="mnNum != null"> and i.mn_num like concat('%', #{mnNum}, '%')</if>
-            <if test="entCodes != null and entCodes.size() > 0"> and e.ent_code in
-                <foreach item="code" collection="entCodes" open="(" separator="," close=")">
-                    #{code}
-                </foreach>
-            </if>
+            <if test="entCode != null and entCode != ''"> and i.ent_code = #{entCode}</if>
         </where>
     </select>
 
@@ -63,11 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="outPutType != null"> and i.out_put_type = #{outPutType}</if>
             <if test="outPutStatus != null"> and i.out_put_status = #{outPutStatus}</if>
             <if test="mnNum != null"> and i.mn_num like concat('%', #{mnNum}, '%')</if>
-            <if test="entCodes != null and entCodes.size() > 0"> and e.ent_code in
-                <foreach item="code" collection="entCodes" open="(" separator="," close=")">
-                    #{code}
-                </foreach>
-            </if>
+            <if test="entCode != null and entCode != ''"> and i.ent_code = #{entCode}</if>
         </where>
         order by i.out_put_id desc
         limit #{size}
