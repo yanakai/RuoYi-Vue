@@ -35,7 +35,7 @@ public class AnnexController {
     /**
      * 获取附件列表
      */
-    @GetMapping("/list")
+    @PostMapping("/list")
     public AjaxResult list(@RequestBody(required = false) AnnexReq req) {
         return AjaxResult.success(annexService.selectAnnexList(req));
     }
