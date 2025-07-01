@@ -14,5 +14,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectIndustryCategoryList" resultMap="industryCategoryResult">
         select id, pid, code, `name`, `desc` from t_bas_industry_category
+        where status = 1;
     </select>
 </mapper>

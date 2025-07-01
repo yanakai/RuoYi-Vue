@@ -15,5 +15,5 @@ public interface IndustryCategoryService {
      */
     AjaxResult selectIndustryCategoryTree();
 
-    Map<Long, IndustryCategory> selectIndustryCategoryMap();
+    Map<String, IndustryCategory> selectIndustryCategoryMap();
 }

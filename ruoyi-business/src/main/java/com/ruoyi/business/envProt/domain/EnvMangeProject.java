@@ -53,7 +53,7 @@ public class EnvMangeProject {
     private String industryCategory;
     private List<String> industryCategoryList;
     private List<String> industryCodeList;
-    private List<List<Long>> industryList;
+    private List<List<String>> industryList;
 
     /** 环评等级，1报告书、2报告表、3登记表、0无需环评（默认） */
     private int grade;
