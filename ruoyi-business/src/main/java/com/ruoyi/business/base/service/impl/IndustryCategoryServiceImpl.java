@@ -29,7 +29,7 @@ public class IndustryCategoryServiceImpl implements IndustryCategoryService {
         if (null == list || list.size() < 1) {
             return AjaxResult.success();
         }
-        Map<Long, List<IndustryCategory>> map = new HashMap<>();
+        Map<String, List<IndustryCategory>> map = new HashMap<>();
         list.forEach( e -> {
             List<IndustryCategory> sub;
             if (map.containsKey(e.getPid())) {
@@ -41,14 +41,14 @@ public class IndustryCategoryServiceImpl implements IndustryCategoryService {
             sub.add(e);
         });
         // 获取父级列表
-        List<IndustryCategory> parent = map.get(-1L);
+        List<IndustryCategory> parent = map.get("-1");
         fill(map, parent);
         // o1.compare o2
         parent.sort(Comparator.comparing(IndustryCategory::getCode));
         return AjaxResult.success(parent);
     }
 
-    private void fill(Map<Long, List<IndustryCategory>> map, List<IndustryCategory> list) {
+    private void fill(Map<String, List<IndustryCategory>> map, List<IndustryCategory> list) {
         if (null == list || list.size() < 1) {
             return;
         }
@@ -63,7 +63,7 @@ public class IndustryCategoryServiceImpl implements IndustryCategoryService {
     }
 
     @Override
-    public Map<Long, IndustryCategory> selectIndustryCategoryMap() {
+    public Map<String, IndustryCategory> selectIndustryCategoryMap() {
         List<IndustryCategory> list = industryCategoryMapper.selectIndustryCategoryList();
         if (null == list || list.size() < 1) {
             return new HashMap<>();

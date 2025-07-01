@@ -213,7 +213,7 @@ public class EnvMangeProjectServiceImpl implements EnvMangeProjectService {
             return;
         }
         // 国民经济行业类别设置
-        Map<Long, IndustryCategory> inMap = industryCategoryService.selectIndustryCategoryMap();
+        Map<String, IndustryCategory> inMap = industryCategoryService.selectIndustryCategoryMap();
         list.forEach( e -> {
             /* 类别示例
             "industryCategory": "94,610",
@@ -225,12 +225,10 @@ public class EnvMangeProjectServiceImpl implements EnvMangeProjectService {
                 e.setIndustryCategoryList(new ArrayList<>());
                 e.setIndustryCodeList(new ArrayList<>());
                 e.setIndustryList(new ArrayList<>());
-                for (String s : e.getIndustryCategory().split(",")) {
-                    List<Long> ids = new ArrayList<>();
+                for (String id : e.getIndustryCategory().split(",")) {
+                    List<String> ids = new ArrayList<>();
                     try {
-                        Long id = Long.parseLong(s);
                         if (inMap.containsKey(id)) {
-                            ids.add(id);
                             IndustryCategory in = inMap.get(id);
                             String cCode = industryCodes(inMap, ids, id);
                             e.getIndustryCodeList().add(cCode + in.getCode());
@@ -247,13 +245,13 @@ public class EnvMangeProjectServiceImpl implements EnvMangeProjectService {
         });
     }
 
-    private String industryCodes(Map<Long, IndustryCategory> inMap, List<Long> ids, Long id){
+    private String industryCodes(Map<String, IndustryCategory> inMap, List<String> ids, String id){
         if (null == id || !inMap.containsKey(id)) {
             return "";
         }
         IndustryCategory in = inMap.get(id);
         ids.add(in.getId());
-        if (in.getPid() == -1) {
+        if ("-1".equals(in.getPid())) {
             return in.getCode();
         }
         return industryCodes(inMap, ids, in.getPid());

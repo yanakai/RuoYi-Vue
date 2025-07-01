@@ -11,10 +11,10 @@ import java.util.List;
 public class IndustryCategory {
 
     /** 主键id */
-    private Long id;
+    private String id;
 
     /** 父级id */
-    private Long pid;
+    private String pid;
 
     /** 代码 */
     private String code;
