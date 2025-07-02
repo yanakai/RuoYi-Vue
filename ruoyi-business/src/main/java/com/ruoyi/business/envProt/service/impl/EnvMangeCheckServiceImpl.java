@@ -1,18 +1,20 @@
 package com.ruoyi.business.envProt.service.impl;
 
-import java.util.List;
-
 import com.github.f4b6a3.ulid.UlidCreator;
 import com.ruoyi.business.annex.service.AnnexService;
 import com.ruoyi.business.enums.AnnexTypeEnum;
 import com.ruoyi.business.envProt.domain.EnvMangeCheck;
 import com.ruoyi.business.envProt.mapper.EnvMangeCheckMapper;
 import com.ruoyi.business.envProt.service.EnvMangeCheckService;
+import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.PageUtils;
 import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 企业环评环保管理-环保验收Service业务层处理
@@ -52,6 +54,7 @@ public class EnvMangeCheckServiceImpl implements EnvMangeCheckService {
     }
 
     @Override
+    @Log(title = "企业环保验收", businessType = BusinessType.INSERT)
     public AjaxResult insertMangeCheck(EnvMangeCheck info) {
         info.setMCheckId(UlidCreator.getMonotonicUlid().toString());
         int count = envMangeCheckMapper.insertMangeCheck(info);
@@ -62,6 +65,7 @@ public class EnvMangeCheckServiceImpl implements EnvMangeCheckService {
     }
 
     @Override
+    @Log(title = "企业环保验收", businessType = BusinessType.UPDATE)
     public AjaxResult updateMangeCheck(EnvMangeCheck info) {
         int count = envMangeCheckMapper.updateMangeCheck(info);
         if (count > 0 ) {
@@ -71,6 +75,7 @@ public class EnvMangeCheckServiceImpl implements EnvMangeCheckService {
     }
 
     @Override
+    @Log(title = "企业环保验收", businessType = BusinessType.DELETE)
     public AjaxResult deleteMangeCheckById(String id) {
         if (StringUtils.isEmpty(id)) {
             return AjaxResult.error("请求信息为空");
