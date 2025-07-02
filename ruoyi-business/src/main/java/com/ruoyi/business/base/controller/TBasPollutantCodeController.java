@@ -15,7 +15,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * 数采报文对应的污染因子关系 2017版本和2003版Controller
  */
 @RestController
-@RequestMapping("/platform/base/pollutantCode")
+@RequestMapping("/business/base/pollutantCode")
 public class TBasPollutantCodeController {
 
     private ITBasPollutantCodeService tBasPollutantCodeService;
