@@ -5,14 +5,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.github.f4b6a3.ulid.UlidCreator;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.ruoyi.business.annex.service.AnnexService;
 import com.ruoyi.business.base.domain.TBasPollutantCode;
 import com.ruoyi.business.base.mapper.TBasPollutantCodeMapper;
 import com.ruoyi.business.enums.AnnexTypeEnum;
 import com.ruoyi.business.envProt.domain.EnvMangeEvaluate;
-import com.ruoyi.business.envProt.domain.EnvMangeReq;
 import com.ruoyi.business.envProt.mapper.EnvMangeEvaluateMapper;
 import com.ruoyi.business.envProt.service.EnvMangeEvaluateService;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -46,21 +43,16 @@ public class EnvMangeEvaluateServiceImpl implements EnvMangeEvaluateService {
     }
 
     @Override
-    public AjaxResult selectMangeEvaluateList(EnvMangeReq req) {
-        if (null == req || StringUtils.isEmpty(req.getKey())) {
+    public AjaxResult selectMangeEvaluateList(String mProjectId) {
+        if (StringUtils.isEmpty(mProjectId)) {
             return AjaxResult.error("未知的请求参数");
         }
-        AjaxResult result = AjaxResult.success();
-        // 分页参数设置
-        PageHelper.startPage(null == req.getCurrent() || req.getCurrent() < 1 ? 1 : req.getCurrent(),
-                null == req.getSize() || req.getSize() < 1 ? 10 : req.getSize());
-        List<EnvMangeEvaluate> list = envMangeEvaluateMapper.selectMangeEvaluateList(req.getKey());
-        result.put("data", list);
-        result.put("total", new PageInfo<>(list).getTotal());
-        PageUtils.clearPage();
+        // 分页查询
+        PageUtils.startPage();
+        List<EnvMangeEvaluate> list = envMangeEvaluateMapper.selectMangeEvaluateList(mProjectId);
         // 设置污染物信息
         setPollutantCodeDesc(list);
-        return result;
+        return PageUtils.getAjaxResult(list, true);
     }
 
     @Override

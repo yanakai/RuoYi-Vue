@@ -9,20 +9,18 @@ import java.time.LocalDate;
 import java.util.*;
 
 import com.github.f4b6a3.ulid.UlidCreator;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.ruoyi.business.annex.service.AnnexService;
-import com.ruoyi.business.envProt.domain.*;
+import com.ruoyi.business.enums.AnnexTypeEnum;
+import com.ruoyi.business.envProt.domain.EnvProPerson;
+import com.ruoyi.business.envProt.domain.EnvProPersonReq;
 import com.ruoyi.business.envProt.mapper.EnvProPersonMapper;
 import com.ruoyi.business.envProt.service.EnvProPersonService;
-import com.ruoyi.business.enums.AnnexTypeEnum;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.CellUtils;
 import com.ruoyi.common.utils.PageUtils;
 import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.common.utils.reflect.CurrentSizeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
@@ -68,7 +66,6 @@ public class EnvProPersonServiceImpl implements EnvProPersonService {
 
     @Override
     public AjaxResult selectProPersonList(EnvProPersonReq req) {
-        AjaxResult result = AjaxResult.success();
         if (null == req) {
             req = new EnvProPersonReq();
         }
@@ -76,17 +73,12 @@ public class EnvProPersonServiceImpl implements EnvProPersonService {
         if (SecurityUtils.isNotAdmin()) {
             req.setPermEntCode(SecurityUtils.getEntCode());
         }
-        // 分页参数设置
-        CurrentSizeUtils.currentAndSize(req, "getCurrent", "setCurrent", 1);
-        CurrentSizeUtils.currentAndSize(req, "getSize", "setSize", 10);
-        PageHelper.startPage(req.getCurrent(), req.getSize());
+        // 分页查询
+        PageUtils.startPage();
         List<EnvProPerson> list = envProPersonMapper.selectProPersonList(req);
         // 判断在职离职
         fillPoll(list, req.getNow());
-        result.put("data", list);
-        result.put("total", new PageInfo<>(list).getTotal());
-        PageUtils.clearPage();
-        return result;
+        return PageUtils.getAjaxResult(list, true);
     }
 
     private void fillPoll(List<EnvProPerson> list, LocalDate now) {

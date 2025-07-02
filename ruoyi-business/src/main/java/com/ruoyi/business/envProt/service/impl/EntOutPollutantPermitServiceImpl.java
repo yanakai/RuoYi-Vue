@@ -1,13 +1,14 @@
 package com.ruoyi.business.envProt.service.impl;
 
 import com.github.f4b6a3.ulid.UlidCreator;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.ruoyi.business.annex.service.AnnexService;
 import com.ruoyi.business.base.domain.TBasPollutantCode;
 import com.ruoyi.business.base.mapper.TBasPollutantCodeMapper;
 import com.ruoyi.business.enums.AnnexTypeEnum;
-import com.ruoyi.business.envProt.domain.*;
+import com.ruoyi.business.envProt.domain.EntOutPollutantPermit;
+import com.ruoyi.business.envProt.domain.EntOutPollutantPermitCount;
+import com.ruoyi.business.envProt.domain.EntOutPollutantPermitCountReq;
+import com.ruoyi.business.envProt.domain.EntOutPollutantPermitReq;
 import com.ruoyi.business.envProt.mapper.EntOutPollutantPermitMapper;
 import com.ruoyi.business.envProt.service.EntOutPollutantPermitService;
 import com.ruoyi.common.annotation.Log;
@@ -18,13 +19,9 @@ import com.ruoyi.common.utils.CellUtils;
 import com.ruoyi.common.utils.PageUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.reflect.CurrentSizeUtils;
 import com.ruoyi.system.service.ISysDictDataService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,7 +68,7 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
 
     @Override
     public AjaxResult selectEntOutPollutantPermitList(EntOutPollutantPermitReq req) {
-        AjaxResult result = AjaxResult.success();
+        AjaxResult result;
         if (null == req) {
             req = new EntOutPollutantPermitReq();
         }
@@ -82,17 +79,15 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
             fillPoll(Collections.singletonList(permit));
             // 设置附件地址
             permit.setAnnexInfoList(annexService.selectAnnexList(permit.getEntCode(), AnnexTypeEnum.entOutPollutantPermit.name()));
+            result = AjaxResult.success();
             result.put("data", permit);
         } else {
-            CurrentSizeUtils.currentAndSize(req, "getCurrent", "setCurrent", 1);
-            CurrentSizeUtils.currentAndSize(req, "getSize", "setSize", 10);
-            PageHelper.startPage(req.getCurrent(), req.getSize());
+            // 分页查询
+            PageUtils.startPage();
             List<EntOutPollutantPermit> list = entOutPollutantPermitMapper.selectEntOutPollutantPermitList(req);
             // 设置污染物信息
             fillPoll(list);
-            result.put("data", list);
-            result.put("total", new PageInfo<>(list).getTotal());
-            PageUtils.clearPage();
+            result = PageUtils.getAjaxResult(list, true);
         }
         return result;
     }
@@ -296,7 +291,6 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
 
     @Override
     public AjaxResult selectEntOutPollutantPermitCountList(EntOutPollutantPermitCountReq req) {
-        AjaxResult result = AjaxResult.success();
         if (null == req) {
             req = new EntOutPollutantPermitCountReq();
         }
@@ -304,14 +298,10 @@ public class EntOutPollutantPermitServiceImpl implements EntOutPollutantPermitSe
         if (StringUtils.isEmpty(req.getEntCode())) {
             req.setEntCode(SecurityUtils.getEntCode());
         }
-        CurrentSizeUtils.currentAndSize(req, "getCurrent", "setCurrent", 1);
-        CurrentSizeUtils.currentAndSize(req, "getSize", "setSize", 10);
-        PageHelper.startPage(req.getCurrent(), req.getSize());
+        // 分页查询
+        PageUtils.startPage();
         List<EntOutPollutantPermitCount> list = entOutPollutantPermitMapper.selectEntOutPollutantPermitCountList(req);
-        result.put("data", list);
-        result.put("total", new PageInfo<>(list).getTotal());
-        PageUtils.clearPage();
-        return result;
+        return PageUtils.getAjaxResult(list, true);
     }
 
     @Override

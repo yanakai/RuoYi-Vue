@@ -8,11 +8,6 @@ import lombok.Data;
 @Data
 public class EntOutPollutantPermitCountReq {
 
-    /** 当前页 */
-    private Integer current;
-    /** 页大小 */
-    private Integer size;
-
     /** 企业编码 */
     private String entCode;
 
