@@ -3,12 +3,9 @@ package com.ruoyi.business.envProt.service.impl;
 import java.util.List;
 
 import com.github.f4b6a3.ulid.UlidCreator;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.ruoyi.business.annex.service.AnnexService;
 import com.ruoyi.business.enums.AnnexTypeEnum;
 import com.ruoyi.business.envProt.domain.EnvMangeCheck;
-import com.ruoyi.business.envProt.domain.EnvMangeReq;
 import com.ruoyi.business.envProt.mapper.EnvMangeCheckMapper;
 import com.ruoyi.business.envProt.service.EnvMangeCheckService;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -36,19 +33,14 @@ public class EnvMangeCheckServiceImpl implements EnvMangeCheckService {
     }
 
     @Override
-    public AjaxResult selectMangeCheckList(EnvMangeReq req) {
-        if (null == req || StringUtils.isEmpty(req.getKey())) {
+    public AjaxResult selectMangeCheckList(String mProjectId) {
+        if (StringUtils.isEmpty(mProjectId)) {
             return AjaxResult.error("未知的请求参数");
         }
-        AjaxResult result = AjaxResult.success();
-        // 分页参数设置
-        PageHelper.startPage(null == req.getCurrent() || req.getCurrent() < 1 ? 1 : req.getCurrent(),
-                null == req.getSize() || req.getSize() < 1 ? 10 : req.getSize());
-        List<EnvMangeCheck> list = envMangeCheckMapper.selectMangeCheckList(req.getKey());
-        result.put("data", list);
-        result.put("total", new PageInfo<>(list).getTotal());
-        PageUtils.clearPage();
-        return result;
+        // 分页查询
+        PageUtils.startPage();
+        List<EnvMangeCheck> list = envMangeCheckMapper.selectMangeCheckList(mProjectId);
+        return PageUtils.getAjaxResult(list, true);
     }
 
     @Override

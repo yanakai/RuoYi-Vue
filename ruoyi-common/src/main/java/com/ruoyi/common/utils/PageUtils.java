@@ -3,6 +3,7 @@ package com.ruoyi.common.utils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.constant.HttpStatus;
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.page.TableSupport;
@@ -13,7 +14,8 @@ import java.util.List;
 /**
  * 分页工具类
  */
-public class PageUtils extends PageHelper {
+public class PageUtils {
+
     /**
      * 设置请求分页数据
      */
@@ -67,5 +69,21 @@ public class PageUtils extends PageHelper {
             rspData.setTotal(list.size());
         }
         return rspData;
+    }
+
+    /**
+     * 响应请求分页数据
+     */
+    public static AjaxResult getAjaxResult(List<?> list, boolean page) {
+        AjaxResult result = AjaxResult.success();
+        result.put("data", list);
+        if (page) {
+            result.put("total", new PageInfo<>(list).getTotal());
+            // 清理分页参数
+            clearPage();
+        } else {
+            result.put("total", list.size());
+        }
+        return result;
     }
 }

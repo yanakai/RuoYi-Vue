@@ -1,7 +1,6 @@
 package com.ruoyi.business.envProt.controller;
 
 import com.ruoyi.business.envProt.domain.EnvMangeCheck;
-import com.ruoyi.business.envProt.domain.EnvMangeReq;
 import com.ruoyi.business.envProt.service.EnvMangeCheckService;
 import com.ruoyi.common.core.domain.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +22,9 @@ public class EnvMangeCheckController {
     /**
      * 查询企业环评环保管理-环保验收列表
      */
-    @PostMapping("/list")
-    public AjaxResult list(@RequestBody(required = false) EnvMangeReq req) {
-        return envMangeCheckService.selectMangeCheckList(req);
+    @GetMapping("/list/{mProjectId}")
+    public AjaxResult list(@PathVariable("mProjectId") String mProjectId) {
+        return envMangeCheckService.selectMangeCheckList(mProjectId);
     }
 
     /**

@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.f4b6a3.ulid.UlidCreator;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.ruoyi.business.annex.service.AnnexService;
 import com.ruoyi.business.base.domain.IndustryCategory;
 import com.ruoyi.business.base.service.IndustryCategoryService;
@@ -32,7 +30,6 @@ import com.ruoyi.common.utils.CellUtils;
 import com.ruoyi.common.utils.PageUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.reflect.CurrentSizeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -83,7 +80,6 @@ public class EnvMangeProjectServiceImpl implements EnvMangeProjectService {
 
     @Override
     public AjaxResult selectMangeProjectList(EnvMangeReq req) {
-        AjaxResult result = AjaxResult.success();
         if (null == req) {
             req = new EnvMangeReq();
         }
@@ -91,17 +87,12 @@ public class EnvMangeProjectServiceImpl implements EnvMangeProjectService {
         if (SecurityUtils.isNotAdmin()) {
             req.setPermEntCode(SecurityUtils.getEntCode());
         }
-        // 分页参数设置
-        CurrentSizeUtils.currentAndSize(req, "getCurrent", "setCurrent", 1);
-        CurrentSizeUtils.currentAndSize(req, "getSize", "setSize", 10);
-        PageHelper.startPage(req.getCurrent(), req.getSize());
+        // 分页查询
+        PageUtils.startPage();
         List<EnvMangeProject> list = envMangeProjectMapper.selectMangeProjectList(req);
-        result.put("data", list);
-        result.put("total", new PageInfo<>(list).getTotal());
-        PageUtils.clearPage();
         // 国民经济行业类别设置
         fillInfo(list);
-        return result;
+        return PageUtils.getAjaxResult(list, true);
     }
 
     @Override

@@ -8,11 +8,6 @@ import lombok.Data;
 @Data
 public class EnvMangeReq {
 
-    /** 当前页 */
-    private Integer current;
-    /** 页大小 */
-    private Integer size;
-
     /** 查询字段，用作项目名称、获取环评时的项目主键id */
     private String key;
 

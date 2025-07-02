@@ -1,7 +1,6 @@
 package com.ruoyi.business.envProt.service;
 
 import com.ruoyi.business.envProt.domain.EnvMangeEvaluate;
-import com.ruoyi.business.envProt.domain.EnvMangeReq;
 import com.ruoyi.common.core.domain.AjaxResult;
 
 import java.util.List;
@@ -14,7 +13,7 @@ public interface EnvMangeEvaluateService {
     /**
      * 查询企业环评环保管理-环评列表
      */
-    AjaxResult selectMangeEvaluateList(EnvMangeReq req);
+    AjaxResult selectMangeEvaluateList(String mProjectId);
 
     /**
      * 查询企业环评环保管理-项目关联的全部环评列表

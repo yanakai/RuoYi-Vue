@@ -7,8 +7,6 @@ import java.net.URLEncoder;
 import java.util.*;
 
 import com.github.f4b6a3.ulid.UlidCreator;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.ruoyi.business.annex.service.AnnexService;
 import com.ruoyi.business.enums.AnnexTypeEnum;
 import com.ruoyi.business.envProt.domain.EntCleanProduce;
@@ -22,7 +20,6 @@ import com.ruoyi.common.utils.CellUtils;
 import com.ruoyi.common.utils.PageUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.reflect.CurrentSizeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -62,7 +59,6 @@ public class EntCleanProduceServiceImpl implements EntCleanProduceService {
 
     @Override
     public AjaxResult selectCleanProduceList(EntCleanProduceReq req) {
-        AjaxResult result = AjaxResult.success();
         if (null == req) {
             req = new EntCleanProduceReq();
         }
@@ -70,15 +66,10 @@ public class EntCleanProduceServiceImpl implements EntCleanProduceService {
         if (SecurityUtils.isNotAdmin()) {
             req.setPermEntCode(SecurityUtils.getEntCode());
         }
-        // 分页参数设置
-        CurrentSizeUtils.currentAndSize(req, "getCurrent", "setCurrent", 1);
-        CurrentSizeUtils.currentAndSize(req, "getSize", "setSize", 10);
-        PageHelper.startPage(req.getCurrent(), req.getSize());
+        // 分页查询
+        PageUtils.startPage();
         List<EntCleanProduce> list = entCleanProduceMapper.selectCleanProduceList(req);
-        result.put("data", list);
-        result.put("total", new PageInfo<>(list).getTotal());
-        PageUtils.clearPage();
-        return result;
+        return PageUtils.getAjaxResult(list, true);
     }
 
     @Override
