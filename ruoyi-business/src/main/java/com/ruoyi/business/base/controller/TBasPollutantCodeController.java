@@ -48,6 +48,16 @@ public class TBasPollutantCodeController extends BaseController
     }
 
     /**
+     * 查询数采报文对应的污染因子关系 2017版本和2003版列表
+     * 不要分页参数
+     */
+    @GetMapping("/listNoPage")
+    public AjaxResult listNoPage(TBasPollutantCode tBasPollutantCode){
+        List<TBasPollutantCode> list = tBasPollutantCodeService.selectTBasPollutantCodeList(tBasPollutantCode);
+        return AjaxResult.success(list);
+    }
+
+    /**
      * 导出数采报文对应的污染因子关系 2017版本和2003版列表
      *//*
     @PreAuthorize("@ss.hasPermi('business:pollutantCode:export')")
