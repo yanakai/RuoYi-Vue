@@ -75,6 +75,7 @@ public class OtherCertificateServiceImpl implements OtherCertificateService {
     }
 
     @Override
+    @Log(title = "其他证书", businessType = BusinessType.EXPORT)
     public void exportOtherCertificate(OtherCertificateReq req, HttpServletResponse response){
         if (null == req) {
             req = new OtherCertificateReq();
