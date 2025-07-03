@@ -7,7 +7,7 @@ import com.ruoyi.business.base.service.ITBasEnterpriseService;
 import com.ruoyi.common.annotation.DataEntScope;
 import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.system.service.ISysDeptService;
+import com.ruoyi.system.mapper.SysDeptMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +25,11 @@ public class TBasEnterpriseServiceImpl implements ITBasEnterpriseService {
     @Autowired
     private TBasEnterpriseMapper tBasEnterpriseMapper;
 
+    private SysDeptMapper sysDeptMapper;
     @Autowired
-    private ISysDeptService deptService;
+    public void setSysDeptMapper(SysDeptMapper sysDeptMapper) {
+        this.sysDeptMapper = sysDeptMapper;
+    }
 
     /**
      * 查询基础信息---企业基础
@@ -72,7 +75,9 @@ public class TBasEnterpriseServiceImpl implements ITBasEnterpriseService {
         sysDept.setEntName(tBasEnterprise.getEntName());
         sysDept.setSocialCreditCode(tBasEnterprise.getSocialCreditCode());
         sysDept.setCreateTime(new Date());
-        deptService.insertDept(sysDept);
+        sysDept.setParentId(0L);
+        // 直接新增部门
+        sysDeptMapper.insertDept(sysDept);
         return result;
     }
 
