@@ -372,7 +372,7 @@
     <!--废气排口-分钟统计数据列表-->
     <select id="selectTDataGasoutMinuteOrRealStatisticsList" parameterType="TDataGasoutDayStatistics"
             resultMap="TDataGasoutMonthStatisticsResult">
-        SELECT ent_code,ent_name,out_put_code,out_put_name,monitor_time,update_time,
+        SELECT ent_code,out_put_code,monitor_time,update_time,
         <if test="dataEnum.name == 'real'">
             SUM(IF(pollutant_name_cn='烟尘',rtd_value,0)) as yc_avg_value,
             SUM(IF(pollutant_name_cn='烟尘',zs_avg_value,0)) as yc_zsavg_value,
@@ -438,7 +438,7 @@
                 ${params.dataEntScope}
             </if>
         </where>
-        GROUP BY ent_code,ent_name,out_put_code,out_put_name,monitor_time,update_time
+        GROUP BY ent_code,out_put_code,monitor_time,update_time
         order by monitor_time desc
     </select>
 
