@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Set;
 
@@ -53,6 +54,14 @@ public class SysLoginController {
                 loginBody.getUuid());
         ajax.put(Constants.TOKEN, token);
         return ajax;
+    }
+
+    /**
+     * 获取登录信息
+     */
+    @GetMapping("/getLoginUser")
+    public LoginUser getLoginUser(HttpServletRequest request) {
+        return loginService.getLoginUser(request);
     }
 
     /**
