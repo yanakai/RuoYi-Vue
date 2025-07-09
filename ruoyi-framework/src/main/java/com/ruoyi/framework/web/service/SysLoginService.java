@@ -25,6 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 登录校验方法
@@ -155,5 +156,12 @@ public class SysLoginService {
         sysUser.setLoginIp(IpUtils.getIpAddr());
         sysUser.setLoginDate(DateUtils.getNowDate());
         userService.updateUserProfile(sysUser);
+    }
+
+    /**
+     * 获取登录信息
+     */
+    public LoginUser getLoginUser(HttpServletRequest request) {
+        return tokenService.getLoginUser(request);
     }
 }
